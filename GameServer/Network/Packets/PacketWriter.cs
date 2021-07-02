@@ -9,6 +9,8 @@ namespace Qserver.GameServer.Network.Packets
 {
     public class PacketWriter : BinaryWriter
     {
+        private static readonly byte[] PublicKey = new byte[] { 0x66, 0x64, 0x24, 0x23, 0x32, 0x3E, 0x34, 0x35, 0x7D, 0x5F, 0x7E, 0x2E, 0x33, 0x38, 0x4C, 0x61, 0x60, 0x27, 0x2B, 0x52, 0x45, 0x2F, 0x25, 0x2D, 0x49, 0x61, 0x3D, 0x7C, 0x39, 0x58, 0x28, 0x3F, 0x00 };
+
         public Opcode Opcode { get; set; }
         public ushort Size { get; set; }
         public int Length { get { return (int)BaseStream.Length; } }
@@ -29,6 +31,8 @@ namespace Qserver.GameServer.Network.Packets
 
         public byte[] ReadDataToSend(bool isAuthPacket = false)
         {
+            // TODO: WriteChecksum();
+
             byte[] data = new byte[BaseStream.Length];
             Seek(0, SeekOrigin.Begin);
 
@@ -114,41 +118,26 @@ namespace Qserver.GameServer.Network.Packets
             base.Write(data.Y);
         }
 
-        
-        //public void Compress()
-        //{
-        //    if (Opcode != Opcodes.SMSG_UPDATE_OBJECT || BaseStream.Length <= 100)
-        //        return;
+        public void WriteChecksum()
+        {
+            byte[] checksumBytes = { 0x9C, 0x14, 0xED, 0x29, 0xF2, 0xB5, 0x83, 0x7A };
+            //ushort extra = p
 
-        //    byte[] outBuffer = null;
-        //    int baseSize = (int)BaseStream.Length - 6; //Minus header size
+         //   uint16_t extra = (payload.size() + 2) & 7;
+         //   if (!extra)
+         //   {
+         //       return;
+         //   }
 
-        //    try
-        //    {
-        //        using (MemoryStream outputStream = new MemoryStream())
-        //        {
-        //            using (DeflaterOutputStream compressedStream = new DeflaterOutputStream(outputStream))
-        //            {
-        //                byte[] data = ReadDataToSend();
-        //                compressedStream.Write(data, 6, data.Length - 6); //Get the packet data 
-        //                compressedStream.Flush();
-        //                compressedStream.Close();
-        //                outBuffer = outputStream.ToArray();
-        //            }
-        //        }
-        //    }
-        //    catch { return; }
+         //   uint16_t amount = 8 - extra;
+         //   //buffer.resize(buffer.size() + amount + 2);
+         //   for (uint16_t i{ 0 }; i < amount; ++i)
+	        //{
+         //       payload.push_back(payload[i] ^ checksumBytes[i]);
+         //   }
 
-        //    if (outBuffer.Length >= baseSize)
-        //        return;
-
-        //    BaseStream.Seek(0, SeekOrigin.Begin); //Reset the packet
-        //    BaseStream.SetLength(0);
-
-        //    Opcode = Opcodes.SMSG_COMPRESSED_UPDATE_OBJECT; //Create the compressed packet
-        //    WritePacketHeader();
-        //    WriteInt32(baseSize);
-        //    WriteBytes(outBuffer);
-        //}
+         //   payload.push_back(static_cast<uint8_t>(amount & 0xFF));
+         //   payload.push_back(static_cast<uint8_t>((amount >> 8) & 0xFF));
+        }
     }
 }

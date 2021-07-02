@@ -16,7 +16,7 @@ namespace Qserver.GameServer.Network
             try
             {
 #if DEBUG
-                _authListener = new TcpListener(IPAddress.Parse(Settings.SERVER_IP), Settings.SERVER_PORT_PARK);
+                _authListener = new TcpListener(IPAddress.Parse(Settings.SERVER_IP), Settings.SERVER_PORT_AUTH);
 #else
                 _authListener = new TcpListener(Util.Util.GetLocalIPAddress(), Settings.SERVER_PORT);
 #endif

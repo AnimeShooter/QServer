@@ -9,8 +9,6 @@ namespace Qserver
     {
         static void Main(string[] args)
         { 
-            var crccc = test.crc32(new byte[] { 0x26, 0x01, 0x8A, 0x26, 0x2F, 0x34, 0xC3, 0x2A, 0x4E, 0x1A, 0x05, 0x88 });
-
             LaunchServer();
             while (true)
             {

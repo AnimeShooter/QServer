@@ -8,10 +8,10 @@
 
   <ItemGroup>
     <Folder Include="External\HTTP\" />
-    <Folder Include="GameServer\Database\Structs\" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.0.90" />
     <PackageReference Include="MySql.Data" Version="8.0.24" />
   </ItemGroup>
 

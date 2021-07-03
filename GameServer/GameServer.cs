@@ -13,8 +13,19 @@ namespace Qserver.GameServer
     {
         public static void Start()
         {
-            Log.Message(LogType.INIT, ">> Starting GameServer <<");
-
+            Log.Message(LogType.INIT, ">>        Starting GameServer      <<\n\n" +
+                                      "                   ^		            \n" +
+                                      "                  / \\			    \n" +
+                                      "                 /   \\			    \n" +
+                                      "                /   Essence		    \n" +
+                                      "               /       Emulator	    \n" +
+                                      "              /         \\		    \n" +
+                                      "              \\         /	        \n" +
+                                      "           By: \\       /     	    \n" +
+                                      "              Dennis &/       	    \n" +
+                                      "                 Deluze &   	        \n" +
+                                      "                  \\ / Ferib 	    \n" +
+                                      "                   v     		    \n");
             //Settings.Init();
 
             ServerManager.ServerSession = new ServerSocket();

@@ -1,18 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Qserver.GameServer.Qpang.Room.Session.Player.Effect;
-using Qserver.GameServer.Qpang.Room.Session.Player.Entity;
-using Qserver.GameServer.Qpang.Room.Session.Player.Skill;
-using Qserver.GameServer.Qpang.Room.Session.Player.Weapon;
 
-namespace Qserver.GameServer.Qpang.Room.Session.Player
+namespace Qserver.GameServer.Qpang
 {
     public class RoomSessionPlayer
     {
         private PlayerEffectManager _effectManager;
         private PlayerWeaponManager _weaponManager;
-        private PlayerSkillManager _skillManager;
+        private RoomSkillManager _skillManager;
         private PlayerEntityManager _entityManager;
 
         private Position _position;
@@ -34,7 +30,7 @@ namespace Qserver.GameServer.Qpang.Room.Session.Player
 
         private uint[] _armor = new uint[9];
 
-        private mutex _bulletMx;
+        private object _bulletLock;
 
         private bool _hasQuickRevive;
         private bool _isInvincible;
@@ -45,16 +41,44 @@ namespace Qserver.GameServer.Qpang.Room.Session.Player
         private ushort _exp;
         private ushort _don;
 
-        private ushort m_highestStreak;
-        private ushort m_streak;
-        private ushort m_kills;
-        private ushort m_deaths;
-        private ushort m_score;
-        private uint m_playTime;
-        private uint m_highestMultiKill;
-        private uint m_eventItemPickUps;
+        private ushort _highestStreak;
+        private ushort _streak;
+        private ushort _kills;
+        private ushort _deaths;
+        private ushort _score;
+        private uint _playTime;
+        private uint _highestMultiKill;
+        private uint _eventItemPickUps;
 
-        // private conn
+        private GameConnection _conn;
         private RoomSession _roomSession;
+
+        public uint HighestMultiKill
+        {
+            get { return this._highestMultiKill; }
+            set { this._highestMultiKill = value; }
+        }
+
+        public RoomSessionPlayer(GameConnection conn, RoomSession roomSession, byte team)
+        {
+            this._conn = conn;
+            this._roomSession = roomSession;
+            this._team = team;
+            this._isPlaying = false;
+            this._isInvincible = false;
+            this._isSpectating = false;
+            this._streak = 0;
+            this._kills = 0;
+            this._deaths = 0;
+            this._score = 0;
+            this._exp = 0;
+            this._expRate = 0;
+            this._don = 0;
+            this._donRate = 0;
+            this._playTime = 0;
+            this._highestStreak = 0;
+            this._highestMultiKill = 0;
+            this._eventItemPickUps = 0;
+        }
     }
 }

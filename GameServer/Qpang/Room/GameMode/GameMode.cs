@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Qserver.GameServer.Qpang.Room.GameMode
+namespace Qserver.GameServer.Qpang
 {
     public class GameMode
     {

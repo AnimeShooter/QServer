@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Qserver.GameServer.Qpang.Room
+namespace Qserver.GameServer.Qpang
 {
     class RoomPlayer
     {

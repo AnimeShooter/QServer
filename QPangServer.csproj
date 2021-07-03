@@ -9,7 +9,6 @@
   <ItemGroup>
     <Folder Include="External\HTTP\" />
     <Folder Include="GameServer\Database\Structs\" />
-    <Folder Include="GameServer\Qpang\Room\tnl\" />
   </ItemGroup>
 
   <ItemGroup>

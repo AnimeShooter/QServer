@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Qserver.GameServer.Qpang.Room.GameMode.Modes;
 
-namespace Qserver.GameServer.Qpang.Room.GameMode
+namespace Qserver.GameServer.Qpang
 {
     public class GameModeManager
     {

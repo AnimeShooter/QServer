@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Qserver.GameServer.Qpang.Room.Session.GameItem.Items
+namespace Qserver.GameServer.Qpang
 {
     public class AmmoClip : GameItem
     {

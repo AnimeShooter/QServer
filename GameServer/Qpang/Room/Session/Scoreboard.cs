@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Qserver.GameServer.Qpang.Room.Session
+namespace Qserver.GameServer.Qpang
 {
     public class Scoreboard
     {
-        private Room _room
+        private Room _room;
     }
 }

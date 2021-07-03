@@ -1,13 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Qserver.GameServer.Qpang.Room.GameMode;
-using Qserver.GameServer.Qpang.Room.GameMode.Modes;
-using Qserver.GameServer.Qpang.Room.Session.GameItem;
-using Qserver.GameServer.Qpang.Room.Session.Player;
-using Qserver.GameServer.Qpang.Room.Session.Player.Skill;
 
-namespace Qserver.GameServer.Qpang.Room.Session
+namespace Qserver.GameServer.Qpang
 {
     public class RoomSession
     {
@@ -27,7 +22,7 @@ namespace Qserver.GameServer.Qpang.Room.Session
         private DateTime _essenceDropTime;
         private bool _isEssenceReset;
 
-        private GameMode.GameMode gameMode;
+        private GameMode gameMode;
         private GameItemManager _itemManager;
         private RoomSkillManager _skillManager;
 
@@ -38,7 +33,7 @@ namespace Qserver.GameServer.Qpang.Room.Session
         private List<RoomSessionPlayer> _leavers;
 
         private RoomSessionPlayer _essenceHolder;
-        private Spawn essencePosition = { 0, 0, 0 };
+        private Spawn essencePosition = new Spawn(){ X=0, Y=0, Z=0 };
 
         private RoomSessionPlayer _blueVIP;
         private RoomSessionPlayer _nexBlueVIP;

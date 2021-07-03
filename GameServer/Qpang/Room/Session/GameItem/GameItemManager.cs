@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Qserver.GameServer.Qpang.Room.Session.GameItem.Items;
 
-namespace Qserver.GameServer.Qpang.Room.Session.GameItem
+namespace Qserver.GameServer.Qpang
 {
     public class GameItemManager
     {
@@ -45,16 +44,16 @@ namespace Qserver.GameServer.Qpang.Room.Session.GameItem
 
         public static Dictionary<uint, Spawn> MapBounts = new Dictionary<uint, Spawn>()
         {
-            { 0, Spawn(48, 0, 48) }, // Garden
-            { 1, Spawn(48, 0, 48) }, // Diorama
-            { 2, Spawn(64, 0, 64) }, // Skycastle
-            { 3, Spawn(34, 0, 34) }, // Ossyria
-            { 4, Spawn(62, 0, 18) }, // Dollhouse
-            { 5, Spawn(68, 0, 38) }, // City
-            { 6, Spawn(58, 0, 60) }, // Bunker
-            { 7, Spawn(58, 0, 58) }, // Temple
-            { 8, Spawn(37, 0, 92) }, // Brdige
-            { 9, Spawn(66, 0, 66) } // Castaway
+            { 0, new Spawn(){ X=48, Y=0, Z=48} }, // Garden
+            { 1, new Spawn(){ X=48, Y=0, Z=48} }, // Diorama
+            { 2, new Spawn(){ X=64, Y=0, Z=64} }, // Skycastle
+            { 3, new Spawn(){ X=34, Y=0, Z=34} }, // Ossyria
+            { 4, new Spawn(){ X=62, Y=0, Z=18} }, // Dollhouse
+            { 5, new Spawn(){ X=68, Y=0, Z=38} }, // City
+            { 6, new Spawn(){ X=58, Y=0, Z=60} }, // Bunker
+            { 7, new Spawn(){ X=58, Y=0, Z=58} }, // Temple
+            { 8, new Spawn(){ X=37, Y=0, Z=92} }, // Brdige
+            { 9, new Spawn(){ X=66, Y=0, Z=66} } // Castaway
         };
 
         public void Initialize(RoomSession roomSession)

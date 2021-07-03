@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Qserver.GameServer.Qpang.Spawn
+namespace Qserver.GameServer.Qpang
 {
     public struct Spawn
     {

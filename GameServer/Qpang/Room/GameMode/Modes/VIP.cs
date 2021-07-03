@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Qserver.GameServer.Qpang.Room.GameMode.Modes
+namespace Qserver.GameServer.Qpang
 {
     public class VIP : GameMode
     {

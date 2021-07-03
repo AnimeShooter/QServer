@@ -9,6 +9,8 @@
   <ItemGroup>
     <Folder Include="External\HTTP\" />
     <Folder Include="GameServer\Database\Structs\" />
+    <Folder Include="GameServer\Qpang\Room\tnl\" />
+    <Folder Include="GameServer\Qpang\Room\Session\" />
   </ItemGroup>
 
   <ItemGroup>

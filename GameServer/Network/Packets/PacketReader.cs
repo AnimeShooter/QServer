@@ -12,7 +12,7 @@ namespace Qserver.GameServer.Network.Packets
     {
         public UInt16 Length;
         public byte Encryption;
-        public byte Unk;
+        public byte Checksum;
     }
 
     public struct PayloadHeader
@@ -24,8 +24,6 @@ namespace Qserver.GameServer.Network.Packets
 
     public class PacketReader
     {
-        public static readonly byte[] PublicKey = new byte[] { 0x66, 0x64, 0x24, 0x23, 0x32, 0x3E, 0x34, 0x35, 0x7D, 0x5F, 0x7E, 0x2E, 0x33, 0x38, 0x4C, 0x61, 0x60, 0x27, 0x2B, 0x52, 0x45, 0x2F, 0x25, 0x2D, 0x49, 0x61, 0x3D, 0x7C, 0x39, 0x58, 0x28, 0x3F, 0x00 };
-
         private PacketHeader PacketHeader;
         private PayloadHeader PayloadHeader;
 
@@ -41,9 +39,9 @@ namespace Qserver.GameServer.Network.Packets
         {
             get { return PayloadHeader.Length; }
         }
-        public bool IsEncrypted
+        public byte Encryption
         {
-            get { return PacketHeader.Encryption != 0x00; }
+            get { return PacketHeader.Encryption; }
         }
 
         /// Packet::Header (0)
@@ -52,18 +50,21 @@ namespace Qserver.GameServer.Network.Packets
 
         private BinaryReader _payload;
 
-        public PacketReader(byte[] data, string identifier)
+        public PacketReader(byte[] data, string identifier, byte[] key)
         {
             PacketHeader = new PacketHeader()
             {
                 Length = BitConverter.ToUInt16(data, 0),
                 Encryption = data[2],
-                Unk = data[3]
+                Checksum = data[3]
             };
-            if(IsEncrypted)
+            if(Encryption > 0)
             {
-                BlowFish b = new BlowFish(PublicKey);
-                b.CompatMode = true;
+                BlowFish b = BlowFish.Instance;
+                if (Encryption == 0x05)
+                    b = new BlowFish(key); // 29 A1 D3 56 29 A1 D3 56
+                    //b = new BlowFish(new byte[] { 0x00, 0x00, 0x00, 0x00, 0x29, 0xA1, 0xD3, 0x56 }); // 29 A1 D3 56 29 A1 D3 56
+
                 byte[] encryptedPayload = data.Skip(4).Take(PacketHeader.Length).ToArray();
                 byte[] decryptedPayload = b.Decrypt_ECB(encryptedPayload);
                 _payload = new BinaryReader(new MemoryStream(decryptedPayload));

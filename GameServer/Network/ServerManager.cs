@@ -18,10 +18,11 @@ namespace Qserver.GameServer.Network
         public static AuthSocket ServerSession;
         byte[] buffer = null;
         public byte[] KeyPart;
+        public byte Encryption;
 
         public void OnData()
         {
-            PacketReader pkt = new PacketReader(buffer, Socket.RemoteEndPoint.ToString());
+            PacketReader pkt = new PacketReader(buffer, Socket.RemoteEndPoint.ToString(), KeyPart);
                 if (Enum.IsDefined(typeof(Opcode), pkt.Opcode))
                     Log.Message(LogType.DUMP, $"[] Recieved OpCode: {pkt.Opcode}, len: {pkt.Size}\n");
                 else
@@ -34,22 +35,6 @@ namespace Qserver.GameServer.Network
         {
             try
             {
-                //bool d2 = true;
-                //PacketWriter pw = new PacketWriter(ServerOpcode.D2GS_STARTLOGON);
-                //pw.WriteUInt8(0x00); // no encryption
-                //if (Socket.Connected)
-                //    this.Send(pw);
-
-                //Thread.Sleep(750);
-                //if (Socket.Connected && Socket.Available == 0)
-                //{
-                //    d2 = false;
-                //    pw = new PacketWriter(ServerOpcode.D2GS_STARTLOGON);
-                //    pw.WriteUInt8(0x08); // no encryption i guess
-                //    pw.WriteBytes(new byte[] { 0xFF, 0xFF, 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00 }); // D2R detected
-                //    this.Send(pw);
-                //}
-
                 Log.Message(LogType.MISC, "New Client detected");
                 while (ServerSession.ListenServerSocket)
                 {
@@ -77,7 +62,7 @@ namespace Qserver.GameServer.Network
             if (packet == null)
                 return;
 
-            byte[] buffer = packet.ReadDataToSend();
+            byte[] buffer = packet.ReadDataToSend(KeyPart);
 
             try
             {

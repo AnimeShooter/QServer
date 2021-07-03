@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 using Qserver.GameServer.Singleton;
@@ -41,11 +42,10 @@ namespace Qserver.GameServer.Network.Managers
         public PacketWriter HandshakeResponse(byte[] keyPart)
         {
             PacketWriter pw = new PacketWriter(Opcode.KEY_EXCHANGE_RSP);
-
-            //setCryptoType(BlowfishInstance::CryptoType::PUBLIC);
-            //writeArray < char, 4 > (key);
-            //writeInt(0);
-
+            byte[] clientKey = keyPart.Take(4).ToArray();
+            clientKey[0] -= 7; // client knows to add
+            pw.WriteBytes(clientKey);
+            pw.WriteUInt32(0);
             return pw;
         }
     }

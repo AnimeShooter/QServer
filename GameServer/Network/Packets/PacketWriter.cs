@@ -4,6 +4,9 @@ using System.Text;
 //using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 using Qserver.GameServer.Helpers;
 using Qserver.GameServer;
+using System.Linq;
+using System.Collections.Generic;
+using Qserver.Util;
 
 namespace Qserver.GameServer.Network.Packets
 {
@@ -12,37 +15,68 @@ namespace Qserver.GameServer.Network.Packets
         private static readonly byte[] PublicKey = new byte[] { 0x66, 0x64, 0x24, 0x23, 0x32, 0x3E, 0x34, 0x35, 0x7D, 0x5F, 0x7E, 0x2E, 0x33, 0x38, 0x4C, 0x61, 0x60, 0x27, 0x2B, 0x52, 0x45, 0x2F, 0x25, 0x2D, 0x49, 0x61, 0x3D, 0x7C, 0x39, 0x58, 0x28, 0x3F, 0x00 };
 
         public Opcode Opcode { get; set; }
-        public ushort Size { get; set; }
-        public int Length { get { return (int)BaseStream.Length; } }
+        public ushort RawSize
+        {
+            get { return (ushort)(BaseStream.Length + 8); }
+        }
+        public ushort Size
+        {
+            get { return (ushort)(RawSize - 4); }
+        }
 
+        public byte Encryption;
 
         public PacketWriter() : base(new MemoryStream()) { }
         public PacketWriter(Opcode opcode) : base(new MemoryStream())
         {
             Opcode = opcode;
-            WritePacketHeader();
+            //WritePacketHeader();
         }
 
         protected void WritePacketHeader()
         {
 
-            WriteUInt8((byte)Opcode);
+            //WriteUInt8((byte)Opcode);
         }
 
-        public byte[] ReadDataToSend(bool isAuthPacket = false)
+        public byte[] ReadDataToSend(byte[] key = null)
         {
             // TODO: WriteChecksum();
+            // TODO: Cleanup
 
-            byte[] data = new byte[BaseStream.Length];
+            // Header
+            byte[] header = new byte[4];
+            byte[] rawsizebytes = BitConverter.GetBytes((UInt16)RawSize);
+            header[0] = rawsizebytes[0];
+            header[1] = rawsizebytes[1];
+            header[2] = 0x00;
+            header[3] = 69; // unused hihi
+
+            byte[] payload = new byte[Size];
+
+            // Payload Header
+            byte[] sizebytes = BitConverter.GetBytes((UInt16)Size);
+            byte[] opcodeBytes = BitConverter.GetBytes((UInt16)Opcode);
+            payload[0] = sizebytes[0];
+            payload[1] = sizebytes[1];
+            // 
+            payload[2] = opcodeBytes[0];
+            payload[3] = opcodeBytes[1];
             Seek(0, SeekOrigin.Begin);
 
-            Size = (ushort)(data.Length);
+            for (int i = 4; i < Size; i++)
+                payload[i] = (byte)BaseStream.ReadByte();
 
-            for (int i = 0; i < BaseStream.Length; i++)
-                data[i] = (byte)BaseStream.ReadByte();
+            BlowFish b = BlowFish.Instance;
+            if (key != null && Opcode != Opcode.KEY_EXCHANGE_RSP) // dont use key when first handing out key
+                b = new BlowFish(key);
+            b.CompatMode = true;
 
-
-            return data;
+            var final = new List<byte>();
+            final.AddRange(header);
+            //final.AddRange(b.Encrypt_ECB(payload));
+            final.AddRange(payload);
+            return final.ToArray();
         }
 
         public void Seek(int offset)

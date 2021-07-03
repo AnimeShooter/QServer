@@ -74,8 +74,14 @@ namespace Qserver.GameServer.Network.Packets
 
             var final = new List<byte>();
             final.AddRange(header);
+
+            // encrypted
             //final.AddRange(b.Encrypt_ECB(payload));
+            //final[0] = (byte)final.Count;
+
+            // plaintext
             final.AddRange(payload);
+
             return final.ToArray();
         }
 

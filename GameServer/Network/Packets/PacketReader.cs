@@ -62,8 +62,12 @@ namespace Qserver.GameServer.Network.Packets
             {
                 BlowFish b = BlowFish.Instance;
                 if (Encryption == 0x05)
-                    b = new BlowFish(key); // 29 A1 D3 56 29 A1 D3 56
+                {
+                    b = new BlowFish(key); // xx xx xx xx 29 A1 D3 56
+                    b.CompatMode = true;
                     //b = new BlowFish(new byte[] { 0x00, 0x00, 0x00, 0x00, 0x29, 0xA1, 0xD3, 0x56 }); // 29 A1 D3 56 29 A1 D3 56
+
+                }
 
                 byte[] encryptedPayload = data.Skip(4).Take(PacketHeader.Length).ToArray();
                 byte[] decryptedPayload = b.Decrypt_ECB(encryptedPayload);

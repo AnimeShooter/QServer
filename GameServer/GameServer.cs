@@ -17,7 +17,8 @@ namespace Qserver.GameServer
 
             //Settings.Init();
 
-            ServerManager.ServerSession = new AuthSocket();
+            ServerManager.ServerSession = new ServerSocket();
+            //ServerManager.ServerSession = new ParkSocket();
             if(!ServerManager.ServerSession.Start())
             {
                 Log.Message(LogType.ERROR, "GameServer failed to start");
@@ -29,12 +30,16 @@ namespace Qserver.GameServer
             new Thread(wServer.Start).Start();
 
             // Starting game server
-            ServerManager.ServerSession.StartConnectionThread();
+            ServerManager.ServerSession.StartConnectionThreads();
 #if DEBUG
-            Log.Message(LogType.NORMAL, $"GameServer listening on {Settings.SERVER_IP}:{Settings.SERVER_PORT_PARK}");
+            Log.Message(LogType.NORMAL, $"AuthServer listening on {Settings.SERVER_IP}:{Settings.SERVER_PORT_AUTH}");
+            Log.Message(LogType.NORMAL, $"SquareServer listening on {Settings.SERVER_IP}:{Settings.SERVER_PORT_SQUARE}");
+            Log.Message(LogType.NORMAL, $"ParkServer listening on {Settings.SERVER_IP}:{Settings.SERVER_PORT_PARK}");
             Log.Message(LogType.NORMAL, $"WebSocket  listening on {Settings.SERVER_IP}:{Settings.WS_PORT}\n");
 #else
-            Log.Message(LogType.NORMAL, $"GameServer listening on {Util.Util.GetLocalIPAddress()}:{Settings.SERVER_PORT}");
+            Log.Message(LogType.NORMAL, $"AuthServer listening on {Util.Util.GetLocalIPAddress()}:{Settings.SERVER_PORT_AUTH}");
+            Log.Message(LogType.NORMAL, $"SquareServer listening on {Util.Util.GetLocalIPAddress()}:{Settings.SERVER_PORT_SQUARE}");
+            Log.Message(LogType.NORMAL, $"ParkServer listening on {Util.Util.GetLocalIPAddress()}:{Settings.SERVER_PORT_PARK}");
             Log.Message(LogType.NORMAL, $"WebSocket  listening on {Util.Util.GetLocalIPAddress()}:{Settings.WS_PORT}\n");
 #endif
 

@@ -15,9 +15,7 @@ namespace Qserver.GameServer.Network.Handlers
         public static void HandleHandshake(PacketReader packet, ServerManager manager)
         {
             manager.Encryption = 0x01; // Public
-            manager.KeyPart = new byte[] { 0x07, 0x00, 0x00, 0x00, 0x29, 0xA1, 0xD3, 0x56 };
-            //manager.KeyPart = new byte[] { 0x00, 0x00, 0x00, 0x00, 0x56, 0xD3, 0xA1, 0x29 }; // TODO: make random?
-            //manager.KeyPart = new byte[] { 0x00, 0x00, 0x00, 0x00, 0x29, 0xA1, 0xD3, 0x56 }; // TODO: make random?
+            manager.KeyPart = new byte[] { 0x07, 0x00, 0x00, 0x00, 0x29, 0xA1, 0xD3, 0x56 }; // TODO: randomize
             manager.Send(LoginHandler.Instance.HandshakeResponse(manager.KeyPart));
         }
 
@@ -31,12 +29,13 @@ namespace Qserver.GameServer.Network.Handlers
 
             // TODO: revision
 
-            if (true)
+            if (false)
                 manager.Send(LoginHandler.Instance.InvalidVersion());
 
             // TODO: database check
 
-            LoginHandler.Instance.LoginSuccess(new byte[16], 0x7F000001); // game host local
+            manager.Send(LoginHandler.Instance.LoginSuccess(new byte[16], 0x7F000001)); // game host local
+            //manager.Send(LoginHandler.Instance.LoginSuccess(new byte[16], 0x0100007F)); // game host local
         }
     }
 }

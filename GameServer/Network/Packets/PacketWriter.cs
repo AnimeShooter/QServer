@@ -49,7 +49,7 @@ namespace Qserver.GameServer.Network.Packets
             byte[] rawsizebytes = BitConverter.GetBytes((UInt16)RawSize);
             header[0] = rawsizebytes[0];
             header[1] = rawsizebytes[1];
-            header[2] = 0x00;
+            header[2] = 0x03; // public
             header[3] = 69; // unused hihi
 
             byte[] payload = new byte[Size];
@@ -68,19 +68,23 @@ namespace Qserver.GameServer.Network.Packets
                 payload[i] = (byte)BaseStream.ReadByte();
 
             BlowFish b = BlowFish.Instance;
-            if (key != null && Opcode != Opcode.KEY_EXCHANGE_RSP) // dont use key when first handing out key
-                b = new BlowFish(key);
-            b.CompatMode = true;
+            //if (key != null && Opcode != Opcode.KEY_EXCHANGE_RSP) // dont use key when first handing out key
+            //{
+            //    b = new BlowFish(key);
+            //    b.CompatMode = true;
+            //    header[2] = 0x05; // auth
+            //}
+
 
             var final = new List<byte>();
             final.AddRange(header);
 
             // encrypted
-            //final.AddRange(b.Encrypt_ECB(payload));
-            //final[0] = (byte)final.Count;
+            final.AddRange(b.Encrypt_ECB(payload));
+            final[0] = (byte)final.Count;
 
             // plaintext
-            final.AddRange(payload);
+            //final.AddRange(payload);
 
             return final.ToArray();
         }

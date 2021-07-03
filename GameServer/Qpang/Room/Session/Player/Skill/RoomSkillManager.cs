@@ -4,7 +4,9 @@ using System.Text;
 
 namespace Qserver.GameServer.Qpang.Room.Session.Player.Skill
 {
-    public class PlayerSkillManager
+    public class RoomSkillManager
     {
+        private RoomSession _room;
+        // skills
     }
 }

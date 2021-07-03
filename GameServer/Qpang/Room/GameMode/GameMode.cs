@@ -4,7 +4,6 @@ using System.Text;
 
 namespace Qserver.GameServer.Qpang.Room.GameMode
 {
-    
     public class GameMode
     {
         public enum Mode

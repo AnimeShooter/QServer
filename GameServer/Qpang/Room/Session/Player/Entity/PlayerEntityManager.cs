@@ -12,27 +12,66 @@ namespace Qserver.GameServer.Qpang.Room.Session.Player.Entity
 
         public void Initialize(RoomSessionPlayer player)
         {
-            
+            this._player = player;
         }
 
         public void Shoot(uint entityId)
         {
-
+            _validBullets[_bulletIndex] = new PlayerBulletEntity(entityId);
+            if (_bulletIndex == 19)
+                _bulletIndex = 0;
+            else
+                _bulletIndex++;
         }
 
         public bool IsValidShot(uint enitiyId)
         {
-            return true;
+            for(int i = 0; i < 20; i++)
+            {
+                var entity = _validBullets[i];
+                if (entity.Id == enitiyId)
+                    return true;
+            }
+            return false;
         }
 
         public void AddKill(uint entityId)
         {
+            lock(_player)
+            {
+                if (_player == null)
+                    return;
 
+                for(int i = 0; i < 20; i++)
+                {
+                    var entity = _validBullets[i];
+                    if(entity.Id == entityId)
+                    {
+                        entity.AddKill();
+                        var killCount = entity.KillCount;
+                        if (killCount > _player.HighestMultiKill)
+                            _player.HighestMultiKill = killCount;
+                        return;
+                    }
+                }
+            }
         }
 
         public void Close()
         {
+            lock (_player)
+            {
+                if (_player == null)
+                    return;
 
+                for (int i = 0; i < 20; i++)
+                {
+                    var entity = _validBullets[i];
+                    var killCount = entity.KillCount;
+                    if (killCount > _player.HighestMultiKill)
+                        _player.HighestMultiKill = killCount;
+                }
+            }
         }
     }
 }

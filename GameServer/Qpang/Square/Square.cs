@@ -46,6 +46,12 @@ namespace Qserver.GameServer.Qpang
         {
             get { return this._isClosed; }
         }
+
+        public Square(uint id, string name, byte capacity = 50)
+        {
+            this._lock = new object();
+        }
+
         public bool Add(Player player)
         {
             if (player == null)

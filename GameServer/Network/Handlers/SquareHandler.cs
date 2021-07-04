@@ -62,12 +62,19 @@ namespace Qserver.GameServer.Network.Handlers
 
             if (isInSquare)
             {
-                player.SquarePlayer.Square.Remove(player.PlayerId)
-                // TODO
+                player.SquarePlayer.Square.Remove(player.PlayerId);
+                player.LeaveSquare();
+
+                var square = Game.Instance.SquareManager.Get(squareId);
+                if (square == null)
+                    return;
+
+                square.Add(player);
             }
             else
             {
-                // TODO
+                var square = Game.Instance.SquareManager.GetAvailableSquare();
+                square.Add(player);
             }
 
         }

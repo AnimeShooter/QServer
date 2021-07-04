@@ -192,6 +192,10 @@ namespace Qserver.GameServer.Qpang
             }
         }
 
+        public void LeaveSquare()
+        {
+            this._squarePlayer = null;
+        }
         public void Close()
         {
             lock(this._lock)

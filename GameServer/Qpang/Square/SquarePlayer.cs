@@ -15,6 +15,7 @@ namespace Qserver.GameServer.Qpang
         private uint _state;
         private byte _stateValue;
         private float[] _position;
+
         public Player Player
         {
             get { return this._player; }
@@ -23,7 +24,6 @@ namespace Qserver.GameServer.Qpang
         {
             get { return this._square; }
         }
-
         public uint State
         {
             get { return this._state; }

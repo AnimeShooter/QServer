@@ -17,7 +17,15 @@ namespace Qserver.GameServer.Qpang
 
         public Square Create(string name)
         {
+            uint id = GetAvailableSquareId();
+            var square = new Square(id, name);
 
+            lock(this._lock)
+            {
+                this._squares.Add(id, square);
+            }
+
+            return square;
         }
 
         public Square Get(uint id)
@@ -81,14 +89,16 @@ namespace Qserver.GameServer.Qpang
         public uint GetAvailableSquareId()
         {
             uint id = 1;
-            
-            //lock(this._lock)
-            //{
-            //    while(true)
-            //    {
 
-            //    }
-            //}
+            lock (this._lock)
+            {
+                foreach(var s in this._squares)
+                {
+                    if (s.Key > id)
+                        id = s.Key;
+                }
+            }
+            id++;
 
             return id;
         }

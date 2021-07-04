@@ -39,5 +39,10 @@ namespace Qserver.GameServer.Qpang
         {
 
         }
+
+        public void Close()
+        {
+
+        }
     }
 }

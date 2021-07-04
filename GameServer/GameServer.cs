@@ -12,6 +12,11 @@ namespace Qserver.GameServer
 {
     public static class GameServer
     {
+        // ### Patch Client ###
+        // 040114A: push 0x90000000 -> 0x100800000 [68 00 00 08 10]
+        // 042DBC9: jmp [EB 14 90 90 90 90] // removes anoying hook
+        //
+        //
         public static void Start()
         {
             Log.Message(LogType.INIT, ">>        Starting GameServer      <<\n\n" +

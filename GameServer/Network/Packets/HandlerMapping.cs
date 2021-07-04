@@ -48,16 +48,18 @@ namespace Qserver.GameServer.Packets
             //add(897, new UseCraneEvent());
 
             // Square
-            PacketManager.DefineOpcodeHandler(Opcode.SQUARE_LOGIN, SquareHandler.HandleSquareLogin); // connect request
-            PacketManager.DefineOpcodeHandler(Opcode.SQUARE_JOIN_PARK, SquareHandler.HandleSquareJoinPark); // aka JoinSquare
-            //add(6537, new JoinSquare());
+            PacketManager.DefineOpcodeHandler(Opcode.SQUARE_LOGIN, SquareHandler.HandleConnectRequest); // connect request
             //add(6506, new RequestPlayers());
             //add(6510, new UpdatePosition());
             //add(6514, new LeftInventory());
             //add(6526, new ChatRequest());
             //add(6530, new ReloadSquareEvent());
+            PacketManager.DefineOpcodeHandler(Opcode.SQUARE_JOIN_PARK, SquareHandler.HandleSquareLogin); // aka JoinSquare
+            //add(6537, new JoinSquare());
             //add(6544, new UpdateStateEvent());
             //add(6557, new EmoteEvent());
+
+
         }
     }
 }

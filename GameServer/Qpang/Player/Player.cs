@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Qserver.GameServer.Network;
+using Qserver.GameServer.Network.Packets;
+using Qserver.GameServer.Network.Managers;
 
 namespace Qserver.GameServer.Qpang
 {
@@ -38,10 +41,13 @@ namespace Qserver.GameServer.Qpang
         private RoomPlayer _roomPlayer;
         //private _squareConn;
 
-        // _squarePlayer
+        private SquareServer _squareConnection;
+        private LobbyServer _lobbyConnection;
         // _roomPlayer
 
         private object _lock;
+        private object _lobbyLock;
+        private object _squareLock;
 
         public InventoryManager InventoryManager
         {
@@ -129,14 +135,18 @@ namespace Qserver.GameServer.Qpang
         public SquarePlayer SquarePlayer
         {
             get { return this._squarePlayer; }
+            set { this._squarePlayer = value; }
         }
         public RoomPlayer RoomPlayer
         {
             get { return this._roomPlayer; }
+            set { this._roomPlayer = value; }
         }
         public Player(uint playerId)
         {
             this._lock = new object();
+            this._lobbyLock = new object();
+            this._squareLock = new object();
             this._playerId = playerId;
             this._loginTime = DateTime.UtcNow;
 
@@ -152,6 +162,75 @@ namespace Qserver.GameServer.Qpang
         
         }
 
+        public void Broadcast(string message)
+        {
+            // TODO
+        }
+        public void EnterSquare(SquarePlayer squarePlayer)
+        {
+            if (squarePlayer == null)
+                return;
+
+            this._squarePlayer = squarePlayer;
+            SetOnlineStatus(true);
+            SendSquare(Network.SquareManager.Instance.JoinSquareSuccess(squarePlayer));
+        }
+
+        public void SendSquare(PacketWriter packet)
+        {
+            lock(this._squareLock)
+            {
+                this._squareConnection.Send(packet);
+            }
+        }
+
+        public void SendLobby(PacketWriter packet)
+        {
+            lock (this._lobbyLock)
+            {
+                this._lobbyConnection.Send(packet);
+            }
+        }
+
+        public void Close()
+        {
+            lock(this._lock)
+            {
+                if (this._isClosed)
+                    return;
+
+                this._isOnline = false;
+                this._isClosed = true;
+
+                if (this._lobbyConnection != null)
+                    this._lobbyConnection.CloseSocket();
+
+                if (this._squareConnection != null)
+                    this._squareConnection.CloseSocket();
+            }
+
+            SetOnlineStatus(false);
+
+            this._inventoryManager.Close();
+            this._equipmentManager.Close();
+            this._friendManager.Close();
+
+            Update();
+        }
+
+        public void Whisper(string name, string message)
+        {
+            // TODO
+            //SendLobby(LobbyManager.Instance.SendWhisper(name, message));
+        }
+        public void SetOnlineStatus(bool status)
+        {
+            this._isOnline = status;
+            if (status)
+                this._friendManager.AppearOnline();
+            else
+                this._friendManager.AppearOffline();
+        }
         public void Update()
         {
             // TODO: _character, _don, _cash, _coins, _level, _prestige, _experience, _playerId

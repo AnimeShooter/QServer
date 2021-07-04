@@ -32,13 +32,23 @@ namespace Qserver.GameServer.Network.Handlers
 
         public static void HandleConnectRequest(PacketReader packet, ConnServer manager)
         {
+            uint playerId = packet.ReadUInt32();
+            string nickname = packet.ReadWString(16);
+
+            Player player = Game.Instance.GetPlayer(playerId);
+            if (player == null)
+                return;
+
+            // squares
+            List<Square> squares = new List<Square>();
+            manager.Send(SquareManager.Instance.SquareList(squares));
         }
 
         public static void HandleEmoteEevent(PacketReader packet, ConnServer manager)
         {
         }
 
-        public static void HandleSquareLogin(PacketReader packet, ConnServer manager)
+        public static void HandleSquareLogin(PacketReader packet, ConnServer manager) // JoinSquare
         {
             uint playerId = packet.ReadUInt32();
             uint squareId = packet.ReadUInt32();
@@ -49,8 +59,10 @@ namespace Qserver.GameServer.Network.Handlers
                 return;
 
             bool isInSquare = player.SquarePlayer != null;
+
             if (isInSquare)
             {
+                player.SquarePlayer.Square.Remove(player.PlayerId)
                 // TODO
             }
             else

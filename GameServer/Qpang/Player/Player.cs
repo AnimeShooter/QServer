@@ -43,6 +43,30 @@ namespace Qserver.GameServer.Qpang
 
         private object _lock;
 
+        public InventoryManager InventoryManager
+        {
+            get { return this._inventoryManager; }
+        }
+        public EquipmentManager EquipmentManager
+        {
+            get { return this._equipmentManager; }
+        }
+        public FriendManager FriendManager
+        {
+            get { return this._friendManager; }
+        }
+        public MemoManager MemoManager
+        {
+            get { return this._memoManager; }
+        }
+        public StatsManager StatsManager
+        {
+            get { return this._statsManager; }
+        }
+        public AchievementContainer AchievementContainer
+        {
+            get { return this._achievementContainer; }
+        }
         public uint PlayerId
         {
             get { return this._playerId; }
@@ -54,6 +78,10 @@ namespace Qserver.GameServer.Qpang
         public string Name
         {
             get { return this._name; }
+        }
+        public uint Rank
+        {
+            get { return this._rank; }
         }
         public uint Experience
         {

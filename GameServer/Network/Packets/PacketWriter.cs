@@ -159,6 +159,18 @@ namespace Qserver.GameServer.Network.Packets
             base.Write((byte)0);    // String null terminated
         }
 
+        public void WriteWString(string data, int max)
+        {
+            byte[] sBytes = Encoding.ASCII.GetBytes(data);
+            for(int i = 0; i < max/2 && i < data.Length; i++)
+            {
+                this.WriteUInt8(sBytes[i]);
+                base.Write((byte)0);
+            }
+            base.Write((byte)0);    // String null terminated
+            base.Write((byte)0);    // String null terminated
+        }
+
         public void WriteBytes(byte[] data)
         {
             base.Write(data);

@@ -26,7 +26,8 @@ namespace Qserver.GameServer.Qpang
         {
             this._lock = new object();
             this._playerId = playerId;
-
+            this._achievements = new List<uint>();
+            this._recentAchievements = new List<uint>();
             // TODO: database
         }
 

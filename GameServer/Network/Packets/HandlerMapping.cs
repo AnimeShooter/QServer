@@ -30,8 +30,8 @@ namespace Qserver.GameServer.Packets
             //add(742, new OpenGift());
             //add(745, new RequestGifts());
             //add(758, new RequestGameRoomsEvent());
-            //add(762, new RequestChannelList());
-            //add(766, new RequestChannelHost());
+            PacketManager.DefineOpcodeHandler(Opcode.LOBBY_CHANNELS, ParkHandler.HandleChannelList);
+            PacketManager.DefineOpcodeHandler(Opcode.LOBBY_CHANNEL_CONNECT, ParkHandler.HandleChannelHost); //add(766, new RequestChannelHost());
             //add(769, new RequestGameSettingsEvent());
             //add(780, new RequestInventory());
             //add(791, new RequestPlayerRanking());

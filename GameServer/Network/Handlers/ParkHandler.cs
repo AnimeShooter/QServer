@@ -32,5 +32,27 @@ namespace Qserver.GameServer.Network.Handlers
             manager.Send(ParkManager.Instance.Authenticated(player));
         }
 
+        #region Channel
+        public static void HandleChannelList(PacketReader packet, ConnServer manager)
+        {
+            var list = new List<Channel>();
+            list.Add(new Channel()
+            {
+                CurrPlayers = 59,
+                MaxLevel = 99,
+                MinLevel = 0,
+                MaxPlayers = 120,
+                Name = "Test",
+                Id = 1
+            });
+            manager.Send(ParkManager.Instance.ChannelList(list));
+        }
+        public static void HandleChannelHost(PacketReader packet, ConnServer manager)
+        {
+            uint channelId = packet.ReadUInt32();
+            manager.Send(ParkManager.Instance.ChannelHost(channelId));
+        }
+        #endregion Channel
+
     }
 }

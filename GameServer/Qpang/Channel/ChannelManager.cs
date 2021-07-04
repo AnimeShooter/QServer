@@ -8,7 +8,7 @@ namespace Qserver.GameServer.Qpang
 {
     public struct Channel
     {
-        public uint Id;
+        public ushort Id;
         public string Name;
         public byte MinLevel;
         public byte MaxLevel;
@@ -21,6 +21,7 @@ namespace Qserver.GameServer.Qpang
         private ChannelsRepository _channelsRepository;
         private Dictionary<uint, Channel> _channels;
 
+        
         public ChannelManager()
         {
             this._channelsRepository = new ChannelsRepository(DatabaseManager.MySqlFactory);

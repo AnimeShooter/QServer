@@ -61,7 +61,7 @@ namespace Qserver.GameServer.Network.Packets
             if(Encryption > 0)
             {
                 BlowFish b = BlowFish.Instance;
-                if (Encryption == 0x05)
+                if (Encryption >= 0x05)
                 {
                     b = new BlowFish(key); // xx xx xx xx 29 A1 D3 56
                     b.CompatMode = true;

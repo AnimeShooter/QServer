@@ -2,13 +2,20 @@
 using System.Threading;
 using Qserver.GameServer;
 using Qserver.Util;
+using Qserver.GameServer.Qpang;
+using Qserver.GameServer.Database.Repositories;
+using Qserver.GameServer.Database;
 
 namespace Qserver
 {
     class Program
     {
         static void Main(string[] args)
-        { 
+        {
+            CraneRepository crane = new CraneRepository(DatabaseManager.MySqlFactory);
+            //var items = crane.GetCraneItems().Result;
+
+
             LaunchServer();
             while (true)
             {

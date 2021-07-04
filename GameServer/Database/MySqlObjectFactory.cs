@@ -39,20 +39,20 @@ namespace Qserver.GameServer.Database
 			return new MySqlParameter(parameterName, value);
 		}
 
-        DbConnection IMySqlObjectFactory.GetConnection()
-        {
-            throw new NotImplementedException();
-        }
+        //DbConnection IMySqlObjectFactory.GetConnection()
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-        DbCommand IMySqlObjectFactory.GetCommand()
-        {
-            throw new NotImplementedException();
-        }
+        //DbCommand IMySqlObjectFactory.GetCommand()
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-        DbCommand IMySqlObjectFactory.GetCommand(string sql)
-        {
-            throw new NotImplementedException();
-        }
+        //DbCommand IMySqlObjectFactory.GetCommand(string sql)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         //public DbCommand GetCommand(string sql, DbConnection connection)
         //{

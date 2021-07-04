@@ -4,7 +4,13 @@ using System.Text;
 
 namespace Qserver.GameServer.Qpang
 {
-    class Memo
+    public struct Memo
     {
+        public ulong Id;
+        public uint SenderId;
+        public string Nickname;
+        public string Message;
+        public bool IsOpened;
+        public DateTime Created;
     }
 }

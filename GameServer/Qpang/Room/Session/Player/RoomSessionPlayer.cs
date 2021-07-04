@@ -59,6 +59,11 @@ namespace Qserver.GameServer.Qpang
             set { this._highestMultiKill = value; }
         }
 
+        public Player Player
+        {
+            get { return this._conn.Player; }
+        }
+
         public RoomSessionPlayer(GameConnection conn, RoomSession roomSession, byte team)
         {
             this._conn = conn;

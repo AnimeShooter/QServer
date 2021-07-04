@@ -74,7 +74,7 @@ namespace Qserver.GameServer.Network.Packets
                 _payload = new BinaryReader(new MemoryStream(decryptedPayload));
             }
             else
-                _payload = new BinaryReader(new MemoryStream(this.ReadBytes(PacketHeader.Length)));
+                _payload = new BinaryReader(new MemoryStream(data.Skip(4).Take(PacketHeader.Length).ToArray()));
 
             PayloadHeader = new PayloadHeader()
             {

@@ -7,8 +7,8 @@ namespace Qserver.GameServer.Qpang
     public struct CraneItem
     {
         public int id { get; set; }
-        public ulong item_id { get; set; }
-        public uint item_type { get; set; }
+        public uint item_id { get; set; }
+        public byte item_type { get; set; }
         public ushort use_up { get; set; }
         public ushort period { get; set; }
         public bool active { get; set; }

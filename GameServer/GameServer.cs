@@ -6,6 +6,7 @@ using Qserver.GameServer.Network;
 using Qserver.GameServer.Packets;
 using System.Threading;
 using Qserver.External.Websocket;
+using Qserver.GameServer.Qpang;
 
 namespace Qserver.GameServer
 {
@@ -26,22 +27,20 @@ namespace Qserver.GameServer
                                       "                 Deluze &   	        \n" +
                                       "                  \\ / Ferib 	    \n" +
                                       "                   v     		    \n");
-            //Settings.Init();
 
-            ServerManager.ServerSession = new ServerSocket();
-            //ServerManager.ServerSession = new ParkSocket();
-            if(!ServerManager.ServerSession.Start())
-            {
-                Log.Message(LogType.ERROR, "GameServer failed to start");
-                return;
-            }
+            // Auth Server
+            ServerManager.AuthSession = new AuthServer();
+            ServerManager.AuthSession.Server.Start();
+            ServerManager.AuthSession.Server.StartConnectionThreads();
+
+            // Init game server
+            Game game = new Game();
+            
 
             // Starting websocket
             NetServer wServer = new NetServer();
             new Thread(wServer.Start).Start();
 
-            // Starting game server
-            ServerManager.ServerSession.StartConnectionThreads();
 #if DEBUG
             Log.Message(LogType.NORMAL, $"AuthServer listening on {Settings.SERVER_IP}:{Settings.SERVER_PORT_AUTH}");
             Log.Message(LogType.NORMAL, $"SquareServer listening on {Settings.SERVER_IP}:{Settings.SERVER_PORT_SQUARE}");

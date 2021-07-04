@@ -30,9 +30,16 @@ namespace Qserver.GameServer.Network.Packets
         public PacketWriter(Opcode opcode) : base(new MemoryStream())
         {
             Opcode = opcode;
+            Encryption = 0x03; // public
             //WritePacketHeader();
         }
 
+        public PacketWriter(Opcode opcode, byte encryption) : base(new MemoryStream())
+        {
+            Opcode = opcode;
+            Encryption = encryption; // 0x05 for ServerPacket
+            //WritePacketHeader();
+        }
         protected void WritePacketHeader()
         {
 
@@ -49,7 +56,7 @@ namespace Qserver.GameServer.Network.Packets
             byte[] rawsizebytes = BitConverter.GetBytes((UInt16)RawSize);
             header[0] = rawsizebytes[0];
             header[1] = rawsizebytes[1];
-            header[2] = 0x03; // public
+            header[2] = Encryption; // encryption
             header[3] = 69; // unused hihi
 
             byte[] payload = new byte[Size];
@@ -68,12 +75,12 @@ namespace Qserver.GameServer.Network.Packets
                 payload[i] = (byte)BaseStream.ReadByte();
 
             BlowFish b = BlowFish.Instance;
-            //if (key != null && Opcode != Opcode.KEY_EXCHANGE_RSP) // dont use key when first handing out key
-            //{
-            //    b = new BlowFish(key);
-            //    b.CompatMode = true;
-            //    header[2] = 0x05; // auth
-            //}
+            if (Encryption == 0x05 && key != null && Opcode != Opcode.KEY_EXCHANGE_RSP) // dont use key when first handing out key
+            {
+                b = new BlowFish(key);
+                b.CompatMode = true;
+                //header[2] = 0x05; // auth
+            }
 
 
             var final = new List<byte>();

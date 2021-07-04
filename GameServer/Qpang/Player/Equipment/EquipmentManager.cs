@@ -20,7 +20,6 @@ namespace Qserver.GameServer.Qpang
         }
 
 
-
         public EquipmentManager(Player player)
         {
             this._player = player;
@@ -31,6 +30,7 @@ namespace Qserver.GameServer.Qpang
 
         }
 
+       
         public ulong[] GetEquipmentByCharacter(ushort characterId)
         {
             lock(this._lock)
@@ -42,9 +42,8 @@ namespace Qserver.GameServer.Qpang
 
         public void Save()
         {
-            // TODO database
+            // TODO: database
         }
-
         public void Close()
         {
             Save();

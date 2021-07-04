@@ -20,7 +20,7 @@ namespace Qserver.GameServer.Database.Repositories
 		{
 			Task<IEnumerable<Level>> items = null;
 			await _sqlObjectFactory.GetConnection().UsingAsync(connection => 
-				items = connection.QueryAsync<Level>("SELECT id, item_id, use_up, period, active, created_at, updated_at FROM crane_items WHERE active = 1"));
+				items = connection.QueryAsync<Level>("SELECT Name, Lvl, MinExperience, DonReward, CashReward, CoinReward FROM levels"));
 			return items.Result.ToList();
 		}
 

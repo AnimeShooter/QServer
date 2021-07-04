@@ -11,14 +11,14 @@ namespace Qserver.GameServer.Packets
     public static class PacketManager
     {
         public static Dictionary<Opcode, HandlePacket> OpcodeHandlers = new Dictionary<Opcode, HandlePacket>();
-        public delegate void HandlePacket(PacketReader packet, ServerManager server);
+        public delegate void HandlePacket(PacketReader packet, ConnServer server);
 
         public static void DefineOpcodeHandler(Opcode opcode, HandlePacket handler)
         {
             OpcodeHandlers[opcode] = handler;
         }
 
-        public static bool InvokeHandler(PacketReader reader, ServerManager manager, Opcode opcode)
+        public static bool InvokeHandler(PacketReader reader, ConnServer manager, Opcode opcode)
         {
             if (OpcodeHandlers.ContainsKey(opcode))
             {

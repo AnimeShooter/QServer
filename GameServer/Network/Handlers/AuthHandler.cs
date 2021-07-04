@@ -12,14 +12,14 @@ namespace Qserver.GameServer.Network.Handlers
     public class AuthHandler
     {
         
-        public static void HandleHandshake(PacketReader packet, ServerManager manager)
+        public static void HandleHandshake(PacketReader packet, ConnServer manager)
         {
             manager.Encryption = 0x01; // Public
             manager.KeyPart = new byte[] { 0x07, 0x00, 0x00, 0x00, 0x29, 0xA1, 0xD3, 0x56 }; // TODO: randomize
-            manager.Send(LoginHandler.Instance.HandshakeResponse(manager.KeyPart));
+            manager.Send(AuthManager.Instance.HandshakeResponse(manager.KeyPart));
         }
 
-        public static void HandleLoginRequest(PacketReader packet, ServerManager manager)
+        public static void HandleLoginRequest(PacketReader packet, ConnServer manager)
         {
             packet.ReadBytes(16); // unk
             byte[] wUsername = packet.ReadBytes(20); // wchar convert!
@@ -29,13 +29,16 @@ namespace Qserver.GameServer.Network.Handlers
 
             // TODO: revision
 
-            if (false)
-                manager.Send(LoginHandler.Instance.InvalidVersion());
+            //if (true)
+            //{
+            //    manager.Send(LoginHandler.Instance.InvalidUsername());
+            //    return;
+            //}
+                
 
             // TODO: database check
 
-            manager.Send(LoginHandler.Instance.LoginSuccess(new byte[16], 0x7F000001)); // game host local
-            //manager.Send(LoginHandler.Instance.LoginSuccess(new byte[16], 0x0100007F)); // game host local
+            manager.Send(AuthManager.Instance.LoginSuccess(new byte[16], 0x0100007F)); // game host local
         }
     }
 }

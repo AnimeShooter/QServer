@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Qserver.GameServer.Qpang
 {
-    class Leaderboard
+    public class Leaderboard
     {
     }
 }

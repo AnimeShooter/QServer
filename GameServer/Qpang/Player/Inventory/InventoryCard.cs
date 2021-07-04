@@ -6,7 +6,7 @@ namespace Qserver.GameServer.Qpang
 {
     public struct InventoryCard
     {
-        public uint Id;
+        public ulong Id;
         public uint PlayerOwnedId;
         public uint ItemId;
         public byte Type;

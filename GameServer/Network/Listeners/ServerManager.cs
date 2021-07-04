@@ -13,131 +13,135 @@ namespace Qserver.GameServer.Network
 {
     public class ServerManager
     {
-        public ulong Id;
-        public Socket Socket;
-        public Socket ParkSocket;
-        public Socket SquareSocket;
-        public static ServerSocket ServerSession;
-        byte[] buffer = null;
-        public byte[] KeyPart;
-        public byte Encryption;
+        //public ulong Id;
+        //public Socket Socket;
+        //public Socket ParkSocket;
+        //public Socket SquareSocket;
+        //public static QpangServer ServerSession;
+        public static AuthServer AuthSession;
+        //public static ParkServer ParkSession;
+        //public static SquareManager SquareSession;
+        //byte[] buffer = null;
+        //public byte[] KeyPart;
+        //public byte Encryption;
 
-        public void OnData()
-        {
-            PacketReader pkt = new PacketReader(buffer, Socket.RemoteEndPoint.ToString(), KeyPart);
-            if (Enum.IsDefined(typeof(Opcode), pkt.Opcode))
-                Log.Message(LogType.DUMP, $"[] Recieved OpCode: {pkt.Opcode}, len: {pkt.Size}\n");
-            else
-                Log.Message(LogType.DUMP, $"[] Unknown OpCode: {pkt.Opcode}, len: {pkt.Size}\n");
+        //public void OnData()
+        //{
+        //    PacketReader pkt = new PacketReader(buffer, "test", KeyPart);
+        //    if (Enum.IsDefined(typeof(Opcode), pkt.Opcode))
+        //        Log.Message(LogType.DUMP, $"[] Recieved OpCode: {pkt.Opcode}, len: {pkt.Size}\n");
+        //    else
+        //        Log.Message(LogType.DUMP, $"[] Unknown OpCode: {pkt.Opcode}, len: {pkt.Size}\n");
 
-            PacketManager.InvokeHandler(pkt, this, pkt.Opcode);
-        }
+        //    PacketManager.InvokeHandler(pkt, this, pkt.Opcode);
+        //}
 
-        public void RecieveAuth()
-        {
-            try
-            {
-                Log.Message(LogType.MISC, "New Client Login Detected");
-                while (ServerSession.ListenServerSocket)
-                {
-                    Thread.Sleep(1);
-                    if (Socket.Connected && Socket.Available > 0)
-                    {
-                        buffer = new byte[Socket.Available];
-                        Socket.Receive(buffer, buffer.Length, SocketFlags.None);
-                        OnData();
-                    }
-                }
 
-                CloseSocket();
-            }
-            catch (Exception e)
-            {
-                // Shutup & be gone!
-                CloseSocket();
-            }
-        }
+        //public void RecieveAuth()
+        //{
+        //    try
+        //    {
+        //        Log.Message(LogType.MISC, "New Client Login Detected");
+        //        while (ServerSession.ListenServerSocket)
+        //        {
+        //            Thread.Sleep(1);
+        //            if (Socket.Connected && Socket.Available > 0)
+        //            {
+        //                buffer = new byte[Socket.Available];
+        //                Socket.Receive(buffer, buffer.Length, SocketFlags.None);
+        //                OnData();
+        //            }
+        //        }
 
-        // TODO: add scaling?
-        public void RecievePark()
-        {
-            try
-            {
-                Log.Message(LogType.MISC, "New Client Park Detected");
-                while (ServerSession.ListenServerSocket)
-                {
-                    Thread.Sleep(1);
-                    if (ParkSocket.Connected && ParkSocket.Available > 0)
-                    {
-                        buffer = new byte[ParkSocket.Available];
-                        ParkSocket.Receive(buffer, buffer.Length, SocketFlags.None);
-                        OnData();
-                    }
-                }
-                CloseSocket();
-            }
-            catch (Exception e)
-            {
-                // Shutup & be gone!
-                CloseSocket();
-            }
-        }
+        //        CloseSocket();
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        // Shutup & be gone!
+        //        CloseSocket();
+        //    }
+        //}
 
-        public void RecieveSquare()
-        {
-            try
-            {
-                Log.Message(LogType.MISC, "New Client Park Detected");
-                while (ServerSession.ListenServerSocket)
-                {
-                    Thread.Sleep(1);
-                    if (SquareSocket.Connected && SquareSocket.Available > 0)
-                    {
-                        buffer = new byte[SquareSocket.Available];
-                        SquareSocket.Receive(buffer, buffer.Length, SocketFlags.None);
-                        OnData();
-                    }
-                }
-                CloseSocket();
-            }
-            catch (Exception e)
-            {
-                // Shutup & be gone!
-                CloseSocket();
-            }
-        }
+        //// TODO: add scaling?
+        //public void RecievePark()
+        //{
+        //    try
+        //    {
+        //        Log.Message(LogType.MISC, "New Client Park Detected");
+        //        while (ServerSession.ListenServerSocket)
+        //        {
+        //            Thread.Sleep(1);
+        //            if (ParkSocket.Connected && ParkSocket.Available > 0)
+        //            {
+        //                buffer = new byte[ParkSocket.Available];
+        //                ParkSocket.Receive(buffer, buffer.Length, SocketFlags.None);
+        //                OnData();
+        //            }
+        //        }
+        //        CloseSocket();
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        // Shutup & be gone!
+        //        CloseSocket();
+        //    }
+        //}
 
-        public void Send(PacketWriter packet, bool SuppressLog = false, bool isAck = false)
-        {
-            if (packet == null)
-                return;
+        //public void RecieveSquare()
+        //{
+        //    try
+        //    {
+        //        Log.Message(LogType.MISC, "New Client Park Detected");
+        //        while (ServerSession.ListenServerSocket)
+        //        {
+        //            Thread.Sleep(1);
+        //            if (SquareSocket.Connected && SquareSocket.Available > 0)
+        //            {
+        //                buffer = new byte[SquareSocket.Available];
+        //                SquareSocket.Receive(buffer, buffer.Length, SocketFlags.None);
+        //                OnData();
+        //            }
+        //        }
+        //        CloseSocket();
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        // Shutup & be gone!
+        //        CloseSocket();
+        //    }
+        //}
 
-            byte[] buffer = packet.ReadDataToSend(KeyPart);
+        //public void Send(PacketWriter packet, bool SuppressLog = false, bool isAck = false)
+        //{
+        //    if (packet == null)
+        //        return;
 
-            try
-            {
-                Socket.BeginSend(buffer, 0, buffer.Length, SocketFlags.None, new AsyncCallback(FinishSend), Socket);
-                Log.Message(LogType.DUMP, $"Send {packet.Opcode}.\n");
-                string bytes = "";
-                foreach (var b in buffer)
-                    bytes += b.ToString("X2") + " ";
-                Log.Message(LogType.DUMP, bytes + "\n");
-            }
-            catch (Exception ex)
-            {
-                Log.Message(LogType.ERROR, "{0}", ex.Message);
-                CloseSocket();
-            }
-        }
+        //    byte[] buffer = packet.ReadDataToSend(KeyPart);
 
-        public void CloseSocket()
-        {
-            Socket.Close();
-        }
+        //    try
+        //    {
+        //        Socket.BeginSend(buffer, 0, buffer.Length, SocketFlags.None, new AsyncCallback(FinishSend), Socket);
+        //        Log.Message(LogType.DUMP, $"Send {packet.Opcode}.\n");
+        //        string bytes = "";
+        //        foreach (var b in buffer)
+        //            bytes += b.ToString("X2") + " ";
+        //        Log.Message(LogType.DUMP, bytes + "\n");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Log.Message(LogType.ERROR, "{0}", ex.Message);
+        //        CloseSocket();
+        //    }
+        //}
 
-        public void FinishSend(IAsyncResult result)
-        {
-            Socket.EndSend(result);
-        }
+        //public void CloseSocket()
+        //{
+        //    Socket.Close();
+        //}
+
+        //public void FinishSend(IAsyncResult result)
+        //{
+        //    Socket.EndSend(result);
+        //}
     }
 }

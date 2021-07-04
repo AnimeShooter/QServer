@@ -21,7 +21,7 @@ namespace Qserver.GameServer.Qpang
 
 
 
-        public EquipmentManager(Player player, ushort playerId)
+        public EquipmentManager(Player player)
         {
             this._player = player;
             this._unlockedCharacters = new List<ushort>() { 333, 343, 578, 578, 850, 851 };

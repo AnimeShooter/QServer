@@ -17,7 +17,7 @@ namespace Qserver.GameServer.Qpang
         private Dictionary<uint, Friend> _outgoingFriends;
         private Dictionary<uint, Friend> _incomingFriends;
 
-        public FriendManager(Player player, uint playerId)
+        public FriendManager(Player player)
         {
             this._player = player;
 

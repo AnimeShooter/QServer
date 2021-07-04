@@ -9,9 +9,9 @@ namespace Qserver.GameServer.Qpang
         private InventoryManager _inventoryManager;
         private EquipmentManager _equipmentManager;
         private FriendManager _friendManager;
-        private MemoManager _mamoManager;
+        private MemoManager _memoManager;
         private StatsManager _statsManager;
-        private AchievementManager _achievementManager;
+        private AchievementContainer _achievementContainer;
 
         private uint _playerId;
         private uint _userId;
@@ -40,9 +40,26 @@ namespace Qserver.GameServer.Qpang
 
         private object _lock;
 
-        public Player()
+        public uint PlayerId
+        {
+            get { return this._playerId; }
+        }
+        public Player(uint playerId)
         {
             this._lock = new object();
+            this._playerId = playerId;
+            this._loginTime = DateTime.UtcNow;
+
+            // Load player WHERE id = X
+
+            this._inventoryManager = new InventoryManager(this);
+            this._equipmentManager = new EquipmentManager(this);
+            this._friendManager = new FriendManager(this);
+            this._memoManager = new MemoManager(this);
+            this._statsManager = new StatsManager(this);
+            this._achievementContainer = new AchievementContainer(playerId);
+            this._isOnline = true;
+        
         }
     }
 }

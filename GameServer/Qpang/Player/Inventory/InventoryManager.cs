@@ -4,7 +4,13 @@ using System.Text;
 
 namespace Qserver.GameServer.Qpang
 {
-    class InventoryManager
+    public class InventoryManager
     {
+        private Player _player;
+
+        public InventoryManager(Player player)
+        {
+            this._player = player;
+        }
     }
 }

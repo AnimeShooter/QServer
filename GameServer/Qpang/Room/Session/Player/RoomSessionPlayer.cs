@@ -46,19 +46,47 @@ namespace Qserver.GameServer.Qpang
         private ushort _kills;
         private ushort _deaths;
         private ushort _score;
-        private uint _playTime;
+        private TimeSpan _playTime;
         private uint _highestMultiKill;
         private uint _eventItemPickUps;
 
         private GameConnection _conn;
         private RoomSession _roomSession;
-
+        public ushort Streak
+        {
+            get { return this._streak; }
+            set { this._streak = value; }
+        }
+        public ushort Kills
+        {
+            get { return this._kills; }
+            set { this._kills = value; }
+        }
+        public ushort Deaths
+        {
+            get { return this._deaths; }
+            set { this._deaths = value; }
+        }
+        public ushort Score
+        {
+            get { return this._score; }
+            set { this._score = value; }
+        }
+        public TimeSpan PlayTime
+        {
+            get { return this._playTime; }
+            set { this._playTime = value; }
+        }
         public uint HighestMultiKill
         {
             get { return this._highestMultiKill; }
             set { this._highestMultiKill = value; }
         }
-
+        public uint EventItemPickUps
+        {
+            get { return this._eventItemPickUps; }
+            set { this._eventItemPickUps = value; }
+        }
         public Player Player
         {
             get { return this._conn.Player; }
@@ -80,7 +108,7 @@ namespace Qserver.GameServer.Qpang
             this._expRate = 0;
             this._don = 0;
             this._donRate = 0;
-            this._playTime = 0;
+            this._playTime = TimeSpan.FromMinutes(0);
             this._highestStreak = 0;
             this._highestMultiKill = 0;
             this._eventItemPickUps = 0;

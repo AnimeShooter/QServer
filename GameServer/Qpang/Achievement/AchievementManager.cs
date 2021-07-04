@@ -4,7 +4,13 @@ using System.Text;
 
 namespace Qserver.GameServer.Qpang
 {
-    class AchievementManager
+    public class AchievementManager
     {
+        private Player _player;
+
+        public AchievementManager(Player player)
+        {
+            this._player = player;
+        }
     }
 }

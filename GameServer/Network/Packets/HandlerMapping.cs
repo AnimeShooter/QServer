@@ -12,7 +12,7 @@ namespace Qserver.GameServer.Packets
             PacketManager.DefineOpcodeHandler(Opcode.AUTH_LOGIN, AuthHandler.HandleLoginRequest);
 
             // Lobby
-            PacketManager.DefineOpcodeHandler(Opcode.LOBBY_LOGIN, ParkHandler.HandleLobbyLogin);
+            PacketManager.DefineOpcodeHandler(Opcode.LOBBY_LOGIN, LobbyHandler.HandleLobbyLogin);
             //PacketManager.DefineOpcodeHandler(Opcode.LOBBY_EQUIP_ARMOUR, ParkHandler.);
             //PacketManager.DefineOpcodeHandler(Opcode.LOBBY_EQUIP_WEAPON, ParkHandler.);
             //PacketManager.DefineOpcodeHandler(Opcode.LOBBY_EQUIPPED_SKILLS, ParkHandler.);
@@ -30,8 +30,8 @@ namespace Qserver.GameServer.Packets
             //add(742, new OpenGift());
             //add(745, new RequestGifts());
             //add(758, new RequestGameRoomsEvent());
-            PacketManager.DefineOpcodeHandler(Opcode.LOBBY_CHANNELS, ParkHandler.HandleChannelList);
-            PacketManager.DefineOpcodeHandler(Opcode.LOBBY_CHANNEL_CONNECT, ParkHandler.HandleChannelHost); //add(766, new RequestChannelHost());
+            PacketManager.DefineOpcodeHandler(Opcode.LOBBY_CHANNELS, LobbyHandler.HandleChannelList);
+            PacketManager.DefineOpcodeHandler(Opcode.LOBBY_CHANNEL_CONNECT, LobbyHandler.HandleChannelHost); //add(766, new RequestChannelHost());
             //add(769, new RequestGameSettingsEvent());
             //add(780, new RequestInventory());
             //add(791, new RequestPlayerRanking());
@@ -47,7 +47,17 @@ namespace Qserver.GameServer.Packets
             //add(861, new DisableFunctionCardEvent());
             //add(897, new UseCraneEvent());
 
-
+            // Square
+            PacketManager.DefineOpcodeHandler(Opcode.SQUARE_LOGIN, SquareHandler.HandleSquareLogin); // connect request
+            PacketManager.DefineOpcodeHandler(Opcode.SQUARE_JOIN_PARK, SquareHandler.HandleSquareJoinPark); // aka JoinSquare
+            //add(6537, new JoinSquare());
+            //add(6506, new RequestPlayers());
+            //add(6510, new UpdatePosition());
+            //add(6514, new LeftInventory());
+            //add(6526, new ChatRequest());
+            //add(6530, new ReloadSquareEvent());
+            //add(6544, new UpdateStateEvent());
+            //add(6557, new EmoteEvent());
         }
     }
 }

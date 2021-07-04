@@ -28,7 +28,7 @@ namespace Qserver.GameServer.Qpang
 
         private Leaderboard _leaderboard;
 
-        private ParkServer _parkServer; // lobby?
+        private LobbyServer _lobbyServer; // lobby?
         private SquareServer _squareServer;
 
         private object _lock;
@@ -99,9 +99,9 @@ namespace Qserver.GameServer.Qpang
 
             this._players = new Dictionary<uint, Player>();
 
-            this._parkServer = new ParkServer();
-            this._parkServer.Server.Start();
-            this._parkServer.Server.StartConnectionThreads();
+            this._lobbyServer = new LobbyServer();
+            this._lobbyServer.Server.Start();
+            this._lobbyServer.Server.StartConnectionThreads();
 
             this._squareServer = new SquareServer();
             this._squareServer.Server.Start();

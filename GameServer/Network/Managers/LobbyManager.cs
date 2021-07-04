@@ -9,7 +9,7 @@ using Qserver.GameServer.Qpang;
 
 namespace Qserver.GameServer.Network.Managers
 {
-    public class ParkManager : SingletonBase<ParkManager>
+    public class LobbyManager : SingletonBase<LobbyManager>
     {
         #region Account
         public PacketWriter Authenticated(Player player)
@@ -18,8 +18,9 @@ namespace Qserver.GameServer.Network.Managers
             pw.WriteUInt32(player.PlayerId);
             pw.WriteBytes(new byte[42]);
 
-            pw.WriteBytes(new byte[16]); // 16 char name
-            //pw.WriteString(player.na) // 16 char name
+            //pw.WriteWString(player.Name, 16);
+            //pw.WriteBytes(new byte[16]); // 16 char name
+            pw.WriteBytes(new byte[16] { 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x00, 0x00 }); // 16 char name
 
             pw.WriteUInt32(player.StatsManager.PlayTimeInMinutes);
             pw.WriteUInt32(player.Cash);
@@ -148,7 +149,7 @@ namespace Qserver.GameServer.Network.Managers
             {
                 pw.WriteUInt16(channel.Id);
 
-                pw.WriteWString(channel.Name, 30-2);
+                pw.WriteWString(channel.Name, 31);
 
                 pw.WriteUInt8(channel.MinLevel);
                 pw.WriteUInt8(channel.MaxLevel);
@@ -165,11 +166,11 @@ namespace Qserver.GameServer.Network.Managers
             PacketWriter pw = new PacketWriter(Opcode.LOBBY_CHANNEL_CONNECT_RSP, 0x05);
 
             pw.WriteUInt32(id);
-            pw.WriteUInt64(0);
+            pw.WriteUInt64(02);
             pw.WriteUInt32(0x0100007F);
-            pw.WriteUInt32(0);
-            pw.WriteUInt32(0);
-            pw.WriteUInt32(0);
+            pw.WriteUInt32(01);
+            pw.WriteUInt32(04);
+            pw.WriteUInt32(03);
             
             return pw;
         }

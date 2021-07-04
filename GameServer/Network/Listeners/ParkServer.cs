@@ -11,9 +11,9 @@ using Qserver.GameServer.Network;
 
 namespace Qserver.GameServer.Network
 {
-    public class ParkServer : ConnServer
+    public class LobbyServer : ConnServer
     {
-        public ParkServer()
+        public LobbyServer()
         {
             Server = new QpangServer(Settings.SERVER_PORT_PARK);
         }

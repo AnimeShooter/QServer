@@ -17,7 +17,7 @@ namespace Qserver.GameServer.Network.Packets
         public Opcode Opcode { get; set; }
         public ushort RawSize
         {
-            get { return (ushort)(BaseStream.Length + 8); }
+            get { return (ushort)(BaseStream.Length + 12); }
         }
         public ushort Size
         {
@@ -30,20 +30,13 @@ namespace Qserver.GameServer.Network.Packets
         public PacketWriter(Opcode opcode) : base(new MemoryStream())
         {
             Opcode = opcode;
-            Encryption = 0x03; // public
-            //WritePacketHeader();
+            Encryption = 0x03; // public idk
         }
 
         public PacketWriter(Opcode opcode, byte encryption) : base(new MemoryStream())
         {
             Opcode = opcode;
             Encryption = encryption; // 0x05 for ServerPacket
-            //WritePacketHeader();
-        }
-        protected void WritePacketHeader()
-        {
-
-            //WriteUInt8((byte)Opcode);
         }
 
         public byte[] ReadDataToSend(byte[] key = null)
@@ -57,8 +50,8 @@ namespace Qserver.GameServer.Network.Packets
             byte[] rawsizebytes = BitConverter.GetBytes((UInt16)RawSize);
             header[0] = rawsizebytes[0];
             header[1] = rawsizebytes[1];
-            header[2] = 0x00; // Encryption; // encryption
-            header[3] = 69; // unused hihi
+            header[2] = 0x00; // counter?
+            header[3] = 69; // crc ?
 
             byte[] payload = new byte[Size];
 
@@ -70,13 +63,18 @@ namespace Qserver.GameServer.Network.Packets
             // 
             payload[2] = opcodeBytes[0];
             payload[3] = opcodeBytes[1];
+            // unk
+            //payload[4] = opcodeBytes[1];
+            //payload[5] = opcodeBytes[1];
+            //payload[6] = opcodeBytes[1];
+            //payload[7] = opcodeBytes[1];
             Seek(0, SeekOrigin.Begin);
 
-            for (int i = 4; i < Size; i++)
+            for (int i = 8; i < Size; i++)
                 payload[i] = (byte)BaseStream.ReadByte();
 
             BlowFish b = BlowFish.Instance;
-            if (Encryption == 0x05 && key != null && Opcode != Opcode.KEY_EXCHANGE_RSP) // dont use key when first handing out key
+            if (Encryption >= 0x05 && key != null && Opcode != Opcode.KEY_EXCHANGE_RSP) // dont use key when first handing out key
             {
                 b = new BlowFish(key);
                 b.CompatMode = true;
@@ -162,13 +160,16 @@ namespace Qserver.GameServer.Network.Packets
         public void WriteWString(string data, int max)
         {
             byte[] sBytes = Encoding.ASCII.GetBytes(data);
-            for(int i = 0; i < max/2 && i < data.Length; i++)
+            for(int i = 0; i < max; i++)
             {
-                this.WriteUInt8(sBytes[i]);
+                if(i < sBytes.Length)
+                    this.WriteUInt8(sBytes[i]);
+                else
+                    base.Write((byte)0);
                 base.Write((byte)0);
             }
-            base.Write((byte)0);    // String null terminated
-            base.Write((byte)0);    // String null terminated
+            //base.Write((byte)0);    // String null terminated
+            //base.Write((byte)0);    // String null terminated
         }
 
         public void WriteBytes(byte[] data)

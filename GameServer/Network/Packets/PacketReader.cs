@@ -158,6 +158,17 @@ namespace Qserver.GameServer.Network.Packets
             return ReadString(0);
         }
 
+        public new string ReadWString(int len)
+        {
+            byte[] str = ReadBytes(len);
+            string result = "";
+            for(int i = 0; i < len; i+=2)
+            {
+                result += str[i];
+            }
+            return result;
+        }
+
         public new byte[] ReadBytes(int count)
         {
             return _payload.ReadBytes(count);

@@ -10,7 +10,7 @@ using System.Threading;
 
 namespace Qserver.GameServer.Network.Handlers
 {
-    public class ParkHandler
+    public class LobbyHandler
     {
         public static void HandleLobbyLogin(PacketReader packet, ConnServer manager)
         {
@@ -22,14 +22,14 @@ namespace Qserver.GameServer.Network.Handlers
             bool isBanned = false;
             if(isBanned)
             {
-                manager.Send(ParkManager.Instance.Banned());
+                manager.Send(LobbyManager.Instance.Banned());
                 manager.CloseSocket();
                 return;
             }
 
             var player = Game.Instance.CreatePlayer(manager, userId);
 
-            manager.Send(ParkManager.Instance.Authenticated(player));
+            manager.Send(LobbyManager.Instance.Authenticated(player));
         }
 
         #region Channel
@@ -42,15 +42,15 @@ namespace Qserver.GameServer.Network.Handlers
                 MaxLevel = 99,
                 MinLevel = 0,
                 MaxPlayers = 120,
-                Name = "Test",
+                Name = "Kim kAm QuPong?",
                 Id = 1
             });
-            manager.Send(ParkManager.Instance.ChannelList(list));
+            manager.Send(LobbyManager.Instance.ChannelList(list));
         }
         public static void HandleChannelHost(PacketReader packet, ConnServer manager)
         {
             uint channelId = packet.ReadUInt32();
-            manager.Send(ParkManager.Instance.ChannelHost(channelId));
+            manager.Send(LobbyManager.Instance.ChannelHost(channelId));
         }
         #endregion Channel
 

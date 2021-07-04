@@ -97,6 +97,8 @@ namespace Qserver.GameServer.Qpang
         {
             this._lock = new object();
 
+            this._players = new Dictionary<uint, Player>();
+
             this._parkServer = new ParkServer();
             this._parkServer.Server.Start();
             this._parkServer.Server.StartConnectionThreads();

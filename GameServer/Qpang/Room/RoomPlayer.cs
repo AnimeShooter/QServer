@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Qserver.GameServer.Qpang
 {
-    class RoomPlayer
+    public class RoomPlayer
     {
     }
 }

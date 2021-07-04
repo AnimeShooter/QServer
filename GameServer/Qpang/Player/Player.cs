@@ -17,6 +17,8 @@ namespace Qserver.GameServer.Qpang
         private uint _userId;
         private string _name;
         private byte _rank;
+        private uint _experience;
+        private uint _level;
         private byte _prestige;
         private ushort _character;
         private uint _don;
@@ -32,7 +34,8 @@ namespace Qserver.GameServer.Qpang
 
         private uint _currentSquareId;
 
-        //private _lobbyConn; 
+        private SquarePlayer _squarePlayer;
+        private RoomPlayer _roomPlayer;
         //private _squareConn;
 
         // _squarePlayer
@@ -43,6 +46,65 @@ namespace Qserver.GameServer.Qpang
         public uint PlayerId
         {
             get { return this._playerId; }
+        }
+        public uint GetUserId
+        {
+            get { return this._userId; }
+        }
+        public string Name
+        {
+            get { return this._name; }
+        }
+        public uint Experience
+        {
+            get { return this._experience; }
+        }
+        public uint Level
+        {
+            get { return this._level; }
+            set { this._level = value; }
+        }
+        public byte Prestige
+        {
+            get { return this._prestige; }
+        }
+        public ushort Character
+        {
+            get { return this._character; }
+            set { this._character = value; }
+        }
+        public bool Online
+        {
+            get { return this._isOnline; }
+            set { this._isOnline = value; }
+        }
+        public uint Don
+        {
+            get { return this._don; }
+        }
+        public uint Cash
+        {
+            get { return this._cash; }
+        }
+        public uint Coins // NOTE: golden coin = 1_00_00 'coins' ?
+        {
+            get { return this._coins; }
+        }
+        public DateTime LoginTime
+        {
+            get { return this._loginTime; }
+        }
+        public bool Exists
+        {
+            get { return this._exists; }
+        }
+        public SquarePlayer SquarePlayer
+        {
+            get { return this._squarePlayer; }
+        }
+        public RoomPlayer RoomPlayer
+        {
+            get { return this._roomPlayer; }
         }
         public Player(uint playerId)
         {
@@ -60,6 +122,56 @@ namespace Qserver.GameServer.Qpang
             this._achievementContainer = new AchievementContainer(playerId);
             this._isOnline = true;
         
+        }
+
+        public void Update()
+        {
+            // TODO: _character, _don, _cash, _coins, _level, _prestige, _experience, _playerId
+        }
+        public void RemoveDon(uint count)
+        {
+            if (this._don <= count)
+                this._don = 0;
+            else
+                this._don -= count;
+
+            Update();
+        }
+        public void AddDon(uint count)
+        {
+            this._don += count;
+
+            Update();
+        }
+        public void RemoveCash(uint count)
+        {
+            if (this._cash <= count)
+                this._cash = 0;
+            else
+                this._cash -= count;
+
+            Update();
+        }
+        public void AddCash(uint count)
+        {
+            this._cash += count;
+
+            Update();
+        }
+        public void RemoveCoins(uint count)
+        {
+            if (this._coins <= count)
+                this._coins = 0;
+            else
+                this._coins -= count;
+
+            Update();
+        }
+        public void AddCoins(uint count)
+        {
+            this._coins += count;
+
+            Update();
         }
     }
 }

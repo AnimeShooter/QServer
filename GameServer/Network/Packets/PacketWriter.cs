@@ -50,13 +50,14 @@ namespace Qserver.GameServer.Network.Packets
         {
             // TODO: WriteChecksum();
             // TODO: Cleanup
+            // TODO: Fix encryption!
 
             // Header
             byte[] header = new byte[4];
             byte[] rawsizebytes = BitConverter.GetBytes((UInt16)RawSize);
             header[0] = rawsizebytes[0];
             header[1] = rawsizebytes[1];
-            header[2] = Encryption; // encryption
+            header[2] = 0x00; // Encryption; // encryption
             header[3] = 69; // unused hihi
 
             byte[] payload = new byte[Size];
@@ -87,11 +88,11 @@ namespace Qserver.GameServer.Network.Packets
             final.AddRange(header);
 
             // encrypted
-            final.AddRange(b.Encrypt_ECB(payload));
-            final[0] = (byte)final.Count;
+            //final.AddRange(b.Encrypt_ECB(payload));
+            //final[0] = (byte)final.Count;
 
             // plaintext
-            //final.AddRange(payload);
+            final.AddRange(payload);
 
             return final.ToArray();
         }

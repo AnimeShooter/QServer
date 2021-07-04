@@ -20,13 +20,18 @@ namespace Qserver.GameServer.Qpang
         public FriendManager(Player player)
         {
             this._player = player;
-
+            this._lock = new object();
             // TODO: friends database
         }
 
         public void AppearOnline()
         {
             //if(this._player != null)
+
+        }
+
+        public void AppearOffline()
+        {
 
         }
 

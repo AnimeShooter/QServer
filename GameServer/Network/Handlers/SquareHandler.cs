@@ -18,7 +18,7 @@ namespace Qserver.GameServer.Network.Handlers
             ushort len = packet.ReadUInt16();
             string msg = packet.ReadWString(len & 254); // prevent over 255
 
-            Player player = manager.player;
+            Player player = manager.Player;
             if (player == null)
                 return;
 
@@ -39,8 +39,11 @@ namespace Qserver.GameServer.Network.Handlers
             if (player == null)
                 return;
 
+            player.SquareConnection = manager;
+            manager.Player = player;
+
             // squares
-            List<Square> squares = new List<Square>();
+            var squares = Game.Instance.SquareManager.List();
             manager.Send(SquareManager.Instance.SquareList(squares));
         }
 
@@ -53,7 +56,12 @@ namespace Qserver.GameServer.Network.Handlers
             uint playerId = packet.ReadUInt32();
             uint squareId = packet.ReadUInt32();
 
-            Player player = manager.player;
+            // TODO: remove, vulnerabble for account takeover
+
+            Player player = manager.Player;
+
+            //player = Game.Instance.GetPlayer(playerId);
+            //manager.Player = player;
 
             if (player == null)
                 return;

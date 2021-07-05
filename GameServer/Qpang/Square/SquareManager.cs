@@ -13,6 +13,8 @@ namespace Qserver.GameServer.Qpang
         public SquareManager()
         {
             this._lock = new object();
+            this._squares = new Dictionary<uint, Square>();
+            Create("test");
         }
 
         public Square Create(string name)

@@ -51,9 +51,11 @@ namespace Qserver.GameServer.Qpang
         {
             this._lock = new object();
             this._id = id;
+            this._capacity = capacity;
             this._name = name;
             this._state = 8;
             this._isClosed = false;
+            this._players = new Dictionary<uint, SquarePlayer>();
         }
 
         public bool Add(Player player)

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using Qserver.GameServer.Network;
+using Qserver.GameServer.Network.Managers;
 using Qserver.Util;
 
 namespace Qserver.GameServer.Qpang
@@ -109,6 +110,7 @@ namespace Qserver.GameServer.Qpang
 
             this._channelManager = new ChannelManager();
             this._shopManager = new ShopManager();
+            this._squareManager = new SquareManager();
             this._chatManager = new ChatManager();
             this._weaponManager = new WeaponManager();
             this._spawnManager = new SpawnManager();
@@ -150,15 +152,21 @@ namespace Qserver.GameServer.Qpang
         {
             Player player = new Player(playerId);
 
-            //player.
-
-            // TODO
-            conn.player = player;
+            player.LobbyConnection = conn;
+            conn.Player = player;
 
             lock(this._lock)
             {
+                if(this._players.ContainsKey(player.PlayerId))
+                {
+                    this._players[player.PlayerId].SendLobby(LobbyManager.Instance.DuplicateLogin());
+                    this._players[player.PlayerId].Close();
+                }
+                
+                // cache manger
+
                 this._players[player.PlayerId] = player;
-                // TODO nick
+                // this._playersName
             }
 
             return player;

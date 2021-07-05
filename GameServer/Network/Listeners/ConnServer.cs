@@ -17,7 +17,13 @@ namespace Qserver.GameServer.Network
         public QpangServer Server;
         public byte[] KeyPart;
         public byte Encryption;
-        public Player player;
+        private Player _player;
+
+        public Player Player
+        {
+            get { return this._player; }
+            set { this._player = value; }
+        }
 
         public void OnData(byte[] buffer)
         {

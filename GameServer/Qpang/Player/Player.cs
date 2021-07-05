@@ -41,8 +41,8 @@ namespace Qserver.GameServer.Qpang
         private RoomPlayer _roomPlayer;
         //private _squareConn;
 
-        private SquareServer _squareConnection;
-        private LobbyServer _lobbyConnection;
+        private ConnServer _squareConnection;
+        private ConnServer _lobbyConnection;
         // _roomPlayer
 
         private object _lock;
@@ -141,6 +141,16 @@ namespace Qserver.GameServer.Qpang
         {
             get { return this._roomPlayer; }
             set { this._roomPlayer = value; }
+        }
+        public ConnServer SquareConnection
+        {
+            get { return this._squareConnection; }
+            set { this._squareConnection = value; }
+        } 
+        public ConnServer LobbyConnection
+        {
+            get { return this._lobbyConnection; }
+            set { this._lobbyConnection = value; }
         }
         public Player(uint playerId)
         {

@@ -168,7 +168,7 @@ namespace Qserver.GameServer.Network.Packets
                     base.Write((byte)0);
                 base.Write((byte)0);
             }
-            base.Write(new byte[2]);    // String null null terminated
+            //base.Write(new byte[2]);    // String null null terminated
         }
 
         public void WriteBytes(byte[] data)

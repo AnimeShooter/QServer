@@ -54,31 +54,37 @@ namespace Qserver.GameServer.Qpang
             this._state = state;
             this._stateValue = stateValue;
 
-            //this._square.SendPacket(Network.SquareManager.Instance.UpdatePlayerState(this, stateValue));
+            this._square.SendPacket(Network.SquareManager.Instance.UpdatePlayerState(this, this._stateValue));
+        }
+
+        public void SetState(uint state)
+        {
+            this._state = state;
+            this._square.SendPacket(Network.SquareManager.Instance.UpdatePlayerState(this, this._stateValue));
         }
 
         public void ChangeWeapon(uint itemId)
         {
             this._selectedWeapon = itemId;
-            //this._square.SendPacket(Network.SquareManager.Instance.UpdatePlayerEquipment(this));
+            this._square.SendPacket(Network.SquareManager.Instance.UpdatePlayerEquipment(this));
 
         }
 
-        public void Move(float[] position, byte directiom, byte moveType)
+        public void Move(float[] position, byte direction, byte moveType)
         {
             // TODO: add serverside calculation and check (anti TP, anit speedhack)
             this._position = position;
-            //this._square.SendPacket(Network.SquareManager.Instance.MovePlayer(this._player.PlayerId, position, moveType, direction));
+            this._square.SendPacket(Network.SquareManager.Instance.MovePlayer(this._player.PlayerId, position, moveType, direction));
         }
 
         public void Chat(string message)
         {
-            //this._square.SendPacket(Network.SquareManager.Instance.Chat(this._player.Name, message));
+            this._square.SendPacket(Network.SquareManager.Instance.Chat(this._player.Name, message));
         }
 
         public void Emote(uint emoteId)
         {
-            //this._square.SendPacketExcept(Network.SquareManager.Instance.Emote(this._player.PlayerId, this._player.PlayerId));
+            this._square.SendPacketExcept(Network.SquareManager.Instance.Emote(this._player.PlayerId, emoteId), this._player.PlayerId);
         }
 
     }

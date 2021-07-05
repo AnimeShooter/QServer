@@ -149,12 +149,15 @@ namespace Qserver.GameServer.Network.Managers
                 pw.WriteUInt16(channel.Id);
 
                 pw.WriteWString(channel.Name, 30);
+                pw.WriteBytes(new byte[2]); // idk
 
                 pw.WriteUInt8(channel.MinLevel);
                 pw.WriteUInt8(channel.MaxLevel);
                 pw.WriteUInt16(channel.CurrPlayers);
                 pw.WriteUInt16(channel.MaxPlayers);
-                pw.WriteBytes(new byte[52]); // OG 51
+                pw.WriteBytes(new byte[51]); // OG 51
+
+                pw.WriteBytes(new byte[1]); // idk
             }
 
             return pw;
@@ -186,7 +189,7 @@ namespace Qserver.GameServer.Network.Managers
                     // InventoryCard
                     pw.WriteUInt64(card.Id);        // 0 
                     pw.WriteUInt32(card.ItemId);    // 8
-                    pw.WriteBytes(new byte[10]);    // 12
+                    pw.WriteUInt8(10);              // 12
                     pw.WriteUInt8(card.Type);       // 13
                     pw.WriteUInt8(0);               // 14
                     pw.WriteUInt8(card.IsGiftable ? (byte)1 : (byte)0); // 15

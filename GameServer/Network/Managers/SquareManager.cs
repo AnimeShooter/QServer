@@ -147,7 +147,7 @@ namespace Qserver.GameServer.Network
         {
             PacketWriter pw = new PacketWriter((Opcode)6508);
 
-            ushort len = (ushort)squarePlayers.Count;
+            ushort len = 0; // (ushort)squarePlayers.Count;
 
             pw.WriteUInt16(len);
             pw.WriteUInt16(len);
@@ -158,24 +158,28 @@ namespace Qserver.GameServer.Network
                 if (i < len)
                 {
                     // squarePlayer
-                    pw.WriteUInt32(squarePlayers[i].State);
-                    pw.WriteUInt32(squarePlayers[i].Player.PlayerId);
-                    pw.WriteWString(squarePlayers[i].Player.Name, 16);
-                    pw.WriteUInt8((byte)squarePlayers[i].Player.Level);
-                    pw.WriteUInt8((byte)squarePlayers[i].Player.Rank);
-                    pw.WriteUInt16(0);
-                    pw.WriteUInt16(squarePlayers[i].Player.Character);
-                    pw.WriteUInt32(0); // TODO: select weapon
+                    pw.WriteUInt32(squarePlayers[i].State);             // 4
+                    pw.WriteUInt32(squarePlayers[i].Player.PlayerId);   // 8
+                    pw.WriteWString(squarePlayers[i].Player.Name, 16);  // 40
+
+                    //pw.WriteBytes(new byte[2]);
+
+                    pw.WriteUInt8((byte)squarePlayers[i].Player.Level); // 41
+                    pw.WriteUInt8((byte)squarePlayers[i].Player.Rank);  // 42
+                    pw.WriteUInt16(0);                                  // 44
+                    pw.WriteUInt16(squarePlayers[i].Player.Character);  // 46
+                    pw.WriteUInt32(0); // TODO: select weapon           // 50
                     //pw.WriteBytes(squarePlayer.Player.EquipmentManager.)
-                    pw.WriteBytes(new byte[9 * 4]);
-                    pw.WriteBytes(new byte[12]);
-                    pw.WriteFloat(squarePlayers[i].Position[0]);
-                    pw.WriteFloat(squarePlayers[i].Position[1]);
-                    pw.WriteFloat(squarePlayers[i].Position[2]);
+                    pw.WriteBytes(new byte[9 * 4]);                     // 86
+                    pw.WriteBytes(new byte[2]);                         // 88
+                    pw.WriteFloat(squarePlayers[i].Position[0]);        // 92
+                    pw.WriteFloat(squarePlayers[i].Position[1]);        // 96
+                    pw.WriteFloat(squarePlayers[i].Position[2]);        // 100
                 }
                 else
                     pw.WriteBytes(new byte[100]);
             }
+            pw.WriteUInt32(0);
 
             return pw;
         }

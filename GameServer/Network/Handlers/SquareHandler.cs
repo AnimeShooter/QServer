@@ -12,6 +12,7 @@ namespace Qserver.GameServer.Network.Handlers
 {
     public class SquareHandler
     {
+        // TODO
         public static void HandleChatRequest(PacketReader packet, ConnServer manager)
         {
             packet.ReadBytes(34);
@@ -26,9 +27,9 @@ namespace Qserver.GameServer.Network.Handlers
             if (squarePlayer == null)
                 return;
 
+            //string actualMessage = Game.Instance.ChatManager.
             // TODO
-            throw new NotImplementedException();
-
+            //squarePlayer.Chat();
         }
 
         public static void HandleConnectRequest(PacketReader packet, ConnServer manager)
@@ -48,6 +49,7 @@ namespace Qserver.GameServer.Network.Handlers
             manager.Send(SquareManager.Instance.SquareList(squares));
         }
 
+        // TODO
         public static void HandleEmoteEevent(PacketReader packet, ConnServer manager)
         {
             throw new NotImplementedException();
@@ -86,12 +88,36 @@ namespace Qserver.GameServer.Network.Handlers
 
         public static void HandleLeftInventory(PacketReader packet, ConnServer manager)
         {
-            throw new NotImplementedException();
+            packet.ReadUInt32();
+            ushort character = packet.ReadUInt16();
+            uint selectedWeapon = packet.ReadUInt32();
+            uint[] equipment = new uint[9];
+            for (int i = 0; i < equipment.Length; i++)
+                equipment[i] = packet.ReadUInt32();
+
+            var player = manager.Player;
+            if (player == null)
+                return;
+
+            var squarePlayer = player.SquarePlayer;
+            if (squarePlayer == null)
+                return;
+
+            squarePlayer.ChangeWeapon(selectedWeapon);
         }
 
         public static void HandleReloadSquareEvent(PacketReader packet, ConnServer manager)
         {
-            throw new NotImplementedException();
+            var player = manager.Player;
+            if (player == null)
+                return;
+
+            var squarePlayer = player.SquarePlayer;
+            if (squarePlayer == null)
+                return;
+
+            manager.Send(Network.SquareManager.Instance.SetPosition(squarePlayer));
+            squarePlayer.SetState(0);
         }
 
         public static void HandleRequestPlayers(PacketReader packet, ConnServer manager)
@@ -111,14 +137,34 @@ namespace Qserver.GameServer.Network.Handlers
 
         public static void HandleUpdatePosition(PacketReader packet, ConnServer manager)
         {
-            throw new NotImplementedException();
+            byte moveType = packet.ReadUInt8();
+            byte direction = packet.ReadUInt8();
+            float[] position = new float[3];
+            for (int i = 0; i < position.Length; i++)
+                position[i] = packet.ReadUInt8();
+
+            var player = manager.Player;
+            if (player == null || player.SquarePlayer == null)
+                return;
+
+            player.SquarePlayer.Move(position, direction, moveType);
         }
 
         public static void HandleUpdateStateEvent(PacketReader packet, ConnServer manager)
         {
-            throw new NotImplementedException();
+            uint playerId = packet.ReadUInt32();
+            uint state = packet.ReadUInt32();
+            byte roomId = packet.ReadUInt8();
+
+            var player = manager.Player;
+            if (player == null || player.SquarePlayer == null)
+                return;
+
+            if (state == 7)
+                player.SquarePlayer.SetState(7);
+            else if (state == 5)
+                player.SquarePlayer.SetState(5, roomId);
         }
 
-       
     }
 }

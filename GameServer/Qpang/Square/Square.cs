@@ -78,7 +78,6 @@ namespace Qserver.GameServer.Qpang
             Game.Instance.SquareManager.Broadcast(Network.SquareManager.Instance.UpdateSquareEntry(this, true));
 
             player.EnterSquare(squarePlayer);
-
             SendPacketExcept(Network.SquareManager.Instance.AddPlayer(squarePlayer), player.PlayerId);
 
             return true;

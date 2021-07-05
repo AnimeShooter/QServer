@@ -161,6 +161,7 @@ namespace Qserver.GameServer.Qpang
             this._loginTime = DateTime.UtcNow;
 
             // Load player WHERE id = X
+            this._name = "[TEST]Ferib";
 
             this._inventoryManager = new InventoryManager(this);
             this._equipmentManager = new EquipmentManager(this);

@@ -39,8 +39,8 @@ namespace Qserver.GameServer.Network
 
         public void RecieveAuth()
         {
-            try
-            {
+            //try
+            //{
                 Log.Message(LogType.MISC, "New Client Login Detected");
                 while (Server.ListenServerSocket)
                 {
@@ -54,12 +54,13 @@ namespace Qserver.GameServer.Network
                 }
 
                 CloseSocket();
-            }
-            catch (Exception e)
-            {
-                // Shutup & be gone!
-                CloseSocket();
-            }
+            //}
+            //catch (Exception e)
+            //{
+            //    // Shutup & be gone!
+            //    Log.Message(LogType.ERROR, e.ToString());
+            //    CloseSocket();
+            //}
         }
 
         public void Send(PacketWriter packet, bool SuppressLog = false, bool isAck = false)

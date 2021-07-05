@@ -103,5 +103,131 @@ namespace Qserver.GameServer.Network
             return pw;
         }
 
+        public PacketWriter Chat(string sender, string message)
+        {
+            PacketWriter pw = new PacketWriter((Opcode)6529);
+            pw.WriteWString(sender, 16);
+            ushort len = (ushort)(message.Length % 254);
+            pw.WriteUInt16(len);
+            pw.WriteWString(message, len);
+            return pw;
+        }
+
+        public PacketWriter DeleteSquareEntry(uint id)
+        {
+            PacketWriter pw = new PacketWriter((Opcode)6543);
+            pw.WriteUInt32(1);
+            pw.WriteBytes(new byte[5]);
+            pw.WriteUInt32(id);
+            return pw;
+        }
+
+        public PacketWriter Emote(uint playerId, uint emoteId)
+        {
+            PacketWriter pw = new PacketWriter((Opcode)6558);
+            pw.WriteUInt32(playerId);
+            pw.WriteUInt32(emoteId);
+            return pw;
+        }
+
+
+        public PacketWriter MovePlayer(uint playerId, float[] newPosition, byte moveType, byte direction)
+        {
+            PacketWriter pw = new PacketWriter((Opcode)6513);
+            pw.WriteUInt32(playerId);
+            pw.WriteUInt8(moveType);
+            pw.WriteUInt8(direction);
+            pw.WriteFloat(newPosition[0]);
+            pw.WriteFloat(newPosition[1]);
+            pw.WriteFloat(newPosition[2]);
+            return pw;
+        }
+
+        public PacketWriter Players(List<SquarePlayer> squarePlayers, uint playerId)
+        {
+            PacketWriter pw = new PacketWriter((Opcode)6508);
+
+            ushort len = (ushort)squarePlayers.Count;
+
+            pw.WriteUInt16(len);
+            pw.WriteUInt16(len);
+            pw.WriteUInt16(len);
+
+            for(int i = 0; i < 100; i++)
+            {
+                if (i < len)
+                {
+                    // squarePlayer
+                    pw.WriteUInt32(squarePlayers[i].State);
+                    pw.WriteUInt32(squarePlayers[i].Player.PlayerId);
+                    pw.WriteWString(squarePlayers[i].Player.Name, 16);
+                    pw.WriteUInt8((byte)squarePlayers[i].Player.Level);
+                    pw.WriteUInt8((byte)squarePlayers[i].Player.Rank);
+                    pw.WriteUInt16(0);
+                    pw.WriteUInt16(squarePlayers[i].Player.Character);
+                    pw.WriteUInt32(0); // TODO: select weapon
+                    //pw.WriteBytes(squarePlayer.Player.EquipmentManager.)
+                    pw.WriteBytes(new byte[9 * 4]);
+                    pw.WriteBytes(new byte[12]);
+                    pw.WriteFloat(squarePlayers[i].Position[0]);
+                    pw.WriteFloat(squarePlayers[i].Position[1]);
+                    pw.WriteFloat(squarePlayers[i].Position[2]);
+                }
+                else
+                    pw.WriteBytes(new byte[100]);
+            }
+
+            return pw;
+        }
+
+        public PacketWriter RemovePlayer(ushort playerId)
+        {
+            PacketWriter pw = new PacketWriter((Opcode)6509);
+            pw.WriteUInt32(playerId);
+            return pw;
+        }
+
+        public PacketWriter SetPosition(SquarePlayer squarePlayer)
+        {
+            PacketWriter pw = new PacketWriter((Opcode)6531);
+            pw.WriteFloat(squarePlayer.Position[0]);
+            pw.WriteFloat(squarePlayer.Position[1]);
+            pw.WriteFloat(squarePlayer.Position[2]);
+            return pw;
+        }
+        public PacketWriter UpdatePlayerEquipment(SquarePlayer squarePlayer)
+        {
+            PacketWriter pw = new PacketWriter((Opcode)6517);
+            var player = squarePlayer.Player;
+            pw.WriteUInt32(player.PlayerId);
+            pw.WriteUInt16(player.Character);
+            //pw.WriteUInt32(squarePlayer.Selec) // SelectedWeapon
+            pw.WriteUInt32(0);
+
+            // selected Character Armor
+            for(int i = 0; i < 9; i++)
+            {
+                pw.WriteUInt32(0);
+            }
+
+            return pw;
+        }
+        public PacketWriter UpdatePlayerLevel(uint playerId, byte level)
+        {
+            PacketWriter pw = new PacketWriter((Opcode)6553);
+            pw.WriteUInt32(playerId);
+            pw.WriteUInt8(level);
+            return pw;
+        }
+        public PacketWriter UpdatePlayerState(SquarePlayer squarePlayer, byte value)
+        {
+            PacketWriter pw = new PacketWriter((Opcode)6547);
+            pw.WriteUInt32(squarePlayer.Player.PlayerId);
+            pw.WriteUInt32(squarePlayer.State);
+            pw.WriteUInt8(value);
+            pw.WriteUInt8(0);
+            return pw;
+        }
+
     }
 }

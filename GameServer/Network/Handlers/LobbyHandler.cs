@@ -52,7 +52,7 @@ namespace Qserver.GameServer.Network.Handlers
             for(int i = 0; i < armor.Length; i++)
                 armor[i] = packet.ReadUInt64();
 
-            throw new NotImplementedException();
+            // TODO
             //manager.Player.EquipmentManager. SetArmor
         }
         public static void HandleEquipWeapon(PacketReader packet, ConnServer manager)
@@ -66,13 +66,15 @@ namespace Qserver.GameServer.Network.Handlers
                 packet.ReadUInt64(); // unk
             }
 
-            throw new NotImplementedException();
+            // TODO
             //manager.Player.EquipmentManager.SetWeapons
         }
 
         public static void HandleRequestEquippedSkillCards(PacketReader packet, ConnServer manager)
         {
-            throw new NotImplementedException();
+            // TODO
+            var skills = new InventoryCard[] { new InventoryCard(), new InventoryCard(), new InventoryCard() } ;// manager.Player.EquipmentManager.SkillCards;
+            manager.Send(LobbyManager.Instance.EquippedSkillCards(skills));
         }
         #endregion
 
@@ -95,7 +97,9 @@ namespace Qserver.GameServer.Network.Handlers
         }
         public static void HandleRequestFriendList(PacketReader packet, ConnServer manager)
         {
-            throw new NotImplementedException();
+            PacketWriter pw = new PacketWriter((Opcode)832);
+            List<Friend> friends = manager.Player.FriendManager.List();
+            manager.Send(LobbyManager.Instance.FriendList(friends));
         }
         public static void HandleSendFriendRequestEvent(PacketReader packet, ConnServer manager)
         {
@@ -170,7 +174,8 @@ namespace Qserver.GameServer.Network.Handlers
         }
         public static void HandleRequestCashBalance(PacketReader packet, ConnServer manager)
         {
-            throw new NotImplementedException();
+            uint cash = manager.Player.Cash;
+            manager.Send(LobbyManager.Instance.UpdateCashBalance(cash));
         }
         public static void HandleRequestPlayerInfo(PacketReader packet, ConnServer manager)
         {

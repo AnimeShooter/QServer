@@ -96,7 +96,17 @@ namespace Qserver.GameServer.Network.Handlers
 
         public static void HandleRequestPlayers(PacketReader packet, ConnServer manager)
         {
-            throw new NotImplementedException();
+            var player = manager.Player;
+            if (player == null)
+                return;
+
+            var squarePlayer = player.SquarePlayer;
+            if (squarePlayer == null)
+                return;
+
+            var square = squarePlayer.Square;
+            var players = square.ListPlayers();
+            manager.Send(Network.SquareManager.Instance.Players(players, player.PlayerId));
         }
 
         public static void HandleUpdatePosition(PacketReader packet, ConnServer manager)

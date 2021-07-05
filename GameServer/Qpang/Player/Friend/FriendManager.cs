@@ -21,9 +21,24 @@ namespace Qserver.GameServer.Qpang
         {
             this._player = player;
             this._lock = new object();
+
+
             // TODO: friends database
+            this._friends = new Dictionary<uint, Friend>();
+            this._outgoingFriends = new Dictionary<uint, Friend>();
+            this._incomingFriends = new Dictionary<uint, Friend>();
         }
 
+        public List<Friend> List()
+        {
+            lock(this._lock)
+            {
+                var friends = new List<Friend>();
+                foreach (var f in this._friends)
+                    friends.Add(f.Value);
+                return friends;
+            }
+        }
         public void AppearOnline()
         {
             //if(this._player != null)

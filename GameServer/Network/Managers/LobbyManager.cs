@@ -154,7 +154,7 @@ namespace Qserver.GameServer.Network.Managers
                 pw.WriteUInt8(channel.MaxLevel);
                 pw.WriteUInt16(channel.CurrPlayers);
                 pw.WriteUInt16(channel.MaxPlayers);
-                pw.WriteBytes(new byte[51]);
+                pw.WriteBytes(new byte[52]); // OG 51
             }
 
             return pw;
@@ -251,9 +251,26 @@ namespace Qserver.GameServer.Network.Managers
         {
             throw new NotImplementedException();
         }
-        public PacketWriter FriendList()
+        public PacketWriter FriendList(List<Friend> friends)
         {
-            throw new NotImplementedException();
+            PacketWriter pw = new PacketWriter((Opcode)695);
+
+            ushort len = (ushort)friends.Count;
+            pw.WriteUInt16(len);
+            pw.WriteUInt16(len);
+            pw.WriteUInt16(len);
+
+            foreach(var f in friends)
+            {
+                // Friend
+                pw.WriteUInt32(f.PlayerId);
+                pw.WriteBytes(new byte[4]);
+                pw.WriteUInt8(f.State);
+                pw.WriteUInt8(f.IsOnline ? (byte)1 : (byte)0);
+                pw.WriteUInt32(f.Level);
+                pw.WriteWString(f.Nickname, 16);
+            }
+            return pw;
         }
         public PacketWriter FriendRemove()
         {
@@ -374,9 +391,11 @@ namespace Qserver.GameServer.Network.Managers
         {
             throw new NotImplementedException();
         }
-        public PacketWriter UpdateCashBalance()
+        public PacketWriter UpdateCashBalance(uint cash)
         {
-            throw new NotImplementedException();
+            PacketWriter pw = new PacketWriter((Opcode)832);
+            pw.WriteUInt32(cash);
+            return pw;
         }
         public PacketWriter UpdateCharacter()
         {

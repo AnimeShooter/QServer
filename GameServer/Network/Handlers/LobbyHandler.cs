@@ -73,7 +73,21 @@ namespace Qserver.GameServer.Network.Handlers
         public static void HandleRequestEquippedSkillCards(PacketReader packet, ConnServer manager)
         {
             // TODO
-            var skills = new InventoryCard[] { new InventoryCard(), new InventoryCard(), new InventoryCard() } ;// manager.Player.EquipmentManager.SkillCards;
+            var skills = new InventoryCard[] { 
+                new InventoryCard()
+                {
+                    Id = 1,
+                },
+                new InventoryCard()
+                {
+                    Id = 2,
+                    
+                },
+                new InventoryCard()
+                {
+                    Id = 3
+                }
+            }; // manager.Player.EquipmentManager.SkillCards;
             manager.Send(LobbyManager.Instance.EquippedSkillCards(skills));
         }
         #endregion

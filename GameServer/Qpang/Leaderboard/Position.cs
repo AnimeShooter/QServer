@@ -4,8 +4,9 @@ using System.Text;
 
 namespace Qserver.GameServer.Qpang
 {
-    public class Room
+    public struct Position
     {
-
+        public uint Rank;
+        public uint Difference;
     }
 }

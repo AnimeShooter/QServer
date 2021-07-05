@@ -145,6 +145,7 @@ namespace Qserver.GameServer.Network
 
         public PacketWriter Players(List<SquarePlayer> squarePlayers, uint playerId)
         {
+            //return;
             PacketWriter pw = new PacketWriter((Opcode)6508);
 
             ushort len = 0; // (ushort)squarePlayers.Count;

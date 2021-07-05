@@ -57,8 +57,6 @@ namespace Qserver.GameServer.Packets
             PacketManager.DefineOpcodeHandler(Opcode.SQUARE_JOIN_PARK, SquareHandler.HandleSquareLogin); // aka JoinSquare
             PacketManager.DefineOpcodeHandler((Opcode)6544, SquareHandler.HandleUpdateStateEvent);
             PacketManager.DefineOpcodeHandler((Opcode)6557, SquareHandler.HandleEmoteEevent);
-
-
         }
     }
 }

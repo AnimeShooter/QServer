@@ -79,5 +79,29 @@ namespace Qserver.GameServer.Network
 
             return pw;
         }
+
+        public PacketWriter AddPlayer(SquarePlayer squarePlayer)
+        {
+            PacketWriter pw = new PacketWriter(Opcode.SQUARE_ADD_PLAYER);
+
+            // squarePlayer
+            pw.WriteUInt32(squarePlayer.State);
+            pw.WriteUInt32(squarePlayer.Player.PlayerId);
+            pw.WriteWString(squarePlayer.Player.Name, 16);
+            pw.WriteUInt8((byte)squarePlayer.Player.Level);
+            pw.WriteUInt8((byte)squarePlayer.Player.Rank);
+            pw.WriteUInt16(0);
+            pw.WriteUInt16(squarePlayer.Player.Character);
+            pw.WriteUInt32(0); // TODO: select weapon
+            //pw.WriteBytes(squarePlayer.Player.EquipmentManager.)
+            pw.WriteBytes(new byte[9 * 4]);
+            pw.WriteBytes(new byte[12]);
+            pw.WriteFloat(squarePlayer.Position[0]);
+            pw.WriteFloat(squarePlayer.Position[1]);
+            pw.WriteFloat(squarePlayer.Position[2]);
+
+            return pw;
+        }
+
     }
 }

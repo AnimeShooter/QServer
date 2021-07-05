@@ -149,7 +149,7 @@ namespace Qserver.GameServer.Network.Managers
             {
                 pw.WriteUInt16(channel.Id);
 
-                pw.WriteWString(channel.Name, 31);
+                pw.WriteWString(channel.Name, 30);
 
                 pw.WriteUInt8(channel.MinLevel);
                 pw.WriteUInt8(channel.MaxLevel);

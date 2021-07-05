@@ -50,6 +50,10 @@ namespace Qserver.GameServer.Qpang
         public Square(uint id, string name, byte capacity = 50)
         {
             this._lock = new object();
+            this._id = id;
+            this._name = name;
+            this._state = 8;
+            this._isClosed = false;
         }
 
         public bool Add(Player player)
@@ -69,9 +73,11 @@ namespace Qserver.GameServer.Qpang
                 this._players[player.PlayerId] = squarePlayer;
             }
 
-            //Game.Instance.SquareManager.Broadcast(Network.SquareManager.UpdateSquareEntry(this, true));
+            Game.Instance.SquareManager.Broadcast(Network.SquareManager.Instance.UpdateSquareEntry(this, true));
 
             player.EnterSquare(squarePlayer);
+
+            SendPacketExcept(Network.SquareManager.Instance.AddPlayer(squarePlayer), player.PlayerId);
 
             return true;
         }

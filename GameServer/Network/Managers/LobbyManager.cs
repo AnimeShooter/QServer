@@ -103,35 +103,34 @@ namespace Qserver.GameServer.Network.Managers
 
         public PacketWriter Banned()
         {
-            PacketWriter pw = new PacketWriter(Opcode.LOBBY_LOGIN_FAIL, 0x05);
+            PacketWriter pw = new PacketWriter(Opcode.LOBBY_LOGIN_FAIL);
             pw.WriteUInt32(819);
             return pw;
         }
 
         public PacketWriter DuplicateLogin()
         {
-            PacketWriter pw = new PacketWriter(Opcode.LOBBY_LOGIN_FAIL, 0x05);
+            PacketWriter pw = new PacketWriter(Opcode.LOBBY_LOGIN_FAIL);
             pw.WriteUInt32(802);
             return pw;
         }
 
         public PacketWriter VerificationFailure()
         {
-            PacketWriter pw = new PacketWriter(Opcode.LOBBY_LOGIN_FAIL, 0x05);
+            PacketWriter pw = new PacketWriter(Opcode.LOBBY_LOGIN_FAIL);
             pw.WriteUInt32(204);
             return pw;
         }
 
         public PacketWriter UpdateAcount()
         {
-            PacketWriter pw = new PacketWriter(Opcode.LOBBY_UPDATE_ACCOUNT, 0x05);
+            PacketWriter pw = new PacketWriter(Opcode.LOBBY_UPDATE_ACCOUNT);
 
             // TODO
+            throw new NotImplementedException();
 
             return pw;
         }
-
-
 
         #endregion Account
 
@@ -175,5 +174,238 @@ namespace Qserver.GameServer.Network.Managers
             return pw;
         }
         #endregion Channel
+
+        #region Equipment
+        public PacketWriter EquippedSkillCards(InventoryCard[] skillCards)
+        {
+            PacketWriter pw = new PacketWriter(Opcode.LOBBY_EQUIPPED_SKILS_RSP);
+            for(int i = 0; i < 5; i++)
+            {
+                foreach(var card in skillCards)
+                {
+                    // InventoryCard
+                    pw.WriteUInt64(card.Id);        // 0 
+                    pw.WriteUInt32(card.ItemId);    // 8
+                    pw.WriteBytes(new byte[10]);    // 12
+                    pw.WriteUInt8(card.Type);       // 13
+                    pw.WriteUInt8(0);               // 14
+                    pw.WriteUInt8(card.IsGiftable ? (byte)1 : (byte)0); // 15
+                    pw.WriteBytes(new byte[6]);     // 16
+                    pw.WriteUInt32(0); // card.TimeCreated);   // 22 (TODO: timestamp?)
+                    pw.WriteUInt8(card.IsOpened ? (byte)0 : (byte)1); // 26
+                    pw.WriteUInt16(card.IsActive ? (ushort)0 : (ushort)1); // 27
+                    pw.WriteUInt8(0);         // 28 hidden
+                    pw.WriteUInt8(0);         // 29
+                    pw.WriteUInt16(card.Period);    //
+                    pw.WriteUInt8(card.PeriodeType);
+                    pw.WriteUInt8(0);
+                    pw.WriteUInt16(card.BoostLevel);
+                    pw.WriteUInt8(card.BoostLevel > 0 ? (byte)1 : (byte)0);
+                    pw.WriteUInt8(0);
+                    pw.WriteBytes(new byte[4]);
+                }
+            }
+            return pw;
+        }
+
+        public PacketWriter SetArmor(ushort characterOffset, ulong[]  armor)
+        {
+            throw new NotImplementedException();
+        }
+
+        public PacketWriter SetWeapons(ushort characterOffset, ulong[] weapons)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region Friend
+        public PacketWriter AcceptIncommingFriend()
+        {
+            throw new NotImplementedException();
+        }
+
+        public PacketWriter AddIncommingFriend()
+        {
+            throw new NotImplementedException();
+        }
+
+        public PacketWriter AddOutgoingFriend()
+        {
+            throw new NotImplementedException();
+        }
+        public PacketWriter AppearOffline()
+        {
+            throw new NotImplementedException();
+        }
+        public PacketWriter AppearOnline()
+        {
+            throw new NotImplementedException();
+        }
+        public PacketWriter CancelOutgoingFriend()
+        {
+            throw new NotImplementedException();
+        }
+        public PacketWriter DenyIncomingFriend()
+        {
+            throw new NotImplementedException();
+        }
+        public PacketWriter FriendList()
+        {
+            throw new NotImplementedException();
+        }
+        public PacketWriter FriendRemove()
+        {
+            throw new NotImplementedException();
+        }
+        public PacketWriter IncomingFriendCancelled()
+        {
+            throw new NotImplementedException();
+        }
+        public PacketWriter OutgoingFriendAccepted()
+        {
+            throw new NotImplementedException();
+        }
+        public PacketWriter OutgoingFriendCancelled()
+        {
+            throw new NotImplementedException();
+        }
+        public PacketWriter RemoveFriend()
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
+
+        #region Gameroom
+        public PacketWriter RoomList()
+        {
+            throw new NotImplementedException();
+        }
+        public PacketWriter UpdateGameSettings()
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
+
+        #region Inventory
+        public PacketWriter CardExtended()
+        {
+            throw new NotImplementedException();
+        }
+        public PacketWriter DisableFunctionCard()
+        {
+            throw new NotImplementedException();
+        }
+        public PacketWriter EnabledFunctionCard()
+        {
+            throw new NotImplementedException();
+        }
+        public PacketWriter GiftCardSuccess()
+        {
+            throw new NotImplementedException();
+        }
+        public PacketWriter Gifts()
+        {
+            throw new NotImplementedException();
+        }
+        public PacketWriter Inventory()
+        {
+            throw new NotImplementedException();
+        }
+        public PacketWriter OpenGift()
+        {
+            throw new NotImplementedException();
+        }
+        public PacketWriter OpenGiftSuccess()
+        {
+            throw new NotImplementedException();
+        }
+        public PacketWriter ReceiveGift()
+        {
+            throw new NotImplementedException();
+        }
+        public PacketWriter RemoveCard()
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
+
+        #region Memo
+        public PacketWriter Memos()
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
+
+        #region Misc
+        public PacketWriter UseCrainFail()
+        {
+            throw new NotImplementedException();
+        }
+        public PacketWriter UseCrainSuccess()
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
+
+        #region Player
+        public PacketWriter PlayerInfoInspector()
+        {
+            throw new NotImplementedException();
+        }
+        public PacketWriter PlayerInfoInspectorFailed()
+        {
+            throw new NotImplementedException();
+        }
+        public PacketWriter ReceiveWhisper()
+        {
+            throw new NotImplementedException();
+        }
+        public PacketWriter ResetKillDeath()
+        {
+            throw new NotImplementedException();
+        }
+        public PacketWriter ResetWinLoss()
+        {
+            throw new NotImplementedException();
+        }
+        public PacketWriter SendWhisper()
+        {
+            throw new NotImplementedException();
+        }
+        public PacketWriter UpdateCashBalance()
+        {
+            throw new NotImplementedException();
+        }
+        public PacketWriter UpdateCharacter()
+        {
+            throw new NotImplementedException();
+        }
+        public PacketWriter UpdatePlayerRanking()
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
+
+        #region Shop
+        public PacketWriter CardPurchaseComplete()
+        {
+            throw new NotImplementedException();
+        }
+        public PacketWriter ShopItems()
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
+
+        public PacketWriter Broadcast(string message)
+        {
+            PacketWriter pw = new PacketWriter((Opcode)4);
+            pw.WriteUInt32(0);
+            pw.WriteBytes(new byte[34]);
+            pw.WriteWString(message, 254);
+            return pw;
+        }
     }
 }

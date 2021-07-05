@@ -42,8 +42,17 @@ namespace Qserver.GameServer.Network.Handlers
                 MaxLevel = 99,
                 MinLevel = 0,
                 MaxPlayers = 120,
-                Name = "Kim kAm QuPong?",
+                Name = "Kim kAm qPong?",
                 Id = 1
+            });
+            list.Add(new Channel()
+            {
+                CurrPlayers = 0,
+                MaxLevel = 99,
+                MinLevel = 0,
+                MaxPlayers = 10,
+                Name = "Public Test Realm",
+                Id = 2
             });
             manager.Send(LobbyManager.Instance.ChannelList(list));
         }

@@ -27,6 +27,7 @@ namespace Qserver.GameServer.Network.Handlers
                 return;
 
             // TODO
+            throw new NotImplementedException();
 
         }
 
@@ -49,6 +50,7 @@ namespace Qserver.GameServer.Network.Handlers
 
         public static void HandleEmoteEevent(PacketReader packet, ConnServer manager)
         {
+            throw new NotImplementedException();
         }
 
         public static void HandleSquareLogin(PacketReader packet, ConnServer manager) // JoinSquare
@@ -56,12 +58,7 @@ namespace Qserver.GameServer.Network.Handlers
             uint playerId = packet.ReadUInt32();
             uint squareId = packet.ReadUInt32();
 
-            // TODO: remove, vulnerabble for account takeover
-
             Player player = manager.Player;
-
-            //player = Game.Instance.GetPlayer(playerId);
-            //manager.Player = player;
 
             if (player == null)
                 return;
@@ -89,27 +86,27 @@ namespace Qserver.GameServer.Network.Handlers
 
         public static void HandleLeftInventory(PacketReader packet, ConnServer manager)
         {
-
+            throw new NotImplementedException();
         }
 
         public static void HandleReloadSquareEvent(PacketReader packet, ConnServer manager)
         {
-
+            throw new NotImplementedException();
         }
 
         public static void HandleRequestPlayers(PacketReader packet, ConnServer manager)
         {
-
+            throw new NotImplementedException();
         }
 
         public static void HandleUpdatePosition(PacketReader packet, ConnServer manager)
         {
-
+            throw new NotImplementedException();
         }
 
         public static void HandleUpdateStateEvent(PacketReader packet, ConnServer manager)
         {
-
+            throw new NotImplementedException();
         }
 
        

@@ -13,51 +13,50 @@ namespace Qserver.GameServer.Packets
 
             // Lobby
             PacketManager.DefineOpcodeHandler(Opcode.LOBBY_LOGIN, LobbyHandler.HandleLobbyLogin);
-            //PacketManager.DefineOpcodeHandler(Opcode.LOBBY_EQUIP_ARMOUR, ParkHandler.);
-            //PacketManager.DefineOpcodeHandler(Opcode.LOBBY_EQUIP_WEAPON, ParkHandler.);
-            //PacketManager.DefineOpcodeHandler(Opcode.LOBBY_EQUIPPED_SKILLS, ParkHandler.);
-            //PacketManager.DefineOpcodeHandler(Opcode.LOBBY_DROP_CARD, ParkHandler.);
-            //PacketManager.DefineOpcodeHandler(Opcode.LOBBY_SWAP_CHARACTER, ParkHandler.);
-            //PacketManager.DefineOpcodeHandler(Opcode.LOBBY_PLAYERINFO, ParkHandler.);
-            //PacketManager.DefineOpcodeHandler(Opcode.LOBBY_BUDDIES, ParkHandler.);
-            //PacketManager.DefineOpcodeHandler(Opcode.LOBBY_FRIEND_INVITE, ParkHandler.);
-            //PacketManager.DefineOpcodeHandler(Opcode.LOBBY_ACCEPT_INCOMING_FRIEND, ParkHandler.);
-            //PacketManager.DefineOpcodeHandler(Opcode.LOBBY_DENY_INCOMING_FRIEND, ParkHandler.);
-            //PacketManager.DefineOpcodeHandler(Opcode.LOBBY_OUTGOING_FRIEND_DENIED, ParkHandler.);
-            //PacketManager.DefineOpcodeHandler(Opcode.LOBBY_REMOVE_FRIEND, ParkHandler.);
-            //PacketManager.DefineOpcodeHandler(Opcode.LOBBY_MEMOS, ParkHandler.);
-            //add(738, new WhisperEvent());
-            //add(742, new OpenGift());
-            //add(745, new RequestGifts());
-            //add(758, new RequestGameRoomsEvent());
+            PacketManager.DefineOpcodeHandler(Opcode.LOBBY_EQUIP_ARMOUR, LobbyHandler.HandleEquipArmor);
+            PacketManager.DefineOpcodeHandler(Opcode.LOBBY_EQUIP_WEAPON, LobbyHandler.HandleEquipWeapon);
+            PacketManager.DefineOpcodeHandler(Opcode.LOBBY_EQUIPPED_SKILLS, LobbyHandler.HandleRequestEquippedSkillCards);
+            PacketManager.DefineOpcodeHandler(Opcode.LOBBY_DROP_CARD, LobbyHandler.HandleDeleteCard);
+            PacketManager.DefineOpcodeHandler(Opcode.LOBBY_SWAP_CHARACTER, LobbyHandler.HandleChangeCharacterEvent);
+            PacketManager.DefineOpcodeHandler(Opcode.LOBBY_PLAYERINFO, LobbyHandler.HandleRequestPlayerInfo);
+            PacketManager.DefineOpcodeHandler(Opcode.LOBBY_BUDDIES, LobbyHandler.HandleRequestFriendList);
+            PacketManager.DefineOpcodeHandler(Opcode.LOBBY_FRIEND_INVITE, LobbyHandler.HandleSendFriendRequestEvent);
+            PacketManager.DefineOpcodeHandler(Opcode.LOBBY_ACCEPT_INCOMING_FRIEND, LobbyHandler.HandleAcceptIncomingFriendRequestEvent);
+            PacketManager.DefineOpcodeHandler(Opcode.LOBBY_DENY_INCOMING_FRIEND, LobbyHandler.HandleDenyIncomingFriendRequestEvent);
+            PacketManager.DefineOpcodeHandler(Opcode.LOBBY_REMOVE_OUTGOING_FRIEND, LobbyHandler.HandleCancleOutgoingFriendRequestEvent);
+            PacketManager.DefineOpcodeHandler(Opcode.LOBBY_REMOVE_FRIEND, LobbyHandler.HandleRemoveFriendEvent);
+            PacketManager.DefineOpcodeHandler(Opcode.LOBBY_MEMOS, LobbyHandler.HandleRequestMemos);
+            PacketManager.DefineOpcodeHandler((Opcode)738, LobbyHandler.HandleWhisperEvent);
+            PacketManager.DefineOpcodeHandler((Opcode)742, LobbyHandler.HandleOpenGift);
+            PacketManager.DefineOpcodeHandler((Opcode)745, LobbyHandler.HandleRequestGifts);
+            PacketManager.DefineOpcodeHandler((Opcode)758, LobbyHandler.HandleRequestGameRoomsEvent);
             PacketManager.DefineOpcodeHandler(Opcode.LOBBY_CHANNELS, LobbyHandler.HandleChannelList);
             PacketManager.DefineOpcodeHandler(Opcode.LOBBY_CHANNEL_CONNECT, LobbyHandler.HandleChannelHost); //add(766, new RequestChannelHost());
-            //add(769, new RequestGameSettingsEvent());
-            //add(780, new RequestInventory());
-            //add(791, new RequestPlayerRanking());
-            //add(797, new RequestShopItems());
-            //add(800, new RequestShopPackages());
-            //add(803, new BuyCardEvent());
-            //add(809, new ExtendCardEvent());
-            //add(812, new GiftCardEvent());
-            //add(831, new RequestCashBalance());
-            //add(834, new EnableFunctionCardEvent());
-            //add(841, new ResetWinLossEvent());
-            //add(844, new ResetKillDeathEvent());
-            //add(861, new DisableFunctionCardEvent());
-            //add(897, new UseCraneEvent());
+            PacketManager.DefineOpcodeHandler((Opcode)769, LobbyHandler.HandleRequestGameSettingsEvent);
+            PacketManager.DefineOpcodeHandler((Opcode)780, LobbyHandler.HandleRequestInventory);
+            PacketManager.DefineOpcodeHandler((Opcode)791, LobbyHandler.HandleRequestPlayerRanking);
+            PacketManager.DefineOpcodeHandler((Opcode)797, LobbyHandler.HandleRequestShopItems);
+            PacketManager.DefineOpcodeHandler((Opcode)800, LobbyHandler.HandleRequestShopPackages);
+            PacketManager.DefineOpcodeHandler((Opcode)803, LobbyHandler.HandleBuyCardEvent);
+            PacketManager.DefineOpcodeHandler((Opcode)809, LobbyHandler.HandleExtendCardEvent);
+            PacketManager.DefineOpcodeHandler((Opcode)812, LobbyHandler.HandleGiftCardEvent);
+            PacketManager.DefineOpcodeHandler((Opcode)831, LobbyHandler.HandleRequestCashBalance);
+            PacketManager.DefineOpcodeHandler((Opcode)834, LobbyHandler.HandleEnableFunctionCardEvent);
+            PacketManager.DefineOpcodeHandler((Opcode)841, LobbyHandler.HandleResetWinLossEvent);
+            PacketManager.DefineOpcodeHandler((Opcode)844, LobbyHandler.HandleRestKillDeathEvent);
+            PacketManager.DefineOpcodeHandler((Opcode)861, LobbyHandler.HandleDisableFunctionCardEvent);
+            PacketManager.DefineOpcodeHandler((Opcode)897, LobbyHandler.HandleUseCraneEvent);
 
             // Square
             PacketManager.DefineOpcodeHandler(Opcode.SQUARE_LOGIN, SquareHandler.HandleConnectRequest); // connect request
-            //add(6506, new RequestPlayers());
-            //add(6510, new UpdatePosition());
-            //add(6514, new LeftInventory());
-            //add(6526, new ChatRequest());
-            //add(6530, new ReloadSquareEvent());
+            PacketManager.DefineOpcodeHandler((Opcode)6506, SquareHandler.HandleRequestPlayers);
+            PacketManager.DefineOpcodeHandler((Opcode)6510, SquareHandler.HandleUpdatePosition);
+            PacketManager.DefineOpcodeHandler((Opcode)6514, SquareHandler.HandleLeftInventory);
+            PacketManager.DefineOpcodeHandler((Opcode)6526, SquareHandler.HandleChatRequest);
+            PacketManager.DefineOpcodeHandler((Opcode)6530, SquareHandler.HandleReloadSquareEvent);
             PacketManager.DefineOpcodeHandler(Opcode.SQUARE_JOIN_PARK, SquareHandler.HandleSquareLogin); // aka JoinSquare
-            //add(6537, new JoinSquare());
-            //add(6544, new UpdateStateEvent());
-            //add(6557, new EmoteEvent());
+            PacketManager.DefineOpcodeHandler((Opcode)6544, SquareHandler.HandleUpdateStateEvent);
+            PacketManager.DefineOpcodeHandler((Opcode)6557, SquareHandler.HandleEmoteEevent);
 
 
         }

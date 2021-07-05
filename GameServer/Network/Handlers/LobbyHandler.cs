@@ -12,26 +12,6 @@ namespace Qserver.GameServer.Network.Handlers
 {
     public class LobbyHandler
     {
-        public static void HandleLobbyLogin(PacketReader packet, ConnServer manager)
-        {
-            byte[] uuid = packet.ReadBytes(16);
-
-            uint userId = 1;
-            // databse UUID to ID
-
-            bool isBanned = false;
-            if(isBanned)
-            {
-                manager.Send(LobbyManager.Instance.Banned());
-                manager.CloseSocket();
-                return;
-            }
-
-            var player = Game.Instance.CreatePlayer(manager, userId);
-
-            manager.Send(LobbyManager.Instance.Authenticated(player));
-        }
-
         #region Channel
         public static void HandleChannelList(PacketReader packet, ConnServer manager)
         {
@@ -63,5 +43,190 @@ namespace Qserver.GameServer.Network.Handlers
         }
         #endregion Channel
 
+        #region Equipment
+        public static void HandleEquipArmor(PacketReader packet, ConnServer manager)
+        {
+            ushort characterIndex = packet.ReadUInt16();
+            ulong[] armor = new ulong[9];
+
+            for(int i = 0; i < armor.Length; i++)
+                armor[i] = packet.ReadUInt64();
+
+            throw new NotImplementedException();
+            //manager.Player.EquipmentManager. SetArmor
+        }
+        public static void HandleEquipWeapon(PacketReader packet, ConnServer manager)
+        {
+            ushort characterIndex = packet.ReadUInt16();
+            ulong[] weapons = new ulong[4];
+
+            for(int i = 0; i < weapons.Length; i++)
+            {
+                weapons[i] = packet.ReadUInt64();
+                packet.ReadUInt64(); // unk
+            }
+
+            throw new NotImplementedException();
+            //manager.Player.EquipmentManager.SetWeapons
+        }
+
+        public static void HandleRequestEquippedSkillCards(PacketReader packet, ConnServer manager)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
+
+        #region Friend
+        public static void HandleAcceptIncomingFriendRequestEvent(PacketReader packet, ConnServer manager)
+        {
+            throw new NotImplementedException();
+        }
+        public static void HandleCancleOutgoingFriendRequestEvent(PacketReader packet, ConnServer manager)
+        {
+            throw new NotImplementedException();
+        }
+        public static void HandleDenyIncomingFriendRequestEvent(PacketReader packet, ConnServer manager)
+        {
+            throw new NotImplementedException();
+        }
+        public static void HandleRemoveFriendEvent(PacketReader packet, ConnServer manager)
+        {
+            throw new NotImplementedException();
+        }
+        public static void HandleRequestFriendList(PacketReader packet, ConnServer manager)
+        {
+            throw new NotImplementedException();
+        }
+        public static void HandleSendFriendRequestEvent(PacketReader packet, ConnServer manager)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
+
+        #region Gameroom
+        public static void HandleRequestGameRoomsEvent(PacketReader packet, ConnServer manager)
+        {
+            throw new NotImplementedException();
+        }
+        public static void HandleRequestGameSettingsEvent(PacketReader packet, ConnServer manager)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
+
+        #region Inventory
+        public static void HandleDeleteCard(PacketReader packet, ConnServer manager)
+        {
+            throw new NotImplementedException();
+        }
+        public static void HandleDisableFunctionCardEvent(PacketReader packet, ConnServer manager)
+        {
+            throw new NotImplementedException();
+        }
+        public static void HandleEnableFunctionCardEvent(PacketReader packet, ConnServer manager)
+        {
+            throw new NotImplementedException();
+        }
+        public static void HandleExtendCardEvent(PacketReader packet, ConnServer manager)
+        {
+            throw new NotImplementedException();
+        }
+        public static void HandleGiftCardEvent(PacketReader packet, ConnServer manager)
+        {
+            throw new NotImplementedException();
+        }
+        public static void HandleOpenGift(PacketReader packet, ConnServer manager)
+        {
+            throw new NotImplementedException();
+        }
+        public static void HandleRequestGifts(PacketReader packet, ConnServer manager)
+        {
+            throw new NotImplementedException();
+        }
+        public static void HandleRequestInventory(PacketReader packet, ConnServer manager)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
+
+        #region Memo
+        public static void HandleRequestMemos(PacketReader packet, ConnServer manager)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
+
+        #region Misc
+        public static void HandleUseCraneEvent(PacketReader packet, ConnServer manager)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
+
+        #region Player
+        public static void HandleChangeCharacterEvent(PacketReader packet, ConnServer manager)
+        {
+            throw new NotImplementedException();
+        }
+        public static void HandleRequestCashBalance(PacketReader packet, ConnServer manager)
+        {
+            throw new NotImplementedException();
+        }
+        public static void HandleRequestPlayerInfo(PacketReader packet, ConnServer manager)
+        {
+            throw new NotImplementedException();
+        }
+        public static void HandleRequestPlayerRanking(PacketReader packet, ConnServer manager)
+        {
+            throw new NotImplementedException();
+        }
+        public static void HandleRestKillDeathEvent(PacketReader packet, ConnServer manager)
+        {
+            throw new NotImplementedException();
+        }
+        public static void HandleResetWinLossEvent(PacketReader packet, ConnServer manager)
+        {
+            throw new NotImplementedException();
+        }
+        public static void HandleWhisperEvent(PacketReader packet, ConnServer manager)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
+
+        #region Shop
+        public static void HandleBuyCardEvent(PacketReader packet, ConnServer manager)
+        {
+            throw new NotImplementedException();
+        }
+        public static void HandleRequestShopItems(PacketReader packet, ConnServer manager)
+        {
+            throw new NotImplementedException();
+        }
+        public static void HandleRequestShopPackages(PacketReader packet, ConnServer manager)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
+
+        public static void HandleLobbyLogin(PacketReader packet, ConnServer manager)
+        {
+            byte[] uuid = packet.ReadBytes(16);
+
+            uint userId = 1;
+            // databse UUID to ID
+
+            bool isBanned = false;
+            if (isBanned)
+            {
+                manager.Send(LobbyManager.Instance.Banned());
+                manager.CloseSocket();
+                return;
+            }
+
+            var player = Game.Instance.CreatePlayer(manager, userId);
+
+            manager.Send(LobbyManager.Instance.Authenticated(player));
+        }
     }
 }

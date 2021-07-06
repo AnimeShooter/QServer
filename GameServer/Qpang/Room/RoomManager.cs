@@ -11,6 +11,11 @@ namespace Qserver.GameServer.Qpang
         private Dictionary<uint, Room> _rooms;
         private GameModeManager _gameModeManager;
 
+        public GameModeManager GameModeManager
+        {
+            get { return this._gameModeManager; }
+        }
+
         public RoomManager()
         {
             this._lock = new object();

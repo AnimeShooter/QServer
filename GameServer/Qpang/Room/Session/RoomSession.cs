@@ -42,5 +42,9 @@ namespace Qserver.GameServer.Qpang
         private RoomSessionPlayer _nexYellowVIP;
         private DateTime _yellowVIPSetTime;
 
+        public void RemovePlayer(uint id)
+        {
+
+        }
     }
 }

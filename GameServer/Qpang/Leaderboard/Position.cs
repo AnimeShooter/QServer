@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Qserver.GameServer.Qpang
 {
-    public struct Position
+    public struct LeaderboardPosition
     {
         public uint Rank;
         public uint Difference;

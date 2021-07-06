@@ -16,13 +16,20 @@ namespace Qserver.GameServer.Network.Managers
         {
             PacketWriter pw = new PacketWriter(Opcode.LOBBY_LOGIN_RSP, 0x05);
             pw.WriteUInt32(player.PlayerId);
-            pw.WriteBytes(new byte[42]);
+            pw.WriteBytes(new byte[42]); // OG 42
 
-            pw.WriteWString(player.Name, 16);
+            //pw.WriteString(player.Name, 32);
+            //pw.WriteString(player.Name, 16);
+            //pw.WriteBytes(new byte[2]);
             //pw.WriteBytes(new byte[16]); // 16 char name
             //
-            //pw.WriteBytes(new byte[16] { 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00 }); // 16 char name
-            //pw.WriteBytes(new byte[16] { 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00 }); // 16 char name
+            //pw.WriteBytes(new byte[16] { 0x42, 0x00, 0x42, 0x00, 0x42, 0x00, 0x42, 0x00, 0x42, 0x00, 0x42, 0x00, 0x42, 0x00, 0x42, 0x00 }); // 16 char name
+            //pw.WriteBytes(new byte[16] { 0x41, 0x41, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00 }); // 16 char name
+            pw.WriteBytes(new byte[16] { 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x00, 0x00 }); // 16 char name
+            //pw.WriteBytes(new byte[16] { 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x00, 0x00 }); // 16 char name
+            //pw.WriteBytes(new byte[8] { 0x41, 0x00, 0x41, 0x00, 0x00, 0x00, 0x00, 0x00}); // 16 char name
+            //pw.WriteBytes(new byte[2]);
+            //pw.WriteBytes(new byte[20]);
 
             pw.WriteUInt32(player.StatsManager.PlayTimeInMinutes);
             pw.WriteUInt32(player.Cash);
@@ -40,7 +47,10 @@ namespace Qserver.GameServer.Network.Managers
             pw.WriteUInt8(1); // accept trade requests
             pw.WriteBytes(new byte[20]);
             pw.WriteUInt8(4); // tutorial status
+                              //pw.WriteBytes(new byte[] { 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04});
+
             pw.WriteBytes(new byte[12]);
+            //pw.WriteBytes(new byte[] { 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04 });
 
             // player containers
             pw.WriteUInt16(200); // max inventory size
@@ -272,8 +282,8 @@ namespace Qserver.GameServer.Network.Managers
                 pw.WriteUInt8(f.State);
                 pw.WriteUInt8(f.IsOnline ? (byte)1 : (byte)0);
                 pw.WriteUInt16(f.Level);
-                pw.WriteWString(f.Nickname, 16);
-                //pw.WriteBytes(new byte[16 * 2 + 2]);
+                //pw.WriteString(f.Nickname, 16);
+                pw.WriteBytes(new byte[16] {0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, });
             }
             return pw;
         }
@@ -312,8 +322,9 @@ namespace Qserver.GameServer.Network.Managers
 
             foreach(var room in rooms)
             {
-
+                //pw.WriteUInt32(room.)
             }
+            throw new NotImplementedException();
         }
         public PacketWriter UpdateGameSettings()
         {
@@ -379,7 +390,10 @@ namespace Qserver.GameServer.Network.Managers
                 pw.WriteUInt64(memo.Id);
                 pw.WriteUInt32(memo.SenderId);
                 pw.WriteUInt32(0); // TODO: memo.Created);
-                pw.WriteWString(memo.Nickname, 16);
+
+                //pw.WriteString(memo.Nickname, 16);
+                pw.WriteBytes(new byte[16] { 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, });
+
                 pw.WriteWString(memo.Message, 100);
                 pw.WriteUInt8(memo.IsOpened ? (byte)1 : (byte)0);
             }
@@ -448,7 +462,10 @@ namespace Qserver.GameServer.Network.Managers
             pw.WriteUInt32(123123); // lol?
             ushort len = (ushort)(message.Length % 254);
             pw.WriteUInt16(len);
-            pw.WriteWString(sender, 16);
+
+            //pw.WriteString(sender, 16);
+            pw.WriteBytes(new byte[16] { 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, });
+
             pw.WriteWString(message, len);
             return pw;
         }
@@ -541,7 +558,10 @@ namespace Qserver.GameServer.Network.Managers
             pw.WriteUInt32(0);
             ushort len = (ushort)(sender.Length % 254);
             pw.WriteUInt16(len);
-            pw.WriteWString(sender, 16);
+
+            //pw.WriteString(sender, 16);
+            pw.WriteBytes(new byte[16] { 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, });
+
             pw.WriteWString(message, len);
             return pw;
         }

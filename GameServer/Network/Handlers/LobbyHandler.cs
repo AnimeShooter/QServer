@@ -111,7 +111,6 @@ namespace Qserver.GameServer.Network.Handlers
         }
         public static void HandleRequestFriendList(PacketReader packet, ConnServer manager)
         {
-            PacketWriter pw = new PacketWriter((Opcode)832);
             List<Friend> friends = manager.Player.FriendManager.List();
             manager.Send(LobbyManager.Instance.FriendList(friends));
         }

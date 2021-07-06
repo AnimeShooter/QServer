@@ -132,7 +132,7 @@ namespace Qserver.GameServer.Network.Handlers
 
             var square = squarePlayer.Square;
             var players = square.ListPlayers();
-            manager.Send(Network.SquareManager.Instance.Players(players, player.PlayerId));
+            manager.Send(SquareManager.Instance.Players(players, player.PlayerId));
         }
 
         public static void HandleUpdatePosition(PacketReader packet, ConnServer manager)

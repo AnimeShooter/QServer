@@ -49,7 +49,7 @@ namespace Qserver.GameServer.Packets
 
             // Square
             PacketManager.DefineOpcodeHandler(Opcode.SQUARE_LOGIN, SquareHandler.HandleConnectRequest); // connect request
-            PacketManager.DefineOpcodeHandler((Opcode)6506, SquareHandler.HandleRequestPlayers);
+            PacketManager.DefineOpcodeHandler(Opcode.SQUARE_PLAYER_JOIN, SquareHandler.HandleRequestPlayers);
             PacketManager.DefineOpcodeHandler((Opcode)6510, SquareHandler.HandleUpdatePosition);
             PacketManager.DefineOpcodeHandler((Opcode)6514, SquareHandler.HandleLeftInventory);
             PacketManager.DefineOpcodeHandler((Opcode)6526, SquareHandler.HandleChatRequest);

@@ -25,7 +25,11 @@ namespace Qserver.GameServer.Qpang
         public EquipmentManager(Player player)
         {
             this._player = player;
-            this._unlockedCharacters = new List<ushort>() { 333, 343, 578, 578, 850, 851 }; // Hardcode all unlocked
+            this._unlockedCharacters = new List<ushort>() { 333, 343, 578, 579, 850, 851 }; // Hardcode all unlocked
+            this._lock = new object();
+            this._functionCardlock = new object();
+            this._equips = new Dictionary<ushort, ulong[]>();
+            this._skillCards = new ulong[3];
 
             lock(this._lock)
             {

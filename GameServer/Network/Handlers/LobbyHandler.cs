@@ -72,6 +72,7 @@ namespace Qserver.GameServer.Network.Handlers
 
         public static void HandleRequestEquippedSkillCards(PacketReader packet, ConnServer manager)
         {
+            Thread.Sleep(-1);
             // TODO
             var skills = new InventoryCard[] { 
                 new InventoryCard()
@@ -231,7 +232,7 @@ namespace Qserver.GameServer.Network.Handlers
         {
             byte[] uuid = packet.ReadBytes(16);
 
-            uint userId = 1;
+            uint userId = 0xFFFF0102;
             // databse UUID to ID
 
             bool isBanned = false;

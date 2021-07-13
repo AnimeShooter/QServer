@@ -122,6 +122,7 @@ namespace Qserver.GameServer.Network.Handlers
 
         public static void HandleRequestPlayers(PacketReader packet, ConnServer manager)
         {
+            Thread.Sleep(-1);
             var player = manager.Player;
             if (player == null)
                 return;

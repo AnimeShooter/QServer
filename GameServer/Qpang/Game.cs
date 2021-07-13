@@ -8,6 +8,32 @@ using Qserver.Util;
 
 namespace Qserver.GameServer.Qpang
 {
+    public enum GameState
+    {
+        LOGIN = 1,
+        WAITROOM,
+        GAME,
+        LOADING,
+        TUTORIAL,
+        UI_SQUARE_STATE
+    }
+
+    public enum GameUIState
+    {
+        NONE_STATE = 0,
+        LOGO_STATE,
+        LOGIN_STATE,
+        WAITROOM_STATE,
+        LOAD_STATE,
+        GAME_STATE,
+        MATCH_STATE,
+        STRUGGLE_STATE = 7,
+        TUTORIAL_STATE = 9,
+        PRACTICE_STATE = 8,
+        SQUARE_STATE = 11,
+        PVE_STATE = 10
+    }
+
     public class Game
     {
         public static Game Instance;

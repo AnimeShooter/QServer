@@ -17,6 +17,8 @@ namespace Qserver.GameServer.Qpang
             this._player = player;
             this._lock = new object();
 
+            this._cards = new Dictionary<ulong, InventoryCard>();
+            this._gifts = new Dictionary<ulong, InventoryCard>();
             // TODO: Database
         }
 

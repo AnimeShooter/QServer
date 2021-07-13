@@ -35,8 +35,8 @@ namespace Qserver.GameServer.Network
                 pw.WriteUInt8(square.PlayerCount);
                 pw.WriteUInt8(square.State);
 
-                //pw.WriteString(square.Name, 16);
-                pw.WriteBytes(new byte[16] { 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, });
+                pw.WriteWString(square.Name, 16);
+                //pw.WriteBytes(new byte[16] { 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, });
 
                 pw.WriteBytes(new byte[33]);
             }
@@ -56,8 +56,8 @@ namespace Qserver.GameServer.Network
             pw.WriteUInt8(square.PlayerCount);
             pw.WriteUInt8(square.State);
 
-            //pw.WriteString(square.Name, 16);
-            pw.WriteBytes(new byte[16] { 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, });
+            pw.WriteWString(square.Name, 16);
+            //pw.WriteBytes(new byte[16] { 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, });
 
             pw.WriteBytes(new byte[33]);
 
@@ -77,8 +77,8 @@ namespace Qserver.GameServer.Network
             pw.WriteUInt8(square.PlayerCount);
             pw.WriteUInt8(square.State);
             
-            //pw.WriteString(square.Name, 16);
-            pw.WriteBytes(new byte[16] { 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, });
+            pw.WriteWString(square.Name, 16);
+            //pw.WriteBytes(new byte[16] { 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, });
 
             pw.WriteBytes(new byte[33]);
 
@@ -97,17 +97,18 @@ namespace Qserver.GameServer.Network
             pw.WriteUInt32(squarePlayer.State);
             pw.WriteUInt32(squarePlayer.Player.PlayerId);
             
-            //pw.WriteString(squarePlayer.Player.Name, 16);
-            pw.WriteBytes(new byte[16] { 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, });
+            pw.WriteWString(squarePlayer.Player.Name, 16);
+            //pw.WriteBytes(new byte[16] { 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, });
 
             pw.WriteUInt8((byte)squarePlayer.Player.Level);
             pw.WriteUInt8((byte)squarePlayer.Player.Rank);
             pw.WriteUInt16(0);
             pw.WriteUInt16(squarePlayer.Player.Character);
             pw.WriteUInt32(0); // TODO: select weapon
-            //pw.WriteBytes(squarePlayer.Player.EquipmentManager.)
-            pw.WriteBytes(new byte[9 * 4]);
-            pw.WriteBytes(new byte[12]);
+
+            foreach(var armor in squarePlayer.Player.EquipmentManager.GetArmorItemIdsByCharacter(squarePlayer.Player.Character))
+                pw.WriteUInt32(armor); // 9
+
             pw.WriteFloat(squarePlayer.Position[0]);
             pw.WriteFloat(squarePlayer.Position[1]);
             pw.WriteFloat(squarePlayer.Position[2]);
@@ -119,8 +120,8 @@ namespace Qserver.GameServer.Network
         {
             PacketWriter pw = new PacketWriter((Opcode)6529);
 
-            //pw.WriteString(sender, 16);
-            pw.WriteBytes(new byte[16] { 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, });
+            pw.WriteWString(sender, 16);
+            //pw.WriteBytes(new byte[16] { 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, });
 
             ushort len = (ushort)(message.Length % 254);
             pw.WriteUInt16(len);
@@ -160,7 +161,7 @@ namespace Qserver.GameServer.Network
         public PacketWriter Players(List<SquarePlayer> squarePlayers, uint playerId)
         {
             //return;
-            PacketWriter pw = new PacketWriter((Opcode)6508);
+            PacketWriter pw = new PacketWriter(Opcode.SQUARE_LOAD_PLAYERS);
 
             ushort len = (ushort)squarePlayers.Count;
             //ushort len = 0; // (ushort)squarePlayers.Count;
@@ -170,6 +171,7 @@ namespace Qserver.GameServer.Network
             pw.WriteUInt16(len);
 
             for(int i = 0; i < 100; i++)
+            //for(int i = 0; i < len; i++)
             {
                 if (i < len)
                 {
@@ -177,9 +179,9 @@ namespace Qserver.GameServer.Network
                     pw.WriteUInt32(squarePlayers[i].State);             // 4
                     pw.WriteUInt32(squarePlayers[i].Player.PlayerId);   // 8
 
-                    pw.WriteBytes(new byte[16] { 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, });
-                    pw.WriteBytes(new byte[16] { 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x00, 0x00, }); // idk?
-                    //pw.WriteString(squarePlayers[i].Player.Name, 16);  // 40
+                    //pw.WriteBytes(new byte[16] { 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, });
+                    //pw.WriteBytes(new byte[16] { 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x42, 0x00, }); // idk?
+                    pw.WriteWString(squarePlayers[i].Player.Name, 16);  // 40
 
                     pw.WriteUInt8((byte)squarePlayers[i].Player.Level); // 41
                     pw.WriteUInt8((byte)squarePlayers[i].Player.Rank);  // 42

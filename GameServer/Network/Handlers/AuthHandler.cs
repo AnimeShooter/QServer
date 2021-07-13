@@ -21,10 +21,10 @@ namespace Qserver.GameServer.Network.Handlers
 
         public static void HandleLoginRequest(PacketReader packet, ConnServer manager)
         {
-            packet.ReadBytes(16); // unk
-            byte[] wUsername = packet.ReadBytes(20); // wchar convert!
-            byte[] wPassword = packet.ReadBytes(16); // wchar convert!
-            packet.ReadBytes(12); // unk
+            packet.ReadBytes(20); // unk
+            byte[] wUsername = packet.ReadBytes(42); // wchar convert!
+            byte[] wPassword = packet.ReadBytes(32); // wchar convert!
+            byte[] skip = packet.ReadBytes(10); // unk
             int version = packet.ReadInt32();
 
             // TODO: revision
@@ -38,7 +38,7 @@ namespace Qserver.GameServer.Network.Handlers
 
             // TODO: database check
 
-            manager.Send(AuthManager.Instance.LoginSuccess(new byte[16] {0x7F, 0x00, 0x00, 0x01, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F }, 0x0100007F)); // game host local
+            manager.Send(AuthManager.Instance.LoginSuccess(new byte[16] {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F }, 0x0100007F)); // game host local
         }
     }
 }

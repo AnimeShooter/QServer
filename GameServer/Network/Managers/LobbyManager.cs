@@ -169,22 +169,29 @@ namespace Qserver.GameServer.Network.Managers
                 pw.WriteUInt16(channel.MaxPlayers);
                 pw.WriteBytes(new byte[51]); // OG 51
 
-                pw.WriteBytes(new byte[1]); // idk
+                pw.WriteBytes(new byte[1]); // idk ?
             }
 
             return pw;
         }
 
-        public PacketWriter ChannelHost(uint id)
+        public PacketWriter ChannelHost(Channel channel)
         {
             PacketWriter pw = new PacketWriter(Opcode.LOBBY_CHANNEL_CONNECT_RSP, 0x05);
 
-            pw.WriteUInt32(id);
-            pw.WriteUInt64(02);
-            pw.WriteUInt32(0x0100007F);
-            pw.WriteUInt32(01);
-            pw.WriteUInt32(04);
-            pw.WriteUInt32(03);
+            pw.WriteUInt32(channel.Id);
+            pw.WriteUInt64(00);
+
+            string[] ipSplit = channel.IP.Split('.');
+            if(ipSplit.Length != 4)
+                pw.WriteUInt32(0x0100007F);
+            else
+                for (int i = 0; i < 4; i++)
+                    pw.WriteUInt8(Convert.ToByte(ipSplit[i]));
+
+            pw.WriteUInt32(00);
+            pw.WriteUInt32(00);
+            pw.WriteUInt32(00);
             
             return pw;
         }

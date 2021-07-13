@@ -14,6 +14,7 @@ namespace Qserver.GameServer.Qpang
         public byte MaxLevel;
         public ushort MaxPlayers;
         public ushort CurrPlayers;
+        public string IP;
     }
 
     public class ChannelManager
@@ -21,7 +22,6 @@ namespace Qserver.GameServer.Qpang
         private ChannelsRepository _channelsRepository;
         private Dictionary<uint, Channel> _channels;
 
-        
         public ChannelManager()
         {
             this._channelsRepository = new ChannelsRepository(DatabaseManager.MySqlFactory);
@@ -30,6 +30,21 @@ namespace Qserver.GameServer.Qpang
             {
                 this._channels.Add(c.Id, c);
             }
+        }
+
+        public List<Channel> List()
+        {
+            List<Channel> channels = new List<Channel>();
+            foreach (var c in this._channels)
+                channels.Add(c.Value);
+            return channels;
+        }
+
+        public Channel GetChannel(uint channelId)
+        {
+            if (this._channels.ContainsKey(channelId))
+                return this._channels[channelId];
+            return new Channel(); // default?
         }
     }
 }

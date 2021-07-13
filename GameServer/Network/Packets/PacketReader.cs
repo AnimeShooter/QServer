@@ -81,6 +81,7 @@ namespace Qserver.GameServer.Network.Packets
                 Length = this.ReadUInt16(),
                 Opcode = this.ReadUInt16()
             };
+            this.ReadInt32(); // skip first 4?
         }
 
         public sbyte ReadInt8()

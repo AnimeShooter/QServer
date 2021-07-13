@@ -15,31 +15,15 @@ namespace Qserver.GameServer.Network.Handlers
         #region Channel
         public static void HandleChannelList(PacketReader packet, ConnServer manager)
         {
-            var list = new List<Channel>();
-            list.Add(new Channel()
-            {
-                CurrPlayers = 59,
-                MaxLevel = 99,
-                MinLevel = 0,
-                MaxPlayers = 120,
-                Name = "Kim kAm qPong?",
-                Id = 1
-            });
-            list.Add(new Channel()
-            {
-                CurrPlayers = 0,
-                MaxLevel = 99,
-                MinLevel = 0,
-                MaxPlayers = 10,
-                Name = "Public Test Realm",
-                Id = 2
-            });
+            var list = Game.Instance.ChannelManager.List();
             manager.Send(LobbyManager.Instance.ChannelList(list));
         }
         public static void HandleChannelHost(PacketReader packet, ConnServer manager)
         {
-            uint channelId = packet.ReadUInt32();
-            manager.Send(LobbyManager.Instance.ChannelHost(channelId));
+            uint channelId = packet.ReadUInt32(); // junk?
+            //uint channelId2 = packet.ReadUInt32(); // junk?
+            Channel channel = Game.Instance.ChannelManager.GetChannel(channelId);
+            manager.Send(LobbyManager.Instance.ChannelHost(channel));
         }
         #endregion Channel
 
@@ -72,7 +56,7 @@ namespace Qserver.GameServer.Network.Handlers
 
         public static void HandleRequestEquippedSkillCards(PacketReader packet, ConnServer manager)
         {
-            Thread.Sleep(-1);
+            //Thread.Sleep(-1);
             // TODO
             var skills = new InventoryCard[] { 
                 new InventoryCard()
@@ -231,7 +215,6 @@ namespace Qserver.GameServer.Network.Handlers
         public static void HandleLobbyLogin(PacketReader packet, ConnServer manager)
         {
             byte[] uuid = packet.ReadBytes(16);
-
             uint userId = 0xFFFF0102;
             // databse UUID to ID
 

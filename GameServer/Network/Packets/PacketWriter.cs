@@ -64,10 +64,10 @@ namespace Qserver.GameServer.Network.Packets
             payload[2] = opcodeBytes[0];
             payload[3] = opcodeBytes[1];
             // unk
-            //payload[4] = opcodeBytes[1];
-            //payload[5] = opcodeBytes[1];
-            //payload[6] = opcodeBytes[1];
-            //payload[7] = opcodeBytes[1];
+            //payload[4] = 0x42;// opcodeBytes[1];
+            //payload[5] = 0x42;//opcodeBytes[1];
+            //payload[6] = 0x42;//opcodeBytes[1];
+            //payload[7] = 0x42;//opcodeBytes[1];
             Seek(0, SeekOrigin.Begin);
 
             for (int i = 8; i < Size; i++)
@@ -80,7 +80,6 @@ namespace Qserver.GameServer.Network.Packets
                 b.CompatMode = true;
                 //header[2] = 0x05; // auth
             }
-
 
             var final = new List<byte>();
             final.AddRange(header);

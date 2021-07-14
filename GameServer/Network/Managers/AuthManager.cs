@@ -31,10 +31,10 @@ namespace Qserver.GameServer.Network.Managers
             return pw;
         }
 
-        public PacketWriter LoginSuccess(byte[] uuid, int gameHost)
+        public PacketWriter LoginSuccess(byte[] uuid, uint gameHost)
         {
             PacketWriter pw = new PacketWriter(Opcode.AUTH_LOGIN_RSP, 0x05);
-            pw.WriteInt32(gameHost);
+            pw.WriteUInt32(gameHost);
             pw.WriteBytes(uuid);
             return pw;
         }

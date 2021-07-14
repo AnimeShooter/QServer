@@ -34,11 +34,18 @@ namespace Qserver.GameServer.Network.Handlers
             //    manager.Send(LoginHandler.Instance.InvalidUsername());
             //    return;
             //}
-                
+
 
             // TODO: database check
 
-            manager.Send(AuthManager.Instance.LoginSuccess(new byte[16] {0xf0, 0x01, 0xf2, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0xEE, 0xFF }, 0x0100007F)); // game host local
+            // TODO: get IP from next!
+
+            uint IP = 0x0100007F;
+            string[] ipSplit = Settings.SERVER_IP.Split('.');
+            if (ipSplit.Length == 4)
+                IP = (uint)((Convert.ToByte(ipSplit[3]) * 0x1_00_00_00) + (Convert.ToByte(ipSplit[2]) * 0x1_00_00) + (Convert.ToByte(ipSplit[1]) * 0x1_00) + (Convert.ToByte(ipSplit[0])));
+
+            manager.Send(AuthManager.Instance.LoginSuccess(new byte[16] {0xf0, 0x01, 0xf2, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0xEE, 0xFF }, IP)); // game host local
         }
     }
 }

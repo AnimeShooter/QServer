@@ -29,7 +29,12 @@ namespace Qserver.GameServer.Network
         {
             PacketReader pkt = new PacketReader(buffer, "test", KeyPart);
             if (Enum.IsDefined(typeof(Opcode), pkt.Opcode))
+            {
+#if DEBUG
                 Log.Message(LogType.DUMP, $"[] Recieved OpCode: {pkt.Opcode}, len: {pkt.Size}\n");
+#endif
+            }
+                
             else
                 Log.Message(LogType.DUMP, $"[] Unknown OpCode: {pkt.Opcode}, len: {pkt.Size}\n");
 
@@ -39,8 +44,10 @@ namespace Qserver.GameServer.Network
 
         public void RecieveAuth()
         {
-            //try
-            //{
+#if !DEBUG
+            try
+            {
+#endif
                 Log.Message(LogType.MISC, "New Client Login Detected");
                 while (Server.ListenServerSocket)
                 {
@@ -52,15 +59,16 @@ namespace Qserver.GameServer.Network
                         OnData(buffer);
                     }
                 }
-
                 CloseSocket();
-            //}
-            //catch (Exception e)
-            //{
-            //    // Shutup & be gone!
-            //    Log.Message(LogType.ERROR, e.ToString());
-            //    CloseSocket();
-            //}
+#if !DEBUG
+            }
+            catch (Exception e)
+            {
+                // Shutup & be gone!
+                Log.Message(LogType.ERROR, e.ToString());
+                CloseSocket();
+            }
+#endif
         }
 
         public void Send(PacketWriter packet, bool SuppressLog = false, bool isAck = false)
@@ -73,11 +81,13 @@ namespace Qserver.GameServer.Network
             try
             {
                 Socket.BeginSend(buffer, 0, buffer.Length, SocketFlags.None, new AsyncCallback(FinishSend), Socket);
+#if DEBUG
                 Log.Message(LogType.DUMP, $"Send {packet.Opcode}.\n");
                 string bytes = "";
                 foreach (var b in buffer)
                     bytes += b.ToString("X2") + " ";
                 Log.Message(LogType.DUMP, bytes + "\n");
+#endif
             }
             catch (Exception ex)
             {

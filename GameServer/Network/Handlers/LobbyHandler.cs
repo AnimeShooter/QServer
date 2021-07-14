@@ -183,7 +183,11 @@ namespace Qserver.GameServer.Network.Handlers
         #region Memo
         public static void HandleRequestMemos(PacketReader packet, ConnServer manager)
         {
-            throw new NotImplementedException();
+            if (manager.Player == null)
+                return;
+
+            List<Memo> memos = manager.Player.MemoManager.List();
+            manager.Send(LobbyManager.Instance.Memos(memos));
         }
         #endregion
 
@@ -241,7 +245,7 @@ namespace Qserver.GameServer.Network.Handlers
         public static void HandleRequestShopPackages(PacketReader packet, ConnServer manager)
         {
             // TODO
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
         #endregion
 

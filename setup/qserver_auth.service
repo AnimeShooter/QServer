@@ -1,0 +1,15 @@
+[Unit]
+Description=QPang Auth Server
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=Always
+RestartSec=15
+User=QPang
+ExecStart=/usr/bin/dotnet /home/QPang/QPangServer.dll --NoLobby
+WorkingDirectory=/home/QPang/
+KillSignal=SIGINT
+
+[Install]
+WantedBy=multi-user.target

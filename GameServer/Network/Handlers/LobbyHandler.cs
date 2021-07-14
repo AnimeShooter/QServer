@@ -229,14 +229,18 @@ namespace Qserver.GameServer.Network.Handlers
         #region Shop
         public static void HandleBuyCardEvent(PacketReader packet, ConnServer manager)
         {
-            throw new NotImplementedException();
+            //uint seqId = packet.ReadUInt32();
+            //if (manager.Player != null)
+            //    Game.Instance.ShopManager.Buy(manager.Player, seqId);
         }
         public static void HandleRequestShopItems(PacketReader packet, ConnServer manager)
         {
-            throw new NotImplementedException();
+            List<ShopItem> items = Game.Instance.ShopManager.List();
+            manager.Send(LobbyManager.Instance.ShopItems(items));
         }
         public static void HandleRequestShopPackages(PacketReader packet, ConnServer manager)
         {
+            // TODO
             throw new NotImplementedException();
         }
         #endregion

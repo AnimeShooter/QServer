@@ -140,19 +140,19 @@ namespace Qserver.GameServer.Qpang
             this._channelManager = new ChannelManager();
             this._shopManager = new ShopManager();
             this._squareManager = new SquareManager();
-            this._chatManager = new ChatManager();
-            this._weaponManager = new WeaponManager();
+            this._chatManager = new ChatManager(); // TODO
+            this._weaponManager = new WeaponManager(); // TODO
             this._spawnManager = new SpawnManager();
             this._skillManager = new SkillManager();
             this._levelManger = new LevelManager();
             this._craneManager = new CraneManager();
-            this._leaderboard = new Leaderboard();
-            this._roomServer = new RoomServer();
+            this._leaderboard = new Leaderboard(); // TODO
+            this._roomServer = new RoomServer(); // TODO
 
             Instance = this;
         }
 
-        public void tick()
+        public void Tick()
         {
             while(true)
             {

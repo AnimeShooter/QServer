@@ -23,11 +23,7 @@ namespace Qserver.GameServer.Network
         {
             try
             {
-#if DEBUG
                 _listener = new TcpListener(IPAddress.Parse(Settings.SERVER_IP), this._port);
-#else
-                _authListener = new TcpListener(Util.Util.GetLocalIPAddress(), Settings.SERVER_PORT_AUTH);
-#endif
                 _listener.Start();
 
                 return true;

@@ -15,5 +15,12 @@ namespace Qserver.GameServer
         public static int SERVER_PORT_PARK = 8005; // Park
         public static int SERVER_PORT_SQUARE = 8012; // Square
         public static int WS_PORT = 8826; // Website
+
+#if DEBUG
+        public static bool DEBUG = true;
+#else
+        public static bool DEBUG = false;
+#endif
+
     }
 }

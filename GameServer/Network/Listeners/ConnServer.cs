@@ -28,13 +28,9 @@ namespace Qserver.GameServer.Network
         public void OnData(byte[] buffer)
         {
             PacketReader pkt = new PacketReader(buffer, "test", KeyPart);
-            if (Enum.IsDefined(typeof(Opcode), pkt.Opcode))
-            {
-#if DEBUG
-                Log.Message(LogType.DUMP, $"[] Recieved OpCode: {pkt.Opcode}, len: {pkt.Size}\n");
-#endif
-            }
-                
+            if (Enum.IsDefined(typeof(Opcode), pkt.Opcode)) 
+                if(Settings.DEBUG)
+                    Log.Message(LogType.DUMP, $"[] Recieved OpCode: {pkt.Opcode}, len: {pkt.Size}\n");
             else
                 Log.Message(LogType.DUMP, $"[] Unknown OpCode: {pkt.Opcode}, len: {pkt.Size}\n");
 
@@ -81,13 +77,14 @@ namespace Qserver.GameServer.Network
             try
             {
                 Socket.BeginSend(buffer, 0, buffer.Length, SocketFlags.None, new AsyncCallback(FinishSend), Socket);
-#if DEBUG
-                Log.Message(LogType.DUMP, $"Send {packet.Opcode}.\n");
-                string bytes = "";
-                foreach (var b in buffer)
-                    bytes += b.ToString("X2") + " ";
-                Log.Message(LogType.DUMP, bytes + "\n");
-#endif
+                if (Settings.DEBUG)
+                { 
+                    Log.Message(LogType.DUMP, $"Send {packet.Opcode}.\n");
+                    string bytes = "";
+                    foreach (var b in buffer)
+                        bytes += b.ToString("X2") + " ";
+                    Log.Message(LogType.DUMP, bytes + "\n");
+                }
             }
             catch (Exception ex)
             {

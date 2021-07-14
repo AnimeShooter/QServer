@@ -43,6 +43,7 @@ namespace Qserver.GameServer
                                      $"{"--NoSquare".PadRight(20)}: Exclude SquareServer\n" +
                                      $"{"--NoLobby".PadRight(20)}: Exclude LobbyServer\n" +
                                      $"{"--WebSocket".PadRight(20)}: Inlcude WebSocket\n" +
+                                     $"{"--Debug".PadRight(20)}: Print Debug Info\n" +
                                      $"{"--CLI".PadRight(20)}: Enabled the CLI\n");
         }
 
@@ -79,6 +80,8 @@ namespace Qserver.GameServer
                     startLobbyServer = false;
                     startSquareServer = false;
                 }
+                else if (arg.Equals("--Debug", StringComparison.OrdinalIgnoreCase))
+                    Settings.DEBUG = true;
                 else if (arg.Equals("--CLI", StringComparison.OrdinalIgnoreCase))
                     useCLI = true;
             }

@@ -33,7 +33,7 @@ namespace Qserver.Util
                     Console.ForegroundColor = ConsoleColor.Cyan;
                     break;
                 case LogType.MISC:
-                    Console.ForegroundColor = ConsoleColor.DarkBlue;
+                    Console.ForegroundColor = ConsoleColor.Magenta;
                     break;
                 case LogType.CMD:
                     Console.ForegroundColor = ConsoleColor.Green;

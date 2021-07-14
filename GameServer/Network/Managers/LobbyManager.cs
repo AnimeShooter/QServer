@@ -399,8 +399,8 @@ namespace Qserver.GameServer.Network.Managers
                 pw.WriteUInt32(memo.SenderId);
                 pw.WriteUInt32(0); // TODO: memo.Created);
 
-                //pw.WriteString(memo.Nickname, 16);
-                pw.WriteBytes(new byte[16] { 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, });
+                pw.WriteWString(memo.Nickname, 16);
+                //pw.WriteBytes(new byte[16] { 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, });
 
                 pw.WriteWString(memo.Message, 100);
                 pw.WriteUInt8(memo.IsOpened ? (byte)1 : (byte)0);
@@ -471,7 +471,7 @@ namespace Qserver.GameServer.Network.Managers
             ushort len = (ushort)(message.Length % 254);
             pw.WriteUInt16(len);
 
-            pw.WriteString(sender, 16);
+            pw.WriteWString(sender, 16);
             //pw.WriteBytes(new byte[16] { 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, });
 
             pw.WriteWString(message, len);
@@ -576,7 +576,8 @@ namespace Qserver.GameServer.Network.Managers
         public PacketWriter UpdateCashBalance(uint cash)
         {
             PacketWriter pw = new PacketWriter((Opcode)832);
-            pw.WriteUInt32(cash);
+            //pw.WriteUInt32(cash);
+            pw.WriteUInt32(999999);
             return pw;
         }
         public PacketWriter UpdateCharacter(ushort character)

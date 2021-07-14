@@ -20,8 +20,7 @@ namespace Qserver.GameServer.Network.Handlers
         }
         public static void HandleChannelHost(PacketReader packet, ConnServer manager)
         {
-            uint channelId = packet.ReadUInt32(); // junk?
-            //uint channelId2 = packet.ReadUInt32(); // junk?
+            uint channelId = packet.ReadUInt32();
             Channel channel = Game.Instance.ChannelManager.GetChannel(channelId);
             manager.Send(LobbyManager.Instance.ChannelHost(channel));
         }

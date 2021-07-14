@@ -161,12 +161,11 @@ namespace Qserver.GameServer.Network.Packets
 
         public new string ReadWString(int len)
         {
-            byte[] str = ReadBytes(len);
+            byte[] str = ReadBytes(len*2+2);
             string result = "";
-            for(int i = 0; i < len; i+=2)
-            {
-                result += str[i];
-            }
+            for(int i = 0; i < len * 2 + 2; i+=2)
+                if(str[i] != 0x00)
+                    result += (char)str[i];
             return result;
         }
 

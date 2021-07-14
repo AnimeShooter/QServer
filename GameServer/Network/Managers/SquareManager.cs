@@ -78,13 +78,15 @@ namespace Qserver.GameServer.Network
             pw.WriteUInt8(square.State);
             
             pw.WriteWString(square.Name, 16);
-            //pw.WriteBytes(new byte[16] { 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, });
+            //pw.WriteBytes(new byte[16] { 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00 });
+            //pw.WriteBytes(new byte[16] { 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00 });
+            //pw.WriteInt16(0);
 
             pw.WriteBytes(new byte[33]);
 
-            pw.WriteFloat(0f); // squarePlayer.Position.X)
-            pw.WriteFloat(0f); //squarePlayer.Position.Y)
-            pw.WriteFloat(0f); //squarePlayer.Position.Z)
+            pw.WriteFloat(squarePlayer.Position[0]);
+            pw.WriteFloat(squarePlayer.Position[1]);
+            pw.WriteFloat(squarePlayer.Position[2]);
 
             return pw;
         }
@@ -109,6 +111,7 @@ namespace Qserver.GameServer.Network
             foreach(var armor in squarePlayer.Player.EquipmentManager.GetArmorItemIdsByCharacter(squarePlayer.Player.Character))
                 pw.WriteUInt32(armor); // 9
 
+            pw.WriteBytes(new byte[2]);
             pw.WriteFloat(squarePlayer.Position[0]);
             pw.WriteFloat(squarePlayer.Position[1]);
             pw.WriteFloat(squarePlayer.Position[2]);
@@ -189,7 +192,10 @@ namespace Qserver.GameServer.Network
                     pw.WriteUInt16(squarePlayers[i].Player.Character);  // 46
                     pw.WriteUInt32(0); // TODO: select weapon           // 50
                     //pw.WriteBytes(squarePlayer.Player.EquipmentManager.)
-                    pw.WriteBytes(new byte[9 * 4]);                     // 86
+
+                    foreach (var armor in squarePlayers[i].Player.EquipmentManager.GetArmorItemIdsByCharacter(squarePlayers[i].Player.Character))
+                        pw.WriteUInt32(armor); // 9
+
                     pw.WriteBytes(new byte[2]);                         // 88
                     pw.WriteFloat(squarePlayers[i].Position[0]);        // 92
                     pw.WriteFloat(squarePlayers[i].Position[1]);        // 96

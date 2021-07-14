@@ -118,19 +118,48 @@ namespace Qserver.GameServer.Network.Handlers
         #region Inventory
         public static void HandleDeleteCard(PacketReader packet, ConnServer manager)
         {
-            throw new NotImplementedException();
+            var cardId = packet.ReadUInt64();
+            var player = manager.Player;
+            if (player == null)
+                return;
+
+            player.InventoryManager.DeleteCard(cardId);
         }
         public static void HandleDisableFunctionCardEvent(PacketReader packet, ConnServer manager)
         {
-            throw new NotImplementedException();
+            var cardId = packet.ReadUInt64();
+            var player = manager.Player;
+            if (player == null)
+                return;
+
+            var card = player.InventoryManager.Get(cardId);
+
+            if (ItemID.IsEquippableFunction(card.ItemId))
+                player.InventoryManager.SetCardActive(card.Id, false);
         }
         public static void HandleEnableFunctionCardEvent(PacketReader packet, ConnServer manager)
         {
-            throw new NotImplementedException();
+            var cardId = packet.ReadUInt64();
+            var player = manager.Player;
+            if (player == null)
+                return;
+
+            var card = player.InventoryManager.Get(cardId);
+
+            if (ItemID.IsEquippableFunction(card.ItemId))
+                player.InventoryManager.SetCardActive(card.Id, true);
         }
         public static void HandleExtendCardEvent(PacketReader packet, ConnServer manager)
         {
-            throw new NotImplementedException();
+            ulong cardId = packet.ReadUInt64();
+            uint itemId = packet.ReadUInt32();
+            byte unk1 = packet.ReadUInt8();
+            uint price = packet.ReadUInt32();
+            uint seqId = packet.ReadUInt32();
+            byte flag = packet.ReadUInt8();
+            ushort kek = packet.ReadUInt16(); // lol xD
+
+            // NOTE: Unused?
         }
         public static void HandleGiftCardEvent(PacketReader packet, ConnServer manager)
         {
@@ -146,7 +175,8 @@ namespace Qserver.GameServer.Network.Handlers
         }
         public static void HandleRequestInventory(PacketReader packet, ConnServer manager)
         {
-            throw new NotImplementedException();
+            List<InventoryCard> cards = manager.Player.InventoryManager.List();
+            manager.Send(LobbyManager.Instance.Inventory(cards));
         }
         #endregion
 

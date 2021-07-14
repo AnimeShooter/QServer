@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Qserver.GameServer.Network.Managers;
 
 namespace Qserver.GameServer.Qpang
 {
@@ -64,13 +65,53 @@ namespace Qserver.GameServer.Qpang
 
         public void DeleteCard(ulong cardId)
         {
-            // TODO
+            if (!HasCard(cardId))
+                return;
+
+            lock(this._lock)
+            {
+                if (this._player == null)
+                    return;
+
+                bool isEquiped = this._player.EquipmentManager.HasEquipped(cardId);
+                if (isEquiped)
+                    return;
+
+                this._cards.Remove(cardId);
+
+                // TODO: remove from database!
+
+                this._player.SendLobby(LobbyManager.Instance.RemoveCard(cardId));
+            }
+
             return;
         }
 
         public void SetCardActive(ulong cardId, bool isActive)
         {
-            // TODO:
+            lock(this._lock)
+            {
+                if (!this._cards.ContainsKey(cardId))
+                    return;
+
+                var card = this._cards[cardId];
+                var duplicate = this._player.EquipmentManager.HasFunctionCard(card.ItemId);
+
+                if(isActive && !duplicate)
+                {
+                    card.TimeCreated = DateTime.UtcNow;
+                    card.IsActive = true;
+                    this._player.EquipmentManager.AddFunctionCard(cardId);
+                    this._player.SendLobby(LobbyManager.Instance.EnabledFunctionCard(card));
+                }else if(!isActive && duplicate)
+                {
+                    card.IsActive = true;
+                    this._player.EquipmentManager.AddFunctionCard(cardId);
+                    this._player.SendLobby(LobbyManager.Instance.EnabledFunctionCard(card));
+                }
+
+                this._cards[card.Id] = card;
+            }
             return;
         }
 

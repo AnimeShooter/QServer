@@ -42,7 +42,8 @@ namespace Qserver.GameServer
                                      $"{"--NoGameServer, --NoGame".PadRight(20)}: Exclude GameServer\n" +
                                      $"{"--NoSquare".PadRight(20)}: Exclude SquareServer\n" +
                                      $"{"--NoLobby".PadRight(20)}: Exclude LobbyServer\n" +
-                                     $"{"--WebSocket".PadRight(20)}: Inlcude WebSocket\n");
+                                     $"{"--WebSocket".PadRight(20)}: Inlcude WebSocket\n" +
+                                     $"{"--CLI".PadRight(20)}: Enabled the CLI\n");
         }
 
         public static void Start(string[] args)
@@ -60,6 +61,7 @@ namespace Qserver.GameServer
             bool startSquareServer = true;
             bool startLobbyServer = true;
             bool startWebsocketServer = false;
+            bool useCLI = false;
             //bool startGameServer = true;
 
             foreach(var arg in args)
@@ -77,6 +79,8 @@ namespace Qserver.GameServer
                     startLobbyServer = false;
                     startSquareServer = false;
                 }
+                else if (arg.Equals("--CLI", StringComparison.OrdinalIgnoreCase))
+                    useCLI = true;
             }
 
             // Auth Server
@@ -92,10 +96,10 @@ namespace Qserver.GameServer
             if(startSquareServer || startLobbyServer) // Square always on?
             {
                 Game game = new Game(startLobbyServer);
-                if(startSquareServer)
-                    Log.Message(LogType.NORMAL, $"SquareServer  listening on {Settings.SERVER_IP}:{Settings.SERVER_PORT_SQUARE}");
-                if(startLobbyServer)
+                if (startLobbyServer)
                     Log.Message(LogType.NORMAL, $"LobbyServer   listening on {Settings.SERVER_IP}:{Settings.SERVER_PORT_PARK}");
+                if (startSquareServer)
+                    Log.Message(LogType.NORMAL, $"SquareServer  listening on {Settings.SERVER_IP}:{Settings.SERVER_PORT_SQUARE}");
             }
 
             // Starting websocket
@@ -110,16 +114,23 @@ namespace Qserver.GameServer
 
             GC.Collect();
             Log.Message(LogType.NORMAL, $"Total Memory: {Convert.ToSingle(GC.GetTotalMemory(false) / 1024 / 1024)}MB");
-            Log.Message(LogType.CLI,$"CLI Ready.\n{new string('=', Console.WindowWidth)}\n" + Commands.Help() + $"{new string('=', Console.WindowWidth)}");
 
-            while (true)
+            if (useCLI)
             {
-                var old = Console.ForegroundColor;
-                Console.ForegroundColor = ConsoleColor.Gray;
-                Console.Write(Commands.ExecuteCommand(Console.ReadLine()));
-                Console.ForegroundColor = old;
+                Log.Message(LogType.CLI, $"CLI Ready.\n{new string('=', Console.WindowWidth)}\n" + Commands.Help() + $"{new string('=', Console.WindowWidth)}");
+
+                while (true)
+                {
+                    var old = Console.ForegroundColor;
+                    Console.ForegroundColor = ConsoleColor.Gray;
+                    Console.Write(Commands.ExecuteCommand(Console.ReadLine()));
+                    Console.ForegroundColor = old;
+                }
+                // TODO: listen on console
             }
-            // TODO: listen on console
+            else
+                Thread.Sleep(-1);
+
         }
     }
 }

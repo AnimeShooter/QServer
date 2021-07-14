@@ -120,15 +120,18 @@ namespace Qserver.GameServer.Qpang
             get { return this._leaderboard; }
         }
 
-        public Game()
+        public Game(bool lobby)
         {
             this._lock = new object();
 
             this._players = new Dictionary<uint, Player>();
 
-            this._lobbyServer = new LobbyServer();
-            this._lobbyServer.Server.Start();
-            this._lobbyServer.Server.StartConnectionThreads();
+            if (lobby)
+            {
+                this._lobbyServer = new LobbyServer();
+                this._lobbyServer.Server.Start();
+                this._lobbyServer.Server.StartConnectionThreads();
+            }
 
             this._squareServer = new SquareServer();
             this._squareServer.Server.Start();

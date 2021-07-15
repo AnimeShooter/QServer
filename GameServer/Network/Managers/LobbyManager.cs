@@ -865,10 +865,7 @@ namespace Qserver.GameServer.Network.Managers
             pw.WriteUInt32(0);
             ushort len = (ushort)(sender.Length % 254);
             pw.WriteUInt16(len);
-
             pw.WriteWString(sender, 16);
-            //pw.WriteBytes(new byte[16] { 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, });
-
             pw.WriteWString(message, len);
             return pw;
         }

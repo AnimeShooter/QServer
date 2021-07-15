@@ -163,15 +163,45 @@ namespace Qserver.GameServer.Network.Handlers
         }
         public static void HandleGiftCardEvent(PacketReader packet, ConnServer manager)
         {
-            throw new NotImplementedException();
+            var player = manager.Player;
+            if (player == null)
+                return;
+
+            var nickname = packet.ReadWString(16); // read str terminated
+            var cardId = packet.ReadUInt64();
+            var idk = packet.ReadUInt32();
+
+            var card = player.InventoryManager.Get(cardId);
+
+            if (!card.IsGiftable)
+                return;
+
+            var isEquipped = player.EquipmentManager.HasEquipped(cardId);
+            if (isEquipped)
+                return;
+
+            var targetPlayer = Game.Instance.GetPlayer(nickname);
+            if (targetPlayer == null)
+                return;
+
+            if (!targetPlayer.InventoryManager.HasSpace() || !targetPlayer.InventoryManager.HasGiftSpace())
+                return;
+
+            player.InventoryManager.GiftCard(card, targetPlayer);
         }
         public static void HandleOpenGift(PacketReader packet, ConnServer manager)
         {
-            throw new NotImplementedException();
+            var cardId = packet.ReadUInt64();
+            manager.Player.InventoryManager.OpenGift(cardId);
         }
         public static void HandleRequestGifts(PacketReader packet, ConnServer manager)
         {
-            //throw new NotImplementedException();
+            var player = manager.Player;
+            if (player == null)
+                return;
+
+            var gifts = player.InventoryManager.ListGifts();
+            manager.Send(LobbyManager.Instance.Gifts(gifts));
         }
         public static void HandleRequestInventory(PacketReader packet, ConnServer manager)
         {
@@ -194,7 +224,49 @@ namespace Qserver.GameServer.Network.Handlers
         #region Misc
         public static void HandleUseCraneEvent(PacketReader packet, ConnServer manager)
         {
-            throw new NotImplementedException();
+            var times = packet.ReadUInt16();
+            var player = manager.Player;
+            if (player.InventoryManager.List().Count >= 200 - times)
+                return;
+
+            var craneManager = Game.Instance.CraneManger;
+            if (!craneManager.Enabled)
+                return;
+
+            uint coinsRequired = 0;
+
+            switch(times)
+            {
+                case 1:
+                    coinsRequired = 200;
+                    break;
+                case 3:
+                    coinsRequired = 500;
+                    break;
+                case 7: coinsRequired = 1200;
+                    break;
+                default:
+                    return;
+            }
+
+            if (coinsRequired > player.Coins)
+                return;
+
+            player.RemoveCoins(coinsRequired);
+
+            List<InventoryCard> cards = new List<InventoryCard>();
+
+            for(int i = 0; i < times; i++)
+            {
+                var invCard = craneManager.GetRandomItem();
+                invCard.PlayerOwnedId = player.PlayerId;
+                invCard.IsOpened = true;
+                player.InventoryManager.StoreCard(invCard);
+                cards.Add(invCard);
+            }
+
+            player.SendLobby(LobbyManager.Instance.UseCrainSuccess(player, cards));
+
         }
         #endregion
 

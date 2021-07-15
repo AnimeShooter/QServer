@@ -60,6 +60,7 @@ namespace Qserver.GameServer.Network
             Log.Message(LogType.MISC, "New Client Login Detected");
             while (Server.ListenServerSocket)
             {
+                Thread.Sleep(1);
                 if (Socket.Connected && Socket.Available > 0)
                 {
                     PacketReader pkt = new PacketReader(SocketStream, "test", KeyPart);

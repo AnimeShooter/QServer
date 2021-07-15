@@ -166,6 +166,9 @@ namespace Qserver.GameServer.Qpang
             this._rank = 5;
             this._character = 333;
             this._userId = 0xEEEE0102;
+            this._coins = 3240123;
+            this._don = 420000;
+            this._cash = 420000;
 
             this._inventoryManager = new InventoryManager(this);
             this._equipmentManager = new EquipmentManager(this);

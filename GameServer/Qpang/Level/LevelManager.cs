@@ -1,5 +1,6 @@
 ﻿using Qserver.GameServer.Database;
 using Qserver.GameServer.Database.Repositories;
+using Qserver.Util;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,12 +13,14 @@ namespace Qserver.GameServer.Qpang
         private LevelRepository _levelRepository;
         public LevelManager()
         {
+            Log.Message(LogType.MISC, "Loading Level info from database...");
             this._levelRepository = new LevelRepository(DatabaseManager.MySqlFactory);
             this._levels = new Dictionary<byte, Level>();
             foreach(var l in this._levelRepository.GetLevelInfo().Result)
             {
                 this._levels.Add(l.Lvl, l);
             }
+            Log.Message(LogType.MISC, $"{this._levels.Count} levels have been loaded!");
         }
 
         public Level GetLevelForExperience(uint exp, byte level)

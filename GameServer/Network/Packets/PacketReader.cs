@@ -13,8 +13,8 @@ namespace Qserver.GameServer.Network.Packets
     public struct PacketHeader
     {
         public UInt16 Length;
-        public byte Encryption;
-        public byte Checksum;
+        public byte Sequence;
+        public byte Unk; // crc?
     }
 
     public struct PayloadHeader
@@ -36,13 +36,13 @@ namespace Qserver.GameServer.Network.Packets
         {
             get { return PacketHeader.Length; }
         }
-        public ushort RawSize
+        public ushort PayloadSize
         {
             get { return PayloadHeader.Length; }
         }
         public byte Encryption
         {
-            get { return PacketHeader.Encryption; }
+            get { return PacketHeader.Sequence; }
         }
 
         /// Packet::Header (0)
@@ -52,14 +52,13 @@ namespace Qserver.GameServer.Network.Packets
         private BinaryReader _payload;
 
         public PacketReader(NetworkStream mem, string identifier, byte[] key)
-        //public PacketReader(byte[] data, string identifier, byte[] key)
         {
             _payload = new BinaryReader(mem); // temp
             PacketHeader = new PacketHeader()
             {
-                Length = this.ReadUInt16(),
-                Encryption = this.ReadUInt8(),
-                Checksum = this.ReadUInt8()
+                Length = this.ReadUInt16(), // 0 - 2
+                Sequence = this.ReadUInt8(), // 2 - 3
+                Unk = this.ReadUInt8() // 3 - 4
             };
             if(Encryption > 0)
             {
@@ -77,12 +76,29 @@ namespace Qserver.GameServer.Network.Packets
             else
                 _payload = new BinaryReader(new MemoryStream(this.ReadBytes(PacketHeader.Length - 4)));
 
+            // print bytes
+            byte[] content = new byte[(int)_payload.BaseStream.Length];
+            long index = _payload.BaseStream.Position;
+            _payload.BaseStream.Read(content, 0, (int)_payload.BaseStream.Length);
+            _payload.BaseStream.Position = index;
+
+            string bytes = $"[{PacketHeader.Length.ToString("X2")}] {PacketHeader.Sequence.ToString("X2")} {PacketHeader.Unk.ToString("X2")} ";
+            for(int i = 0; i < content.Length; i++)
+            {
+                bytes += content[i].ToString("X2");
+                if (i != content.Length - 1)
+                    bytes += " ";
+            }
+            Log.Message(LogType.DUMP, bytes);
+
             PayloadHeader = new PayloadHeader()
             {
-                Length = this.ReadUInt16(),
-                Opcode = this.ReadUInt16()
+                Length = this.ReadUInt16(), // 4 - 6
+                Opcode = this.ReadUInt16() // 6 - 8
             };
-            this.ReadInt32(); // skip first 4?
+            byte unk1 = this.ReadUInt8();
+            byte unk2 = this.ReadUInt8();
+            ushort unk3 = this.ReadUInt16();
         }
 
         public sbyte ReadInt8()

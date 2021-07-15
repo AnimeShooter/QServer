@@ -21,6 +21,20 @@ namespace Qserver.GameServer.Qpang
             this._cards = new Dictionary<ulong, InventoryCard>();
             this._gifts = new Dictionary<ulong, InventoryCard>();
             // TODO: Database
+
+            this._cards.Add(1, new InventoryCard()
+            {
+                Id = 1,
+                BoostLevel = 2,
+                IsActive = false,
+                IsGiftable = false,
+                IsOpened = true,
+                ItemId = 1095368711,
+                Period = 2,
+                PeriodeType = 2
+
+
+            });
         }
 
         public List<InventoryCard> List()

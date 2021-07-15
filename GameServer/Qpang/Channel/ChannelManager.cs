@@ -31,7 +31,7 @@ namespace Qserver.GameServer.Qpang
             this._channels = new Dictionary<uint, Channel>();
             foreach(var c in this._channelsRepository.GetChannels().Result)
             {
-                Log.Message(LogType.DUMP, $"[{c.Name}] Max:{c.MaxLevel} @ {c.IP}\n");
+                Log.Message(LogType.DUMP, $"[{c.Name}] MaxP:{c.MaxPlayers} @ {c.IP}\n");
                 this._channels.Add(c.Id, c);
             }
             Log.Message(LogType.MISC, $"{this._channels.Count} Channels loaded!");

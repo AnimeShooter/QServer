@@ -49,15 +49,21 @@ namespace Qserver.GameServer.Network.Handlers
             manager.Send(SquareManager.Instance.SquareList(squares));
         }
 
-        // TODO
         public static void HandleEmoteEevent(PacketReader packet, ConnServer manager)
         {
-            throw new NotImplementedException();
+            var emoteId = packet.ReadUInt32();
+            var player = manager.Player;
+            if (player == null)
+                return;
+
+            if (player.SquarePlayer == null)
+                return;
+
+            player.SquarePlayer.Emote(emoteId);
         }
 
         public static void HandleSquareLogin(PacketReader packet, ConnServer manager) // JoinSquare
         {
-            //Thread.Sleep(-1);
             uint playerId = packet.ReadUInt32();
             uint squareId = packet.ReadUInt32();
 

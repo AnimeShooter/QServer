@@ -162,8 +162,10 @@ namespace Qserver.GameServer.Qpang
 
             // Load player WHERE id = X
             this._name = "[TEST]Ferib";
-            this._level = 1;
-            this._rank = 1;
+            this._level = 21;
+            this._rank = 5;
+            this._character = 333;
+            this._userId = 0xEEEE0102;
 
             this._inventoryManager = new InventoryManager(this);
             this._equipmentManager = new EquipmentManager(this);

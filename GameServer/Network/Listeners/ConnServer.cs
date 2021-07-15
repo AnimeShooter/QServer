@@ -63,7 +63,7 @@ namespace Qserver.GameServer.Network
                 if (Socket.Connected && Socket.Available > 0)
                 {
                     PacketReader pkt = new PacketReader(SocketStream, "test", KeyPart);
-                    if (System.Enum.IsDefined(typeof(Opcode), pkt.Opcode))
+                    if (Enum.IsDefined(typeof(Opcode), pkt.Opcode))
                         if (Settings.DEBUG)
                             Log.Message(LogType.DUMP, $"[{Socket.LocalEndPoint}] Recieved OpCode: {pkt.Opcode}, len: {pkt.Size}\n");
                         else

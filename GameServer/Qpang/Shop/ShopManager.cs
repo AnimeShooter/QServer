@@ -17,9 +17,9 @@ namespace Qserver.GameServer.Qpang
             this._items = new Dictionary<uint, ShopItem>();
             this._orderedItems = new List<ShopItem>();
 
-            Log.Message(LogType.INIT, "Loading shop databse info...");
+            Log.Message(LogType.MISC, "TODO: Loading Shop databse info...");
             // TODO: database
-            Log.Message(LogType.INIT, $"Loaded {0} items from shop!");
+            Log.Message(LogType.MISC, $"{0} Items have been loaded from the Shop!");
         }
 
         public List<ShopItem> List()

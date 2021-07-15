@@ -107,11 +107,11 @@ namespace Qserver.GameServer.Network.Handlers
         #region Gameroom
         public static void HandleRequestGameRoomsEvent(PacketReader packet, ConnServer manager)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
         public static void HandleRequestGameSettingsEvent(PacketReader packet, ConnServer manager)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
         #endregion
 
@@ -171,7 +171,7 @@ namespace Qserver.GameServer.Network.Handlers
         }
         public static void HandleRequestGifts(PacketReader packet, ConnServer manager)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
         public static void HandleRequestInventory(PacketReader packet, ConnServer manager)
         {
@@ -214,7 +214,7 @@ namespace Qserver.GameServer.Network.Handlers
         }
         public static void HandleRequestPlayerRanking(PacketReader packet, ConnServer manager)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
         public static void HandleRestKillDeathEvent(PacketReader packet, ConnServer manager)
         {

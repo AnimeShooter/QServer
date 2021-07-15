@@ -64,33 +64,47 @@ namespace Qserver.GameServer.Qpang
                 Type = 87
             });
 
-            //this._cards.Add(3, new InventoryCard()
-            //{
-            //    Id = 3,
-            //    BoostLevel = 0,
-            //    IsActive = true,
-            //    IsGiftable = false,
-            //    IsOpened = true,
-            //    ItemId = 1124230656,
-            //    Period = 50,
-            //    PeriodeType = 1,
-            //    PlayerOwnedId = this._player.PlayerId,
-            //    Type = 1
-            //});
+            this._cards.Add(3, new InventoryCard()
+            {
+                Id = 3,
+                BoostLevel = 0,
+                IsActive = false,
+                IsGiftable = true,
+                IsOpened = true,
+                ItemId = 1124230656,
+                Period = 500,
+                PeriodeType = 2, // time?
+                PlayerOwnedId = this._player.PlayerId,
+                Type = 86
+            });
 
-            //this._cards.Add(4, new InventoryCard()
-            //{
-            //    Id = 4,
-            //    BoostLevel = 0,
-            //    IsActive = true,
-            //    IsGiftable = false,
-            //    IsOpened = true,
-            //    ItemId = 1124230400,
-            //    Period = 375,
-            //    PeriodeType = 0,
-            //    PlayerOwnedId = this._player.PlayerId,
-            //    Type = 0
-            //});
+            this._cards.Add(4, new InventoryCard()
+            {
+                Id = 4,
+                BoostLevel = 0,
+                IsActive = false,
+                IsGiftable = true,
+                IsOpened = true,
+                ItemId = 1124230400,
+                Period = 375,
+                PeriodeType = 3, // rounds?
+                PlayerOwnedId = this._player.PlayerId,
+                Type = 86
+            });
+
+            this._cards.Add(9, new InventoryCard()
+            {
+                Id = 9,
+                BoostLevel = 0,
+                IsActive = false,
+                IsGiftable = true,
+                IsOpened = true,
+                ItemId = 1095172100,
+                Period = 525,
+                PeriodeType = 3,
+                PlayerOwnedId = this._player.PlayerId,
+                Type = 87
+            });
         }
 
         public List<InventoryCard> List()
@@ -198,17 +212,73 @@ namespace Qserver.GameServer.Qpang
 
         public void StoreCard(InventoryCard card)
         {
+            lock(this._lock)
+            {
+                if (this._player == null)
+                    return;
 
+                // TODO: INSERT INTO player_items (player_id, item_id, period, period_type, type, active, opened, giftable, boosted, boost_level, time) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+
+                //card.Id =;
+                card.TimeCreated = DateTime.UtcNow;
+                card.PlayerOwnedId = this._player.PlayerId;
+
+                AddCard(card);
+            }
         }
 
         public void UseCard(uint cardId, uint playtime)
         {
+            lock(this._lock)
+            {
+                if (this._player == null)
+                    return;
 
+                if (!this._cards.ContainsKey(cardId))
+                    return;
+
+                var card = this._cards[cardId];
+
+                if (card.PeriodeType == 254)
+                    return; // Unlimited
+
+                if (card.PeriodeType == 3) // rounds
+                {
+                    if (card.Period > 0)
+                        card.Period--;
+                }
+                else if (card.PeriodeType == 2) // time based?
+                    card.Period = card.Period <= playtime ? (ushort)0 : (ushort)(card.Period - playtime); 
+
+                if(card.PeriodeType != 254)
+                {
+                    // TODO:   UPDATE player_items SET period = IF(period_type = 3, period - 1, period - ?) WHERE id = ?
+                }
+
+                if(card.Period == 0)
+                {
+                    // expired?
+                    if (card.Type == 86 || card.Type == 87)
+                        this._player.EquipmentManager.UnequipItem(cardId);
+                    else if(card.Type == 70)
+                    {
+                        card.IsActive = false;
+                        this._player.EquipmentManager.RemoveFunctionCard(cardId);
+                    }
+                }
+            }
         }
 
         public bool IsExpired(ulong cardId)
         {
-            return false;
+            lock(this._lock)
+            {
+                if (!this._cards.ContainsKey(cardId))
+                    return true;
+
+                return this._cards[cardId].Period == 0;
+            }
+            return true;
         }
 
         public bool HasSpace()

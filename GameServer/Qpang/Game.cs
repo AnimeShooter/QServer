@@ -61,7 +61,7 @@ namespace Qserver.GameServer.Qpang
         private object _lock;
 
         private Dictionary<uint, Player> _players;
-        private Dictionary<string, Player> _platersByName;
+        private Dictionary<string, Player> _playersByName;
 
         public BanManager BanManager
         {
@@ -125,6 +125,7 @@ namespace Qserver.GameServer.Qpang
             this._lock = new object();
 
             this._players = new Dictionary<uint, Player>();
+            this._playersByName = new Dictionary<string, Player>();
 
             if (lobby)
             {

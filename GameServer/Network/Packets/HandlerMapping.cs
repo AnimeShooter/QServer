@@ -9,10 +9,10 @@ namespace Qserver.GameServer.Packets
         {
             // Authentication
             if(auth)
-            {
-                PacketManager.DefineOpcodeHandler(Opcode.KEY_EXCHANGE, AuthHandler.HandleHandshake);
                 PacketManager.DefineOpcodeHandler(Opcode.AUTH_LOGIN, AuthHandler.HandleLoginRequest);
-            }
+
+            // Always do key exchange?
+            PacketManager.DefineOpcodeHandler(Opcode.KEY_EXCHANGE, AuthHandler.HandleHandshake); 
 
             // Lobby
             if (lobby)

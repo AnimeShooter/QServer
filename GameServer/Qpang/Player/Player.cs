@@ -162,13 +162,17 @@ namespace Qserver.GameServer.Qpang
 
             // Load player WHERE id = X
             this._name = "[TEST]Ferib";
-            this._level = 21;
+            this._level = 32;
             this._rank = 5;
+            this._prestige = 2;
             this._character = 333;
             this._userId = 0xEEEE0102;
             this._coins = 3240123;
             this._don = 420000;
             this._cash = 420000;
+            this._isOnline = true;
+            this._experience = 1_500_000;
+            
 
             this._inventoryManager = new InventoryManager(this);
             this._equipmentManager = new EquipmentManager(this);
@@ -184,6 +188,7 @@ namespace Qserver.GameServer.Qpang
         {
             // TODO
         }
+
         public void EnterSquare(SquarePlayer squarePlayer)
         {
             if (squarePlayer == null)

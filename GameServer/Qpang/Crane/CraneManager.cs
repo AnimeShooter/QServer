@@ -34,12 +34,15 @@ namespace Qserver.GameServer.Qpang
             lock(this._lock)
             {
                 Random rnd = new Random();
-                var item = this._items[rnd.Next(0, this._items.Count)];
+                var index = rnd.Next(0, this._items.Count);
+                var item = this._items[index];
 
                 InventoryCard card = new InventoryCard();
                 card.ItemId = item.item_id;
                 card.Type = item.item_type;
                 card.IsGiftable = true;
+                card.IsOpened = true;
+                card.IsActive = false;
 
                 bool IsUnlimited = (rnd.Next(0, 1000) % 100 == 0); // 1% 
 

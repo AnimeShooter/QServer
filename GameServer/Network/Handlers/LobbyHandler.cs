@@ -335,10 +335,17 @@ namespace Qserver.GameServer.Network.Handlers
         public static void HandleLobbyLogin(PacketReader packet, ConnServer manager)
         {
             byte[] uuid = packet.ReadBytes(16);
-            uint userId = 0xFFFF0102;
-            // databse UUID to ID
+            uint userId = Game.Instance.PlayerRepository.GetUserId(Encoding.ASCII.GetString(uuid)).Result;
 
-            bool isBanned = false;
+            if (userId == 0)
+            {
+                manager.Send(LobbyManager.Instance.VerificationFailure());
+                manager.CloseSocket();
+                return;
+            }
+                
+
+            bool isBanned = false; // Game.Instance.BanManager.
             if (isBanned)
             {
                 manager.Send(LobbyManager.Instance.Banned());
@@ -346,7 +353,8 @@ namespace Qserver.GameServer.Network.Handlers
                 return;
             }
 
-            var player = Game.Instance.CreatePlayer(manager, userId);
+            uint playerId = Game.Instance.PlayerRepository.GetPlayerId(userId).Result;
+            var player = Game.Instance.CreatePlayer(manager, playerId);
 
             manager.Send(LobbyManager.Instance.Authenticated(player));
         }

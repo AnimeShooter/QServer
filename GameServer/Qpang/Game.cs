@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
+using Qserver.GameServer.Database;
+using Qserver.GameServer.Database.Repositories;
 using Qserver.GameServer.Network;
 using Qserver.GameServer.Network.Managers;
 using Qserver.Util;
@@ -54,6 +56,13 @@ namespace Qserver.GameServer.Qpang
         private CraneManager _craneManager;
 
         private Leaderboard _leaderboard;
+
+        // Database managers
+        private ChannelsRepository _channelsRepository;
+        private CraneRepository _craneRepository;
+        private LevelRepository _levelRepository;
+        private MapsRepository _mapsRepository;
+        private PlayerRepository _playerRepository;
 
         private LobbyServer _lobbyServer; // lobby?
         private SquareServer _squareServer;
@@ -120,6 +129,29 @@ namespace Qserver.GameServer.Qpang
             get { return this._leaderboard; }
         }
 
+        // db
+        public ChannelsRepository ChannelsRepository
+        {
+            get { return this._channelsRepository; }
+        }
+        public CraneRepository CraneRepository
+        {
+            get { return this._craneRepository; }
+        }
+        public LevelRepository LevelRepository
+        {
+            get { return this._levelRepository; }
+        }
+        public MapsRepository MapsRepository
+        {
+            get { return this._mapsRepository; }
+        }
+        public PlayerRepository PlayerRepository
+        {
+            get { return this._playerRepository; }
+        }
+
+
         public Game(bool lobby)
         {
             this._lock = new object();
@@ -149,6 +181,12 @@ namespace Qserver.GameServer.Qpang
             this._craneManager = new CraneManager();
             this._leaderboard = new Leaderboard(); // TODO
             this._roomServer = new RoomServer(); // TODO
+
+            this._channelsRepository = new ChannelsRepository(DatabaseManager.MySqlFactory);
+            this._craneRepository = new CraneRepository(DatabaseManager.MySqlFactory);
+            this._levelRepository = new LevelRepository(DatabaseManager.MySqlFactory);
+            this._mapsRepository = new MapsRepository(DatabaseManager.MySqlFactory);
+            this._playerRepository = new PlayerRepository(DatabaseManager.MySqlFactory);
 
             Instance = this;
         }

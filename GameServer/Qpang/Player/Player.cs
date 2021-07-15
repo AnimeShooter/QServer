@@ -4,6 +4,8 @@ using System.Text;
 using Qserver.GameServer.Network;
 using Qserver.GameServer.Network.Packets;
 using Qserver.GameServer.Network.Managers;
+using Qserver.GameServer.Database.Repositories;
+using Qserver.GameServer.Database;
 
 namespace Qserver.GameServer.Qpang
 {
@@ -44,6 +46,8 @@ namespace Qserver.GameServer.Qpang
         private ConnServer _squareConnection;
         private ConnServer _lobbyConnection;
         // _roomPlayer
+
+        private PlayerRepository _playerRepository;
 
         private object _lock;
         private object _lobbyLock;
@@ -161,18 +165,21 @@ namespace Qserver.GameServer.Qpang
             this._loginTime = DateTime.UtcNow;
 
             // Load player WHERE id = X
-            this._name = "[TEST]Ferib";
-            this._level = 32;
-            this._rank = 5;
-            this._prestige = 2;
-            this._character = 333;
-            this._userId = 0xEEEE0102;
-            this._coins = 3240123;
-            this._don = 420000;
-            this._cash = 420000;
-            this._isOnline = true;
-            this._experience = 1_500_000;
             
+            var playerData = Game.Instance.PlayerRepository.GetPlayer(playerId).Result;
+
+            this._name = playerData.name;
+            this._level = playerData.level;
+            this._rank = playerData.rank;
+            this._prestige = playerData.prestige;
+            this._character = playerData.default_character;
+            this._userId = playerData.user_id;
+            this._coins = playerData.coins;
+            this._don = playerData.don;
+            this._cash = playerData.cash;
+            this._experience = playerData.experience;
+            this._isMuted = playerData.is_muted == 1;
+
 
             this._inventoryManager = new InventoryManager(this);
             this._equipmentManager = new EquipmentManager(this);

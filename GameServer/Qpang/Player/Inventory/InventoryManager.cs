@@ -26,14 +26,48 @@ namespace Qserver.GameServer.Qpang
             {
                 Id = 1,
                 BoostLevel = 2,
-                IsActive = false,
+                IsActive = true,
                 IsGiftable = false,
                 IsOpened = true,
                 ItemId = 1095368711,
                 Period = 2,
                 PeriodeType = 2
+            });
 
+            this._cards.Add(2, new InventoryCard()
+            {
+                Id = 2,
+                BoostLevel = 0,
+                IsActive = true,
+                IsGiftable = false,
+                IsOpened = true,
+                ItemId = 1095368711,
+                Period = 2,
+                PeriodeType = 2
+            });
 
+            this._cards.Add(3, new InventoryCard()
+            {
+                Id = 3,
+                BoostLevel = 0,
+                IsActive = true,
+                IsGiftable = false,
+                IsOpened = true,
+                ItemId = 1095368711,
+                Period = 50,
+                PeriodeType = 2
+            });
+
+            this._cards.Add(4, new InventoryCard()
+            {
+                Id = 4,
+                BoostLevel = 0,
+                IsActive = true,
+                IsGiftable = false,
+                IsOpened = true,
+                ItemId = 1095368711,
+                Period = 375,
+                PeriodeType = 2
             });
         }
 

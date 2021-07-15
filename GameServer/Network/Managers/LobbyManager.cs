@@ -68,9 +68,6 @@ namespace Qserver.GameServer.Network.Managers
             var characters = player.EquipmentManager.UnlockerCharacters;
             foreach (ushort character in characters)
             {
-                //ulong[] armor = new ulong[9]; // player.EquipmentManager.GetArmorByCharacter(character); // 9
-                //ulong[] weapons = new ulong[4]; // player.EquipmentManager.GetWeaponsByCharacter(character); // 4
-
                 ulong[] armor = player.EquipmentManager.GetArmorByCharacter(character); // 9
                 ulong[] weapons = player.EquipmentManager.GetWeaponsByCharacter(character); // 4
                 
@@ -177,9 +174,6 @@ namespace Qserver.GameServer.Network.Managers
             var characters = player.EquipmentManager.UnlockerCharacters;
             foreach (ushort character in characters)
             {
-                //ulong[] armor = new ulong[9]; // player.EquipmentManager.GetArmorByCharacter(character); // 9
-                //ulong[] weapons = new ulong[4]; // player.EquipmentManager.GetWeaponsByCharacter(character); // 4
-
                 ulong[] armor = player.EquipmentManager.GetArmorByCharacter(character); // 9
                 ulong[] weapons = player.EquipmentManager.GetWeaponsByCharacter(character); // 4
 

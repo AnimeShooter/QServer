@@ -205,7 +205,9 @@ namespace Qserver.GameServer.Qpang
         {
             lock(this._lock)
             {
-                return this._players[playerId];
+                if(this._players.ContainsKey(playerId))
+                    return this._players[playerId];
+                return null;
             }
         }
         public Player GetPlayer(string name)

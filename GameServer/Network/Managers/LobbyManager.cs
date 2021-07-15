@@ -16,22 +16,8 @@ namespace Qserver.GameServer.Network.Managers
         {
             PacketWriter pw = new PacketWriter(Opcode.LOBBY_LOGIN_RSP, 0x05);
             pw.WriteUInt32(player.PlayerId);
-            //pw.WriteBytes(new byte[42]); // OG 42
             pw.WriteBytes(new byte[42]); // OG 42
-
-            //pw.WriteString(player.Name, 32);
             pw.WriteWString(player.Name, 16);
-            //pw.WriteBytes(new byte[2]);
-            //pw.WriteBytes(new byte[16]); // 16 char name
-            //
-            //pw.WriteBytes(new byte[16] { 0x42, 0x00, 0x42, 0x00, 0x42, 0x00, 0x42, 0x00, 0x42, 0x00, 0x42, 0x00, 0x42, 0x00, 0x42, 0x00 }); // 16 char name
-            //pw.WriteBytes(new byte[16] { 0x41, 0x41, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00 }); // 16 char name
-            //pw.WriteBytes(new byte[16] { 0x42, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x42, 0x00 }); // 16 char name
-            //pw.WriteBytes(new byte[16] { 0x42, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x42, 0x00 }); // 16 char name
-            ////pw.WriteBytes(new byte[8] { 0x41, 0x00, 0x41, 0x00, 0x00, 0x00, 0x00, 0x00}); // 16 char name
-            //pw.WriteBytes(new byte[2]);
-            //pw.WriteBytes(new byte[20]);
-
             pw.WriteUInt32(player.StatsManager.PlayTimeInMinutes);
             pw.WriteUInt32(player.Cash);
             pw.WriteUInt32(player.Rank);
@@ -47,11 +33,8 @@ namespace Qserver.GameServer.Network.Managers
             pw.WriteUInt8(1); // unk
             pw.WriteUInt8(1); // accept trade requests
             pw.WriteBytes(new byte[20]);
-            pw.WriteUInt8(0); // tutorial status (4)
-                              //pw.WriteBytes(new byte[] { 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04});
-
+            pw.WriteUInt8(4); // tutorial status (4)
             pw.WriteBytes(new byte[12]);
-            //pw.WriteBytes(new byte[] { 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04 });
 
             // player containers
             pw.WriteUInt16(200); // max inventory size
@@ -234,14 +217,25 @@ namespace Qserver.GameServer.Network.Managers
             return pw;
         }
 
-        public PacketWriter SetArmor(ushort characterOffset, ulong[]  armor)
+        public PacketWriter SetArmor(ushort characterOffset, ulong[] armor)
         {
-            throw new NotImplementedException();
+            PacketWriter pw = new PacketWriter((Opcode)621);
+            pw.WriteUInt16(characterOffset);
+            foreach (var piece in armor)
+                pw.WriteUInt64(piece);
+            return pw;
         }
 
         public PacketWriter SetWeapons(ushort characterOffset, ulong[] weapons)
         {
-            throw new NotImplementedException();
+            PacketWriter pw = new PacketWriter((Opcode)624);
+            pw.WriteUInt16(characterOffset);
+            foreach (var weapon in weapons)
+            {
+                pw.WriteUInt64(weapon);
+                pw.WriteUInt64(0);
+            } 
+            return pw;
         }
 
         #endregion
@@ -334,24 +328,61 @@ namespace Qserver.GameServer.Network.Managers
 
             foreach(var room in rooms)
             {
-                //pw.WriteUInt32(room.)
+                // Room
+                //pw.WriteUInt32(room.Hos)
             }
             throw new NotImplementedException();
         }
-        public PacketWriter UpdateGameSettings()
+        public PacketWriter UpdateGameSettings(uint host, ushort port, bool isEnabled)
         {
-            throw new NotImplementedException();
+            PacketWriter pw = new PacketWriter((Opcode)770);
+            pw.WriteUInt8(isEnabled ? (byte)1 : (byte)0);
+            pw.WriteUInt32(host);
+            pw.WriteUInt16(port);
+            pw.WriteBytes(new byte[42]);
+            return pw;
         }
         #endregion
 
         #region Inventory
-        public PacketWriter CardExtended()
+        public PacketWriter CardExtended(InventoryCard card, uint balance, bool isCash)
         {
-            throw new NotImplementedException();
+            PacketWriter pw = new PacketWriter((Opcode)810);
+            pw.WriteUInt8(isCash ? (byte)1 : (byte)0);
+            pw.WriteUInt32(balance);
+            pw.WriteUInt32(0);
+            pw.WriteUInt8(1);
+            return pw;
         }
-        public PacketWriter DisableFunctionCard()
+        public PacketWriter DisableFunctionCard(InventoryCard card)
         {
-            throw new NotImplementedException();
+            PacketWriter pw = new PacketWriter((Opcode)862);
+
+            // InventoryCard
+            pw.WriteUInt64(card.Id); // 0
+            pw.WriteUInt32(card.ItemId); // 8
+            pw.WriteBytes(new byte[10]); // 12
+            pw.WriteUInt8(card.Type); // 13
+            pw.WriteUInt8(0); // 14
+            pw.WriteUInt8(card.IsGiftable ? (byte)1 : (byte)0); // 15
+            pw.WriteBytes(new byte[6]); // 16
+
+            //pw.WriteUInt32(Util.Util. card.TimeCreated);
+            pw.WriteUInt32(0); // to timestamp? // 22
+
+            pw.WriteUInt8(card.IsOpened ? (byte)1 : (byte)0); // 26
+            pw.WriteUInt16(card.IsActive ? (ushort)0 : (ushort)1); // 27
+            pw.WriteUInt8(0); // 28; hidden
+            pw.WriteUInt8(0); // 29
+            pw.WriteUInt16(card.Period); // 31
+            pw.WriteUInt8(card.PeriodeType); // 33
+            pw.WriteUInt8(0); // 34
+            pw.WriteUInt16(card.BoostLevel); // 35
+            pw.WriteUInt8(card.BoostLevel > 0 ? (byte)1 : (byte)0); // 37
+            pw.WriteUInt8(0); //  38
+            pw.WriteBytes(new byte[4]); // 39
+
+            return pw;
         }
         public PacketWriter EnabledFunctionCard(InventoryCard card)
         {
@@ -383,13 +414,28 @@ namespace Qserver.GameServer.Network.Managers
 
             return pw;
         }
-        public PacketWriter GiftCardSuccess()
+        public PacketWriter GiftCardSuccess(ulong cardId)
         {
-            throw new NotImplementedException();
+            PacketWriter pw = new PacketWriter((Opcode)813);
+            pw.WriteBytes(new byte[34]);
+            pw.WriteUInt64(cardId);
+            return pw;
         }
-        public PacketWriter Gifts()
+        public PacketWriter Gifts(List<InventoryCard> gifts)
         {
-            throw new NotImplementedException();
+            PacketWriter pw = new PacketWriter((Opcode)746);
+            ushort size = (ushort)gifts.Count;
+            pw.WriteUInt16(size);
+            pw.WriteUInt16(size);
+            pw.WriteUInt16(size);
+            foreach(var gift in gifts)
+            {
+                pw.WriteWString("--", 16); // idk
+                pw.WriteUInt64(gift.Id);
+                pw.WriteUInt8(1);
+                pw.WriteUInt32(0); // TODO: gift.TimeCreated);
+            }
+            return pw;
         }
         public PacketWriter Inventory(List<InventoryCard> cards)
         {
@@ -426,17 +472,80 @@ namespace Qserver.GameServer.Network.Managers
             }
             return pw;
         }
-        public PacketWriter OpenGift()
+        public PacketWriter OpenGift(InventoryCard card)
         {
-            throw new NotImplementedException();
+            PacketWriter pw = new PacketWriter((Opcode)743);
+            pw.WriteUInt32(0);
+            pw.WriteUInt32(0);
+            pw.WriteUInt32(1); // card count
+
+            // InventoryCard
+            pw.WriteUInt64(card.Id); // 0
+            pw.WriteUInt32(card.ItemId); // 8
+            pw.WriteBytes(new byte[10]); // 12
+            pw.WriteUInt8(card.Type); // 13
+            pw.WriteUInt8(0); // 14
+            pw.WriteUInt8(card.IsGiftable ? (byte)1 : (byte)0); // 15
+            pw.WriteBytes(new byte[6]); // 16
+
+            //pw.WriteUInt32(Util.Util. card.TimeCreated);
+            pw.WriteUInt32(0); // to timestamp? // 22
+
+            pw.WriteUInt8(card.IsOpened ? (byte)1 : (byte)0); // 26
+            pw.WriteUInt16(card.IsActive ? (ushort)0 : (ushort)1); // 27
+            pw.WriteUInt8(0); // 28; hidden
+            pw.WriteUInt8(0); // 29
+            pw.WriteUInt16(card.Period); // 31
+            pw.WriteUInt8(card.PeriodeType); // 33
+            pw.WriteUInt8(0); // 34
+            pw.WriteUInt16(card.BoostLevel); // 35
+            pw.WriteUInt8(card.BoostLevel > 0 ? (byte)1 : (byte)0); // 37
+            pw.WriteUInt8(0); //  38
+            pw.WriteBytes(new byte[4]); // 39
+
+            return pw;
         }
-        public PacketWriter OpenGiftSuccess()
+        public PacketWriter OpenGiftSuccess(Player player, InventoryCard card)
         {
-            throw new NotImplementedException();
+            PacketWriter pw = new PacketWriter((Opcode)743);
+            pw.WriteUInt32((uint)card.Id);
+            pw.WriteUInt32(player.Don);
+            pw.WriteUInt8(1); // card count
+
+            // InventoryCard
+            pw.WriteUInt64(card.Id); // 0
+            pw.WriteUInt32(card.ItemId); // 8
+            pw.WriteBytes(new byte[10]); // 12
+            pw.WriteUInt8(card.Type); // 13
+            pw.WriteUInt8(0); // 14
+            pw.WriteUInt8(card.IsGiftable ? (byte)1 : (byte)0); // 15
+            pw.WriteBytes(new byte[6]); // 16
+
+            //pw.WriteUInt32(Util.Util. card.TimeCreated);
+            pw.WriteUInt32(0); // to timestamp? // 22
+
+            pw.WriteUInt8(card.IsOpened ? (byte)1 : (byte)0); // 26
+            pw.WriteUInt16(card.IsActive ? (ushort)0 : (ushort)1); // 27
+            pw.WriteUInt8(0); // 28; hidden
+            pw.WriteUInt8(0); // 29
+            pw.WriteUInt16(card.Period); // 31
+            pw.WriteUInt8(card.PeriodeType); // 33
+            pw.WriteUInt8(0); // 34
+            pw.WriteUInt16(card.BoostLevel); // 35
+            pw.WriteUInt8(card.BoostLevel > 0 ? (byte)1 : (byte)0); // 37
+            pw.WriteUInt8(0); //  38
+            pw.WriteBytes(new byte[4]); // 39
+
+            return pw;
         }
-        public PacketWriter ReceiveGift()
+        public PacketWriter ReceiveGift(InventoryCard card, string sender)
         {
-            throw new NotImplementedException();
+            PacketWriter pw = new PacketWriter((Opcode)821);
+            pw.WriteWString(sender, 16);
+            pw.WriteUInt64(card.Id);
+            pw.WriteUInt8(1);
+            pw.WriteUInt64(0); // TODO: card.TimeCreated)
+            return pw;
         }
         public PacketWriter RemoveCard(ulong cardId)
         {
@@ -518,10 +627,66 @@ namespace Qserver.GameServer.Network.Managers
         #endregion
 
         #region Player
-        public PacketWriter PlayerInfoInspector()
+        public PacketWriter PlayerInfoInspector(Player player)
         {
-            throw new NotImplementedException();
+            PacketWriter pw = new PacketWriter((Opcode)692);
+
+            pw.WriteUInt32(player.PlayerId);
+            pw.WriteBytes(new byte[42]); // OG 42
+            pw.WriteWString(player.Name, 16);
+            pw.WriteUInt32(player.StatsManager.PlayTimeInMinutes);
+            pw.WriteBytes(new byte[4]);
+            pw.WriteUInt8((byte)player.Level);
+            pw.WriteUInt8((byte)player.Rank);
+            pw.WriteUInt16(player.Character);
+
+            var armor = player.EquipmentManager.GetArmorItemIdsByCharacter(player.Character);
+            foreach (var armorId in armor)
+                pw.WriteUInt32(armorId);
+
+            var weapons = player.EquipmentManager.GetWeaponItemIdsByCharacter(player.Character);
+            foreach(var weaponId in weapons)
+            {
+                pw.WriteUInt32(weaponId);
+                pw.WriteUInt32(0);
+            }
+
+            pw.WriteBytes(new byte[40]);
+            pw.WriteUInt32(player.Experience);
+            pw.WriteUInt32(1);
+            pw.WriteUInt32(player.StatsManager.Kills);
+            pw.WriteUInt32(player.StatsManager.Deaths);
+            pw.WriteUInt32(player.StatsManager.NormalWins);
+            pw.WriteUInt32(player.StatsManager.NormalLosses);
+            pw.WriteUInt32(player.StatsManager.NormalDrews);
+            pw.WriteUInt32(0); // unk
+            pw.WriteUInt32(player.StatsManager.MissionWins);
+            pw.WriteUInt32(player.StatsManager.MissionLosses);
+            pw.WriteUInt32(player.StatsManager.MissionDrews);
+            pw.WriteUInt16((ushort)player.StatsManager.SlackerPoints);
+            pw.WriteUInt32(0);
+            pw.WriteUInt32(1);
+
+            // TODO leaderboard
+            var leaderboardPos = 69; // Game.Instance.Leaderboard.
+
+            pw.WriteUInt32(1);
+            pw.WriteUInt32(100);
+
+            var achievements = player.AchievementContainer.List;
+            pw.WriteUInt8((byte)achievements.Count);
+
+            foreach(var achievement in achievements)
+            {
+                pw.WriteUInt32(achievement);
+                pw.WriteInt32(1);
+            }
+
+            pw.WriteBytes(new byte[1000]);
+
+            return pw;
         }
+
         public PacketWriter PlayerInfoInspectorFailed()
         {
             PacketWriter pw = new PacketWriter((Opcode)693);
@@ -535,7 +700,6 @@ namespace Qserver.GameServer.Network.Managers
             pw.WriteUInt16(len);
 
             pw.WriteWString(sender, 16);
-            //pw.WriteBytes(new byte[16] { 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, });
 
             pw.WriteWString(message, len);
             return pw;
@@ -639,8 +803,7 @@ namespace Qserver.GameServer.Network.Managers
         public PacketWriter UpdateCashBalance(uint cash)
         {
             PacketWriter pw = new PacketWriter((Opcode)832);
-            //pw.WriteUInt32(cash);
-            pw.WriteUInt32(999999);
+            pw.WriteUInt32(cash);
             return pw;
         }
         public PacketWriter UpdateCharacter(ushort character)

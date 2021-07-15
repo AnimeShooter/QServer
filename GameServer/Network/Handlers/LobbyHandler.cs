@@ -201,7 +201,13 @@ namespace Qserver.GameServer.Network.Handlers
         #region Player
         public static void HandleChangeCharacterEvent(PacketReader packet, ConnServer manager)
         {
-            throw new NotImplementedException();
+            ushort characterId = packet.ReadUInt16();
+            if (manager.Player == null)
+                return;
+
+            var characters = manager.Player.EquipmentManager.UnlockerCharacters;
+            if (characters.Contains(characterId))
+                manager.Player.Character = characterId;
         }
         public static void HandleRequestCashBalance(PacketReader packet, ConnServer manager)
         {
@@ -214,7 +220,12 @@ namespace Qserver.GameServer.Network.Handlers
         }
         public static void HandleRequestPlayerRanking(PacketReader packet, ConnServer manager)
         {
-            //throw new NotImplementedException();
+            var playerId = packet.ReadUInt32();
+            var targetPlayer = Game.Instance.GetPlayer(playerId);
+            if (targetPlayer == null)
+                return;
+
+            manager.Send(LobbyManager.Instance.PlayerInfoInspector(targetPlayer));
         }
         public static void HandleRestKillDeathEvent(PacketReader packet, ConnServer manager)
         {

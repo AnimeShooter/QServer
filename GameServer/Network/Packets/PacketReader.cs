@@ -4,6 +4,8 @@ using System.Linq;
 using System.IO;
 using System.Text;
 using Qserver.Util;
+using System.Net;
+using System.Net.Sockets;
 
 namespace Qserver.GameServer.Network.Packets
 {
@@ -20,7 +22,6 @@ namespace Qserver.GameServer.Network.Packets
         public UInt16 Length;
         public UInt16 Opcode;
     }
-
 
     public class PacketReader
     {
@@ -50,13 +51,15 @@ namespace Qserver.GameServer.Network.Packets
 
         private BinaryReader _payload;
 
-        public PacketReader(byte[] data, string identifier, byte[] key)
+        public PacketReader(NetworkStream mem, string identifier, byte[] key)
+        //public PacketReader(byte[] data, string identifier, byte[] key)
         {
+            _payload = new BinaryReader(mem); // temp
             PacketHeader = new PacketHeader()
             {
-                Length = BitConverter.ToUInt16(data, 0),
-                Encryption = data[2],
-                Checksum = data[3]
+                Length = this.ReadUInt16(),
+                Encryption = this.ReadUInt8(),
+                Checksum = this.ReadUInt8()
             };
             if(Encryption > 0)
             {
@@ -65,16 +68,14 @@ namespace Qserver.GameServer.Network.Packets
                 {
                     b = new BlowFish(key); // xx xx xx xx 29 A1 D3 56
                     b.CompatMode = true;
-                    //b = new BlowFish(new byte[] { 0x00, 0x00, 0x00, 0x00, 0x29, 0xA1, 0xD3, 0x56 }); // 29 A1 D3 56 29 A1 D3 56
-
                 }
 
-                byte[] encryptedPayload = data.Skip(4).Take(PacketHeader.Length).ToArray();
+                byte[] encryptedPayload = this.ReadBytes(PacketHeader.Length-4); // data.Skip(4).Take(PacketHeader.Length).ToArray();
                 byte[] decryptedPayload = b.Decrypt_ECB(encryptedPayload);
                 _payload = new BinaryReader(new MemoryStream(decryptedPayload));
             }
             else
-                _payload = new BinaryReader(new MemoryStream(data.Skip(4).Take(PacketHeader.Length).ToArray()));
+                _payload = new BinaryReader(new MemoryStream(this.ReadBytes(PacketHeader.Length - 4)));
 
             PayloadHeader = new PayloadHeader()
             {

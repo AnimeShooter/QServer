@@ -186,7 +186,7 @@ namespace Qserver.GameServer.Qpang
 
             this._squarePlayer = squarePlayer;
             SetOnlineStatus(true);
-            SendSquare(Network.SquareManager.Instance.JoinSquareSuccess(squarePlayer));
+            SendSquare(Network.SquareManager.Instance.JoinSquareSuccess(squarePlayer)); // CRASH
         }
 
         public void SendSquare(PacketWriter packet)

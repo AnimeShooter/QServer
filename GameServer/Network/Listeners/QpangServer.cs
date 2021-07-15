@@ -11,19 +11,19 @@ namespace Qserver.GameServer.Network
     {
         public bool ListenServerSocket = true;
         private TcpListener _listener;
-        private int _port;
+        public int Port;
         private Dictionary<uint, ConnServer> _connections;
 
         public QpangServer(int port)
         {
-            this._port = port;
+            this.Port = port;
             //Start();
         }
         public bool Start()
         {
             try
             {
-                _listener = new TcpListener(IPAddress.Parse(Settings.SERVER_IP), this._port);
+                _listener = new TcpListener(IPAddress.Parse(Settings.SERVER_IP), this.Port);
                 _listener.Start();
 
                 return true;
@@ -51,6 +51,7 @@ namespace Qserver.GameServer.Network
                     {
                         AuthServer Server = new AuthServer();
                         Server.Socket = _listener.AcceptSocket();
+                        Server.SocketStream = new NetworkStream(Server.Socket);
 
                         Thread NewThread = new Thread(Server.RecieveAuth);
                         NewThread.Start();

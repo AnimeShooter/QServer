@@ -67,6 +67,7 @@ namespace Qserver.GameServer.Network.Managers
             pw.WriteUInt32(0);
             pw.WriteUInt32(player.StatsManager.Kills);
             pw.WriteUInt32(player.StatsManager.Deaths);
+
             pw.WriteUInt32(player.StatsManager.NormalWins);
             pw.WriteUInt32(player.StatsManager.NormalLosses);
             pw.WriteUInt32(player.StatsManager.NormalDrews);
@@ -84,8 +85,11 @@ namespace Qserver.GameServer.Network.Managers
             var characters = player.EquipmentManager.UnlockerCharacters;
             foreach (ushort character in characters)
             {
-                ulong[] armor = new ulong[9]; // player.EquipmentManager.GetArmorByCharacter(character); // 9
-                ulong[] weapons = new ulong[4]; // player.EquipmentManager.GetWeaponsByCharacter(character); // 4
+                //ulong[] armor = new ulong[9]; // player.EquipmentManager.GetArmorByCharacter(character); // 9
+                //ulong[] weapons = new ulong[4]; // player.EquipmentManager.GetWeaponsByCharacter(character); // 4
+
+                ulong[] armor = player.EquipmentManager.GetArmorByCharacter(character); // 9
+                ulong[] weapons = player.EquipmentManager.GetWeaponsByCharacter(character); // 4
                 
                 pw.WriteUInt16(character);
                 foreach (ulong armorCardId in armor)
@@ -109,7 +113,7 @@ namespace Qserver.GameServer.Network.Managers
                 pw.WriteUInt32(0); // unk
             }
 
-            pw.WriteBytes(new byte[1635 - (achievements.Count * 8)]);
+            pw.WriteBytes(new byte[1635 - achievements.Count * 8]);
 
             return pw;
         }

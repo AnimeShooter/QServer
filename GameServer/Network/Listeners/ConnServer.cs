@@ -18,6 +18,7 @@ namespace Qserver.GameServer.Network
         public byte[] KeyPart;
         public byte Encryption;
         private Player _player;
+        public NetworkStream SocketStream;
 
         public Player Player
         {
@@ -25,17 +26,29 @@ namespace Qserver.GameServer.Network
             set { this._player = value; }
         }
 
-        public void OnData(byte[] buffer)
-        {
-            PacketReader pkt = new PacketReader(buffer, "test", KeyPart);
-            if (Enum.IsDefined(typeof(Opcode), pkt.Opcode)) 
-                if(Settings.DEBUG)
-                    Log.Message(LogType.DUMP, $"[] Recieved OpCode: {pkt.Opcode}, len: {pkt.Size}\n");
-            else
-                Log.Message(LogType.DUMP, $"[] Unknown OpCode: {pkt.Opcode}, len: {pkt.Size}\n");
+        //public void OnData(byte[] buffer)
+        //{
+        //    PacketReader pkt = new PacketReader(buffer, "test", KeyPart);
+        //    if (Enum.IsDefined(typeof(Opcode), pkt.Opcode)) 
+        //        if(Settings.DEBUG)
+        //            Log.Message(LogType.DUMP, $"[] Recieved OpCode: {pkt.Opcode}, len: {pkt.Size} ({buffer.Length})\n");
+        //    else
+        //        Log.Message(LogType.DUMP, $"[] Unknown OpCode: {pkt.Opcode}, len: {pkt.Size}\n");
 
-            PacketManager.InvokeHandler(pkt, this, pkt.Opcode);
-        }
+        //    PacketManager.InvokeHandler(pkt, this, pkt.Opcode);
+        //}
+
+        //public void OnData(byte[] buffer)
+        //{
+        //    PacketReader pkt = new PacketReader(buffer, "test", KeyPart);
+        //    if (Enum.IsDefined(typeof(Opcode), pkt.Opcode)) 
+        //        if(Settings.DEBUG)
+        //            Log.Message(LogType.DUMP, $"[] Recieved OpCode: {pkt.Opcode}, len: {pkt.Size} ({buffer.Length})\n");
+        //    else
+        //        Log.Message(LogType.DUMP, $"[] Unknown OpCode: {pkt.Opcode}, len: {pkt.Size}\n");
+
+        //    PacketManager.InvokeHandler(pkt, this, pkt.Opcode);
+        //}
 
 
         public void RecieveAuth()
@@ -44,18 +57,22 @@ namespace Qserver.GameServer.Network
             try
             {
 #endif
-                Log.Message(LogType.MISC, "New Client Login Detected");
-                while (Server.ListenServerSocket)
+            Log.Message(LogType.MISC, "New Client Login Detected");
+            while (Server.ListenServerSocket)
+            {
+                if (Socket.Connected && Socket.Available > 0)
                 {
-                    Thread.Sleep(1);
-                    if (Socket.Connected && Socket.Available > 0)
-                    {
-                        byte[] buffer = new byte[Socket.Available];
-                        Socket.Receive(buffer, buffer.Length, SocketFlags.None);
-                        OnData(buffer);
-                    }
+                    PacketReader pkt = new PacketReader(SocketStream, "test", KeyPart);
+                    if (System.Enum.IsDefined(typeof(Opcode), pkt.Opcode))
+                        if (Settings.DEBUG)
+                            Log.Message(LogType.DUMP, $"[{Socket.LocalEndPoint}] Recieved OpCode: {pkt.Opcode}, len: {pkt.Size}\n");
+                        else
+                            Log.Message(LogType.DUMP, $"[{Socket.LocalEndPoint}] Unknown OpCode: {pkt.Opcode}, len: {pkt.Size}\n");
+
+                    PacketManager.InvokeHandler(pkt, this, pkt.Opcode);
                 }
-                CloseSocket();
+            }
+            CloseSocket();
 #if !DEBUG
             }
             catch (Exception e)
@@ -79,7 +96,7 @@ namespace Qserver.GameServer.Network
                 Socket.BeginSend(buffer, 0, buffer.Length, SocketFlags.None, new AsyncCallback(FinishSend), Socket);
                 if (Settings.DEBUG)
                 { 
-                    Log.Message(LogType.DUMP, $"Send {packet.Opcode}.\n");
+                    Log.Message(LogType.DUMP, $"Send {packet.Opcode} ({buffer.Length}).\n");
                     string bytes = "";
                     foreach (var b in buffer)
                         bytes += b.ToString("X2") + " ";

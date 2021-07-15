@@ -61,7 +61,7 @@ namespace Qserver.GameServer.Network
 
             pw.WriteBytes(new byte[33]);
 
-            return pw;
+            return pw; // TODO: Fix Crash
         }
 
         public PacketWriter JoinSquareSuccess(SquarePlayer squarePlayer)
@@ -98,7 +98,7 @@ namespace Qserver.GameServer.Network
             // squarePlayer
             pw.WriteUInt32(squarePlayer.State);
             pw.WriteUInt32(squarePlayer.Player.PlayerId);
-            
+
             pw.WriteWString(squarePlayer.Player.Name, 16);
             //pw.WriteBytes(new byte[16] { 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, });
 
@@ -108,7 +108,7 @@ namespace Qserver.GameServer.Network
             pw.WriteUInt16(squarePlayer.Player.Character);
             pw.WriteUInt32(0); // TODO: select weapon
 
-            foreach(var armor in squarePlayer.Player.EquipmentManager.GetArmorItemIdsByCharacter(squarePlayer.Player.Character))
+            foreach (var armor in squarePlayer.Player.EquipmentManager.GetArmorItemIdsByCharacter(squarePlayer.Player.Character))
                 pw.WriteUInt32(armor); // 9
 
             pw.WriteBytes(new byte[2]);

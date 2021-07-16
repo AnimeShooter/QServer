@@ -4,11 +4,11 @@ using System.Text;
 
 namespace Qserver.GameServer.Qpang
 {
-    public class NormalWinCondition : AchievementCondition
+    public class TeamWinCondition : AchievementCondition
     {
         private uint _wins;
 
-        public NormalWinCondition(uint winCount)
+        public TeamWinCondition(uint winCount)
         {
             this._wins = winCount;
         }

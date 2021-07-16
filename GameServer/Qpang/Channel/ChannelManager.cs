@@ -25,6 +25,7 @@ namespace Qserver.GameServer.Qpang
 
         public ChannelManager()
         {
+            this._channels = new Dictionary<uint, Channel>();
             Log.Message(LogType.MISC, "Loading Channels from database...");
             var channels = Game.Instance.ChannelsRepository.GetChannels().Result;
             foreach(var c in channels)

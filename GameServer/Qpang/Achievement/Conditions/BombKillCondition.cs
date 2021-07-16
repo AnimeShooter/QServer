@@ -13,9 +13,9 @@ namespace Qserver.GameServer.Qpang
             this._kills = killCount;
         }
 
-        //public override bool IsMatch(RoomSessionPlayer player)
-        //{
-        //    return player.Player.StatsManager.BombKills >= this._kills;
-        //}
+        public override bool IsMatch(RoomSessionPlayer player)
+        {
+            return player.Player.StatsManager.BombKills >= this._kills;
+        }
     }
 }

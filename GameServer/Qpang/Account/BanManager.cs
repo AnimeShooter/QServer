@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Qserver.GameServer.Qpang
 {
-    public  class BanManager
+    public class BanManager
     {
     }
 }

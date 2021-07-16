@@ -17,9 +17,26 @@ namespace Qserver.GameServer.Qpang
             this._items = new Dictionary<uint, ShopItem>();
             this._orderedItems = new List<ShopItem>();
 
-            Log.Message(LogType.MISC, "TODO: Loading Shop databse info...");
             // TODO: database
-            Log.Message(LogType.MISC, $"{0} Items have been loaded from the Shop!");
+            var dbitems = Game.Instance.ItemsRepository.GetItems().Result;
+            foreach(var dbitem in dbitems)
+            {
+                this._items.Add(dbitem.seq_id, new ShopItem()
+                {
+                    SeqId = dbitem.seq_id,
+                    ItemId = dbitem.item_id,
+                    IsCash = dbitem.pay_type == 1,
+                    Price = dbitem.price,
+                    SoldCount = dbitem.sold_count,
+                    Stock = dbitem.stock,
+                    ShopCategory = dbitem.status,
+                    Type = dbitem.type,
+                    PeriodType = dbitem.use_up,
+                    Period = dbitem.period,
+                    MinLevel = dbitem.level
+                });
+            }
+            Log.Message(LogType.MISC, $"ShopManager loaded {this._items.Count} Items from the database!");
         }
 
         public List<ShopItem> List()

@@ -63,6 +63,7 @@ namespace Qserver.GameServer.Qpang
         private LevelRepository _levelRepository;
         private MapsRepository _mapsRepository;
         private PlayerRepository _playerRepository;
+        private ItemsRepository _itemsRepository;
 
         private LobbyServer _lobbyServer; // lobby?
         private SquareServer _squareServer;
@@ -150,6 +151,10 @@ namespace Qserver.GameServer.Qpang
         {
             get { return this._playerRepository; }
         }
+        public ItemsRepository ItemsRepository
+        {
+            get { return this._itemsRepository; }
+        }
 
 
         public Game(bool lobby)
@@ -170,6 +175,16 @@ namespace Qserver.GameServer.Qpang
             this._squareServer.Server.Start();
             this._squareServer.Server.StartConnectionThreads();
 
+
+            this._channelsRepository = new ChannelsRepository(DatabaseManager.MySqlFactory);
+            this._craneRepository = new CraneRepository(DatabaseManager.MySqlFactory);
+            this._levelRepository = new LevelRepository(DatabaseManager.MySqlFactory);
+            this._mapsRepository = new MapsRepository(DatabaseManager.MySqlFactory);
+            this._playerRepository = new PlayerRepository(DatabaseManager.MySqlFactory);
+            this._itemsRepository = new ItemsRepository(DatabaseManager.MySqlFactory);
+
+            Instance = this;
+
             this._channelManager = new ChannelManager();
             this._shopManager = new ShopManager();
             this._squareManager = new SquareManager();
@@ -182,13 +197,6 @@ namespace Qserver.GameServer.Qpang
             this._leaderboard = new Leaderboard(); // TODO
             this._roomServer = new RoomServer(); // TODO
 
-            this._channelsRepository = new ChannelsRepository(DatabaseManager.MySqlFactory);
-            this._craneRepository = new CraneRepository(DatabaseManager.MySqlFactory);
-            this._levelRepository = new LevelRepository(DatabaseManager.MySqlFactory);
-            this._mapsRepository = new MapsRepository(DatabaseManager.MySqlFactory);
-            this._playerRepository = new PlayerRepository(DatabaseManager.MySqlFactory);
-
-            Instance = this;
         }
 
         public void Tick()

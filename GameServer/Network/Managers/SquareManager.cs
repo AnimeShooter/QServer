@@ -98,15 +98,12 @@ namespace Qserver.GameServer.Network
             // squarePlayer
             pw.WriteUInt32(squarePlayer.State);
             pw.WriteUInt32(squarePlayer.Player.PlayerId);
-
             pw.WriteWString(squarePlayer.Player.Name, 16);
-            //pw.WriteBytes(new byte[16] { 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, });
-
             pw.WriteUInt8((byte)squarePlayer.Player.Level);
             pw.WriteUInt8((byte)squarePlayer.Player.Rank);
             pw.WriteUInt16(0);
             pw.WriteUInt16(squarePlayer.Player.Character);
-            pw.WriteUInt32(0); // TODO: select weapon
+            pw.WriteUInt32(squarePlayer.SelectedWeapon);
 
             foreach (var armor in squarePlayer.Player.EquipmentManager.GetArmorItemIdsByCharacter(squarePlayer.Player.Character))
                 pw.WriteUInt32(armor); // 9
@@ -122,10 +119,7 @@ namespace Qserver.GameServer.Network
         public PacketWriter Chat(string sender, string message)
         {
             PacketWriter pw = new PacketWriter((Opcode)6529);
-
             pw.WriteWString(sender, 16);
-            //pw.WriteBytes(new byte[16] { 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, });
-
             ushort len = (ushort)(message.Length % 254);
             pw.WriteUInt16(len);
             pw.WriteWString(message, len);
@@ -160,38 +154,29 @@ namespace Qserver.GameServer.Network
             pw.WriteFloat(newPosition[2]);
             return pw;
         }
-
         public PacketWriter Players(List<SquarePlayer> squarePlayers, uint playerId)
         {
-            //return;
             PacketWriter pw = new PacketWriter(Opcode.SQUARE_LOAD_PLAYERS);
 
             ushort len = (ushort)squarePlayers.Count;
-            //ushort len = 0; // (ushort)squarePlayers.Count;
 
             pw.WriteUInt16(len);
             pw.WriteUInt16(len);
             pw.WriteUInt16(len);
 
             for(int i = 0; i < 100; i++)
-            //for(int i = 0; i < len; i++)
             {
                 if (i < len)
                 {
                     // squarePlayer
                     pw.WriteUInt32(squarePlayers[i].State);             // 4
                     pw.WriteUInt32(squarePlayers[i].Player.PlayerId);   // 8
-
-                    //pw.WriteBytes(new byte[16] { 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, });
-                    //pw.WriteBytes(new byte[16] { 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x42, 0x00, }); // idk?
                     pw.WriteWString(squarePlayers[i].Player.Name, 16);  // 40
-
                     pw.WriteUInt8((byte)squarePlayers[i].Player.Level); // 41
                     pw.WriteUInt8((byte)squarePlayers[i].Player.Rank);  // 42
                     pw.WriteUInt16(0);                                  // 44
                     pw.WriteUInt16(squarePlayers[i].Player.Character);  // 46
-                    pw.WriteUInt32(0); // TODO: select weapon           // 50
-                    //pw.WriteBytes(squarePlayer.Player.EquipmentManager.)
+                    pw.WriteUInt32(squarePlayers[i].SelectedWeapon);        // 50
 
                     foreach (var armor in squarePlayers[i].Player.EquipmentManager.GetArmorItemIdsByCharacter(squarePlayers[i].Player.Character))
                         pw.WriteUInt32(armor); // 9
@@ -208,14 +193,12 @@ namespace Qserver.GameServer.Network
 
             return pw;
         }
-
         public PacketWriter RemovePlayer(ushort playerId)
         {
             PacketWriter pw = new PacketWriter((Opcode)6509);
             pw.WriteUInt32(playerId);
             return pw;
         }
-
         public PacketWriter SetPosition(SquarePlayer squarePlayer)
         {
             PacketWriter pw = new PacketWriter((Opcode)6531);
@@ -230,15 +213,11 @@ namespace Qserver.GameServer.Network
             var player = squarePlayer.Player;
             pw.WriteUInt32(player.PlayerId);
             pw.WriteUInt16(player.Character);
+            pw.WriteUInt32(squarePlayer.SelectedWeapon);
 
-            //pw.WriteUInt32(squarePlayer.Selec) // SelectedWeapon
-            pw.WriteUInt32(0);
-
-            // selected Character Armor
+            var armor = squarePlayer.Player.EquipmentManager.GetArmorItemIdsByCharacter(squarePlayer.Player.Character);
             for(int i = 0; i < 9; i++)
-            {
-                pw.WriteUInt32(0);
-            }
+                pw.WriteUInt32(armor[i]);
 
             return pw;
         }

@@ -36,6 +36,10 @@ namespace Qserver.GameServer.Qpang
         {
             get { return this._position; }
         } 
+        public uint SelectedWeapon
+        {
+            get { return this._selectedWeapon; }
+        }
 
         public SquarePlayer(Player player, Square square)
         {
@@ -44,9 +48,7 @@ namespace Qserver.GameServer.Qpang
             this._position = new float[3];
             this._state = 1;
             this._stateValue = 0;
-            
-            // TODO
-            //this._selectedWeapon = player.EquipmentManager.DefaultWeapon;
+            this._selectedWeapon = player.EquipmentManager.GetDefaultWeapon();
         }
 
         public void SetState(uint state, byte stateValue)

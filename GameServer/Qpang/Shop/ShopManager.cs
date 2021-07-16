@@ -17,7 +17,6 @@ namespace Qserver.GameServer.Qpang
             this._items = new Dictionary<uint, ShopItem>();
             this._orderedItems = new List<ShopItem>();
 
-            // TODO: database
             var dbitems = Game.Instance.ItemsRepository.GetItems().Result;
             foreach(var dbitem in dbitems)
             {
@@ -84,7 +83,6 @@ namespace Qserver.GameServer.Qpang
 
             var card = InventoryCard.FromShopItem(shopItem);
 
-            // TODO: database
             card.Id = Game.Instance.ItemsRepository.PurchaseItem(card, player).Result;
 
             card.PlayerOwnedId = player.PlayerId;

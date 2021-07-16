@@ -21,17 +21,15 @@ namespace Qserver.GameServer.Qpang
 
     public class ChannelManager
     {
-        private ChannelsRepository _channelsRepository;
         private Dictionary<uint, Channel> _channels;
 
         public ChannelManager()
         {
             Log.Message(LogType.MISC, "Loading Channels from database...");
-            this._channelsRepository = new ChannelsRepository(DatabaseManager.MySqlFactory);
-            this._channels = new Dictionary<uint, Channel>();
-            foreach(var c in this._channelsRepository.GetChannels().Result)
+            var channels = Game.Instance.ChannelsRepository.GetChannels().Result;
+            foreach(var c in channels)
             {
-                Log.Message(LogType.DUMP, $"[{c.Name}] MaxP:{c.MaxPlayers} @ {c.IP}\n");
+                Log.Message(LogType.DUMP, $"{$"[{c.Name}]".PadRight(20)} MaxP:{c.MaxPlayers.ToString().PadLeft(3)} @ {c.IP}\n");
                 this._channels.Add(c.Id, c);
             }
             Log.Message(LogType.MISC, $"{this._channels.Count} Channels loaded!");

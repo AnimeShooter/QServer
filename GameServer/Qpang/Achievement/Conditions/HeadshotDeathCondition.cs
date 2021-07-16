@@ -4,18 +4,18 @@ using System.Text;
 
 namespace Qserver.GameServer.Qpang
 {
-    public class DeathCondition : AchievementCondition
+    public class HeadshotDeathCondition : AchievementCondition
     {
         private uint _deaths;
 
-        public DeathCondition(uint deathCount)
+        public HeadshotDeathCondition(uint deahtCount)
         {
-            this._deaths = deathCount;
+            this._deaths = deahtCount;
         }
 
         public override bool IsMatch(RoomSessionPlayer player)
         {
-            return player.Player.StatsManager.GunKills >= this._deaths;
+            return player.Player.StatsManager.HeadshotDeaths >= this._deaths;
         }
     }
 }

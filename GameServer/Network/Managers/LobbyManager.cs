@@ -502,7 +502,7 @@ namespace Qserver.GameServer.Network.Managers
             pw.WriteUInt16(size);
             foreach(var gift in gifts)
             {
-                pw.WriteWString("--", 16); // idk
+                pw.WriteWString("", 16); // idk
                 pw.WriteUInt64(gift.Id);
                 pw.WriteUInt8(1);
                 pw.WriteUInt32(0); // TODO: gift.TimeCreated);

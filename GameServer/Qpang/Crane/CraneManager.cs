@@ -11,7 +11,6 @@ namespace Qserver.GameServer.Qpang
     {
         private object _lock;
         private List<CraneItem> _items;
-        private CraneRepository _craneRepository;
 
         public bool Enabled
         {
@@ -22,11 +21,8 @@ namespace Qserver.GameServer.Qpang
         {
             this._lock = new object();
 
-            Log.Message(LogType.MISC, "Loading Crane Items from database...");
-            this._craneRepository = new CraneRepository(DatabaseManager.MySqlFactory);
-            this._items = this._craneRepository.GetCraneItems().Result;
-            Log.Message(LogType.MISC, $"{this._items.Count} Crane Items have been loaded from the database!");
-
+            this._items = Game.Instance.CraneRepository.GetCraneItems().Result;
+            Log.Message(LogType.MISC, $"CraneManager loaded {this._items.Count} Items from the database!");
         }
 
         public InventoryCard GetRandomItem()

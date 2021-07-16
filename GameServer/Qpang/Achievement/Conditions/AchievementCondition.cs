@@ -6,7 +6,10 @@ namespace Qserver.GameServer.Qpang
 {
     public abstract class AchievementCondition
     {
-        //public abstract bool IsMatch(RoomSessionPlayer player);
+        public virtual bool IsMatch(RoomSessionPlayer player)
+        {
+            return false;
+        }
 
     }
 }

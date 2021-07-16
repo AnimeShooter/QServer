@@ -334,9 +334,9 @@ namespace Qserver.GameServer.Qpang
 
                 var card = this._gifts[cardId];
                 card.IsOpened = true;
-                this._cards[card.Id] = card;
 
-                this._gifts.Remove(cardId);
+                this._cards[card.Id] = card; // add to cards
+                this._gifts.Remove(cardId); // rm from gifts
 
                 // TODO: UPDATE player_items SET opened = 1 WHERE id = ?
 

@@ -109,7 +109,11 @@ namespace Qserver.GameServer.Qpang
         public ushort Character
         {
             get { return this._character; }
-            set { this._character = value; }
+            set
+            {
+                this._character = value;
+                SendLobby(LobbyManager.Instance.UpdateCharacter(value));
+            }
         }
         public bool Online
         {

@@ -35,8 +35,7 @@ namespace Qserver.GameServer.Network.Handlers
             for(int i = 0; i < armor.Length; i++)
                 armor[i] = packet.ReadUInt64();
 
-            // TODO
-            //manager.Player.EquipmentManager. SetArmor
+            manager.Player.EquipmentManager.SetArmor(characterIndex, armor);
         }
         public static void HandleEquipWeapon(PacketReader packet, ConnServer manager)
         {
@@ -49,29 +48,12 @@ namespace Qserver.GameServer.Network.Handlers
                 packet.ReadUInt64(); // unk
             }
 
-            // TODO
-            //manager.Player.EquipmentManager.SetWeapons
+            manager.Player.EquipmentManager.SetWeapons(characterIndex, weapons);
         }
 
         public static void HandleRequestEquippedSkillCards(PacketReader packet, ConnServer manager)
         {
-            //Thread.Sleep(-1);
-            // TODO
-            var skills = new InventoryCard[] { 
-                new InventoryCard()
-                {
-                    Id = 1,
-                },
-                new InventoryCard()
-                {
-                    Id = 2,
-                    
-                },
-                new InventoryCard()
-                {
-                    Id = 3
-                }
-            }; // manager.Player.EquipmentManager.SkillCards;
+            var skills = manager.Player.EquipmentManager.GetSkillCards();
             manager.Send(LobbyManager.Instance.EquippedSkillCards(skills));
         }
         #endregion
@@ -111,7 +93,7 @@ namespace Qserver.GameServer.Network.Handlers
         }
         public static void HandleRequestGameSettingsEvent(PacketReader packet, ConnServer manager)
         {
-            //throw new NotImplementedException();
+            // Peer to peer?
         }
         #endregion
 
@@ -123,7 +105,7 @@ namespace Qserver.GameServer.Network.Handlers
             if (player == null)
                 return;
 
-            player.InventoryManager.DeleteCard(cardId);
+            player.InventoryManager.DeleteCard(cardId); //
         }
         public static void HandleDisableFunctionCardEvent(PacketReader packet, ConnServer manager)
         {

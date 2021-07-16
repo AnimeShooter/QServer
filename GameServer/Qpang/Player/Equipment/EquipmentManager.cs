@@ -26,6 +26,7 @@ namespace Qserver.GameServer.Qpang
         {
             this._player = player;
             this._unlockedCharacters = new List<ushort>() { 333, 343, 578, 579, 850, 851 }; // Hardcode all unlocked
+            this._functionCards = new List<ulong>();
             this._lock = new object();
             this._functionCardlock = new object();
             this._equips = new Dictionary<ushort, ulong[]>();
@@ -190,11 +191,10 @@ namespace Qserver.GameServer.Qpang
                     if (weapon == 0)
                         continue;
 
-                    //if(!Game.Instance.WeaponManager.CanEquip(this._player.InventoryManager.Get(weapon).ItemId), characterId)
+                    //if (!Game.Instance.WeaponManager.CanEquip(this._player.InventoryManager.Get(weapon).ItemId), characterId)
                     //    return;
                     if (!this._player.InventoryManager.HasCard(weapon) || this._player.InventoryManager.IsExpired(weapon))
                         return;
-
                 }
 
                 this._equips[characterId][9] = weapons[0];

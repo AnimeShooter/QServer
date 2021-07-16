@@ -274,7 +274,8 @@ namespace Qserver.GameServer.Qpang
         }
         public void Update()
         {
-            // TODO: _character, _don, _cash, _coins, _level, _prestige, _experience, _playerId
+            // TODO fix?
+            Game.Instance.PlayerRepository.UpdatePlayer(this).GetAwaiter();
         }
         public void RemoveDon(uint count)
         {

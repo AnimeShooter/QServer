@@ -60,7 +60,6 @@ namespace Qserver.GameServer.Qpang
 
         public void Buy(Player player, uint seqId)
         {
-            // TODO: database
             if (player == null)
                 return;
             
@@ -83,6 +82,7 @@ namespace Qserver.GameServer.Qpang
 
             var card = InventoryCard.FromShopItem(shopItem);
 
+            // db register purchase
             card.Id = Game.Instance.ItemsRepository.PurchaseItem(card, player).Result;
 
             card.PlayerOwnedId = player.PlayerId;

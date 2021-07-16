@@ -42,6 +42,13 @@ namespace Qserver.GameServer.Database.Repositories
 			return items.Result.FirstOrDefault();
 		}
 
+		public async Task UpdatePlayer(Player player)
+		{
+			await _sqlObjectFactory.GetConnection().UsingAsync(connection =>
+				connection.QuerySingleAsync("UPDATE players SET default_character = @DefaultCharacter, don = @Don, cash = @Cash, coins = @Coins, level = @Level, prestiege = @Prestiege, experience = @Experience WHERE id = @Id",
+				new { DefaultCharacter = player.Character, Don = player.Don, Cash = player.Cash, Coins = player.Coins, Level = player.Level, Prestiege = player.Prestige, Experience = player.Experience, Id = player.PlayerId }));
+		}
+
 		public async Task<uint> GetUserId(string uuid)
 		{
 			Task<IEnumerable<uint>> res = null;
@@ -68,7 +75,6 @@ namespace Qserver.GameServer.Database.Repositories
 
 		public async Task UpdateUUID(string username, string uuid)
 		{
-			Task<int> res;
 			await _sqlObjectFactory.GetConnection().UsingAsync(connection =>
 				connection.QuerySingleAsync("UPDATE users SET session_uuid = @Uuid WHERE name = @Username", new { Username = username, Uuid = uuid }));
 		}

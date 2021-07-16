@@ -40,6 +40,25 @@ namespace Qserver.GameServer.Database.Repositories
 		public uint time; // uint?
 	}
 
+	public struct DBPlayerEquiped
+	{
+		public ulong id;
+		public ulong player_id;
+		public ushort character_id;
+		public ushort melee;
+		public ushort primary;
+		public ushort secondary;
+		public ushort throwy;
+		public ushort head;
+		public ushort face;
+		public ushort body;
+		public ushort hands;
+		public ushort legs;
+		public ushort shoes;
+		public ushort back;
+		public ushort side;	
+	}
+
 	public class ItemsRepository
     {
 		public ItemsRepository(IMySqlObjectFactory sqlObjectFactory)
@@ -57,12 +76,30 @@ namespace Qserver.GameServer.Database.Repositories
 			return items.Result.ToList();
 		}
 
-		public async Task<List<DBInventoryCard>> GetPlayerItems(uint playerId)
+		public async Task<List<DBInventoryCard>> GetInventoryCards(uint playerId)
 		{
 			Task<IEnumerable<DBInventoryCard>> items = null;
 			await _sqlObjectFactory.GetConnection().UsingAsync(connection =>
 				items = connection.QueryAsync<DBInventoryCard>("SELECT id, player_id, item_id, type, period_type, period, active, opened, giftable, boost_level, time FROM player_items WHERE player_id = @PlayerId", new { PlayerId = playerId }));
 			return items.Result.ToList();
+		}
+
+		public async Task<List<DBPlayerEquiped>> GetCharactersEquips(uint playerId)
+		{
+			Task<IEnumerable<DBPlayerEquiped>> items = null;
+			await _sqlObjectFactory.GetConnection().UsingAsync(connection =>
+				items = connection.QueryAsync<DBPlayerEquiped>("SELECT id, player_id, character_id, melee, `primary`, secondary, throw, head, face, body, hands, legs, shoes, back, side FROM player_equipment WHERE player_id = @PlayerId", new { PlayerId = playerId }));
+			return items.Result.ToList();
+		}
+
+		public async Task UpdateCharactersEquips(ulong[] equips, ushort characterId, ulong playerId)
+		{
+			await _sqlObjectFactory.GetConnection().UsingAsync(connection =>
+				connection.QueryAsync<DBPlayerEquiped>("UPDATE player_equipment SET" +
+				" head = @Head, face = @Face, body = @Body, hands = @Hands, legs = @Legs, shoes = @Shoes, back = @Back, side = @Side, `primary` = @Primary, secondary = @Secondary, throw = @Throwy, melee = @Melee " +
+				"WHERE player_id = @PlayerId AND character_id = @CharacterId",
+				new { PlayerId = playerId, CharacterId = characterId, Head = equips[0], Face = equips[1], Body = equips[2], Hands = equips[3], Legs = equips[4], Shoes = equips[5], Back = equips[6], Side = equips[7], Primary = equips[9], Secondary = equips[10], Throwy = equips[11], Melee = equips[12] })) ;
+			return;
 		}
 
 		public async Task<ulong> PurchaseItem(InventoryCard card, Player player)

@@ -128,7 +128,7 @@ namespace Qserver.GameServer.Qpang
         {
             get { return this._cash; }
         }
-        public uint Coins // NOTE: golden coin = 1_00_00 'coins' ?
+        public uint Coins // NOTE: golden coin = 1_0_0 'coins' ?
         {
             get { return this._coins; }
         }
@@ -168,8 +168,6 @@ namespace Qserver.GameServer.Qpang
             this._playerId = playerId;
             this._loginTime = DateTime.UtcNow;
 
-            // Load player WHERE id = X
-            
             var playerData = Game.Instance.PlayerRepository.GetPlayer(playerId).Result;
 
             this._name = playerData.name;

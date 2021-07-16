@@ -156,7 +156,6 @@ namespace Qserver.GameServer.Qpang
             get { return this._itemsRepository; }
         }
 
-
         public Game(bool lobby)
         {
             this._lock = new object();

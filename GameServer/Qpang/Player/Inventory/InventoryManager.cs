@@ -21,7 +21,7 @@ namespace Qserver.GameServer.Qpang
             this._cards = new Dictionary<ulong, InventoryCard>();
             this._gifts = new Dictionary<ulong, InventoryCard>();
 
-            var dbitems = Game.Instance.ItemsRepository.GetPlayerItems(this._player.PlayerId).Result;
+            var dbitems = Game.Instance.ItemsRepository.GetInventoryCards(this._player.PlayerId).Result;
             foreach(var dbitem in dbitems)
             {
                 var card = new InventoryCard()
@@ -43,21 +43,6 @@ namespace Qserver.GameServer.Qpang
                 else
                     this._gifts[card.Id] = card;
             }
-
-            //this._cards.Add(0, new InventoryCard()
-            //{
-            //    Id = 0,
-            //    BoostLevel = 0,
-            //    IsActive = false,
-            //    IsGiftable = true,
-            //    IsOpened = true,
-            //    ItemId = 1095368711,
-            //    Period = 1,
-            //    PeriodeType = 254,
-            //    PlayerOwnedId = this._player.PlayerId,
-            //    Type = 87
-            //});
-
         }
 
         public List<InventoryCard> List()

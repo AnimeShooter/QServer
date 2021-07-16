@@ -34,8 +34,26 @@ namespace Qserver.GameServer.Qpang
             
             lock (this._lock)
             {
-                // TODO: database get player equipments
-                // SELECT * FROM player_equipment WHERE player_id = ?
+                var characterEquipments = Game.Instance.ItemsRepository.GetCharactersEquips(player.PlayerId).Result;
+                foreach(var ce in characterEquipments)
+                {
+                    ulong[] equips = new ulong[13];
+                    ushort characterId = ce.character_id;
+                    equips[0] = ce.head;
+                    equips[1] = ce.face;
+                    equips[2] = ce.body;
+                    equips[3] = ce.hands;
+                    equips[4] = ce.legs;
+                    equips[5] = ce.shoes;
+                    equips[6] = ce.back;
+                    equips[7] = ce.side;
+                    equips[8] = 0; // unk
+                    equips[9] = ce.primary;
+                    equips[10] = ce.secondary;
+                    equips[11] = ce.throwy;
+                    equips[12] = ce.melee;
+                }
+
                 foreach (var characterId in this._unlockedCharacters)
                 {
                     ulong[] equips = new ulong[13];
@@ -399,8 +417,18 @@ namespace Qserver.GameServer.Qpang
 
         public void Save()
         {
-            // TODO: database
+            lock(this._lock)
+            {
+                if (this._player == null)
+                    return;
+
+                foreach(var character in this._unlockedCharacters)
+                {
+                    Game.Instance.ItemsRepository.UpdateCharactersEquips(this._equips[character], character, this._player.PlayerId).GetAwaiter();
+                }
+            }
         }
+
         public void Close()
         {
             Save();

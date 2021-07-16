@@ -910,7 +910,7 @@ namespace Qserver.GameServer.Network.Managers
                 pw.WriteUInt8(card.IsGiftable ? (byte)1 : (byte)0); // 15
                 pw.WriteBytes(new byte[6]);     // 16
                 pw.WriteUInt32(0); // card.TimeCreated);   // 22 (TODO: timestamp?)
-                pw.WriteUInt8(card.IsOpened ? (byte)0 : (byte)1); // 26
+                pw.WriteUInt8(card.IsOpened ? (byte)1 : (byte)0); // 26
                 pw.WriteUInt16(card.IsActive ? (ushort)0 : (ushort)1); // 27
                 pw.WriteUInt8(0);         // 28 hidden
                 pw.WriteUInt8(0);         // 29
@@ -936,7 +936,8 @@ namespace Qserver.GameServer.Network.Managers
                 pw.WriteUInt32(item.SeqId);
                 pw.WriteUInt32(item.ItemId);
                 pw.WriteUInt8(item.IsCash ? (byte)1 : (byte)0);
-                pw.WriteUInt8(item.Stock >= 9999 || item.SoldCount < item.Stock ? (byte)1 : (byte)0);
+                pw.WriteUInt32(item.Price);
+                pw.WriteUInt32(item.Stock >= 9999 || item.SoldCount < item.Stock ? (byte)1 : (byte)0);
                 pw.WriteUInt8(item.ShopCategory);
             }
             return pw;

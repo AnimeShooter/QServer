@@ -116,7 +116,8 @@ namespace Qserver.GameServer
             HandlerMapping.InitPacketHandlers(startAuthServer, startLobbyServer, startSquareServer);
 
             GC.Collect();
-            Log.Message(LogType.NORMAL, $"Total Memory: {Convert.ToSingle(GC.GetTotalMemory(false) / 1024 / 1024)}MB");
+            Log.Message(LogType.NORMAL, $"Total Memory: {Convert.ToSingle(GC.GetTotalMemory(false) / 1024)}KB");
+            //Log.Message(LogType.NORMAL, $"Total Memory: {Convert.ToSingle(GC.GetTotalMemory(false) / 1024 / 1024)}MB");
 
             if (useCLI)
             {

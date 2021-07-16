@@ -298,9 +298,9 @@ namespace Qserver.GameServer.Network.Handlers
         #region Shop
         public static void HandleBuyCardEvent(PacketReader packet, ConnServer manager)
         {
-            //uint seqId = packet.ReadUInt32();
-            //if (manager.Player != null)
-            //    Game.Instance.ShopManager.Buy(manager.Player, seqId);
+            uint seqId = packet.ReadUInt32();
+            if (manager.Player != null)
+                Game.Instance.ShopManager.Buy(manager.Player, seqId);
         }
         public static void HandleRequestShopItems(PacketReader packet, ConnServer manager)
         {

@@ -240,12 +240,16 @@ namespace Qserver.GameServer.Qpang
                 }
                 
                 // cache manger
-
                 this._players[player.PlayerId] = player;
-                // this._playersName
+                this._playersByName[player.Name] = player;
             }
 
             return player;
+        }
+
+        public void OnSquareConnClose(SquareManager conn)
+        {
+            // TODO: handle closing
         }
 
         public Player GetPlayer(uint playerId)
@@ -261,10 +265,10 @@ namespace Qserver.GameServer.Qpang
         {
             lock (this._lock)
             {
-                //foreach(var p in this._players)
-                //    if(p.Value.)
+                if (this._playersByName.ContainsKey(name))
+                    return this._playersByName[name];
+                return null;
             }
-            return null;
         }
 
         // TODO: event handles to kick player on connection close

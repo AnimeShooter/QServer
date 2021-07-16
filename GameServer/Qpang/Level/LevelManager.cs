@@ -13,14 +13,13 @@ namespace Qserver.GameServer.Qpang
         private LevelRepository _levelRepository;
         public LevelManager()
         {
-            Log.Message(LogType.MISC, "Loading Level info from database...");
             this._levelRepository = new LevelRepository(DatabaseManager.MySqlFactory);
             this._levels = new Dictionary<byte, Level>();
             foreach(var l in this._levelRepository.GetLevelInfo().Result)
             {
                 this._levels.Add(l.Lvl, l);
             }
-            Log.Message(LogType.MISC, $"{this._levels.Count} levels have been loaded!");
+            Log.Message(LogType.MISC, $"LevelManger loaded {this._levels.Count} levels from the database!");
         }
 
         public Level GetLevelForExperience(uint exp, byte level)

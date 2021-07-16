@@ -31,11 +31,12 @@ namespace Qserver.GameServer.Qpang
             this._functionCardlock = new object();
             this._equips = new Dictionary<ushort, ulong[]>();
             this._skillCards = new ulong[3];
-
-            lock(this._lock)
+            
+            lock (this._lock)
             {
                 // TODO: database get player equipments
-                foreach(var characterId in this._unlockedCharacters)
+                // SELECT * FROM player_equipment WHERE player_id = ?
+                foreach (var characterId in this._unlockedCharacters)
                 {
                     ulong[] equips = new ulong[13];
                     this._equips.Add(characterId, equips);
@@ -139,9 +140,7 @@ namespace Qserver.GameServer.Qpang
         public void RemoveFunctionCard(ulong cardId)
         {
             lock(this._functionCardlock)
-            {
                 this._functionCards.Remove(cardId);
-            }
         }
 
         public void UnequipItem(ulong cardId)

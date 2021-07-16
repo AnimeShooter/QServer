@@ -20,91 +20,44 @@ namespace Qserver.GameServer.Qpang
 
             this._cards = new Dictionary<ulong, InventoryCard>();
             this._gifts = new Dictionary<ulong, InventoryCard>();
-            // TODO: Database
 
-            //this._gifts.Add(5, new InventoryCard()
+            var dbitems = Game.Instance.ItemsRepository.GetPlayerItems(this._player.PlayerId).Result;
+            foreach(var dbitem in dbitems)
+            {
+                var card = new InventoryCard()
+                {
+                    Id = dbitem.id,
+                    PlayerOwnedId = dbitem.player_id,
+                    ItemId = dbitem.item_id,
+                    Type = dbitem.type,
+                    PeriodeType = (byte)dbitem.period_type,
+                    Period = dbitem.period,
+                    IsActive = dbitem.active == 1,
+                    IsOpened = dbitem.opened == 1,
+                    IsGiftable = dbitem.giftable == 1,
+                    BoostLevel = dbitem.boost_level,
+                    //TimeCreated = dbitem.time
+                };
+                if (card.IsOpened)
+                    this._cards[card.Id] = card;
+                else
+                    this._gifts[card.Id] = card;
+            }
+
+            //this._cards.Add(0, new InventoryCard()
             //{
-            //    Id = 5,
+            //    Id = 0,
             //    BoostLevel = 0,
             //    IsActive = false,
             //    IsGiftable = true,
-            //    IsOpened = false,
-            //    ItemId = 1095368711,
-            //    Period = 375,
-            //    PeriodeType = 1,
-            //    PlayerOwnedId = this._player.PlayerId,
-            //    Type = 1
-            //});
-
-            //this._cards.Add(6, new InventoryCard()
-            //{
-            //    Id = 6,
-            //    BoostLevel = 0,
-            //    IsActive = false,
-            //    IsGiftable = false,
             //    IsOpened = true,
             //    ItemId = 1095368711,
-            //    Period = 2,
-            //    PeriodeType = 2,
+            //    Period = 1,
+            //    PeriodeType = 254,
             //    PlayerOwnedId = this._player.PlayerId,
-            //    Type = 0
+            //    Type = 87
             //});
 
-            this._cards.Add(0, new InventoryCard()
-            {
-                Id = 0,
-                BoostLevel = 0,
-                IsActive = false,
-                IsGiftable = true,
-                IsOpened = true,
-                ItemId = 1095368711,
-                Period = 1,
-                PeriodeType = 254,
-                PlayerOwnedId = this._player.PlayerId,
-                Type = 87
-            });
-
-            this._cards.Add(3, new InventoryCard()
-            {
-                Id = 3,
-                BoostLevel = 0,
-                IsActive = false,
-                IsGiftable = true,
-                IsOpened = true,
-                ItemId = 1124230656,
-                Period = 500,
-                PeriodeType = 2, // time?
-                PlayerOwnedId = this._player.PlayerId,
-                Type = 86
-            });
-
-            this._cards.Add(4, new InventoryCard()
-            {
-                Id = 4,
-                BoostLevel = 0,
-                IsActive = false,
-                IsGiftable = true,
-                IsOpened = true,
-                ItemId = 1124230400,
-                Period = 375,
-                PeriodeType = 3, // rounds?
-                PlayerOwnedId = this._player.PlayerId,
-                Type = 86
-            });
-
-            this._cards.Add(9, new InventoryCard()
-            {
-                Id = 9,
-                BoostLevel = 0,
-                IsActive = false,
-                IsGiftable = true,
-                IsOpened = true,
-                ItemId = 1095172100,
-                Period = 525,
-                PeriodeType = 3,
-                PlayerOwnedId = this._player.PlayerId,
-                Type = 87
-            });
         }
 
         public List<InventoryCard> List()
@@ -189,8 +142,8 @@ namespace Qserver.GameServer.Qpang
                     this._player.SendLobby(LobbyManager.Instance.EnabledFunctionCard(card));
                 }else if(!isActive && duplicate)
                 {
-                    card.IsActive = true;
-                    this._player.EquipmentManager.AddFunctionCard(cardId);
+                    card.IsActive = false;
+                    this._player.EquipmentManager.RemoveFunctionCard(cardId);
                     this._player.SendLobby(LobbyManager.Instance.EnabledFunctionCard(card));
                 }
 
@@ -339,6 +292,7 @@ namespace Qserver.GameServer.Qpang
                 this._gifts.Remove(cardId); // rm from gifts
 
                 // TODO: UPDATE player_items SET opened = 1 WHERE id = ?
+                
 
                 this._player.SendLobby(LobbyManager.Instance.OpenGiftSuccess(this._player, card));
             }

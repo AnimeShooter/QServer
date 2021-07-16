@@ -253,6 +253,11 @@ namespace Qserver.GameServer.Qpang
             this._equipmentManager.Close();
             this._friendManager.Close();
 
+            lock(this._squareLock)
+            {
+                this._squarePlayer.Square.Remove(this._playerId);
+            }
+
             Update();
         }
 

@@ -18,6 +18,8 @@ namespace Qserver.GameServer
         //
         //
 
+        public static QpangServer AuthSession;
+
         public static void PrintBanner()
         {
             Log.Message(LogType.MISC, "Starting GameServer\n\n" +
@@ -89,9 +91,8 @@ namespace Qserver.GameServer
             // Auth Server
             if (startAuthServer)
             {
-                ServerManager.AuthSession = new AuthServer();
-                ServerManager.AuthSession.Server.Start();
-                ServerManager.AuthSession.Server.StartConnectionThreads();
+                AuthSession = new QpangServer(Settings.SERVER_PORT_AUTH);
+                AuthSession.Start();
                 Log.Message(LogType.NORMAL, $"AuthServer    listening on {Settings.SERVER_IP}:{Settings.SERVER_PORT_AUTH}");
             }
 
@@ -100,7 +101,7 @@ namespace Qserver.GameServer
             {
                 Game game = new Game(startLobbyServer);
                 if (startLobbyServer)
-                    Log.Message(LogType.NORMAL, $"LobbyServer   listening on {Settings.SERVER_IP}:{Settings.SERVER_PORT_PARK}");
+                    Log.Message(LogType.NORMAL, $"LobbyServer   listening on {Settings.SERVER_IP}:{Settings.SERVER_PORT_LOBBY}");
                 if (startSquareServer)
                     Log.Message(LogType.NORMAL, $"SquareServer  listening on {Settings.SERVER_IP}:{Settings.SERVER_PORT_SQUARE}");
             }

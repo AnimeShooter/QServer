@@ -10,21 +10,24 @@ namespace Qserver.GameServer.Network
     public class QpangServer
     {
         public bool ListenServerSocket = true;
-        private TcpListener _listener;
-        public int Port;
+        public TcpListener _listener;
+        public int _port;
         private Dictionary<uint, ConnServer> _connections;
 
-        public QpangServer(int port)
+        public QpangServer(int port) // used for auth?
         {
-            this.Port = port;
-            //Start();
+            this._port = port;
         }
+
         public bool Start()
         {
             try
             {
-                _listener = new TcpListener(IPAddress.Parse(Settings.SERVER_IP), this.Port);
+                _listener = new TcpListener(IPAddress.Parse(Settings.SERVER_IP), this._port);
                 _listener.Start();
+
+                // init multi thread accepter
+                new Thread(AcceptConnection).Start(); 
 
                 return true;
             }
@@ -33,11 +36,6 @@ namespace Qserver.GameServer.Network
                 Log.Message(LogType.ERROR, "{0}", e.Message);
                 return false;
             }
-        }
-
-        public void StartConnectionThreads()
-        {
-            new Thread(AcceptConnection).Start();
         }
 
         protected void AcceptConnection()
@@ -49,12 +47,9 @@ namespace Qserver.GameServer.Network
                     Thread.Sleep(1);
                     if (_listener.Pending())
                     {
-                        AuthServer Server = new AuthServer();
-                        Server.Socket = _listener.AcceptSocket();
-                        Server.SocketStream = new NetworkStream(Server.Socket);
-
-                        Thread NewThread = new Thread(Server.RecieveAuth);
-                        NewThread.Start();
+                        // create new thread listener
+                        ConnServer Server = new ConnServer(_listener.AcceptSocket());
+                        new Thread(Server.OnReceive).Start();
                     }
                 }
             }
@@ -63,8 +58,8 @@ namespace Qserver.GameServer.Network
                 // We do not want our server to crash due to a invalid packet beeing sent
                 Console.WriteLine(e.ToString());
             }
-            
         }
+
         protected void Dispose()
         {
             ListenServerSocket = false;

@@ -65,8 +65,8 @@ namespace Qserver.GameServer.Qpang
         private PlayerRepository _playerRepository;
         private ItemsRepository _itemsRepository;
 
-        private LobbyServer _lobbyServer; // lobby?
-        private SquareServer _squareServer;
+        private QpangServer _lobbyServer; // lobby?
+        private QpangServer _squareServer;
 
         private object _lock;
 
@@ -163,18 +163,17 @@ namespace Qserver.GameServer.Qpang
             this._players = new Dictionary<uint, Player>();
             this._playersByName = new Dictionary<string, Player>();
 
+            // init servers
             if (lobby)
             {
-                this._lobbyServer = new LobbyServer();
-                this._lobbyServer.Server.Start();
-                this._lobbyServer.Server.StartConnectionThreads();
+                this._lobbyServer = new QpangServer(Settings.SERVER_PORT_LOBBY);
+                this._lobbyServer.Start();
             }
 
-            this._squareServer = new SquareServer();
-            this._squareServer.Server.Start();
-            this._squareServer.Server.StartConnectionThreads();
+            this._squareServer = new QpangServer(Settings.SERVER_PORT_SQUARE);
+            this._squareServer.Start();
 
-
+            // init databases
             this._channelsRepository = new ChannelsRepository(DatabaseManager.MySqlFactory);
             this._craneRepository = new CraneRepository(DatabaseManager.MySqlFactory);
             this._levelRepository = new LevelRepository(DatabaseManager.MySqlFactory);
@@ -182,8 +181,10 @@ namespace Qserver.GameServer.Qpang
             this._playerRepository = new PlayerRepository(DatabaseManager.MySqlFactory);
             this._itemsRepository = new ItemsRepository(DatabaseManager.MySqlFactory);
 
+            // share
             Instance = this;
 
+            // init managers
             this._channelManager = new ChannelManager();
             this._shopManager = new ShopManager();
             this._squareManager = new SquareManager();
@@ -195,7 +196,6 @@ namespace Qserver.GameServer.Qpang
             this._craneManager = new CraneManager();
             this._leaderboard = new Leaderboard(); // TODO
             this._roomServer = new RoomServer(); // TODO
-
         }
 
         public void Tick()

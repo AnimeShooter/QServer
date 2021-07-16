@@ -30,7 +30,7 @@ namespace Qserver.GameServer.Qpang
             var channels = Game.Instance.ChannelsRepository.GetChannels().Result;
             foreach(var c in channels)
             {
-                Log.Message(LogType.DUMP, $"{$"[{c.Name}]".PadRight(20)} MaxP:{c.MaxPlayers.ToString().PadLeft(3)} @ {c.IP}\n");
+                Log.Message(LogType.DUMP, $"{$"[{c.Name}]".PadRight(28)} MaxP:{c.MaxPlayers.ToString().PadLeft(3)} @ {c.IP}\n");
                 this._channels.Add(c.Id, c);
             }
             Log.Message(LogType.MISC, $"{this._channels.Count} Channels loaded!");

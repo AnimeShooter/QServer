@@ -48,7 +48,7 @@ namespace Qserver.GameServer.Network
                     if (_listener.Pending())
                     {
                         // create new thread listener
-                        ConnServer Server = new ConnServer(_listener.AcceptSocket());
+                        ConnServer Server = new ConnServer(_listener.AcceptSocket());// .AcceptSocket());
                         new Thread(Server.OnReceive).Start();
                     }
                 }

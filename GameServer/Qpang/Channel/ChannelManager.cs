@@ -26,14 +26,13 @@ namespace Qserver.GameServer.Qpang
         public ChannelManager()
         {
             this._channels = new Dictionary<uint, Channel>();
-            Log.Message(LogType.MISC, "Loading Channels from database...");
             var channels = Game.Instance.ChannelsRepository.GetChannels().Result;
             foreach(var c in channels)
             {
                 Log.Message(LogType.DUMP, $"{$"[{c.Name}]".PadRight(28)} MaxP:{c.MaxPlayers.ToString().PadLeft(3)} @ {c.IP}\n");
                 this._channels.Add(c.Id, c);
             }
-            Log.Message(LogType.MISC, $"{this._channels.Count} Channels loaded!");
+            Log.Message(LogType.MISC, $"ChannelManager loaded {this._channels.Count} from the database!");
         }
 
         public List<Channel> List()

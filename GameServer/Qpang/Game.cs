@@ -189,7 +189,7 @@ namespace Qserver.GameServer.Qpang
             this._shopManager = new ShopManager();
             this._squareManager = new SquareManager();
             this._chatManager = new ChatManager(); // TODO
-            this._weaponManager = new WeaponManager(); // TODO
+            this._weaponManager = new WeaponManager();
             this._spawnManager = new SpawnManager();
             this._skillManager = new SkillManager();
             this._levelManger = new LevelManager();

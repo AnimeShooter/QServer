@@ -25,6 +25,20 @@ namespace Qserver.GameServer.Database.Repositories
 		public uint order;
 	}
 
+	public struct DBWeapon
+    {
+		public uint id;
+		public string code_name;
+		public uint item_id;
+		public ushort damage;
+		public ushort clip_size;
+		public byte clip_amount;
+		public byte weight;
+		public byte effect_id;
+		public byte chance;
+		public byte duration;
+    }
+
 	public struct DBInventoryCard
 	{
 		public ulong id;
@@ -74,6 +88,14 @@ namespace Qserver.GameServer.Database.Repositories
 			await _sqlObjectFactory.GetConnection().UsingAsync(connection => 
 				items = connection.QueryAsync<DBItem>("SELECT seq_id, item_id, name, type, aid, pay_type, price, use_up, period, level, status, sold_count, stock, `order` FROM items"));
 			return items.Result.ToList();
+		}
+
+		public async Task<List<DBWeapon>> GetWeapons()
+		{
+			Task<IEnumerable<DBWeapon>> weapons = null;
+			await _sqlObjectFactory.GetConnection().UsingAsync(connection =>
+				weapons = connection.QueryAsync<DBWeapon>("SELECT damage, code_name, item_id, damage, clip_size, clip_amount, weight, effect_id, chance, duration FROM weapons"));
+			return weapons.Result.ToList();
 		}
 
 		public async Task<List<DBInventoryCard>> GetInventoryCards(uint playerId)

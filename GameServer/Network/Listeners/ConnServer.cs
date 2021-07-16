@@ -29,7 +29,7 @@ namespace Qserver.GameServer.Network
         public ConnServer(Socket socket)
         {
             this._socket = socket;
-            this._socketStream = new NetworkStream(_socket);
+            this._socketStream = new NetworkStream(this._socket);
         }
 
         public void OnReceive()
@@ -39,7 +39,7 @@ namespace Qserver.GameServer.Network
             {
 #endif
             Log.Message(LogType.MISC, "New Client Login Detected");
-            while (true) // exit when closed?
+            while (_socket.Connected) // exit when closed?
             {
                 Thread.Sleep(1);
                 if (_socket.Connected && _socket.Available > 0)
@@ -50,7 +50,8 @@ namespace Qserver.GameServer.Network
                             Log.Message(LogType.DUMP, $"[{_socket.LocalEndPoint}] Recieved OpCode: {pkt.Opcode}, len: {pkt.Size}\n");
                         else
                             Log.Message(LogType.DUMP, $"[{_socket.LocalEndPoint}] Unknown OpCode: {pkt.Opcode}, len: {pkt.Size}\n");
-
+                    else
+                        Log.Message(LogType.ERROR, $"[{_socket.LocalEndPoint}] Unregistered OpCode: {pkt.Opcode}\n");
                     PacketManager.InvokeHandler(pkt, this, pkt.Opcode);
                 }
             }

@@ -12,7 +12,6 @@ namespace Qserver.GameServer.Network.Handlers
 {
     public class SquareHandler
     {
-        // TODO
         public static void HandleChatRequest(PacketReader packet, ConnServer manager)
         {
             packet.ReadBytes(34);
@@ -27,9 +26,9 @@ namespace Qserver.GameServer.Network.Handlers
             if (squarePlayer == null)
                 return;
 
+            // NOTE: check for muted?
             //string actualMessage = Game.Instance.ChatManager.
-            // TODO
-            //squarePlayer.Chat();
+            squarePlayer.Chat(msg);
         }
 
         public static void HandleConnectRequest(PacketReader packet, ConnServer manager)

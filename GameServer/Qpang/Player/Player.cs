@@ -253,7 +253,8 @@ namespace Qserver.GameServer.Qpang
 
             lock(this._squareLock)
             {
-                this._squarePlayer.Square.Remove(this._playerId);
+                if(this._squarePlayer != null)
+                    this._squarePlayer.Square.Remove(this._playerId);
             }
 
             Update();

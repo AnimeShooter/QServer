@@ -59,18 +59,18 @@ namespace Qserver.GameServer.Database.Repositories
 		public ulong id;
 		public ulong player_id;
 		public ushort character_id;
-		public ushort melee;
-		public ushort primary;
-		public ushort secondary;
-		public ushort throwy;
-		public ushort head;
-		public ushort face;
-		public ushort body;
-		public ushort hands;
-		public ushort legs;
-		public ushort shoes;
-		public ushort back;
-		public ushort side;	
+		public ulong melee;
+		public ulong primary;
+		public ulong secondary;
+		public ulong throwy;
+		public ulong head;
+		public ulong face;
+		public ulong body;
+		public ulong hands;
+		public ulong legs;
+		public ulong shoes;
+		public ulong back;
+		public ulong side;	
 	}
 
 	public class ItemsRepository

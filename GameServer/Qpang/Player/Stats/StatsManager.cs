@@ -15,7 +15,7 @@ namespace Qserver.GameServer.Qpang
         private uint _missionLost;
         private uint _missionDrew;
         private uint _slackerPoints;
-        private TimeSpan _playTime;
+        private uint _playTime;
         private uint _meleeKills;
         private uint _gunKills;
         private uint _launcherKills;
@@ -58,13 +58,13 @@ namespace Qserver.GameServer.Qpang
         {
             get { return this._normalDrew; }
         }
-        public TimeSpan PlayTime
+        public uint PlayTime
         {
             get { return this._playTime; }
         }
         public uint PlayTimeInMinutes
         {
-            get { return (uint)this._playTime.TotalMinutes; }
+            get { return this._playTime/60; }
         }
         public uint SlackerPoints
         {
@@ -105,11 +105,32 @@ namespace Qserver.GameServer.Qpang
         public StatsManager(Player player)
         {
             this._player = player;
+            var stats = Game.Instance.PlayerRepository.GetPlayerStats(this._player.PlayerId).Result;
+
+            this._kills = stats.kills;
+            this._deaths = stats.deaths;
+            this._normalWon = stats.n_won;
+            this._normalDrew = stats.n_drew;
+            this._normalLost = stats.n_lost;
+            this._missionWon = stats.m_won;
+            this._missionDrew = stats.m_drew;
+            this._missionLost = stats.m_lost;
+            this._playTime = stats.playtime;
+            this._slackerPoints = stats.slacker_points;
+            this._meleeKills = stats.melee_kills;
+            this._gunKills = stats.gun_kills;
+            this._launcherKills = stats.launcher_kills;
+            this._bombKills = stats.bomb_kills;
+            this._headshotKills = stats.headshot_kills;
+            this._headshotDeaths = stats.headshot_deaths;
+            this._teamKills = stats.team_kills;
+            this._teamDeaths = stats.team_death;
+            this._eventItemPickUps = stats.event_item_pickups;
         }
 
         public void Save()
         {
-            // TODO database save!
+            Game.Instance.PlayerRepository.UpdatePlayerStats(this._player).GetAwaiter();
         }
 
         public void Apply(RoomSessionPlayer player)
@@ -147,7 +168,7 @@ namespace Qserver.GameServer.Qpang
             Save();
         }
 
-        public void AddPlaytime(TimeSpan time)
+        public void AddPlaytime(uint time)
         {
             this._playTime += time;
         }

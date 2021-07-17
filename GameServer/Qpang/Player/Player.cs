@@ -262,7 +262,7 @@ namespace Qserver.GameServer.Qpang
 
         public void Whisper(string name, string message)
         {
-            SendLobby(LobbyManager.Instance.SendWhisper(name, message));
+            SendLobby(LobbyManager.Instance.ReceiveWhisper(name, message));
         }
         public void SetOnlineStatus(bool status)
         {

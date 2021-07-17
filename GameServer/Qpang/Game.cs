@@ -189,6 +189,15 @@ namespace Qserver.GameServer.Qpang
             this._shopManager = new ShopManager();
             this._squareManager = new SquareManager();
             this._chatManager = new ChatManager(); // TODO
+            this._roomManager = new RoomManager();
+            this._roomManager.Create("test", 4, 1);
+            this._roomManager.Create("test", 4, 2);
+            this._roomManager.Create("test", 5, 3);
+            this._roomManager.Create("test", 8, 4);
+            this._roomManager.Create("test", 5, 5);
+            this._roomManager.Create("test", 3, 8);
+            this._roomManager.Create("test", 12, 9);
+
             this._weaponManager = new WeaponManager();
             this._spawnManager = new SpawnManager();
             this._skillManager = new SkillManager();

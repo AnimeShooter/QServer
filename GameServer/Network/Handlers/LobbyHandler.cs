@@ -89,11 +89,14 @@ namespace Qserver.GameServer.Network.Handlers
         #region Gameroom
         public static void HandleRequestGameRoomsEvent(PacketReader packet, ConnServer manager)
         {
-            //throw new NotImplementedException();
+            var rooms = Game.Instance.RoomManager.List();
+            manager.Send(LobbyManager.Instance.RoomList(rooms));
         }
         public static void HandleRequestGameSettingsEvent(PacketReader packet, ConnServer manager)
         {
-            // Peer to peer?
+            var rooms = Game.Instance.RoomManager.List();
+            manager.Send(LobbyManager.Instance.RoomList(rooms));
+            manager.Send(LobbyManager.Instance.UpdateGameSettings(0x7F00001, (ushort)Settings.SERVER_PORT_ROOM, true));
         }
         #endregion
 

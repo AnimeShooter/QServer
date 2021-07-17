@@ -14,6 +14,7 @@ namespace Qserver.GameServer
         public static int SERVER_PORT_AUTH = 8003; // Auth
         public static int SERVER_PORT_LOBBY = 8005; // Park/Lobby
         public static int SERVER_PORT_SQUARE = 8012; // Square
+        public static int SERVER_PORT_ROOM = 8020; // Game Room
         public static int WS_PORT = 8826; // Website
 
 #if DEBUG

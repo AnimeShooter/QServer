@@ -401,9 +401,26 @@ namespace Qserver.GameServer.Network.Managers
             foreach(var room in rooms)
             {
                 // Room
-                //pw.WriteUInt32(room.Hos)
+                pw.WriteUInt32(room.Host);
+                pw.WriteUInt16(room.Port);
+                pw.WriteUInt32(room.Id);
+                pw.WriteBytes(new byte[2]);
+                pw.WriteWString("Kim Kam Kamel", 30); // todo
+                pw.WriteBytes(new byte[14]);
+                pw.WriteUInt8(room.Map);
+                pw.WriteUInt8(room.Mode);
+                pw.WriteUInt8(8); // pw
+                pw.WriteUInt8(room.State);
+                pw.WriteUInt8(1);// room.PlayerCount);
+                pw.WriteUInt8(room.MaxPlayers);
+                pw.WriteBytes(new byte[5]);
+                pw.WriteUInt8(room.IsLevelLimited ? (byte)1 : (byte)0);
+                pw.WriteUInt8(room.IsTeamSorting ? (byte)1 : (byte)0);
+                pw.WriteUInt8(room.IsSkillsEnabled ? (byte)1 : (byte)0);
+                pw.WriteBytes(new byte[2]);
+                pw.WriteUInt8(room.IsMeleeOnly ? (byte)1 : (byte)0);
             }
-            throw new NotImplementedException();
+            return pw;
         }
         public PacketWriter UpdateGameSettings(uint host, ushort port, bool isEnabled)
         {

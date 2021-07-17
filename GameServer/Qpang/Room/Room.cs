@@ -21,6 +21,7 @@ namespace Qserver.GameServer.Qpang
         private byte _map;
         private byte _mode;
         private byte _state;
+        private byte _playerCount;
         private byte _maxPlayers;
         private uint _masterPlayerId;
         private bool _isLevelLimited;
@@ -36,6 +37,70 @@ namespace Qserver.GameServer.Qpang
 
         private GameMode _modeManager;
         private RoomSession _roomSession;
+
+        public uint Host
+        {
+            get { return this._host; }
+        }
+        public ushort Port
+        {
+            get { return this._port; }
+        }
+        public uint Id
+        {
+            get { return this._id; }
+        }
+        public byte Map
+        {
+            get { return this._map; }
+            set { this._map = value; }
+        }
+        public byte Mode
+        {
+            get { return this._mode; }
+            set { this._mode = value; }
+        }
+        public GameMode ModeManager
+        {
+            get { return this._modeManager; }
+        }
+        public byte State
+        {
+            get { return this._state; }
+            set { this._state = value; }
+        }
+        public byte PlayerCount
+        {
+            get { return this._playerCount; }
+            set { this._playerCount = value; }
+        }
+
+        public byte MaxPlayers
+        {
+            get { return this._maxPlayers; }
+            set { this._maxPlayers = value; }
+        }
+        public bool IsLevelLimited
+        {
+            get { return this._isLevelLimited; }
+            set { this._isLevelLimited = value; }
+        }
+        public bool IsTeamSorting
+        {
+            get { return this._isTeamSorting; }
+            set { this._isTeamSorting = value; }
+        }
+        public bool IsSkillsEnabled
+        {
+            get { return this._isSkillsEnabled; }
+            set { this._isSkillsEnabled = value; }
+        }
+        public bool IsMeleeOnly
+        {
+            get { return this._isMeleeOnly; }
+            set { this._isMeleeOnly = value; }
+        }
+
 
         public Room(uint id, string name, byte map, byte mode, uint host, ushort port)
         {
@@ -99,6 +164,11 @@ namespace Qserver.GameServer.Qpang
 
                 //BroadcastWaiting
             }
+        }
+
+        public void Tick()
+        {
+
         }
 
         public uint FindNewMaster()

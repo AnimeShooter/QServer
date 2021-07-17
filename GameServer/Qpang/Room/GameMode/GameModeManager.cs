@@ -11,7 +11,11 @@ namespace Qserver.GameServer.Qpang
             { 1, new DeathMatch() },
             { 2, new TeamDeathMatch() },
             { 3, new ProtectTheEssence() },
-            { 4, new VIP() }
+            { 4, new VIP() },
+
+            { 5, null }, // Practice
+            { 8, null }, // Public Enemy
+            { 9, null }, // PvE (STO)
         };
 
         public GameMode GetGameMode(byte mode)

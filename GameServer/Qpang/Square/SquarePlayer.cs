@@ -74,7 +74,6 @@ namespace Qserver.GameServer.Qpang
 
         public void Move(float[] position, byte direction, byte moveType)
         {
-            // TODO: add serverside calculation and check (anti TP, anit speedhack)
             this._position = position;
             this._square.SendPacket(Network.SquareManager.Instance.MovePlayer(this._player.PlayerId, position, moveType, direction));
         }

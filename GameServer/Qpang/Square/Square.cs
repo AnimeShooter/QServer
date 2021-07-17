@@ -90,12 +90,11 @@ namespace Qserver.GameServer.Qpang
                 this._players.Remove(playerId);
             }
 
-            // TODO
-            //SendPacket(Network.SquareManager.Instance.RemovePlayer(playerId));
-            //Game.Instance.SquareManager.Broadcast(Network.SquareManager.UpdateSquareEntry(this, true));
+            SendPacket(Network.SquareManager.Instance.RemovePlayer(playerId));
+            Game.Instance.SquareManager.Broadcast(Network.SquareManager.Instance.UpdateSquareEntry(this, true));
 
-            //if (this._players.Count == 0)
-            //    Game.Instance.SquareManager.Close(this._id);
+            if (this._players.Count == 0)
+                Game.Instance.SquareManager.Close(this._id);
         }
 
         public void SendPacket(PacketWriter packet)

@@ -273,7 +273,12 @@ namespace Qserver.GameServer.Network.Handlers
         }
         public static void HandleRequestPlayerInfo(PacketReader packet, ConnServer manager)
         {
-            throw new NotImplementedException();
+            var playerId = packet.ReadUInt32();
+            var player = Game.Instance.GetPlayer(playerId);
+            if (player == null)
+                return;
+
+            manager.Send(LobbyManager.Instance.PlayerInfoInspector(player));
         }
         public static void HandleRequestPlayerRanking(PacketReader packet, ConnServer manager)
         {
@@ -286,15 +291,52 @@ namespace Qserver.GameServer.Network.Handlers
         }
         public static void HandleRestKillDeathEvent(PacketReader packet, ConnServer manager)
         {
-            throw new NotImplementedException();
+            ulong cardId = packet.ReadUInt64();
+            var player = manager.Player;
+            if (player == null)
+                return;
+
+            var card = player.InventoryManager.Get(cardId);
+            if (card.ItemId != (uint)Items.KD_CLEANER || card.Period == 0)
+                return;
+
+            player.StatsManager.ClearKD();
+            if (card.PeriodeType != 254)
+                player.InventoryManager.DeleteCard(cardId);
+
+            manager.Send(LobbyManager.Instance.ResetKillDeath(player, card));
         }
         public static void HandleResetWinLossEvent(PacketReader packet, ConnServer manager)
         {
-            throw new NotImplementedException();
+            ulong cardId = packet.ReadUInt64();
+            var player = manager.Player;
+            if (player == null)
+                return;
+
+            var card = player.InventoryManager.Get(cardId);
+            if (card.ItemId != (uint)Items.WL_CLEANER || card.Period == 0)
+                return;
+
+            player.StatsManager.ClearWL();
+            if (card.PeriodeType != 254)
+                player.InventoryManager.DeleteCard(cardId);
+
+            manager.Send(LobbyManager.Instance.ResetKillDeath(player, card));
         }
         public static void HandleWhisperEvent(PacketReader packet, ConnServer manager)
         {
-            throw new NotImplementedException();
+            packet.ReadBytes(4);
+
+            var len = packet.ReadUInt16() % 254;
+            string nickname = packet.ReadWString(16);
+            string messagge = packet.ReadWString(len-1); // not always?
+
+            var player = Game.Instance.GetOnlinePlayer(nickname);
+            if (player == null)
+                return;
+
+            player.Whisper(manager.Player.Name, messagge);
+            manager.Send(LobbyManager.Instance.SendWhisper(nickname, messagge));
         }
         #endregion
 

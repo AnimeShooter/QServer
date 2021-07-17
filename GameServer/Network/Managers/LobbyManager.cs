@@ -658,11 +658,8 @@ namespace Qserver.GameServer.Network.Managers
             {
                 pw.WriteUInt64(memo.Id);
                 pw.WriteUInt32(memo.SenderId);
-                pw.WriteUInt32(0); // TODO: memo.Created);
-
+                pw.WriteUInt32(0); // TODO: memo.Created)
                 pw.WriteWString(memo.Nickname, 16);
-                //pw.WriteBytes(new byte[16] { 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, });
-
                 pw.WriteWString(memo.Message, 100);
                 pw.WriteUInt8(memo.IsOpened ? (byte)1 : (byte)0);
             }

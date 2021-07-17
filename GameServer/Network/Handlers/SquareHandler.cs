@@ -74,7 +74,7 @@ namespace Qserver.GameServer.Network.Handlers
 
             bool isInSquare = player.SquarePlayer != null;
 
-            if (isInSquare)
+            if (isInSquare) // re-joins square
             {
                 player.SquarePlayer.Square.Remove(player.PlayerId);
                 player.LeaveSquare();
@@ -129,7 +129,6 @@ namespace Qserver.GameServer.Network.Handlers
 
         public static void HandleRequestPlayers(PacketReader packet, ConnServer manager)
         {
-            //Thread.Sleep(-1);
             var player = manager.Player;
             if (player == null)
                 return;
@@ -149,7 +148,7 @@ namespace Qserver.GameServer.Network.Handlers
             byte direction = packet.ReadUInt8();
             float[] position = new float[3];
             for (int i = 0; i < position.Length; i++)
-                position[i] = packet.ReadUInt8();
+                position[i] = packet.ReadFloat();
 
             var player = manager.Player;
             if (player == null || player.SquarePlayer == null)

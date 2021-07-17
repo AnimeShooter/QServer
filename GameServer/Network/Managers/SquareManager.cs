@@ -55,13 +55,10 @@ namespace Qserver.GameServer.Network
             pw.WriteUInt8(square.Capacity);
             pw.WriteUInt8(square.PlayerCount);
             pw.WriteUInt8(square.State);
-
             pw.WriteWString(square.Name, 16);
-            //pw.WriteBytes(new byte[16] { 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, });
-
             pw.WriteBytes(new byte[33]);
 
-            return pw; // TODO: Fix Crash
+            return pw;
         }
 
         public PacketWriter JoinSquareSuccess(SquarePlayer squarePlayer)
@@ -78,10 +75,6 @@ namespace Qserver.GameServer.Network
             pw.WriteUInt8(square.State);
             
             pw.WriteWString(square.Name, 16);
-            //pw.WriteBytes(new byte[16] { 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00 });
-            //pw.WriteBytes(new byte[16] { 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00 });
-            //pw.WriteInt16(0);
-
             pw.WriteBytes(new byte[33]);
 
             pw.WriteFloat(squarePlayer.Position[0]);
@@ -193,7 +186,7 @@ namespace Qserver.GameServer.Network
 
             return pw;
         }
-        public PacketWriter RemovePlayer(ushort playerId)
+        public PacketWriter RemovePlayer(uint playerId)
         {
             PacketWriter pw = new PacketWriter((Opcode)6509);
             pw.WriteUInt32(playerId);

@@ -255,6 +255,16 @@ namespace Qserver.GameServer.Qpang
             return player;
         }
 
+        public Player GetOnlinePlayer(string name)
+        {
+            lock(this._lock)
+            {
+                if (this._playersByName.ContainsKey(name))
+                    return this._playersByName[name];
+                return null;
+            }
+        }
+
         public void OnSquareConnClose(SquareManager conn)
         {
             // TODO: handle closing

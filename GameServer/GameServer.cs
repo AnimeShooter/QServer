@@ -121,9 +121,9 @@ namespace Qserver.GameServer
             // Starting REST API server
             if(startAPIServer)
             {
-                NancyHost host = new NancyHost(new Uri($"http://{Settings.SERVER_IP}:{Settings.HTTP_PORT_API}/"));
+                NancyHost host = new NancyHost(new Uri($"http://localhost:{Settings.HTTP_PORT_API}/"));
                 host.Start();
-                Log.Message(LogType.NORMAL, $"APIServer     listening on {Settings.SERVER_IP}:{Settings.HTTP_PORT_API}");
+                Log.Message(LogType.NORMAL, $"APIServer     listening on localhost:{Settings.HTTP_PORT_API}");
             }
 
             HandlerMapping.InitPacketHandlers(startAuthServer, startLobbyServer, startSquareServer);

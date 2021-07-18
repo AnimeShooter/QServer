@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Text;
 using Qserver.GameServer.Qpang;
@@ -11,6 +12,53 @@ namespace Qserver.External.HTTP.Nancy
     {
         public Webhost()
         {
+            // #====================#
+            // #        Misc        #
+            // #====================#
+
+            Get("/img/level/{lvl}", async x =>
+            {
+                string lvl = x.lvl;
+                string filename = Directory.GetCurrentDirectory() + $"/External/HTTP/Public/img/levels/{lvl}.png";
+                if (!File.Exists(filename))
+                    return new Response().StatusCode = HttpStatusCode.NotFound;
+
+                var response = new Response()
+                {
+                    ContentType = "image/png",
+                    Contents = stream =>
+                    {
+                        using (var writer = new BinaryWriter(stream))
+                        {
+                            writer.Write(File.ReadAllBytes(filename));
+                        }
+                    }
+                };
+                return response;
+            });
+
+            Get("/img/maps/small/{name}", async x =>
+            {
+                // bridge, bunker, castaway, castle, castsle_1, castle_2, castle_3, city, diorama, dollhouse, flycaste, garden, moon, ossyria, sweety, temple
+                string name = x.name;
+                string filename = Directory.GetCurrentDirectory() + $"/External/HTTP/Public/img/maps/small/{name}.png";
+                if (!File.Exists(filename))
+                    return new Response().StatusCode = HttpStatusCode.NotFound;
+
+                var response = new Response()
+                {
+                    ContentType = "image/png",
+                    Contents = stream =>
+                    {
+                        using (var writer = new BinaryWriter(stream))
+                        {
+                            writer.Write(File.ReadAllBytes(filename));
+                        }
+                    }
+                };
+                return response;
+            });
+
             // #====================#
             // #      Player        #
             // #====================#
@@ -49,7 +97,6 @@ namespace Qserver.External.HTTP.Nancy
 
                 return Response.AsJson<RoomAPI>(room.ToAPI());
             });
-
 
         }
     }

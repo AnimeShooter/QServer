@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="BCrypt.Net" Version="0.1.0" />
     <PackageReference Include="Dapper" Version="2.0.90" />
     <PackageReference Include="MySql.Data" Version="8.0.24" />
   </ItemGroup>

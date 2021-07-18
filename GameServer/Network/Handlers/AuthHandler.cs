@@ -7,6 +7,7 @@ using Qserver.GameServer.Network;
 using Qserver.GameServer.Network.Managers;
 using Qserver.GameServer.Network.Packets;
 using System.Threading;
+using BCrypt.Net;
 
 namespace Qserver.GameServer.Network.Handlers
 {
@@ -28,14 +29,19 @@ namespace Qserver.GameServer.Network.Handlers
             int version = packet.ReadInt32();
 
             var pw = Game.Instance.PlayerRepository.GetUserPassword(wUsername).Result;
-            if (wPassword != pw)
+            string hashedPw = BCrypt.Net.BCrypt.HashPassword(pw);
+            if (!BCrypt.Net.BCrypt.Verify(wPassword, pw))
             {
                 manager.Send(AuthManager.Instance.InvalidUsername());
                 return;
             }
 
             Random rnd = new Random();
-            string uuid = $"BEEFF-{rnd.Next(1000,9999)}-AAAAA";
+            string part1 = "";
+            for(int i = 0; i < 5; i++)
+                part1 += (char)rnd.Next(0x41, 0x5B);
+
+            string uuid = $"{part1}-{rnd.Next(1000,9999)}-{rnd.Next(1000,0xFFFF).ToString("X4")}";
 
             Game.Instance.PlayerRepository.UpdateUUID(wUsername, uuid).GetAwaiter();
 

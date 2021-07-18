@@ -38,7 +38,7 @@ namespace Qserver.GameServer.Network.Handlers
 
             Random rnd = new Random();
             string part1 = "";
-            for(int i = 0; i < 5; i++)
+            for(int i = 0; i < 6; i++)
                 part1 += (char)rnd.Next(0x41, 0x5B);
 
             string uuid = $"{part1}-{rnd.Next(1000,9999)}-{rnd.Next(1000,0xFFFF).ToString("X4")}";

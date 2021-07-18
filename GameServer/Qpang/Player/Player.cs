@@ -9,6 +9,15 @@ using Qserver.GameServer.Database;
 
 namespace Qserver.GameServer.Qpang
 {
+    public struct PlayerAPI
+    {
+        public string Name;
+        public uint Experience;
+        public uint Level;
+        public uint Kills;
+        public uint Deaths;
+    }
+
     public class Player
     {
         private InventoryManager _inventoryManager;
@@ -191,6 +200,18 @@ namespace Qserver.GameServer.Qpang
             this._achievementContainer = new AchievementContainer(playerId);
             this._isOnline = true;
         
+        }
+
+        public PlayerAPI ToAPI()
+        {
+            return new PlayerAPI()
+            {
+                Name = this.Name,
+                Deaths = this.StatsManager.Deaths,
+                Kills = this.StatsManager.Kills,
+                Experience = this.Experience,
+                Level = this.Level
+            };
         }
 
         public void Broadcast(string message)

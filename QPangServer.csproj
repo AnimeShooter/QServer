@@ -7,13 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="External\HTTP\" />
+    <Folder Include="External\HTTP\API\" />
+    <Folder Include="External\HTTP\Public\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="BCrypt.Net" Version="0.1.0" />
     <PackageReference Include="Dapper" Version="2.0.90" />
     <PackageReference Include="MySql.Data" Version="8.0.24" />
+    <PackageReference Include="Nancy" Version="2.0.0" />
+    <PackageReference Include="Nancy.Hosting.Self" Version="2.0.0" />
   </ItemGroup>
 
 </Project>

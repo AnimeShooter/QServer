@@ -7,6 +7,8 @@ using Qserver.GameServer.Packets;
 using System.Threading;
 using Qserver.External.Websocket;
 using Qserver.GameServer.Qpang;
+using Qserver.External.HTTP.Nancy;
+using Nancy.Hosting.Self;
 
 namespace Qserver.GameServer
 {
@@ -60,10 +62,12 @@ namespace Qserver.GameServer
             }
 
             // settings
+            
             bool startAuthServer = true;
             bool startSquareServer = true;
             bool startLobbyServer = true;
             bool startWebsocketServer = false;
+            bool startAPIServer = true;
             bool useCLI = false;
             //bool startGameServer = true;
 
@@ -112,6 +116,14 @@ namespace Qserver.GameServer
                 NetServer wServer = new NetServer();
                 new Thread(wServer.Start).Start();
                 Log.Message(LogType.NORMAL, $"WebSocket     listening on {Settings.SERVER_IP}:{Settings.WS_PORT}\n");
+            }
+
+            // Starting REST API server
+            if(startAPIServer)
+            {
+                NancyHost host = new NancyHost(new Uri($"http://{Settings.SERVER_IP}:{Settings.HTTP_PORT_API}/"));
+                host.Start();
+                Log.Message(LogType.NORMAL, $"APIServer     listening on {Settings.SERVER_IP}:{Settings.HTTP_PORT_API}");
             }
 
             HandlerMapping.InitPacketHandlers(startAuthServer, startLobbyServer, startSquareServer);

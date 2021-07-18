@@ -5,6 +5,26 @@ using Qserver.GameServer.Network;
 
 namespace Qserver.GameServer.Qpang
 {
+    public struct RoomAPI
+    {
+        public string Name;
+        public bool Password;
+
+        public byte Map;
+        public byte Mode;
+        public byte PlayerCount;
+        public byte MaxPlayers;
+        public bool LevelLimited;
+        public bool TeamSorting;
+        public bool SkillsEnabled;
+        public bool MeleeOnly;
+
+        public uint ScorePoints;
+        public uint ScoreTime;
+        public bool PointsGame;
+        public bool Started;
+    }
+
     public class Room
     {
         private object _lock;
@@ -16,7 +36,7 @@ namespace Qserver.GameServer.Qpang
         private uint _id;
         private string _name;
 
-        private string _password;
+        private string _password = "";
 
         private byte _map;
         private byte _mode;
@@ -127,6 +147,27 @@ namespace Qserver.GameServer.Qpang
 
             this._players = new Dictionary<uint, RoomPlayer>();
 
+        }
+
+        public RoomAPI ToAPI()
+        {
+            return new RoomAPI()
+            {
+                Name = this._name,
+                Password = this._password != "",
+                Map =  this._map,
+                Mode = this._mode,
+                PlayerCount =  this._playerCount,
+                MaxPlayers = this._maxPlayers,
+                LevelLimited = this._isLevelLimited,
+                TeamSorting = this._isTeamSorting,
+                SkillsEnabled  = this._isSkillsEnabled,
+                MeleeOnly =  this._isMeleeOnly,
+                ScorePoints = this._scorePoints,
+                ScoreTime = this._scoreTime,
+                PointsGame = this._isPointsGame,
+                Started = this._isPlaying
+            };
         }
 
         public void AddPlayer(ConnServer conn)

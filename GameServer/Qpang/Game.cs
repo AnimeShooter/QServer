@@ -221,6 +221,18 @@ namespace Qserver.GameServer.Qpang
                 Thread.Sleep(1);
             }
         }
+
+        public List<Player> PlayersList()
+        {
+            lock(this._lock)
+            {
+                List<Player> players = new List<Player>();
+                foreach (var player in this._players)
+                    players.Add(player.Value);
+                return players;
+            }
+        }
+
         public void RemoveClient(Player player)
         {
             if (player == null)

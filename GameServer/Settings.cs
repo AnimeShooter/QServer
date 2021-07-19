@@ -16,7 +16,7 @@ namespace Qserver.GameServer
         public static int SERVER_PORT_SQUARE = 8012; // Square
         public static int SERVER_PORT_ROOM = 8020; // Game Room
         public static int HTTP_PORT_API = 8088; // REST API
-        public static int WS_PORT = 8826; // Website
+        public static int WS_PORT = 8026; // Website
 
 #if DEBUG
         public static bool DEBUG = true;

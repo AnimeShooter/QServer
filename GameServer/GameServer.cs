@@ -47,6 +47,7 @@ namespace Qserver.GameServer
                                      $"{"--NoSquare".PadRight(20)}: Exclude SquareServer\n" +
                                      $"{"--NoLobby".PadRight(20)}: Exclude LobbyServer\n" +
                                      $"{"--WebSocket".PadRight(20)}: Inlcude WebSocket\n" +
+                                     $"{"--WebAPI".PadRight(20)}: Inlcude WebAPI\n" +
                                      $"{"--Debug".PadRight(20)}: Print Debug Info\n" +
                                      $"{"--CLI".PadRight(20)}: Enabled the CLI\n");
         }
@@ -67,7 +68,7 @@ namespace Qserver.GameServer
             bool startSquareServer = true;
             bool startLobbyServer = true;
             bool startWebsocketServer = false;
-            bool startAPIServer = true;
+            bool startAPIServer = false;
             bool useCLI = false;
             //bool startGameServer = true;
 
@@ -115,7 +116,7 @@ namespace Qserver.GameServer
             {
                 NetServer wServer = new NetServer();
                 new Thread(wServer.Start).Start();
-                Log.Message(LogType.NORMAL, $"WebSocket     listening on {Settings.SERVER_IP}:{Settings.WS_PORT}\n");
+                Log.Message(LogType.NORMAL, $"WebSocket     listening on {Settings.SERVER_IP}:{Settings.WS_PORT}");
             }
 
             // Starting REST API server

@@ -52,7 +52,16 @@ namespace Qserver.External.HTTP.Nancy
             // #      Player        #
             // #====================#
 
-            // NOTE: Only online
+            Get("/player/online", async x =>
+            {
+                List<PlayerAPI> APIPlayers = new List<PlayerAPI>();
+                var players = Game.Instance.PlayersList();
+                foreach (var p in players)
+                    APIPlayers.Add(p.ToAPI());
+                return Response.AsJson<List<PlayerAPI>>(APIPlayers);
+            });
+
+            // TODO: Only online, fix?
             Get("/player/{id}", async x =>
             {
                 uint playerId = x.id;
@@ -61,6 +70,13 @@ namespace Qserver.External.HTTP.Nancy
                     return new Response().StatusCode = HttpStatusCode.NotFound;
 
                 return Response.AsJson<PlayerAPI>(player.ToAPI());
+            });
+
+            // TODO
+            Get("/player/leaderboard", async x =>
+            {
+                // TODO
+                return null;
             });
 
             // #====================#

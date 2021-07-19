@@ -4,8 +4,8 @@ using System.Text;
 
 namespace Qserver.GameServer.Qpang
 {
-    public class GameNetInterface
+    public class CGRoom : GameNetEvent
     {
-        // public GameNetInterface()
+        //public CGRoom() : base(GameNetId.CG_ROOM, )
     }
 }

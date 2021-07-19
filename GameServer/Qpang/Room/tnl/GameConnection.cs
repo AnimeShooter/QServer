@@ -13,5 +13,16 @@ namespace Qserver.GameServer.Qpang
             get { return this._player; }
             set { this._player = value; }
         }
+
+        public GameConnection()
+        {
+            // TODO: ase TNL.EventConnection
+        }
+
+        public void PostNetEvent(GameNetEvent e)
+        {
+            // TODO
+        }
+
     }
 }

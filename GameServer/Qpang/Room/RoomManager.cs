@@ -15,42 +15,18 @@ namespace Qserver.GameServer.Qpang
             get { return this._gameModeManager; }
         }
 
-        public static void Tick()
-        {
-            lock(_lock)
-            {
-                foreach (var room in _rooms)
-                    room.Value.Tick();
-            }
-        }
-
         public RoomManager()
         {
             this._gameModeManager = new GameModeManager();
             _rooms = new Dictionary<uint, Room>();
         }
 
-        public Room Create(string name, byte map, byte mode)
+        public static void Tick()
         {
-            var id = GetAvailableRoomId();
-            var room = new Room(id, name, map, mode, 0x7F000001, (ushort)Settings.SERVER_PORT_ROOM);
-            lock(_lock)
+            lock (_lock)
             {
-                _rooms.Add(id, room);
-            }
-
-            return room;
-                
-        }
-
-        public Room Get(uint id)
-        {
-            lock(_lock)
-            {
-                if (_rooms.ContainsKey(id))
-                    return _rooms[id];
-
-                return null;
+                foreach (var room in _rooms)
+                    room.Value.Tick();
             }
         }
 
@@ -65,6 +41,41 @@ namespace Qserver.GameServer.Qpang
             }
         }
 
+        public Room Create(string name, byte map, byte mode)
+        {
+            var id = GetAvailableRoomId();
+            //var room = new Room(id, name, map, mode, 0xA4447A93, (ushort)Settings.SERVER_PORT_ROOM);
+            var room = new Room(id, name, map, mode, 0x7F000001, (ushort)Settings.SERVER_PORT_ROOM);
+            lock(_lock)
+            {
+                _rooms.Add(id, room);
+            }
+
+            return room;
+                
+        }
+
+        public void Remove(uint id)
+        {
+            lock(_lock)
+            {
+                if (_rooms.ContainsKey(id))
+                    _rooms.Remove(id);
+            }
+        }
+
+        public Room Get(uint id)
+        {
+            lock(_lock)
+            {
+                if (_rooms.ContainsKey(id))
+                    return _rooms[id];
+
+                return null;
+            }
+        }
+
+       
         private uint GetAvailableRoomId()
         {
             uint id = 1;

@@ -259,6 +259,7 @@ namespace Qserver.GameServer.Qpang
         {
             this._squarePlayer = null;
         }
+
         public void Close()
         {
             lock(this._lock)
@@ -287,6 +288,8 @@ namespace Qserver.GameServer.Qpang
                 if(this._squarePlayer != null)
                     this._squarePlayer.Square.Remove(this._playerId);
             }
+
+            Game.Instance.RemoveClient(this);
 
             Update();
         }

@@ -9,6 +9,8 @@
   <ItemGroup>
     <Folder Include="External\HTTP\API\" />
     <Folder Include="External\HTTP\Public\" />
+    <Folder Include="GameServer\Qpang\Room\tnl\client\" />
+    <Folder Include="GameServer\Qpang\Room\tnl\server\" />
   </ItemGroup>
 
   <ItemGroup>

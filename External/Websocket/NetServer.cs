@@ -136,8 +136,10 @@ namespace Qserver.External.Websocket
                             LastHeartbeat = DateTime.UtcNow
                         });
 
+#if DEBUG
                         foreach (var b in NetServer.Users)
                             Console.WriteLine(b.ToString());
+#endif
                     }
                 }
                 catch (Exception ex)

@@ -116,11 +116,13 @@ namespace Qserver.GameServer.Database.Repositories
 
 		public async Task UpdateCharactersEquips(ulong[] equips, ushort characterId, ulong playerId)
 		{
+			Task<IEnumerable<DBPlayerEquiped>> test = null;
 			await _sqlObjectFactory.GetConnection().UsingAsync(connection =>
-				connection.QueryAsync<DBPlayerEquiped>("UPDATE player_equipment SET" +
-				" head = @Head, face = @Face, body = @Body, hands = @Hands, legs = @Legs, shoes = @Shoes, back = @Back, side = @Side, `primary` = @Primary, secondary = @Secondary, throw = @Throwy, melee = @Melee " +
+				test = connection.QueryAsync<DBPlayerEquiped>("UPDATE player_equipment SET " +
+				"head = @Head, face = @Face, body = @Body, hands = @Hands, legs = @Legs, shoes = @Shoes, back = @Back, side = @Side, `primary` = @Primary, secondary = @Secondary, throw = @Throwy, melee = @Melee " +
 				"WHERE player_id = @PlayerId AND character_id = @CharacterId",
 				new { PlayerId = playerId, CharacterId = characterId, Head = equips[0], Face = equips[1], Body = equips[2], Hands = equips[3], Legs = equips[4], Shoes = equips[5], Back = equips[6], Side = equips[7], Primary = equips[9], Secondary = equips[10], Throwy = equips[11], Melee = equips[12] })) ;
+			var test2 = test.Result;
 			return;
 		}
 

@@ -52,11 +52,6 @@ namespace Qserver.GameServer.Qpang
                     equips[10] = ce.secondary;
                     equips[11] = ce.throwy;
                     equips[12] = ce.melee;
-                }
-
-                foreach (var characterId in this._unlockedCharacters)
-                {
-                    ulong[] equips = new ulong[13];
                     this._equips.Add(characterId, equips);
                 }
             }
@@ -424,7 +419,7 @@ namespace Qserver.GameServer.Qpang
 
                 foreach(var character in this._unlockedCharacters)
                 {
-                    Game.Instance.ItemsRepository.UpdateCharactersEquips(this._equips[character], character, this._player.PlayerId).GetAwaiter();
+                    Game.Instance.ItemsRepository.UpdateCharactersEquips(this._equips[character], character, this._player.PlayerId).GetAwaiter().GetResult();
                 }
             }
         }

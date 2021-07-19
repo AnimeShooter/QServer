@@ -82,6 +82,8 @@ namespace Qserver.GameServer
                     startLobbyServer = false;
                  else if (arg.Equals("--WebSocket", StringComparison.OrdinalIgnoreCase))
                     startWebsocketServer = true;
+                else if (arg.Equals("--WebAPI", StringComparison.OrdinalIgnoreCase))
+                    startAPIServer = true;
                 else if (arg.Equals("--NoGameServer", StringComparison.OrdinalIgnoreCase) || arg.Equals("--NoGame", StringComparison.OrdinalIgnoreCase))
                 {
                     startLobbyServer = false;

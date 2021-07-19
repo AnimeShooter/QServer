@@ -130,8 +130,15 @@ namespace Qserver.External.HTTP.Nancy
 
             Get("/img/maps/small/{name}", async x =>
             {
-                // bridge, bunker, castaway, castle, castsle_1, castle_2, castle_3, city, diorama, dollhouse, flycaste, garden, moon, ossyria, sweety, temple
+                string[] mapNames = new string[] { "garden", "diorama", "fly", "keep", "doll", "sweety", "river", "bunker", "temple", "bridge", "castaway" };
+                int mapId = -1;
                 string name = x.name;
+                if (Int32.TryParse(x.name, out mapId))
+                {
+                    if (mapId >= 0 && mapId < mapNames.Length)
+                        name = mapNames[mapId];
+                }
+ 
                 string filename = Directory.GetCurrentDirectory() + $"/External/HTTP/Public/img/maps/small/{name}.png";
                 if (!File.Exists(filename))
                     return new Response().StatusCode = HttpStatusCode.NotFound;

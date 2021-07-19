@@ -16,6 +16,11 @@ namespace Qserver.GameServer.Qpang
         public uint Level;
         public uint Kills;
         public uint Deaths;
+        public uint MeleeKills;
+        public uint GunKills;
+        public uint SniperKills;
+        public uint BombKills;
+        public bool Gm;
     }
 
     public class Player
@@ -207,10 +212,15 @@ namespace Qserver.GameServer.Qpang
             return new PlayerAPI()
             {
                 Name = this.Name,
-                Deaths = this.StatsManager.Deaths,
-                Kills = this.StatsManager.Kills,
-                Experience = this.Experience,
-                Level = this.Level
+                Deaths = this._statsManager.Deaths,
+                Kills = this._statsManager.Kills,
+                Experience = this._experience,
+                Level = this._level,
+                MeleeKills = this._statsManager.MeleeKills,
+                GunKills = this._statsManager.GunKills,
+                SniperKills = this._statsManager.LauncherKills,
+                BombKills = this._statsManager.BombKills,
+                Gm = this.Rank == 3
             };
         }
 

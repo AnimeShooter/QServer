@@ -7,11 +7,12 @@ namespace Qserver.GameServer.Qpang
 {
     public struct RoomAPI
     {
+        public uint Id;
         public string Name;
         public bool Password;
 
         public byte Map;
-        public byte Mode;
+        public string Mode;
         public byte PlayerCount;
         public byte MaxPlayers;
         public bool LevelLimited;
@@ -153,10 +154,11 @@ namespace Qserver.GameServer.Qpang
         {
             return new RoomAPI()
             {
+                Id = this._id,
                 Name = this._name,
                 Password = this._password != "",
                 Map =  this._map,
-                Mode = this._mode,
+                Mode = ((GameModeName)this._mode).ToString(),
                 PlayerCount =  this._playerCount,
                 MaxPlayers = this._maxPlayers,
                 LevelLimited = this._isLevelLimited,

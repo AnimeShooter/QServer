@@ -4,6 +4,18 @@ using System.Text;
 
 namespace Qserver.GameServer.Qpang
 {
+    public enum GameModeName : byte
+    {
+        DeathMatch = 1,
+        TeamDeathMatch,
+        ProtectTheEssence,
+        VIP,
+
+        Practice = 5,
+        PublicEnemy = 8,
+        PvE = 9
+    }
+
     public class GameModeManager
     {
         private Dictionary<byte, GameMode> _gameModes = new Dictionary<byte, GameMode>()

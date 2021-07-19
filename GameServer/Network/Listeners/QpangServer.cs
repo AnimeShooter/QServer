@@ -23,12 +23,19 @@ namespace Qserver.GameServer.Network
         {
             try
             {
-                _listener = new TcpListener(IPAddress.Parse(Settings.SERVER_IP), this._port);
-                _listener.Start();
-
-                // init multi thread accepter
-                new Thread(AcceptConnection).Start(); 
-
+                new Thread(handleNew).Start();
+                void handleNew()
+                {
+                    _listener = new TcpListener(IPAddress.Parse(Settings.SERVER_IP), this._port);
+                    _listener.Start();
+                    while (true)
+                    {
+                        Thread.Sleep(1);
+                        if(_listener.Pending())
+                            _listener.BeginAcceptSocket(AcceptCallback, null);
+                    }
+                            
+                }
                 return true;
             }
             catch (Exception e)
@@ -38,27 +45,12 @@ namespace Qserver.GameServer.Network
             }
         }
 
-        protected void AcceptConnection()
+        void AcceptCallback(IAsyncResult ar)
         {
-            try
-            {
-                while (ListenServerSocket)
-                {
-                    Thread.Sleep(1);
-                    if (_listener.Pending())
-                    {
-                        // create new thread listener
-                        ConnServer Server = new ConnServer(_listener.AcceptSocket());// .AcceptSocket());
-                        new Thread(Server.OnReceive).Start();
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                // We do not want our server to crash due to a invalid packet beeing sent
-                Console.WriteLine(e.ToString());
-            }
+            var conn = new ConnServer(_listener.EndAcceptSocket(ar));
+            conn.Read();
         }
+
 
         protected void Dispose()
         {

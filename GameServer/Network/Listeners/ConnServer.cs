@@ -14,11 +14,17 @@ namespace Qserver.GameServer.Network
     {
         public ulong Id;
         private Socket _socket;
+        private TcpListener _listener;
         public QpangServer Server;
         public byte[] KeyPart;
         public byte Encryption;
         private Player _player;
         private NetworkStream _socketStream;
+
+        public int HeaderSizeToRead;
+        public byte[] HeaderBuffer;
+        public int PayloadSizeToRead;
+        public byte[] PayloadBuffer;
 
         public Player Player
         {
@@ -28,35 +34,76 @@ namespace Qserver.GameServer.Network
 
         public ConnServer(Socket socket)
         {
+            // reset
+            PayloadBuffer = new byte[0];
+            HeaderBuffer = new byte[4];
+            HeaderSizeToRead = 4;
+
             this._socket = socket;
-            this._socketStream = new NetworkStream(this._socket);
         }
 
-        public void OnReceive()
+        public void Read()
         {
-#if !DEBUG
             try
             {
-#endif
-            Log.Message(LogType.MISC, "New Client Login Detected");
-            while (_socket.Connected) // exit when closed?
-            {
-                Thread.Sleep(1);
-                if (_socket.Connected && _socket.Available > 0)
+                _socket.BeginReceive(HeaderBuffer, 0, HeaderSizeToRead, 0, ReceiveCallback, null);
+                void ReceiveCallback(IAsyncResult ar)
                 {
-                    PacketReader pkt = new PacketReader(_socketStream, "test", KeyPart);
-                    if (Enum.IsDefined(typeof(Opcode), pkt.Opcode))
-                        if (Settings.DEBUG)
-                            Log.Message(LogType.DUMP, $"[{_socket.LocalEndPoint}] Recieved OpCode: {pkt.Opcode}, len: {pkt.Size}\n");
+                    try
+                    {
+                        var bytesRead = _socket.EndReceive(ar);
+                        if (bytesRead < 1)
+                        {
+                            if (Settings.DEBUG)
+                                Log.Message(LogType.DUMP, $"[{_socket.LocalEndPoint}] Connection was lost during receiving!\n");
+                            CloseSocket();
+                            return;
+                        }
+
+                        if (HeaderSizeToRead > 0) // reading more data
+                        {
+                            HeaderSizeToRead -= bytesRead;
+                            if (HeaderSizeToRead == 0)
+                            {
+                                if (OnHeaderReceived())
+                                    _socket.BeginReceive(PayloadBuffer, 0, PayloadSizeToRead, 0, ReceiveCallback, null);
+                                else
+                                {
+                                    if (Settings.DEBUG)
+                                        Log.Message(LogType.DUMP, $"[{_socket.LocalEndPoint}] Invalid payload size!\n");
+                                    CloseSocket();
+                                }
+                            }
+                            else
+                                _socket.BeginReceive(HeaderBuffer, HeaderBuffer.Length - HeaderSizeToRead, HeaderSizeToRead, 0, ReceiveCallback, null); // continue reading header
+                        }
                         else
-                            Log.Message(LogType.DUMP, $"[{_socket.LocalEndPoint}] Unknown OpCode: {pkt.Opcode}, len: {pkt.Size}\n");
-                    else
-                        Log.Message(LogType.ERROR, $"[{_socket.LocalEndPoint}] Unregistered OpCode: {pkt.Opcode}\n");
-                    PacketManager.InvokeHandler(pkt, this, pkt.Opcode);
+                        {
+                            PayloadSizeToRead -= bytesRead;
+                            if (PayloadSizeToRead == 0) // fully body!
+                            {
+                                PacketReader pkt = new PacketReader(HeaderBuffer, PayloadBuffer, "test", KeyPart);
+                                if (Enum.IsDefined(typeof(Opcode), pkt.Opcode))
+                                    if (Settings.DEBUG)
+                                        Log.Message(LogType.DUMP, $"[{_socket.LocalEndPoint}] Recieved OpCode: {pkt.Opcode}, len: {pkt.Size}\n");
+                                    else
+                                        Log.Message(LogType.DUMP, $"[{_socket.LocalEndPoint}] Unknown OpCode: {pkt.Opcode}, len: {pkt.Size}\n");
+                                else
+                                    Log.Message(LogType.ERROR, $"[{_socket.LocalEndPoint}] Unregistered OpCode: {pkt.Opcode}\n");
+                                PacketManager.InvokeHandler(pkt, this, pkt.Opcode);
+
+                                // reset
+                                PayloadBuffer = new byte[0];
+                                HeaderBuffer = new byte[4];
+                                HeaderSizeToRead = 4;
+                                _socket.BeginReceive(HeaderBuffer, 0, HeaderSizeToRead, 0, ReceiveCallback, null); // start reading header
+                            }
+                            else
+                                _socket.BeginReceive(PayloadBuffer, PayloadBuffer.Length - PayloadSizeToRead, PayloadSizeToRead, 0, ReceiveCallback, null); // continue reading payload
+                        }
+                    }
+                    catch { }
                 }
-            }
-            CloseSocket();
-#if !DEBUG
             }
             catch (Exception e)
             {
@@ -64,7 +111,17 @@ namespace Qserver.GameServer.Network
                 Log.Message(LogType.ERROR, e.ToString());
                 CloseSocket();
             }
-#endif
+        }
+
+        public bool OnHeaderReceived()
+        {
+            PayloadSizeToRead = BitConverter.ToUInt16(HeaderBuffer, 0)-4;
+
+            if (PayloadSizeToRead <= 0 || PayloadSizeToRead > 0xFFFF)
+                return false;
+
+            PayloadBuffer = new byte[PayloadSizeToRead];
+            return true;
         }
 
         public void Send(PacketWriter packet, bool SuppressLog = false, bool isAck = false)

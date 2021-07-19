@@ -51,19 +51,19 @@ namespace Qserver.GameServer.Network.Packets
 
         private BinaryReader _payload;
 
-        public PacketReader(NetworkStream mem, string identifier, byte[] key)
+        public PacketReader(byte[] header, byte[] payload, string identifier, byte[] key)
         {
-            _payload = new BinaryReader(mem); // temp
+            _payload = new BinaryReader(new MemoryStream(payload)); // temp
             PacketHeader = new PacketHeader()
             {
-                Length = this.ReadUInt16(), // 0 - 2
-                Sequence = this.ReadUInt8(), // 2 - 3
-                Unk = this.ReadUInt8() // 3 - 4
+                Length = BitConverter.ToUInt16(header,0),// this.ReadUInt16(), // 0 - 2
+                Sequence = header[2],// this.ReadUInt8(), // 2 - 3
+                Unk = header[3],// this.ReadUInt8() // 3 - 4
             };
             if(Encryption > 0)
             {
                 BlowFish b = BlowFish.Instance;
-                if (Encryption >= 0x05)
+                if (Encryption >= 0x05 && key != null)
                 {
                     b = new BlowFish(key); // xx xx xx xx 29 A1 D3 56
                     b.CompatMode = true;
@@ -74,7 +74,7 @@ namespace Qserver.GameServer.Network.Packets
                 _payload = new BinaryReader(new MemoryStream(decryptedPayload));
             }
             else
-                _payload = new BinaryReader(new MemoryStream(this.ReadBytes(PacketHeader.Length - 4)));
+                _payload = new BinaryReader(new MemoryStream(this.ReadBytes(PacketHeader.Length-4)));
 
             // print bytes
             byte[] content = new byte[(int)_payload.BaseStream.Length];

@@ -69,8 +69,8 @@ namespace Qserver.GameServer.Database.Repositories
 		public async Task UpdatePlayer(Player player)
 		{
 			await _sqlObjectFactory.GetConnection().UsingAsync(connection =>
-				connection.QuerySingleAsync("UPDATE players SET default_character = @DefaultCharacter, don = @Don, cash = @Cash, coins = @Coins, level = @Level, prestiege = @Prestiege, experience = @Experience WHERE id = @Id",
-				new { DefaultCharacter = player.Character, Don = player.Don, Cash = player.Cash, Coins = player.Coins, Level = player.Level, Prestiege = player.Prestige, Experience = player.Experience, Id = player.PlayerId }));
+				connection.QueryAsync("UPDATE players SET default_character = @DefaultCharacter, don = @Don, cash = @Cash, coins = @Coins, level = @Level, prestige = @Prestige, experience = @Experience WHERE id = @Id",
+				new { DefaultCharacter = player.Character, Don = player.Don, Cash = player.Cash, Coins = player.Coins, Level = player.Level, Prestige = player.Prestige, Experience = player.Experience, Id = player.PlayerId }));
 		}
 
 		public async Task<DBPlayerStats> GetPlayerStats(uint playerId)

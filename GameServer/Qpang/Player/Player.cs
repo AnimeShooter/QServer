@@ -295,8 +295,7 @@ namespace Qserver.GameServer.Qpang
         }
         public void Update()
         {
-            // TODO fix?
-            Game.Instance.PlayerRepository.UpdatePlayer(this).GetAwaiter();
+            Game.Instance.PlayerRepository.UpdatePlayer(this).GetAwaiter().GetResult();
         }
         public void RemoveDon(uint count)
         {

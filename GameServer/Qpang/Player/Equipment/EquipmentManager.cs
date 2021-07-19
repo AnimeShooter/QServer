@@ -50,7 +50,7 @@ namespace Qserver.GameServer.Qpang
                     equips[8] = 0; // unk
                     equips[9] = ce.primary;
                     equips[10] = ce.secondary;
-                    equips[11] = ce.throwy;
+                    equips[11] = ce.Throw;
                     equips[12] = ce.melee;
                     this._equips.Add(characterId, equips);
                 }

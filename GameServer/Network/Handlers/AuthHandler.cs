@@ -28,7 +28,7 @@ namespace Qserver.GameServer.Network.Handlers
             byte[] skip = packet.ReadBytes(12); // unk
             int version = packet.ReadInt32();
 
-            var pw = Game.Instance.PlayerRepository.GetUserPassword(wUsername).Result;
+            var pw = Game.Instance.UsersRepository.GetUserPassword(wUsername).Result;
             string hashedPw = BCrypt.Net.BCrypt.HashPassword(pw);
             if (!BCrypt.Net.BCrypt.Verify(wPassword, pw))
             {
@@ -36,14 +36,8 @@ namespace Qserver.GameServer.Network.Handlers
                 return;
             }
 
-            Random rnd = new Random();
-            string part1 = "";
-            for(int i = 0; i < 6; i++)
-                part1 += (char)rnd.Next(0x41, 0x5B);
-
-            string uuid = $"{part1}-{rnd.Next(1000,9999)}-{rnd.Next(1000,0xFFFF).ToString("X4")}";
-
-            Game.Instance.PlayerRepository.UpdateUUID(wUsername, uuid).GetAwaiter();
+            string uuid = Util.Util.GenerateUUID();
+            Game.Instance.UsersRepository.UpdateUUID(wUsername, uuid).GetAwaiter();
 
             uint IP = 0x0100007F;
             string[] ipSplit = Settings.SERVER_IP.Split('.');

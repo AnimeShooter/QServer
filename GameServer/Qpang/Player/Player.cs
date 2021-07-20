@@ -61,7 +61,7 @@ namespace Qserver.GameServer.Qpang
         private ConnServer _lobbyConnection;
         // _roomPlayer
 
-        private PlayerRepository _playerRepository;
+        private PlayersRepository _playerRepository;
 
         private object _lock;
         private object _lobbyLock;
@@ -182,7 +182,7 @@ namespace Qserver.GameServer.Qpang
             this._playerId = playerId;
             this._loginTime = DateTime.UtcNow;
 
-            var playerData = Game.Instance.PlayerRepository.GetPlayer(playerId).Result;
+            var playerData = Game.Instance.PlayersRepository.GetPlayer(playerId).Result;
 
             this._name = playerData.name;
             this._level = playerData.level;
@@ -308,7 +308,7 @@ namespace Qserver.GameServer.Qpang
         }
         public void Update()
         {
-            Game.Instance.PlayerRepository.UpdatePlayer(this).GetAwaiter().GetResult();
+            Game.Instance.PlayersRepository.UpdatePlayer(this).GetAwaiter().GetResult();
         }
         public void RemoveDon(uint count)
         {

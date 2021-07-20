@@ -8,6 +8,8 @@ namespace Qserver.GameServer.Qpang
 {
     public class EquipmentManager
     {
+        public static ushort[] CharacterIds = new ushort[] {333, 343, 578, 579, 850, 851};
+
         private Dictionary<ushort, ulong[]> _equips; // long[13]
         private List<ushort> _unlockedCharacters;
         private ulong[] _skillCards; // long[3]

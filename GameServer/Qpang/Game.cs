@@ -62,8 +62,9 @@ namespace Qserver.GameServer.Qpang
         private CraneRepository _craneRepository;
         private LevelRepository _levelRepository;
         private MapsRepository _mapsRepository;
-        private PlayerRepository _playerRepository;
+        private PlayersRepository _playersRepository;
         private ItemsRepository _itemsRepository;
+        private UsersRepository _usersRepository;
 
         private QpangServer _lobbyServer; // lobby?
         private QpangServer _squareServer;
@@ -151,13 +152,17 @@ namespace Qserver.GameServer.Qpang
         {
             get { return this._mapsRepository; }
         }
-        public PlayerRepository PlayerRepository
+        public PlayersRepository PlayersRepository
         {
-            get { return this._playerRepository; }
+            get { return this._playersRepository; }
         }
         public ItemsRepository ItemsRepository
         {
             get { return this._itemsRepository; }
+        }
+        public UsersRepository UsersRepository
+        {
+            get { return this._usersRepository; }
         }
 
         public Game(bool lobby)
@@ -182,8 +187,9 @@ namespace Qserver.GameServer.Qpang
             this._craneRepository = new CraneRepository(DatabaseManager.MySqlFactory);
             this._levelRepository = new LevelRepository(DatabaseManager.MySqlFactory);
             this._mapsRepository = new MapsRepository(DatabaseManager.MySqlFactory);
-            this._playerRepository = new PlayerRepository(DatabaseManager.MySqlFactory);
+            this._playersRepository = new PlayersRepository(DatabaseManager.MySqlFactory);
             this._itemsRepository = new ItemsRepository(DatabaseManager.MySqlFactory);
+            this._usersRepository = new UsersRepository(DatabaseManager.MySqlFactory);
 
             // share
             Instance = this;

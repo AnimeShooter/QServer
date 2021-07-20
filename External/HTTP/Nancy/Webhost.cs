@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using System.Text;
 using Qserver.GameServer.Qpang;
 using Nancy;
-
+using Newtonsoft.Json;
+using Qserver.GameServer.Database.Repositories;
 
 namespace Qserver.External.HTTP.Nancy
 {
@@ -21,13 +22,67 @@ namespace Qserver.External.HTTP.Nancy
 
             Post("/user/register/", async x =>
             {
-                // DB Create:
-                // users (login, pw, ..)
-                // players (qpang player)
-                // player_equipment (6x total characters, blank inserts)
-                // player_stats (1x insert blank)
-                // TODO: add captcha? cuz its intensive hehe
-                return null;
+                byte[] body = new byte[Request.Body.Length];
+                Request.Body.Read(body, 0, body.Length);
+
+                dynamic registerRequest = JsonConvert.DeserializeObject(Encoding.UTF8.GetString(body));
+
+                string ip = Request.Headers["X-Forwarded-For"].ToString(); // proxy IP
+                string username = registerRequest["Username"];
+                string email = registerRequest["Email"];
+                string password = registerRequest["Password"];
+
+                if(username == "" || email == "")
+                {
+                    return Response.AsJson(new APIResponse<string>()
+                    {
+                        Message = "Error, invalid username or email."
+                    });
+                }
+                else if(password.Length < 6)
+                {
+                    return Response.AsJson(new APIResponse<string>()
+                    {
+                        Message = "Error, password must be atleast 6 characters long."
+                    });
+                }
+
+                // check existing
+                List<DBUser> existingUsers = Game.Instance.UsersRepository.UserExists(username, email).Result;
+                if(existingUsers.Count > 0)
+                {
+                    return Response.AsJson(new APIResponse<string>()
+                    {
+                        Message = "Error, email or username already in use."
+                    });
+                }
+
+                uint userId = Game.Instance.UsersRepository.CreateUser(username, email, password, ip).Result;
+                if(userId == 0)
+                {
+                    return Response.AsJson(new APIResponse<string>()
+                    {
+                        Message = "Error, failed to create user."
+                    });
+                }
+
+                uint playerId = Game.Instance.PlayersRepository.CreatePlayer(userId, username, 2500, 100).Result;
+                if (playerId == 0)
+                {
+                    return Response.AsJson(new APIResponse<string>()
+                    {
+                        Message = "Critical Error, failed to create player!"
+                    });
+                }
+
+                Game.Instance.PlayersRepository.CreatePlayerStats(playerId).GetAwaiter().GetResult();
+                foreach (var cid in EquipmentManager.CharacterIds)
+                    Game.Instance.PlayersRepository.CreatePlayerEquipments(playerId, cid).GetAwaiter().GetResult();
+
+                Player you = new Player(playerId);
+                return Response.AsJson(new APIResponse<PlayerAPI>(){
+                    Result = you.ToAPI()
+                });
             });
 
             Post("/user/login/", async x =>

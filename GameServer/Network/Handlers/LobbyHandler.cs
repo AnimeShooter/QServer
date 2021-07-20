@@ -371,7 +371,7 @@ namespace Qserver.GameServer.Network.Handlers
         public static void HandleLobbyLogin(PacketReader packet, ConnServer manager)
         {
             byte[] uuid = packet.ReadBytes(16);
-            uint userId = Game.Instance.PlayerRepository.GetUserId(Encoding.ASCII.GetString(uuid)).Result;
+            uint userId = Game.Instance.UsersRepository.GetUserId(Encoding.ASCII.GetString(uuid)).Result;
 
             if (userId == 0)
             {
@@ -389,7 +389,7 @@ namespace Qserver.GameServer.Network.Handlers
                 return;
             }
 
-            uint playerId = Game.Instance.PlayerRepository.GetPlayerId(userId).Result;
+            uint playerId = Game.Instance.PlayersRepository.GetPlayerId(userId).Result;
             var player = Game.Instance.CreatePlayer(manager, playerId);
 
             manager.Send(LobbyManager.Instance.Authenticated(player));

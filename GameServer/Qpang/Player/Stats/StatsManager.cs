@@ -105,7 +105,7 @@ namespace Qserver.GameServer.Qpang
         public StatsManager(Player player)
         {
             this._player = player;
-            var stats = Game.Instance.PlayerRepository.GetPlayerStats(this._player.PlayerId).Result;
+            var stats = Game.Instance.PlayersRepository.GetPlayerStats(this._player.PlayerId).Result;
 
             this._kills = stats.kills;
             this._deaths = stats.deaths;
@@ -130,7 +130,7 @@ namespace Qserver.GameServer.Qpang
 
         public void Save()
         {
-            Game.Instance.PlayerRepository.UpdatePlayerStats(this._player).GetAwaiter();
+            Game.Instance.PlayersRepository.UpdatePlayerStats(this._player).GetAwaiter();
         }
 
         public void Apply(RoomSessionPlayer player)

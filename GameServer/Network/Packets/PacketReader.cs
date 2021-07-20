@@ -82,14 +82,17 @@ namespace Qserver.GameServer.Network.Packets
             _payload.BaseStream.Read(content, 0, (int)_payload.BaseStream.Length);
             _payload.BaseStream.Position = index;
 
-            string bytes = $"[{PacketHeader.Length.ToString("X2")}] {PacketHeader.Sequence.ToString("X2")} {PacketHeader.Unk.ToString("X2")} ";
-            for(int i = 0; i < content.Length; i++)
+            if(Settings.DEBUG)
             {
-                bytes += content[i].ToString("X2");
-                if (i != content.Length - 1)
-                    bytes += " ";
+                string bytes = $"[{PacketHeader.Length.ToString("X2")}] {PacketHeader.Sequence.ToString("X2")} {PacketHeader.Unk.ToString("X2")} ";
+                for (int i = 0; i < content.Length; i++)
+                {
+                    bytes += content[i].ToString("X2");
+                    if (i != content.Length - 1)
+                        bytes += " ";
+                }
+                Log.Message(LogType.DUMP, bytes);
             }
-            Log.Message(LogType.DUMP, bytes);
 
             PayloadHeader = new PayloadHeader()
             {

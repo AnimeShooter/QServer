@@ -101,6 +101,15 @@ namespace Qserver.GameServer.Network.Handlers
         #endregion
 
         #region Inventory
+        public static void HandleLobbyTrade(PacketReader packet, ConnServer manager)
+        {
+            //uint unk1 = packet.ReadUInt32();
+            uint playerId = packet.ReadUInt32(); // target
+            uint unk2 = packet.ReadUInt32();
+
+            manager.Send(LobbyManager.Instance.TradeResponse(playerId));
+        }
+
         public static void HandleDeleteCard(PacketReader packet, ConnServer manager)
         {
             var cardId = packet.ReadUInt64();

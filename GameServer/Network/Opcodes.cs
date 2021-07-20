@@ -161,20 +161,31 @@ namespace Qserver.GameServer.Network
 		LOBBY_RECORD_CLEAR_FAIL = 840,
 		LOBBY_KILL_DEATH_CLEAR_FAIL = 843,
 
+		// 854 // bidyy pending
 
 		LOBBY_RECEIVE_GM_INVITE = 857,
-
+		// 860 GM invite?
 		LOBBY_USE_FUNC_CARD_RSP = 864,
 
 		LOBBY_BUDDY_ADD_FAIL = 865,
-
+		// 867 unk func card
+		// 868 buddy no more 
 		LOBBY_TRADE_ERROR_1 = 874,
 
 		LOBBY_TRADE = 875,
 		LOBBY_TRADE_RSP = 876,
 
+		// 877 trading now / not want trade
 		LOBBY_TRADE_ERROR_2 = 878,
+		// 881 TRADE_REQUEST_CANCEL
+		// 882 TRADE_REQUEST_REJECT_MESSAGE
 
+		// 885 trade cancle
+
+
+		// 887 unk trade error
+
+		// 889 unk
 		LOBBY_TRADE_ACT = 884,
 		LOBBY_TRADE_ACT_RSP = 885,
 

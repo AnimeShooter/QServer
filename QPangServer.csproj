@@ -6,10 +6,13 @@
     <RootNamespace>Qserver</RootNamespace>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
   <ItemGroup>
     <Folder Include="External\HTTP\API\" />
     <Folder Include="External\HTTP\Public\" />
-    <Folder Include="GameServer\Qpang\Room\tnl\server\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -18,10 +21,6 @@
     <PackageReference Include="MySql.Data" Version="8.0.24" />
     <PackageReference Include="Nancy" Version="2.0.0" />
     <PackageReference Include="Nancy.Hosting.Self" Version="2.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\TNL.NET\TNL.NET.csproj" />
   </ItemGroup>
 
   <ItemGroup>

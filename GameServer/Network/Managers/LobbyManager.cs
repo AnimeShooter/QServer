@@ -434,6 +434,13 @@ namespace Qserver.GameServer.Network.Managers
         #endregion
 
         #region Inventory
+        public PacketWriter TradeResponse(uint  playerId)
+        {
+            PacketWriter pw = new PacketWriter(Opcode.LOBBY_TRADE_RSP);
+
+            return pw;
+        }
+
         public PacketWriter CardExtended(InventoryCard card, uint balance, bool isCash)
         {
             PacketWriter pw = new PacketWriter((Opcode)810);

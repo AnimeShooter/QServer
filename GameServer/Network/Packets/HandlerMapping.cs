@@ -51,6 +51,8 @@ namespace Qserver.GameServer.Packets
                 PacketManager.DefineOpcodeHandler((Opcode)844, LobbyHandler.HandleRestKillDeathEvent);
                 PacketManager.DefineOpcodeHandler((Opcode)861, LobbyHandler.HandleDisableFunctionCardEvent);
                 PacketManager.DefineOpcodeHandler((Opcode)897, LobbyHandler.HandleUseCraneEvent);
+
+                PacketManager.DefineOpcodeHandler(Opcode.LOBBY_TRADE, LobbyHandler.HandleLobbyTrade);
             }
 
             // Square

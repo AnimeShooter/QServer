@@ -239,7 +239,10 @@ namespace Qserver.GameServer.Qpang
 
             lock (this._lock)
             {
-                _players.Remove(player.PlayerId);
+                if(this._players.ContainsKey(player.PlayerId))
+                    _players.Remove(player.PlayerId);
+                if (this._playersByName.ContainsKey(player.Name))
+                    _playersByName.Remove(player.Name);
             }
         }
 

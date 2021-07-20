@@ -37,14 +37,14 @@ namespace Qserver.External.HTTP.Nancy
                 string password = registerRequest["Password"];
                 string reToken = registerRequest["reToken"];
 
-                if (username == "" || email == "" || reToken == "")
+                if (username == "" || email == "")
                     return Response.AsJson(new APIResponse<string>() { Message = "Error, invalid username or email." });
                 
                 if (password.Length < 6)
                     return Response.AsJson(new APIResponse<string>() { Message = "Error, password must be atleast 6 characters long." });
 
 #if !DEBUG
-                if(!Helpers.IsValidReCaptcha(reToken)) // robot check
+                if (teToken ==  ""|| !Helpers.IsValidReCaptcha(reToken)) // robot check
                     return Response.AsJson(new APIResponse<string>() { Message = "Error, you might be a robot." });
 #endif
 
@@ -105,11 +105,11 @@ namespace Qserver.External.HTTP.Nancy
                 string password = registerRequest["Password"];
                 string reToken = registerRequest["reToken"];
 
-                if (username == "" || password == "" || reToken == "")
+                if (username == "" || password == "")
                     return Response.AsJson(new APIResponse<string>() { Message = "Error, invalid Login" });
 
 #if !DEBUG
-                if (!Helpers.IsValidReCaptcha(reToken)) // robot check
+                if (teToken ==  ""|| !Helpers.IsValidReCaptcha(reToken)) // robot check
                     return Response.AsJson(new APIResponse<string>() { Message = "Error, you might be a robot." });
 #endif
 

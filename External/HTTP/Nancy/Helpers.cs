@@ -30,15 +30,13 @@ namespace Qserver.External.HTTP.Nancy
 
         public static bool IsValidReCaptcha(string token)
         {
-            HttpWebRequest webreq = (HttpWebRequest)WebRequest.Create("https://www.google.com/recaptcha/api/siteverify");
+            HttpWebRequest webreq = (HttpWebRequest)WebRequest.Create($"https://www.google.com/recaptcha/api/siteverify?secret={Settings.ReCaptchaSecret}&response={token}");
             webreq.Method = "POST";
-            webreq.Headers.Add("secret", Settings.ReCaptchaSecret);
-            webreq.Headers.Add("response", token);
             WebResponse webres = webreq.GetResponse();
             Stream receiveStream = webres.GetResponseStream();
             StreamReader readStream = new StreamReader(receiveStream, Encoding.UTF8);
             dynamic reCaptcheResponse = JsonConvert.DeserializeObject(readStream.ReadToEnd());
-            if (reCaptcheResponse["success"] == null || reCaptcheResponse["success"] == "false" || reCaptcheResponse["success"] == false)
+            if (reCaptcheResponse["success"] == null || reCaptcheResponse["success"] == false)
                 return false;
             return true;
         }

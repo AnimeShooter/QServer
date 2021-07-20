@@ -108,7 +108,7 @@ namespace Qserver.External.HTTP.Nancy
                 if (username == "" || password == "")
                     return Response.AsJson(new APIResponse<string>() { Message = "Error, invalid Login" });
 
-#if !DEBUG
+#if DEBUG
                 if (reToken == null || reToken == "" || !Helpers.IsValidReCaptcha(reToken)) // robot check
                     return Response.AsJson(new APIResponse<string>() { Message = "Error, you might be a robot." });
 #endif

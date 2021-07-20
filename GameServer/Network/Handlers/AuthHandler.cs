@@ -28,11 +28,15 @@ namespace Qserver.GameServer.Network.Handlers
             byte[] skip = packet.ReadBytes(12); // unk
             int version = packet.ReadInt32();
 
-            var pw = Game.Instance.UsersRepository.GetUserPassword(wUsername).Result;
-            string hashedPw = BCrypt.Net.BCrypt.HashPassword(pw);
-            if (!BCrypt.Net.BCrypt.Verify(wPassword, pw))
+            var user = Game.Instance.UsersRepository.GetUserCredentials(wUsername).Result;
+            if(user.password == null)
             {
                 manager.Send(AuthManager.Instance.InvalidUsername());
+                return;
+            }
+            if (!BCrypt.Net.BCrypt.Verify(wPassword, user.password))
+            {
+                manager.Send(AuthManager.Instance.InvalidPassword());
                 return;
             }
 

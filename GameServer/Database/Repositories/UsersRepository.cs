@@ -50,20 +50,25 @@ namespace Qserver.GameServer.Database.Repositories
 		public async Task UpdateUUID(string username, string uuid)
 		{
 			await _sqlObjectFactory.GetConnection().UsingAsync(connection =>
-				connection.QuerySingleAsync("UPDATE users SET session_uuid = @Uuid WHERE name = @Username", new { Username = username, Uuid = uuid }));
+				connection.QueryAsync("UPDATE users SET session_uuid = @Uuid WHERE name = @Username", new { Username = username, Uuid = uuid }));
+		}
+		public async Task UpdateToken(uint id, string token)
+		{
+			await _sqlObjectFactory.GetConnection().UsingAsync(connection =>
+				connection.QueryAsync("UPDATE users SET token = @Token WHERE id = @Id", new { Id = id, Token = token }));
 		}
 
 		public async Task UpdatePassword(uint id, string password)
 		{
 			await _sqlObjectFactory.GetConnection().UsingAsync(connection =>
-				connection.QuerySingleAsync("UPDATE users SET password = @Password WHERE id = @Id", new { Id = id, Password = password }));
+				connection.QueryAsync("UPDATE users SET password = @Password WHERE id = @Id", new { Id = id, Password = password }));
 		}
 
-		public async Task<string> GetUserPassword(string username)
+		public async Task<DBUser> GetUserCredentials(string username)
 		{
-			Task<IEnumerable<string>> items = null;
+			Task<IEnumerable<DBUser>> items = null;
 			await _sqlObjectFactory.GetConnection().UsingAsync(connection =>
-				items = connection.QueryAsync<string>("SELECT password FROM users WHERE name = @Username", new { Username = username }));
+				items = connection.QueryAsync<DBUser>("SELECT id, password, token FROM users WHERE name = @Username", new { Username = username }));
 			return items.Result.FirstOrDefault();
 		}
 

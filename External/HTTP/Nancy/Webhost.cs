@@ -18,7 +18,7 @@ namespace Qserver.External.HTTP.Nancy
 
         public Webhost()
         {
-            
+
             // #====================#
             // #       User         #
             // #====================#
@@ -35,14 +35,14 @@ namespace Qserver.External.HTTP.Nancy
                 string email = registerRequest["Email"];
                 string password = registerRequest["Password"];
 
-                if(username == "" || email == "")
+                if (username == "" || email == "")
                 {
                     return Response.AsJson(new APIResponse<string>()
                     {
                         Message = "Error, invalid username or email."
                     });
                 }
-                else if(password.Length < 6)
+                else if (password.Length < 6)
                 {
                     return Response.AsJson(new APIResponse<string>()
                     {
@@ -52,7 +52,7 @@ namespace Qserver.External.HTTP.Nancy
 
                 // check existing
                 List<DBUser> existingUsers = Game.Instance.UsersRepository.UserExists(username, email).Result;
-                if(existingUsers.Count > 0)
+                if (existingUsers.Count > 0)
                 {
                     return Response.AsJson(new APIResponse<string>()
                     {
@@ -63,7 +63,7 @@ namespace Qserver.External.HTTP.Nancy
                 string hashedPassword = BCrypt.Net.BCrypt.HashPassword(password);
                 string token = Util.Util.GenerateToken();
                 uint userId = Game.Instance.UsersRepository.CreateUser(username, email, hashedPassword, ip, token).Result;
-                if(userId == 0)
+                if (userId == 0)
                 {
                     return Response.AsJson(new APIResponse<string>()
                     {
@@ -97,8 +97,32 @@ namespace Qserver.External.HTTP.Nancy
 
             Post("/user/login/", async x =>
             {
-                // TODO: create authorization token using login stuff
-                return null;
+                // read body
+                byte[] body = new byte[Request.Body.Length];
+                Request.Body.Read(body, 0, body.Length);
+
+                dynamic registerRequest = JsonConvert.DeserializeObject(Encoding.UTF8.GetString(body));
+                string username = registerRequest["Username"];
+                string password = registerRequest["Password"];
+                if (username == "" || password == "")
+                    return Response.AsJson(new APIResponse<string>() { Message = "Error, invalid Login" });
+
+                var user = Game.Instance.UsersRepository.GetUserCredentials(username).Result;
+                if (user.password == null || !BCrypt.Net.BCrypt.Verify(password, user.password))
+                    return Response.AsJson(new APIResponse<string>() { Message = "Error, invalid Login" });
+
+                var id = Game.Instance.UsersRepository.GetPlayerId(user.id).Result;
+                Player player = new Player(id); // TODO: improve?
+
+                user.token = Util.Util.GenerateToken();
+                Game.Instance.UsersRepository.UpdateToken(user.id, user.token).GetAwaiter().GetResult();
+
+                var res = Response.AsJson(new APIResponse<PlayerAPI>()
+                {
+                    Result = player.ToAPI()
+                });
+                res.Headers.Add("Authorization", user.token);
+                return res;
             });
 
             Post("/user/update/", async x =>
@@ -217,7 +241,7 @@ namespace Qserver.External.HTTP.Nancy
             Get("/img/maps/small/{name}", async x =>
             {
                 //string[] mapNames = new string[] { "garden", "diorama", "fly", "keep", "doll", "sweety", "river", "bunker", "temple", "bridge", "castaway" };
-                string[] mapNames = new string[] {"", "diorama", "fly", "keep", "doll", "garden", "river", "practice", "bunker", "temple", "fly", "bridge", "castaway", "garden" }; // Overflow??
+                string[] mapNames = new string[] { "", "diorama", "fly", "keep", "doll", "garden", "river", "practice", "bunker", "temple", "fly", "bridge", "castaway", "garden" }; // Overflow??
                 int mapId = -1;
                 string name = x.name;
                 if (Int32.TryParse(x.name, out mapId))
@@ -225,7 +249,7 @@ namespace Qserver.External.HTTP.Nancy
                     if (mapId >= 0 && mapId < mapNames.Length)
                         name = mapNames[mapId];
                 }
- 
+
                 string filename = Directory.GetCurrentDirectory() + $"/External/HTTP/Public/img/maps/small/{name}.png";
                 if (!File.Exists(filename))
                     return new Response().StatusCode = HttpStatusCode.NotFound;
@@ -244,38 +268,6 @@ namespace Qserver.External.HTTP.Nancy
                 return response;
             });
 
-        }
-
-#if !DEBUG
-    public class MyStatusHandler : IStatusCodeHandler
-    {
-        public bool HandlesStatusCode(global::Nancy.HttpStatusCode statusCode, NancyContext context)
-        {
-            return true;
-        }
-
-        public void Handle(global::Nancy.HttpStatusCode statusCode, NancyContext context)
-        {
-            return;
-        }
-    }
-#endif
-
-        public class Bootstrapper : DefaultNancyBootstrapper
-        {
-#if DEBUG
-            protected override void RequestStartup(TinyIoCContainer container, IPipelines pipelines, NancyContext context)
-            {
-                // CORS Enabled for DEBUG (server should use nginx)
-                pipelines.AfterRequest.AddItemToEndOfPipeline((ctx) =>
-                {
-                    ctx.Response.WithHeader("Access-Control-Allow-Origin", "*")
-                        .WithHeader("Access-Control-Allow-Methods", "POST,GET")
-                        .WithHeader("Access-Control-Allow-Headers", "Accept, Origin, Content-type")
-                        .WithHeader("Access-Control-Allow-Headers", "Accept, Origin, Content-type");
-                });
-            }
-#endif
         }
     }
 }

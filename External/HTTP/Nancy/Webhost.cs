@@ -6,6 +6,7 @@ using Qserver.GameServer.Qpang;
 using Nancy;
 using Newtonsoft.Json;
 using Qserver.GameServer.Database.Repositories;
+using Qserver.GameServer;
 using Nancy.TinyIoc;
 using Nancy.Conventions;
 using Nancy.Bootstrapper;
@@ -34,12 +35,18 @@ namespace Qserver.External.HTTP.Nancy
                 string username = registerRequest["Username"];
                 string email = registerRequest["Email"];
                 string password = registerRequest["Password"];
+                string reToken = registerRequest["reToken"];
 
-                if (username == "" || email == "")
+                if (username == "" || email == "" || reToken == "")
                     return Response.AsJson(new APIResponse<string>() { Message = "Error, invalid username or email." });
                 
                 if (password.Length < 6)
                     return Response.AsJson(new APIResponse<string>() { Message = "Error, password must be atleast 6 characters long." });
+
+#if !DEBUG
+                if(!Helpers.IsValidReCaptcha(reToken)) // robot check
+                    return Response.AsJson(new APIResponse<string>() { Message = "Error, you might be a robot." });
+#endif
 
                 // check existing
                 List<DBUser> existingUsers = Game.Instance.UsersRepository.UserExists(username, email).Result;
@@ -52,7 +59,7 @@ namespace Qserver.External.HTTP.Nancy
                 if (userId == 0)
                     return Response.AsJson(new APIResponse<string>() { Message = "Error, failed to create user." });
 
-                uint playerId = Game.Instance.PlayersRepository.CreatePlayer(userId, username, 2500, 100).Result;
+                uint playerId = Game.Instance.PlayersRepository.CreatePlayer(userId, username, 7500, 25).Result;
                 if (playerId == 0)
                     return Response.AsJson(new APIResponse<string>() { Message = "Critical Error, failed to create player!" });
 
@@ -96,8 +103,15 @@ namespace Qserver.External.HTTP.Nancy
                 dynamic registerRequest = JsonConvert.DeserializeObject(Encoding.UTF8.GetString(body));
                 string username = registerRequest["Username"];
                 string password = registerRequest["Password"];
-                if (username == "" || password == "")
+                string reToken = registerRequest["reToken"];
+
+                if (username == "" || password == "" || reToken == "")
                     return Response.AsJson(new APIResponse<string>() { Message = "Error, invalid Login" });
+
+#if !DEBUG
+                if (!Helpers.IsValidReCaptcha(reToken)) // robot check
+                    return Response.AsJson(new APIResponse<string>() { Message = "Error, you might be a robot." });
+#endif
 
                 var user = Game.Instance.UsersRepository.GetUserCredentials(username).Result;
                 if (user.password == null || !BCrypt.Net.BCrypt.Verify(password, user.password))
@@ -119,7 +133,7 @@ namespace Qserver.External.HTTP.Nancy
 
             Post("/user/update/", async x =>
             {
-                var user = User.UserAuth(Request);
+                var user = Helpers.UserAuth(Request);
                 if (user == null)
                     return Response.AsJson(new APIResponse<string>() { Message = "Authentication error." });
 
@@ -142,7 +156,7 @@ namespace Qserver.External.HTTP.Nancy
 
             Get("/user/info/", async x =>
             {
-                var user = User.UserAuth(Request);
+                var user = Helpers.UserAuth(Request);
                 if (user == null)
                     return Response.AsJson(new APIResponse<string>() { Message = "Authentication error." });
 

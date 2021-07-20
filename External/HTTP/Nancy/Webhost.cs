@@ -44,7 +44,7 @@ namespace Qserver.External.HTTP.Nancy
                     return Response.AsJson(new APIResponse<string>() { Message = "Error, password must be atleast 6 characters long." });
 
 #if !DEBUG
-                if (teToken ==  ""|| !Helpers.IsValidReCaptcha(reToken)) // robot check
+                if (teToken == "" || !Helpers.IsValidReCaptcha(reToken)) // robot check
                     return Response.AsJson(new APIResponse<string>() { Message = "Error, you might be a robot." });
 #endif
 
@@ -109,7 +109,7 @@ namespace Qserver.External.HTTP.Nancy
                     return Response.AsJson(new APIResponse<string>() { Message = "Error, invalid Login" });
 
 #if !DEBUG
-                if (teToken ==  ""|| !Helpers.IsValidReCaptcha(reToken)) // robot check
+                if (teToken == "" || !Helpers.IsValidReCaptcha(reToken)) // robot check
                     return Response.AsJson(new APIResponse<string>() { Message = "Error, you might be a robot." });
 #endif
 

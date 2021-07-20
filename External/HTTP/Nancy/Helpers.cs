@@ -38,7 +38,9 @@ namespace Qserver.External.HTTP.Nancy
             Stream receiveStream = webres.GetResponseStream();
             StreamReader readStream = new StreamReader(receiveStream, Encoding.UTF8);
             dynamic reCaptcheResponse = JsonConvert.DeserializeObject(readStream.ReadToEnd());
-            return !(reCaptcheResponse["success"] == null || reCaptcheResponse["success"] != "true");
+            if (reCaptcheResponse["success"] == null || reCaptcheResponse["success"] == "false" || reCaptcheResponse["success"] == false)
+                return false;
+            return true;
         }
     }
 }

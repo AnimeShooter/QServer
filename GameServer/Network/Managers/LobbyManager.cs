@@ -414,11 +414,11 @@ namespace Qserver.GameServer.Network.Managers
                 pw.WriteUInt8(1);// room.PlayerCount);
                 pw.WriteUInt8(room.MaxPlayers);
                 pw.WriteBytes(new byte[5]);
-                pw.WriteUInt8(room.IsLevelLimited ? (byte)1 : (byte)0);
-                pw.WriteUInt8(room.IsTeamSorting ? (byte)1 : (byte)0);
-                pw.WriteUInt8(room.IsSkillsEnabled ? (byte)1 : (byte)0);
+                pw.WriteUInt8(room.LevelLimited ? (byte)1 : (byte)0);
+                pw.WriteUInt8(room.TeamSorting ? (byte)1 : (byte)0);
+                pw.WriteUInt8(room.SkillsEnabled ? (byte)1 : (byte)0);
                 pw.WriteBytes(new byte[2]);
-                pw.WriteUInt8(room.IsMeleeOnly ? (byte)1 : (byte)0);
+                pw.WriteUInt8(room.MeleeOnly ? (byte)1 : (byte)0);
             }
             return pw;
         }

@@ -71,6 +71,10 @@ namespace Qserver.GameServer.Qpang
         {
             get { return this._id; }
         }
+        public string Name
+        {
+            get { return this._name; }
+        }
         public byte Map
         {
             get { return this._map; }
@@ -101,25 +105,47 @@ namespace Qserver.GameServer.Qpang
             get { return this._maxPlayers; }
             set { this._maxPlayers = value; }
         }
-        public bool IsLevelLimited
+        public bool LevelLimited
         {
             get { return this._isLevelLimited; }
             set { this._isLevelLimited = value; }
         }
-        public bool IsTeamSorting
+        public bool TeamSorting
         {
             get { return this._isTeamSorting; }
             set { this._isTeamSorting = value; }
         }
-        public bool IsSkillsEnabled
+        public bool SkillsEnabled
         {
             get { return this._isSkillsEnabled; }
             set { this._isSkillsEnabled = value; }
         }
-        public bool IsMeleeOnly
+        public bool MeleeOnly
         {
             get { return this._isMeleeOnly; }
             set { this._isMeleeOnly = value; }
+        }
+
+        public bool PointsGame
+        {
+            get { return this._isPointsGame; }
+        }
+        public bool Playing
+        {
+            get { return this._isPlaying; }
+        }
+        public bool EventRoom
+        {
+            get { return this._isEventRoom; }
+        }
+
+        public uint ScorePoints
+        {
+            get { return this._scorePoints; }
+        }
+        public uint ScoreTime
+        {
+            get { return this._scoreTime; }
         }
 
 

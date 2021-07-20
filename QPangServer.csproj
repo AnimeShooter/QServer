@@ -2,14 +2,13 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <RootNamespace>Qserver</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
     <Folder Include="External\HTTP\API\" />
     <Folder Include="External\HTTP\Public\" />
-    <Folder Include="GameServer\Qpang\Room\tnl\client\" />
     <Folder Include="GameServer\Qpang\Room\tnl\server\" />
   </ItemGroup>
 
@@ -19,6 +18,10 @@
     <PackageReference Include="MySql.Data" Version="8.0.24" />
     <PackageReference Include="Nancy" Version="2.0.0" />
     <PackageReference Include="Nancy.Hosting.Self" Version="2.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TNL.NET\TNL.NET.csproj" />
   </ItemGroup>
 
   <ItemGroup>

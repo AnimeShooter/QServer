@@ -30,7 +30,7 @@ namespace Qserver.GameServer.Qpang
 
         //}
 
-        public void DropConnection(GameNetEvent e)
+        public void DropConnection(uint playerId)
         {
 
         }

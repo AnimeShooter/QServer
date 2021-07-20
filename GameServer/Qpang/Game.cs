@@ -129,6 +129,10 @@ namespace Qserver.GameServer.Qpang
         {
             get { return this._leaderboard; }
         }
+        public RoomServer RoomServer
+        {
+            get { return this._roomServer; }
+        }
 
         // db
         public ChannelsRepository ChannelsRepository

@@ -1,5 +1,6 @@
 ﻿using Nancy;
 using Nancy.Bootstrapper;
+using Nancy.ErrorHandling;
 using Nancy.LeakyBucket;
 using Nancy.TinyIoc;
 using System;

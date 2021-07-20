@@ -83,7 +83,7 @@ namespace Qserver.External.HTTP.Nancy
                 {
                     Result = you.ToAPI()
                 });
-                res.Headers.Add("Authorization", token);
+                res.Headers.Add("x-auth-token", token);
                 return res;
             });
 
@@ -113,7 +113,7 @@ namespace Qserver.External.HTTP.Nancy
                 {
                     Result = player.ToAPI()
                 });
-                res.Headers.Add("Authorization", user.token);
+                res.Headers.Add("x-auth-token", user.token);
                 return res;
             });
 
@@ -134,6 +134,8 @@ namespace Qserver.External.HTTP.Nancy
 
                 string hashedPassword = BCrypt.Net.BCrypt.HashPassword(newPassword);
                 Game.Instance.UsersRepository.UpdatePassword(user.Value.id, hashedPassword).GetAwaiter().GetResult();
+
+                // NOTE: update session token? or its QPang 2013 all over again xD
 
                 return Response.AsJson(new APIResponse<string>() { Message = "Your password has been reset!" });
             });

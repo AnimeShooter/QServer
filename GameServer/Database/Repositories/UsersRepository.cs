@@ -20,8 +20,6 @@ namespace Qserver.GameServer.Database.Repositories
 
 	public class UsersRepository
     {
-		
-
 
 		public UsersRepository(IMySqlObjectFactory sqlObjectFactory)
 		{

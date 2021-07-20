@@ -18,6 +18,8 @@ namespace Qserver.GameServer
         public static int HTTP_PORT_API = 8088; // REST API
         public static int WS_PORT = 8026; // Website
 
+        // TODO: not hardcode?
+
 #if DEBUG
         public static bool DEBUG = true;
 #else

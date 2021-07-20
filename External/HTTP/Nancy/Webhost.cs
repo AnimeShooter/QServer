@@ -57,7 +57,8 @@ namespace Qserver.External.HTTP.Nancy
                     });
                 }
 
-                uint userId = Game.Instance.UsersRepository.CreateUser(username, email, password, ip).Result;
+                string hashedPassword = BCrypt.Net.BCrypt.HashPassword(password);
+                uint userId = Game.Instance.UsersRepository.CreateUser(username, email, hashedPassword, ip).Result;
                 if(userId == 0)
                 {
                     return Response.AsJson(new APIResponse<string>()

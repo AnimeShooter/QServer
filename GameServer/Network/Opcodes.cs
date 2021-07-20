@@ -198,6 +198,7 @@ namespace Qserver.GameServer.Network
 
 		LOBBY_ENCHANT_FAIL = 902,
 
+		LOBBY_CHEST_OPEN = 906, // TODO?
 
 		SQUARE_LOGIN = 6500,
 		SQUARE_LOGIN_RSP = 6501,

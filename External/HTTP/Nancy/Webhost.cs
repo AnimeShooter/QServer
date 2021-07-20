@@ -36,57 +36,49 @@ namespace Qserver.External.HTTP.Nancy
                 string password = registerRequest["Password"];
 
                 if (username == "" || email == "")
-                {
-                    return Response.AsJson(new APIResponse<string>()
-                    {
-                        Message = "Error, invalid username or email."
-                    });
-                }
-                else if (password.Length < 6)
-                {
-                    return Response.AsJson(new APIResponse<string>()
-                    {
-                        Message = "Error, password must be atleast 6 characters long."
-                    });
-                }
+                    return Response.AsJson(new APIResponse<string>() { Message = "Error, invalid username or email." });
+                
+                if (password.Length < 6)
+                    return Response.AsJson(new APIResponse<string>() { Message = "Error, password must be atleast 6 characters long." });
 
                 // check existing
                 List<DBUser> existingUsers = Game.Instance.UsersRepository.UserExists(username, email).Result;
                 if (existingUsers.Count > 0)
-                {
-                    return Response.AsJson(new APIResponse<string>()
-                    {
-                        Message = "Error, email or username already in use."
-                    });
-                }
+                    return Response.AsJson(new APIResponse<string>() { Message = "Error, email or username already in use." });
 
                 string hashedPassword = BCrypt.Net.BCrypt.HashPassword(password);
                 string token = Util.Util.GenerateToken();
                 uint userId = Game.Instance.UsersRepository.CreateUser(username, email, hashedPassword, ip, token).Result;
                 if (userId == 0)
-                {
-                    return Response.AsJson(new APIResponse<string>()
-                    {
-                        Message = "Error, failed to create user."
-                    });
-                }
+                    return Response.AsJson(new APIResponse<string>() { Message = "Error, failed to create user." });
 
                 uint playerId = Game.Instance.PlayersRepository.CreatePlayer(userId, username, 2500, 100).Result;
                 if (playerId == 0)
-                {
-                    return Response.AsJson(new APIResponse<string>()
-                    {
-                        Message = "Critical Error, failed to create player!"
-                    });
-                }
+                    return Response.AsJson(new APIResponse<string>() { Message = "Critical Error, failed to create player!" });
 
                 Game.Instance.PlayersRepository.CreatePlayerStats(playerId).GetAwaiter().GetResult();
                 foreach (var cid in EquipmentManager.CharacterIds)
                     Game.Instance.PlayersRepository.CreatePlayerEquipments(playerId, cid).GetAwaiter().GetResult();
 
-                // TODO: Default player items?
-
                 Player you = new Player(playerId);
+
+                uint[] startWeapons = new uint[] { 1095172097, 1095303169, 1095368704, 1095434241 };
+                foreach (var itemid in startWeapons)
+                {
+                    var card = new InventoryCard()
+                    {
+                        IsActive = false,
+                        IsOpened = true,
+                        IsGiftable = false,
+                        ItemId = itemid,
+                        PeriodeType = 254,
+                        Period = 1,
+                        PlayerOwnedId = you.PlayerId,
+                        Type = 87
+                    };
+                    Game.Instance.ItemsRepository.PurchaseItem(card, you).GetAwaiter().GetResult();
+                }   
+
                 var res = Response.AsJson(new APIResponse<PlayerAPI>()
                 {
                     Result = you.ToAPI()

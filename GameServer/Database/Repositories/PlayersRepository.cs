@@ -11,7 +11,7 @@ namespace Qserver.GameServer.Database.Repositories
     {
         public struct DBPlayer
         {
-            public ulong id;
+            public uint id;
             public uint user_id;
             public string name;
             public ushort default_character;
@@ -63,6 +63,14 @@ namespace Qserver.GameServer.Database.Repositories
             Task<IEnumerable<DBPlayer>> items = null;
             await _sqlObjectFactory.GetConnection().UsingAsync(connection =>
                 items = connection.QueryAsync<DBPlayer>("SELECT id, user_id, name, default_character, rank, prestige, level, don, cash, coins, experience, is_muted, created_at, updated_at FROM players WHERE id = @Id", new { Id = id }));
+            return items.Result.FirstOrDefault();
+        }
+
+        public async Task<DBPlayer> GetPlayerByUserId(uint id)
+        {
+            Task<IEnumerable<DBPlayer>> items = null;
+            await _sqlObjectFactory.GetConnection().UsingAsync(connection =>
+                items = connection.QueryAsync<DBPlayer>("SELECT id, user_id, name, default_character, rank, prestige, level, don, cash, coins, experience, is_muted, created_at, updated_at FROM players WHERE user_id = @Id", new { Id = id }));
             return items.Result.FirstOrDefault();
         }
 

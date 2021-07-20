@@ -16,6 +16,7 @@ namespace Qserver.GameServer.Database.Repositories
 		public string session_uuid;
 		public string ip;
 		public byte whitelisted;
+		public string token;
 	}
 
 	public class UsersRepository
@@ -52,6 +53,12 @@ namespace Qserver.GameServer.Database.Repositories
 				connection.QuerySingleAsync("UPDATE users SET session_uuid = @Uuid WHERE name = @Username", new { Username = username, Uuid = uuid }));
 		}
 
+		public async Task UpdatePassword(uint id, string password)
+		{
+			await _sqlObjectFactory.GetConnection().UsingAsync(connection =>
+				connection.QuerySingleAsync("UPDATE users SET password = @Password WHERE id = @Id", new { Id = id, Password = password }));
+		}
+
 		public async Task<string> GetUserPassword(string username)
 		{
 			Task<IEnumerable<string>> items = null;
@@ -60,12 +67,12 @@ namespace Qserver.GameServer.Database.Repositories
 			return items.Result.FirstOrDefault();
 		}
 
-		public async Task<uint> CreateUser(string name, string email, string password, string ip)
+		public async Task<uint> CreateUser(string name, string email, string password, string ip, string token)
         {
 			Task<uint> userid = null;
 			await _sqlObjectFactory.GetConnection().UsingAsync(connection =>
-				userid = connection.QuerySingleAsync<uint>("INSERT INTO users (name, email, password, session_uuid, registration_ip, whitelisted) VALUES (@Name, @Email, @Password, @Uuid, @Ip, @Whitelisted);  SELECT LAST_INSERT_ID()", 
-				new { Name = name, Email = email, Password = password, Uuid = Util.Util.GenerateUUID(), Ip = ip, Whitelisted = 1 }));
+				userid = connection.QuerySingleAsync<uint>("INSERT INTO users (name, email, password, session_uuid, registration_ip, token, whitelisted) VALUES (@Name, @Email, @Password, @Uuid, @Ip, @Token, @Whitelisted);  SELECT LAST_INSERT_ID()", 
+				new { Name = name, Email = email, Password = password, Uuid = Util.Util.GenerateUUID(), Ip = ip, Token = token, Whitelisted = 1 }));
 			return userid.Result;
 		}
 
@@ -77,8 +84,14 @@ namespace Qserver.GameServer.Database.Repositories
 				new { Name = name, Email = email }));
 			return users.Result.ToList();
 		}
-		
 
-
+		public async Task<List<DBUser>> GetUser(string token)
+		{
+			Task<IEnumerable<DBUser>> users = null;
+			await _sqlObjectFactory.GetConnection().UsingAsync(connection =>
+				users = connection.QueryAsync<DBUser>("SELECT id, name, email FROM users WHERE token = @Token",
+				new { Token = token }));
+			return users.Result.ToList();
+		}
 	}
 }

@@ -30,6 +30,34 @@ namespace Qserver.Util
 
             return $"{part1}-{rnd.Next(1000, 9999)}-{rnd.Next(1000, 0xFFFF).ToString("X4")}";
         }
-        
+
+        public static string GenerateToken()
+        {
+            Random rnd = new Random();
+            string token = "";
+            for(int i = 0; i < 4; i++)
+            {
+                for (int j = 0; j < 6; j++)
+                {
+                    switch(rnd.Next(0,3))
+                    {
+                        case 0: // upper
+                            token += (char)rnd.Next(0x41, 0x5B);
+                            break;
+                        case 1: // lower
+                            token += (char)rnd.Next(0x61, 0x7B);
+                            break;
+                        case 2: // numeric
+                            token += (char)rnd.Next(0x30, 0x3A);
+                            break;
+                    }
+                }
+                    
+                if (i < 4 - 1)
+                    token += "-";
+            }
+            return token;
+        }
+
     }
 }

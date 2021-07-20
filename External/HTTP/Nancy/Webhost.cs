@@ -58,7 +58,8 @@ namespace Qserver.External.HTTP.Nancy
                 }
 
                 string hashedPassword = BCrypt.Net.BCrypt.HashPassword(password);
-                uint userId = Game.Instance.UsersRepository.CreateUser(username, email, hashedPassword, ip).Result;
+                string token = Util.Util.GenerateToken();
+                uint userId = Game.Instance.UsersRepository.CreateUser(username, email, hashedPassword, ip, token).Result;
                 if(userId == 0)
                 {
                     return Response.AsJson(new APIResponse<string>()
@@ -80,10 +81,15 @@ namespace Qserver.External.HTTP.Nancy
                 foreach (var cid in EquipmentManager.CharacterIds)
                     Game.Instance.PlayersRepository.CreatePlayerEquipments(playerId, cid).GetAwaiter().GetResult();
 
+                // TODO: Default player items?
+
                 Player you = new Player(playerId);
-                return Response.AsJson(new APIResponse<PlayerAPI>(){
+                var res = Response.AsJson(new APIResponse<PlayerAPI>()
+                {
                     Result = you.ToAPI()
                 });
+                res.Headers.Add("Authorization", token);
+                return res;
             });
 
             Post("/user/login/", async x =>
@@ -94,14 +100,35 @@ namespace Qserver.External.HTTP.Nancy
 
             Post("/user/update/", async x =>
             {
-                // TODO: allow user to update password (and mock qpangIO with it?)
-                return null;
+                var user = User.UserAuth(Request);
+                if (user == null)
+                    return Response.AsJson(new APIResponse<string>() { Message = "Authentication error." });
+
+                // read body
+                byte[] body = new byte[Request.Body.Length];
+                Request.Body.Read(body, 0, body.Length);
+
+                dynamic registerRequest = JsonConvert.DeserializeObject(Encoding.UTF8.GetString(body));
+                string newPassword = registerRequest["NewPassword"];
+                if (newPassword.Length < 6)
+                    return Response.AsJson(new APIResponse<string>() { Message = "Error, password must be atleast 6 characters long." });
+
+                string hashedPassword = BCrypt.Net.BCrypt.HashPassword(newPassword);
+                Game.Instance.UsersRepository.UpdatePassword(user.Value.id, hashedPassword).GetAwaiter().GetResult();
+
+                return Response.AsJson(new APIResponse<string>() { Message = "Your password has been reset!" });
             });
 
             Get("/user/info/", async x =>
             {
-                // Get user info
-                return null;
+                var user = User.UserAuth(Request);
+                if (user == null)
+                    return Response.AsJson(new APIResponse<string>() { Message = "Authentication error." });
+
+                var info = Game.Instance.PlayersRepository.GetPlayerByUserId(user.Value.id).Result;
+                Player player = new Player(info.id); // TODO: improve?
+
+                return Response.AsJson(new APIResponse<PlayerAPI>() { Result = player.ToAPI() });
             });
 
             // #====================#

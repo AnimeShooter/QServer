@@ -19,6 +19,8 @@ namespace Qserver.GameServer
         public static int WS_PORT = 8026; // Website
 
         // TODO: not hardcode?
+        public static string ReCaptchaSitekey = "6LfAoqsbAAAAAKWJ-ifaAkQFLXFR9TABni9-ujYB";
+        public static string ReCaptchaSecret = "6LfAoqsbAAAAAJon6b2LcRkoItnPMZH5c07nxAut";
 
 #if DEBUG
         public static bool DEBUG = true;

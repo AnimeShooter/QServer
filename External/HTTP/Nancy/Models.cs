@@ -10,6 +10,5 @@ namespace Qserver.External.HTTP.Nancy
     {
         public T Result;
         public string Message;
-
     }
 }

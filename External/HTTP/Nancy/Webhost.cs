@@ -6,6 +6,9 @@ using Qserver.GameServer.Qpang;
 using Nancy;
 using Newtonsoft.Json;
 using Qserver.GameServer.Database.Repositories;
+using Nancy.TinyIoc;
+using Nancy.Conventions;
+using Nancy.Bootstrapper;
 
 namespace Qserver.External.HTTP.Nancy
 {
@@ -241,6 +244,38 @@ namespace Qserver.External.HTTP.Nancy
                 return response;
             });
 
+        }
+
+#if !DEBUG
+    public class MyStatusHandler : IStatusCodeHandler
+    {
+        public bool HandlesStatusCode(global::Nancy.HttpStatusCode statusCode, NancyContext context)
+        {
+            return true;
+        }
+
+        public void Handle(global::Nancy.HttpStatusCode statusCode, NancyContext context)
+        {
+            return;
+        }
+    }
+#endif
+
+        public class Bootstrapper : DefaultNancyBootstrapper
+        {
+#if DEBUG
+            protected override void RequestStartup(TinyIoCContainer container, IPipelines pipelines, NancyContext context)
+            {
+                // CORS Enabled for DEBUG (server should use nginx)
+                pipelines.AfterRequest.AddItemToEndOfPipeline((ctx) =>
+                {
+                    ctx.Response.WithHeader("Access-Control-Allow-Origin", "*")
+                        .WithHeader("Access-Control-Allow-Methods", "POST,GET")
+                        .WithHeader("Access-Control-Allow-Headers", "Accept, Origin, Content-type")
+                        .WithHeader("Access-Control-Allow-Headers", "Accept, Origin, Content-type");
+                });
+            }
+#endif
         }
     }
 }

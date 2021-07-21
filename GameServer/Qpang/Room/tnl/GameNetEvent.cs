@@ -8,7 +8,7 @@ using TNL.Utils;
 
 namespace Qserver.GameServer.Qpang
 {
-    public abstract class GameNetEvent : TNL.Entities.NetEvent
+    public abstract class GameNetEvent : NetEvent
     {
         public GameNetId Id;
         public GameConnection GameConnection;
@@ -36,11 +36,11 @@ namespace Qserver.GameServer.Qpang
 
         //}
 
-        public void NotifyPosted(EventConnection e)
+        public override void NotifyPosted(EventConnection e)
         {
 
         }
-        public void NotifyDelivered(EventConnection e)
+        public override void NotifyDelivered(EventConnection e, bool madeId)
         {
 
         }

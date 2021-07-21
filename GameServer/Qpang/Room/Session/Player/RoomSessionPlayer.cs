@@ -10,7 +10,7 @@ namespace Qserver.GameServer.Qpang
     {
         private PlayerEffectManager _effectManager;
         private PlayerWeaponManager _weaponManager;
-        private RoomSkillManager _skillManager;
+        private PlayerSkillManager _skillManager;
         private PlayerEntityManager _entityManager;
 
         private Position _position;
@@ -89,9 +89,54 @@ namespace Qserver.GameServer.Qpang
             get { return this._eventItemPickUps; }
             set { this._eventItemPickUps = value; }
         }
+
+        public bool Playing
+        {
+            get { return this._isPlaying; }
+        }
+        public bool Respawning
+        {
+            get { return this._isRespawning; }
+        }
+        public bool Spectating
+        {
+            get { return this._isSpectating; }
+        }
+
+        public ushort Character
+        {
+            get { return this._character; }
+        }
         public Player Player
         {
             get { return this._conn.Player; }
+        }
+        public Position Position
+        {
+            get { return this._position; }
+        }
+
+        public byte Team
+        {
+            get { return this._team; }
+        }
+
+        public PlayerEffectManager EffectManager
+        {
+            get { return this._effectManager; }
+        }
+
+        public PlayerWeaponManager WeaponManager
+        {
+            get { return this._weaponManager; }
+        }
+        public PlayerSkillManager SkillManager
+        {
+            get { return this._skillManager; }
+        }
+        public PlayerEntityManager EntityManager
+        {
+            get { return this._entityManager; }
         }
 
         public RoomSessionPlayer(GameConnection conn, RoomSession roomSession, byte team)
@@ -114,6 +159,11 @@ namespace Qserver.GameServer.Qpang
             this._highestStreak = 0;
             this._highestMultiKill = 0;
             this._eventItemPickUps = 0;
+
+            this._effectManager = new PlayerEffectManager();
+            this._weaponManager = new PlayerWeaponManager();
+            //this._skillManager = new PlayerSkillManager();
+            this._entityManager = new PlayerEntityManager();
 
             var player = conn.Player;
 
@@ -236,7 +286,7 @@ namespace Qserver.GameServer.Qpang
                 SetHealth((ushort)(this._health - health), updateClient);
         }
 
-        public void SetHealth(ushort health, bool updateClient)
+        public void SetHealth(ushort health, bool updateClient = false)
         {
             this._health = health;
             //if (updateClient)
@@ -348,6 +398,26 @@ namespace Qserver.GameServer.Qpang
             }
         }
 
+        public uint GetExperience()
+        {
+            uint exp = 0;
+            uint playExp = GetPlaytime() / 4;
+
+            if (playExp >= 500)
+                playExp = 500;
+
+            exp += (uint)(35 * this._kills);
+            exp += (uint)(10 * this._deaths);
+            exp += (uint)(10 * this._eventItemPickUps);
+            exp += playExp;
+
+            //if (this._roomSession.GameMode.IsMissionMode())
+            //    exp += this._score;
+            float bonus = this._expRate / 100f;
+            exp += (uint)(exp * bonus);
+            return exp;
+        }
+
         public void Initialize()
         {
             this._isRespawning = false;
@@ -355,6 +425,22 @@ namespace Qserver.GameServer.Qpang
             //this._weaponManager.Initialize();
             //this._skillManager.Initialize();
             //this._entityManager.Initialize();
+        }
+
+        public void AddKill()
+        {
+            this._kills++;
+        }
+
+        public void AddDeath()
+        {
+            this._deaths++;
+        }
+
+        public void AddScore(ushort score)
+        {
+            this._score += score;
+            //this._roomSession.AddPointsForTeam(this._team, score);
         }
 
         public ushort GetDefaultHealth()

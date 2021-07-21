@@ -18,19 +18,19 @@ namespace Qserver.GameServer.Qpang
 
     public class GameModeManager
     {
-        private Dictionary<byte, GameMode> _gameModes = new Dictionary<byte, GameMode>()
+        private Dictionary<GameMode.Mode, GameMode> _gameModes = new Dictionary<GameMode.Mode, GameMode>()
         {
-            { 1, new DeathMatch() },
-            { 2, new TeamDeathMatch() },
-            { 3, new ProtectTheEssence() },
-            { 4, new VIP() },
+            { GameMode.Mode.DM, new DeathMatch() },
+            { GameMode.Mode.TDM, new TeamDeathMatch() },
+            { GameMode.Mode.PTE, new ProtectTheEssence() },
+            { GameMode.Mode.VIP, new VIP() },
 
-            { 5, null }, // Practice
-            { 8, null }, // Public Enemy
-            { 9, null }, // PvE (STO)
+            { GameMode.Mode.PRACTICE, null }, // Practice
+            { GameMode.Mode.PREY, null }, // Public Enemy
+            { GameMode.Mode.PVE, null }, // PvE (STO)
         };
 
-        public GameMode GetGameMode(byte mode)
+        public GameMode GetGameMode(GameMode.Mode mode)
         {
             if (_gameModes.ContainsKey(mode))
                 return _gameModes[mode];

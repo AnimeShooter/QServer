@@ -19,7 +19,7 @@ namespace Qserver.GameServer.Qpang
             this.playerId = playerId;
             this.cmd = cmd;
             this.roomId = room.Id;
-            this.mode = room.Mode;
+            this.mode = (byte)room.Mode;
             this.memberCount = room.PlayerCount;
             this.title = room.Name;
             this.meleeOnly = room.MeleeOnly ? (byte)1 : (byte)0;
@@ -31,7 +31,7 @@ namespace Qserver.GameServer.Qpang
             this.playerId = playerId;
             this.cmd = cmd;
             this.roomId = room.Id;
-            this.mode = room.Mode;
+            this.mode = (byte)room.Mode;
             this.memberCount = room.PlayerCount;
             this.title = "-";
             this.value = val;

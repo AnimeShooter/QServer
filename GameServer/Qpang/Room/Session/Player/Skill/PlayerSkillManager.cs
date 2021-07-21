@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Qserver.GameServer.Qpang
 {
-    public class RoomSkillManager
+    public class PlayerSkillManager
     {
         private RoomSessionPlayer _player;
         private Skill _drawnSkillCard;
@@ -13,7 +13,7 @@ namespace Qserver.GameServer.Qpang
         private uint _skillPoints;
         private object _lock;
 
-        public RoomSkillManager(RoomSessionPlayer player)
+        public PlayerSkillManager(RoomSessionPlayer player)
         {
             this._lock = new object();
             this._player = player;

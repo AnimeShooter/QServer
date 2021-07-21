@@ -61,7 +61,7 @@ namespace Qserver.GameServer.Qpang
 
         }
 
-        public void tick() { }
+        public void Tick() { }
 
         public void SyncPlayer(RoomSessionPlayer player)
         {

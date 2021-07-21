@@ -408,7 +408,7 @@ namespace Qserver.GameServer.Network.Managers
                 pw.WriteWString("Kim Kam Kamel", 30); // todo
                 pw.WriteBytes(new byte[14]);
                 pw.WriteUInt8(room.Map);
-                pw.WriteUInt8(room.Mode);
+                pw.WriteUInt8((byte)room.Mode);
                 pw.WriteUInt8(8); // pw
                 pw.WriteUInt8(room.State);
                 pw.WriteUInt8(1);// room.PlayerCount);

@@ -40,7 +40,7 @@ namespace Qserver.GameServer.Qpang
         private string _password = "";
 
         private byte _map;
-        private byte _mode;
+        private GameMode.Mode _mode;
         private byte _state;
         private byte _playerCount;
         private byte _maxPlayers;
@@ -80,7 +80,7 @@ namespace Qserver.GameServer.Qpang
             get { return this._map; }
             set { this._map = value; }
         }
-        public byte Mode
+        public GameMode.Mode Mode
         {
             get { return this._mode; }
             set { this._mode = value; }
@@ -149,7 +149,7 @@ namespace Qserver.GameServer.Qpang
         }
 
 
-        public Room(uint id, string name, byte map, byte mode, uint host, ushort port)
+        public Room(uint id, string name, byte map, GameMode.Mode mode, uint host, ushort port)
         {
             this._lock = new object();
             this._id = id;

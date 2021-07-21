@@ -117,7 +117,8 @@ namespace Qserver.External.HTTP.Nancy
                 foreach(var c in username)
                 {
                     byte ascii = (byte)c;
-                    illegalCharFound = !((ascii >= 0x30 && ascii <= 39) /* 0-9 */ || (ascii >= 0x41 || ascii <= 0x5A) /* a-z */ || (ascii >= 0x61 || ascii <= 0x7A) /* A-Z */|| ascii == 0x5B /* [ */ || ascii == 0x6D /* ] */ || ascii == 0x7C /* | */);
+                    //illegalCharFound = !((ascii >= 0x30 && ascii <= 39) /* 0-9 */ || (ascii >= 0x41 || ascii <= 0x5A) /* a-z */ || (ascii >= 0x61 || ascii <= 0x7A) /* A-Z */|| ascii == 0x5B /* [ */ || ascii == 0x6D /* ] */ || ascii == 0x7C /* | */);
+                    illegalCharFound = (c == '*' || c == ' ' || c == '"' || c == '\\' || c == '/' || c == '\'' || c == '`' || c == ',' || c == '.' || c == '?' || c == '&' || c == ':' || c == ';' || c == '%' || c == '\x00');
                 }
                 if(illegalCharFound)
                     return Response.AsJson(new APIResponse<string>() { Message = "Error, illegal character in name." });

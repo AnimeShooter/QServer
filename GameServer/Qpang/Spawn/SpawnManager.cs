@@ -64,7 +64,7 @@ namespace Qserver.GameServer.Qpang
             }
         }
 
-        public Spawn getEssenceSpawn(byte map)
+        public Spawn GetEssenceSpawn(byte map)
         {
             lock (this._lock)
             {

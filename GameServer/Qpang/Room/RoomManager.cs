@@ -41,7 +41,7 @@ namespace Qserver.GameServer.Qpang
             }
         }
 
-        public Room Create(string name, byte map, byte mode)
+        public Room Create(string name, byte map, GameMode.Mode mode)
         {
             var id = GetAvailableRoomId();
             //var room = new Room(id, name, map, mode, 0xA4447A93, (ushort)Settings.SERVER_PORT_ROOM);

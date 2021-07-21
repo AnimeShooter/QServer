@@ -355,5 +355,11 @@ namespace Qserver.GameServer.Qpang
 
             Update();
         }
+        public void AddExp(uint count)
+        {
+            this._experience += count;
+
+            Update();
+        }
     }
 }

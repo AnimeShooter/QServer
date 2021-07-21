@@ -6,8 +6,8 @@ namespace Qserver.GameServer.Qpang
 {
     public class RoomManager
     {
-        private static object _lock = new object();
-        private static Dictionary<uint, Room> _rooms;
+        private object _lock = new object();
+        private Dictionary<uint, Room> _rooms;
         private GameModeManager _gameModeManager;
 
         public GameModeManager GameModeManager
@@ -21,9 +21,9 @@ namespace Qserver.GameServer.Qpang
             _rooms = new Dictionary<uint, Room>();
         }
 
-        public static void Tick()
+        public void Tick()
         {
-            lock (_lock)
+            lock (this._lock)
             {
                 foreach (var room in _rooms)
                     room.Value.Tick();
@@ -32,7 +32,7 @@ namespace Qserver.GameServer.Qpang
 
         public List<Room> List()
         {
-            lock (_lock)
+            lock (this._lock)
             {
                 List<Room> rooms = new List<Room>();
                 foreach (var room in _rooms)
@@ -45,8 +45,8 @@ namespace Qserver.GameServer.Qpang
         {
             var id = GetAvailableRoomId();
             //var room = new Room(id, name, map, mode, 0xA4447A93, (ushort)Settings.SERVER_PORT_ROOM);
-            var room = new Room(id, name, map, mode, 0x7F000001, (ushort)Settings.SERVER_PORT_ROOM);
-            lock(_lock)
+            var room = new Room(id, name, map, mode, 0x7F000002, (ushort)Settings.SERVER_PORT_ROOM);
+            lock(this._lock)
             {
                 _rooms.Add(id, room);
             }
@@ -57,7 +57,7 @@ namespace Qserver.GameServer.Qpang
 
         public void Remove(uint id)
         {
-            lock(_lock)
+            lock(this._lock)
             {
                 if (_rooms.ContainsKey(id))
                     _rooms.Remove(id);
@@ -66,7 +66,7 @@ namespace Qserver.GameServer.Qpang
 
         public Room Get(uint id)
         {
-            lock(_lock)
+            lock(this._lock)
             {
                 if (_rooms.ContainsKey(id))
                     return _rooms[id];
@@ -79,7 +79,7 @@ namespace Qserver.GameServer.Qpang
         private uint GetAvailableRoomId()
         {
             uint id = 1;
-            lock (_lock)
+            lock (this._lock)
             {
                 
                 while(true)

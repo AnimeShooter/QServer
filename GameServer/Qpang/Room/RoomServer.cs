@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Text;
 using Qserver.GameServer.Network;
 using Qserver.Util;
@@ -9,48 +10,61 @@ namespace Qserver.GameServer.Qpang
     public class RoomServer
     {
         private object _lockConn;
+        private bool _isRunning;
         private List<uint> _connsToDispose;
-        private Dictionary<uint, ConnServer> _connections;
+        private Dictionary<uint, GameConnection> _connections;
         private GameNetInterface _gameNetInterface;
-        private DateTime _lastDisposal;
-        private DateTime _lastTick;
+        private uint _lastDisposal;
+        private uint _lastTick;
 
         public RoomServer()
         {
             this._lockConn = new object();
-            var port = Settings.SERVER_PORT_ROOM;
+           
             this._gameNetInterface = new GameNetInterface();
-            this._connections = new Dictionary<uint, ConnServer>();
+            this._connections = new Dictionary<uint, GameConnection>();
             this._connsToDispose = new List<uint>();
+            this._isRunning = false;
         }
 
         public void HandleEvent(GameNetEvent e)
         {
-
+            ProcessEvent(e);
         }
 
+        public void Initialize()
+        {
+            this._lastDisposal = Util.Util.Timestamp();
+            this._gameNetInterface = new GameNetInterface(new IPEndPoint(0x7F000001, Settings.SERVER_PORT_ROOM));
+
+        }
+        public void Run()
+        {
+            // TODO
+        }
         public void Tick()
         {
             // TODO
         }
 
-        public void CreateConnection(uint playerId, ConnServer conn)
+        public bool CreateConnection(uint playerId, GameConnection conn)
         {
             lock(this._lockConn)
             {
                 var player = Game.Instance.GetOnlinePlayer(playerId);
                 if (player == null)
-                    return;
+                    return false;
 
                 conn.Player = player;
                 this._connections.Add(playerId, conn);
 
                 bool alreadyqueuedDisposal = this._connsToDispose.Contains(playerId);
                 if (alreadyqueuedDisposal)
-                    return;
+                    return false;
 
                 this._connsToDispose.Add(playerId);
             }
+            return true;
         }
 
         public void ProcessEvent(GameNetEvent e)
@@ -80,10 +94,5 @@ namespace Qserver.GameServer.Qpang
                 var conn = this._connections[playerId];
             }
         }
-
-
-
-
-
     }
 }

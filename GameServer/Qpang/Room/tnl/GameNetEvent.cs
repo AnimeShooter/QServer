@@ -51,7 +51,7 @@ namespace Qserver.GameServer.Qpang
             //Game.Instance.RoomServer.HandleEvent();
         }
 
-        public void Handle()
+        public void Handle(GameConnection conn, Player player)
         {
             Log.Message(LogType.ERROR, $"GameNetEvent Unhandeled {Id}!");
         }

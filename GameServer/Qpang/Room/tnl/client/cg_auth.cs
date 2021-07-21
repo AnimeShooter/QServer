@@ -63,5 +63,16 @@ namespace Qserver.GameServer.Qpang
             bitStream.Read(out unk10);
         }
         public override void Process(EventConnection ps) { }
+
+        //public override void Handle(GameConnection conn, Player player)
+        //{
+        //    if (cmd != (byte)CMD.REQUEST)
+        //        return;
+
+        //    if (Game.Instance.RoomServer.CreateConnection(playerId, base.GameConnection))
+        //        conn.PostNetEvent(new CGAuth(playerId, (uint)CMD.AUTHENTICATED));
+        //    else
+        //        conn.PostNetEvent(new CGAuth(playerId, (uint)CMD.FAIL));
+        //}
     }
 }

@@ -13,7 +13,7 @@ namespace Qserver.GameServer.Qpang
 
         }
 
-        public GCRoom(uint playerId, uint cmd, Room room) : base(GameNetId.CG_ROOM, GuaranteeType.Guaranteed, EventDirection.DirAny)
+        public GCRoom(uint playerId, uint cmd, Room room) : base(GameNetId.GC_ROOM, GuaranteeType.Guaranteed, EventDirection.DirAny)
         {
             this.zero = 0;
             this.playerId = playerId;
@@ -25,7 +25,7 @@ namespace Qserver.GameServer.Qpang
             this.meleeOnly = room.MeleeOnly ? (byte)1 : (byte)0;
             this.skillsEnabled = room.SkillsEnabled ? (byte)1 : (byte)0;
         }
-        public GCRoom(uint playerId, uint cmd, uint val, Room room) : base(GameNetId.CG_ROOM, GuaranteeType.Guaranteed, EventDirection.DirAny)
+        public GCRoom(uint playerId, uint cmd, uint val, Room room) : base(GameNetId.GC_ROOM, GuaranteeType.Guaranteed, EventDirection.DirAny)
         {
             this.zero = 0;
             this.playerId = playerId;

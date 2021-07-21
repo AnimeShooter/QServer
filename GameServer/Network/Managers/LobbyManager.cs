@@ -119,7 +119,7 @@ namespace Qserver.GameServer.Network.Managers
             return pw;
         }
 
-        public PacketWriter UpdateAcount(Player player)
+        public PacketWriter UpdateAccount(Player player)
         {
             PacketWriter pw = new PacketWriter(Opcode.LOBBY_UPDATE_ACCOUNT);
             pw.WriteUInt32(player.PlayerId);

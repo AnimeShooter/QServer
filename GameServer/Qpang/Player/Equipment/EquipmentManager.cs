@@ -314,7 +314,7 @@ namespace Qserver.GameServer.Qpang
             }
         }
 
-        public uint GetBaseHealth()
+        public ushort GetBaseHealth()
         {
             lock(this._lock)
             {
@@ -336,7 +336,7 @@ namespace Qserver.GameServer.Qpang
             }
         }
 
-        public uint GetBonusHealth()
+        public ushort GetBonusHealth()
         {
             lock (this._lock)
             {

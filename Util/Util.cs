@@ -59,5 +59,14 @@ namespace Qserver.Util
             return token;
         }
 
+        public static uint Timestamp(DateTime? time = null)
+        {
+            DateTime target = DateTime.UtcNow;
+            if (time.HasValue)
+                target = time.Value;
+
+            return (uint)(target.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
+        }
+
     }
 }

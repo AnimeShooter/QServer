@@ -37,6 +37,7 @@ namespace Qserver.GameServer.Qpang
             this._lastDisposal = Util.Util.Timestamp();
             this._gameNetInterface = new GameNetInterface(new IPEndPoint(0x7F000001, Settings.SERVER_PORT_ROOM));
 
+
         }
         public void Run()
         {

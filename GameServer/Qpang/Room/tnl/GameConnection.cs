@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 using Qserver.Util;
+using TNL.Entities;
 
 namespace Qserver.GameServer.Qpang
 {
-    public class GameConnection : TNL.Entities.EventConnection
+    public class GameConnection : EventConnection
     {
         private Player _player;
 
@@ -22,7 +23,7 @@ namespace Qserver.GameServer.Qpang
             SetIsConnectionToClient();
         }
 
-        public void OnConnectionEstablished()
+        public override void OnConnectionEstablished()
         {
             SetIsConnectionToClient();
         }
@@ -64,10 +65,39 @@ namespace Qserver.GameServer.Qpang
             //UpdateRoom(room, room.PointsGame ? 4 : 20, room.PointsGame ? room.ScorePoints : room.ScoreTime);
         }
 
-        public void PostNetEvent(GameNetEvent e)
+        public void UpdateRoom(Room room, uint cmd, uint val)
         {
             // TODO
         }
 
+        public void StartLoading(Room room, RoomPlayer player)
+        {
+            // TODO
+        }
+
+        public void StartSpectating(Room room, RoomPlayer roomPlayer)
+        {
+            // TODO
+        }
+
+        public void StartGameButNotReady()
+        {
+            // TODO
+        }
+
+        public void AddSession(RoomSessionPlayer session)
+        {
+            // TODO
+        }
+
+        public void SpawnEssence(Spawn spawn)
+        {
+            // TODO
+        }
+
+        public void DropEssence(Spawn spawn)
+        {
+
+        }
     }
 }

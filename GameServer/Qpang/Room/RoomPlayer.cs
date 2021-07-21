@@ -17,7 +17,6 @@ namespace Qserver.GameServer.Qpang
         public byte Team
         {
             get { return this._team; }
-            set { this._team = value; }
         }
         public bool Ready
         {
@@ -45,6 +44,7 @@ namespace Qserver.GameServer.Qpang
         public RoomSessionPlayer RoomSessionPlayer
         {
             get { return this._roomSessionPlayer; }
+            set { this._roomSessionPlayer = value; }
         }
 
         public RoomPlayer(GameConnection conn, Room room)
@@ -65,6 +65,18 @@ namespace Qserver.GameServer.Qpang
         public void OnStart()
         {
             this._conn.Player.EquipmentManager.Save();
+        }
+
+        public void SetTeam(byte team)
+        {
+            this._team = team;
+            //this._room.BroadcastWaiting<GCPlayerChange>(this._conn.Player, 2, team);
+        }
+
+        public void SetReady(bool ready)
+        {
+            this._isReady = ready;
+            //this._room.BroadcastWaiting<GCReady>(this._conn.Player.PlayerId, ready);
         }
     }
 }

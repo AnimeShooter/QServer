@@ -170,7 +170,7 @@ namespace Qserver.GameServer.Qpang
             this._scoreTime = 10;
             this._isPlaying = false;
 
-            this._modeManager = Game.Instance.RoomManager.GameModeManager.GetGameMode(mode);
+            this._modeManager = Game.Instance.RoomManager.GameModeManager.Get(mode);
 
             this._players = new Dictionary<uint, RoomPlayer>();
 
@@ -252,6 +252,46 @@ namespace Qserver.GameServer.Qpang
                     return p.Key;
             }
             return 0;
+        }
+
+        public void SetMode(GameMode.Mode mode)
+        {
+            this._mode = mode;
+            this._modeManager = Game.Instance.RoomManager.GameModeManager.Get(mode);
+            this._modeManager.OnApply(this);
+        }
+
+        public void BalancePlayers()
+        {
+            lock(this._lock)
+            {
+                foreach(var p in this._players)
+                {
+                    if (!this._modeManager.IsTeamMode())
+                        p.Value.SetTeam(0);
+                    else
+                    {
+                        if (p.Value.Team != 0)
+                            continue;
+                        p.Value.SetTeam(GetAvailableTeam());
+                    }
+                }
+            }
+        }
+
+        public byte GetAvailableTeam()
+        {
+            if (!this._modeManager.IsTeamMode())
+                return 0;
+
+            int yellowCount = 0;
+
+            lock (this._lock)
+                foreach (var p in this._players)
+                    if (p.Value.Team == 2)
+                        yellowCount++;
+
+            return yellowCount * 2 >= this._players.Count ? (byte)1 : (byte)2;
         }
     }
 }

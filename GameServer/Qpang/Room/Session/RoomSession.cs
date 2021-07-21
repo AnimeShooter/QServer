@@ -46,6 +46,11 @@ namespace Qserver.GameServer.Qpang
         private RoomSessionPlayer _nexYellowVIP;
         private uint _yellowVIPSetTime;
 
+        public GameMode GameMode
+        {
+            get { return this._gameMode; }
+        }
+
         public RoomSession(Room room, GameMode mode)
         {
             this._lockPlayers = new object();

@@ -139,6 +139,11 @@ namespace Qserver.GameServer.Qpang
             get { return this._entityManager; }
         }
 
+        public RoomSession RoomSession
+        {
+            get { return this._roomSession; }
+        }
+
         public RoomSessionPlayer(GameConnection conn, RoomSession roomSession, byte team)
         {
             this._conn = conn;
@@ -437,7 +442,7 @@ namespace Qserver.GameServer.Qpang
             this._deaths++;
         }
 
-        public void AddScore(ushort score)
+        public void AddScore(ushort score = 1)
         {
             this._score += score;
             //this._roomSession.AddPointsForTeam(this._team, score);

@@ -30,7 +30,7 @@ namespace Qserver.GameServer.Qpang
             { GameMode.Mode.PVE, null }, // PvE (STO)
         };
 
-        public GameMode GetGameMode(GameMode.Mode mode)
+        public GameMode Get(GameMode.Mode mode)
         {
             if (_gameModes.ContainsKey(mode))
                 return _gameModes[mode];

@@ -14,10 +14,10 @@ namespace Qserver.GameServer.Qpang
             SetAllowConnections(true);
         }
 
-        public override void ProcessPacket(IPEndPoint address, BitStream bitStream)
-        {
-            ProcessPacket(address, bitStream);
-        }
+        //public void ProcessPacket(IPEndPoint address, BitStream bitStream)
+        //{
+        //    ProcessPacket(address, bitStream);
+        //}
 
         public void HandleInfoPacket(IPEndPoint address, PacketType packetType, BitStream bitStream)
         {

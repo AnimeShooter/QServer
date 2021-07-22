@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Qserver.GameServer.Network;
+﻿using System.Collections.Generic;
 
 namespace Qserver.GameServer.Qpang
 {
@@ -188,14 +185,14 @@ namespace Qserver.GameServer.Qpang
                 Id = this._id,
                 Name = this._name,
                 Password = this._password != "",
-                Map =  this._map,
+                Map = this._map,
                 Mode = ((GameModeName)this._mode).ToString(),
-                PlayerCount =  this._playerCount,
+                PlayerCount = this._playerCount,
                 MaxPlayers = this._maxPlayers,
                 LevelLimited = this._isLevelLimited,
                 TeamSorting = this._isTeamSorting,
-                SkillsEnabled  = this._isSkillsEnabled,
-                MeleeOnly =  this._isMeleeOnly,
+                SkillsEnabled = this._isSkillsEnabled,
+                MeleeOnly = this._isMeleeOnly,
                 ScorePoints = this._scorePoints,
                 ScoreTime = this._scoreTime,
                 PointsGame = this._isPointsGame,
@@ -225,7 +222,7 @@ namespace Qserver.GameServer.Qpang
 
         public void RemovePlayer(uint id)
         {
-            lock(this._players)
+            lock (this._players)
             {
                 if (this._players.ContainsKey(id))
                     this._players.Remove(id);
@@ -242,12 +239,126 @@ namespace Qserver.GameServer.Qpang
 
         public void Tick()
         {
+            if (this._isPlaying && this._roomSession != null)
+                this._roomSession.Tick();
+        }
 
+        public void Start()
+        {
+            if (this._isPlaying)
+                return;
+
+            this._roomSession = new RoomSession(this, this._modeManager);
+            this._roomSession.Initialize(); // TODO
+
+            this._isPlaying = true;
+            this._state = 64;
+
+            lock (this._lock)
+            {
+                foreach (var p in this._players)
+                {
+                    if (p.Value.Ready || this._masterPlayerId == p.Key)
+                    {
+                        p.Value.SetReady(true);
+                        p.Value.Playing = true;
+                        p.Value.Conn.StartLoading(this, p.Value);
+                        p.Value.OnStart();
+                    }
+                    else
+                        p.Value.Conn.StartGameButNotReady();
+                }
+            }
+        }
+
+        public void Close()
+        {
+            lock (this._lock)
+            {
+                foreach (var p in this._players)
+                    p.Value.Conn.Disconnect("Room closed");
+
+                Game.Instance.RoomManager.Remove(this._id);
+            }
+        }
+
+        public void Update(uint cmd, uint val)
+        {
+            lock (this._lock)
+            {
+                foreach (var p in this._players)
+                    if (!p.Value.Playing)
+                        p.Value.Conn.PostNetEvent(new GCRoom(p.Key, cmd, this));
+            }
+        }
+
+        public void Finish()
+        {
+            this._roomSession.Clear();
+            this._roomSession = null;
+
+            this._state = 2;
+            this._isPlaying = false;
+
+            UnreadyAll();
+        }
+
+        public void UnreadyAll(bool notify = false)
+        {
+            lock (this._lock)
+            {
+                foreach (var p in this._players)
+                {
+                    if (p.Value.Ready)
+                    {
+                        p.Value.SetReady(false);
+                        if (notify)
+                            p.Value.Player.Broadcast("Your ready status has been remove because the room rules got updated.");
+                    }
+
+                    if (p.Value.Ready)
+                    {
+                        p.Value.Playing = false;
+                        p.Value.Spectating = false;
+                    }
+                }
+            }
+        }
+
+        public bool CanStartInTeam(byte team)
+        {
+            if (this._roomSession == null)
+                return true;
+
+            if (!this._roomSession.GameMode.IsTeamMode())
+                return true;
+
+            var bluePlayerCount = this._roomSession.GetPlayersForTeam(1);
+            var yellowPlayerCount = this._roomSession.GetPlayersForTeam(2);
+
+            if (team == 1)
+            {
+                if (bluePlayerCount.Count == 0)
+                    return true;
+
+                if (bluePlayerCount.Count - 1 >= yellowPlayerCount.Count)
+                    return false;
+            }
+            else
+            {
+                if (yellowPlayerCount.Count == 0)
+                    return true;
+
+                if (yellowPlayerCount.Count - 1 >= bluePlayerCount.Count)
+                    return false;
+            }
+
+            return true;
         }
 
         public uint FindNewMaster()
         {
-            lock(this._lock)
+            lock (this._lock)
             {
                 if (this._players.Count == 0)
                     return 0;
@@ -264,13 +375,78 @@ namespace Qserver.GameServer.Qpang
             this._mode = mode;
             this._modeManager = Game.Instance.RoomManager.GameModeManager.Get(mode);
             this._modeManager.OnApply(this);
+
+            UnreadyAll(true);
+            Update((uint)CGRoom.Command.MODE_ROOM, (uint)mode);
+
+            // this resets after chnage of mode
+
+            if (this._isPointsGame)
+                Update((uint)CGRoom.Command.SET_POINTS, this._scorePoints);
+            else
+                Update((uint)CGRoom.Command.SET_TIME, this._scoreTime);
+
         }
+
+        public void SetMap(byte map)
+        {
+            if (map > 12)
+                return;
+
+            this._map = map;
+            Update((uint)CGRoom.Command.MAP_ROOM, map);
+        }
+
+        public void SetMaxPlayers(byte maxPlayers)
+        {
+            this._maxPlayers = maxPlayers;
+            Update((uint)CGRoom.Command.PLAYERS_ROOM, maxPlayers);
+        }
+        public void SetScorePoints(uint points)
+        {
+            this._scorePoints = points;
+            Update((uint)CGRoom.Command.SET_POINTS, points);
+        }
+        public void SetScoreTime(uint time)
+        {
+            this._scoreTime = time;
+            Update((uint)CGRoom.Command.SET_TIME, time);
+        }
+        public void SetPassword(string password)
+        {
+            if (password.Length > 4)
+                password = password.Substring(0, 4);
+
+            this._password = password;
+            Update((uint)CGRoom.Command.PASS_ROOM, (uint)0);
+        }
+        public void SetLevelLimited(bool levelLimited)
+        {
+            this._isLevelLimited = levelLimited;
+            Update((uint)CGRoom.Command.LEVEL_ROOM, levelLimited ? (uint)1 : (uint)0);
+        }
+        public void SetTeamSorting(bool teamSorting)
+        {
+            this._isTeamSorting = teamSorting;
+            Update((uint)CGRoom.Command.TEAM_ROOM, teamSorting ? (uint)1 : (uint)0);
+        }
+        public void SetSkillsEnabled(bool skillEnabled)
+        {
+            this._isSkillsEnabled = skillEnabled;
+            Update((uint)CGRoom.Command.TOGGLE_SKILL, skillEnabled ? (uint)1 : (uint)0);
+        }
+        public void SetMeleeOnly(bool meleeOnly)
+        {
+            this._isMeleeOnly = meleeOnly;
+            Update((uint)CGRoom.Command.TOGGLE_SKILL, meleeOnly ? (uint)1 : (uint)0);
+        }
+
 
         public void BalancePlayers()
         {
-            lock(this._lock)
+            lock (this._lock)
             {
-                foreach(var p in this._players)
+                foreach (var p in this._players)
                 {
                     if (!this._modeManager.IsTeamMode())
                         p.Value.SetTeam(0);
@@ -297,6 +473,21 @@ namespace Qserver.GameServer.Qpang
                         yellowCount++;
 
             return yellowCount * 2 >= this._players.Count ? (byte)1 : (byte)2;
+        }
+
+        public bool IsTeamAvailable(byte team)
+        {
+            
+            if (team != 1 && team != 2)
+                return false;
+
+            int teamCount = 0;
+            lock (this._lock)
+                foreach (var p in this._players)
+                    if (p.Value.Team == team)
+                        teamCount++;
+
+            return teamCount * 2 < this._maxPlayers;
         }
     }
 }

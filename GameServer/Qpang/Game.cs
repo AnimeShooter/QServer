@@ -210,6 +210,8 @@ namespace Qserver.GameServer.Qpang
             this._craneManager = new CraneManager();
             this._leaderboard = new Leaderboard(); // TODO
             this._roomServer = new RoomServer(); // TODO
+
+            EventRegister.RegisterTNLEvents();
         }
 
         public void Tick()

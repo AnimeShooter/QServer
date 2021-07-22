@@ -10,7 +10,7 @@ namespace Qserver.GameServer.Qpang
     {
         public GCRoom() : base(GameNetId.GC_ROOM, GuaranteeType.Guaranteed, EventDirection.DirAny)
         {
-
+            
         }
 
         public GCRoom(uint playerId, uint cmd, Room room) : base(GameNetId.GC_ROOM, GuaranteeType.Guaranteed, EventDirection.DirAny)
@@ -90,5 +90,7 @@ namespace Qserver.GameServer.Qpang
         private byte _161 = 0;
         private byte skillsEnabled = 0;
         private byte meleeOnly = 0;  // 166
+
+        
     }
 }

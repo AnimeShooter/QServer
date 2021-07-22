@@ -111,6 +111,10 @@ namespace Qserver.GameServer
                     Log.Message(LogType.NORMAL, $"LobbyServer   listening on {Settings.SERVER_IP}:{Settings.SERVER_PORT_LOBBY}");
                 if (startSquareServer)
                     Log.Message(LogType.NORMAL, $"SquareServer  listening on {Settings.SERVER_IP}:{Settings.SERVER_PORT_SQUARE}");
+
+                new Thread(new ThreadStart(game.Tick)).Start();
+                new Thread(new ThreadStart(game.RoomServer.Run)).Start();
+
             }
 
             // Starting websocket

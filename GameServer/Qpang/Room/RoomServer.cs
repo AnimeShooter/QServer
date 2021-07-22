@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Diagnostics;
 using System.Text;
 using Qserver.GameServer.Network;
 using Qserver.Util;
 using TNL.Entities;
+using System.Threading;
 
 namespace Qserver.GameServer.Qpang
 {
@@ -25,7 +27,9 @@ namespace Qserver.GameServer.Qpang
             this._connsToDispose = new List<uint>();
             this._isRunning = false;
             this._lastDisposal = Util.Util.Timestamp();
-            this._gameNetInterface = new GameNetInterface(new IPEndPoint(0x7F000001, Settings.SERVER_PORT_ROOM));
+            this._gameNetInterface = new GameNetInterface(new IPEndPoint(0x0100007F, Settings.SERVER_PORT_ROOM)); // No one cares about IP?
+            //this._gameNetInterface = new GameNetInterface(new IPEndPoint(0x7F000001, Settings.SERVER_PORT_ROOM));
+            //new Thread(new ThreadStart(Run)).Start();
         }
 
         public void HandleEvent(GameNetEvent e)

@@ -45,10 +45,10 @@ namespace Qserver.GameServer.Qpang
 
         }
 
-        public void Post<T>(EventConnection ps)
+        public void Post(EventConnection ps)
         {
             this.GameConnection = (GameConnection)ps;
-            //Game.Instance.RoomServer.HandleEvent();
+            Game.Instance.RoomServer.HandleEvent(this);
         }
 
         public virtual void Handle(GameConnection conn, Player player)

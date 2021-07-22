@@ -24,6 +24,8 @@ namespace Qserver.GameServer.Qpang
             this._connections = new Dictionary<uint, GameConnection>();
             this._connsToDispose = new List<uint>();
             this._isRunning = false;
+            this._lastDisposal = Util.Util.Timestamp();
+            this._gameNetInterface = new GameNetInterface(new IPEndPoint(0x7F000001, Settings.SERVER_PORT_ROOM));
         }
 
         public void HandleEvent(GameNetEvent e)
@@ -31,11 +33,6 @@ namespace Qserver.GameServer.Qpang
             ProcessEvent(e);
         }
 
-        public void Initialize()
-        {
-            this._lastDisposal = Util.Util.Timestamp();
-            this._gameNetInterface = new GameNetInterface(new IPEndPoint(0x7F000001, Settings.SERVER_PORT_ROOM));
-        }
         public void Run()
         {
             this._isRunning = true;

@@ -46,6 +46,10 @@ namespace Qserver.GameServer.Qpang
             get { return this._roomSessionPlayer; }
             set { this._roomSessionPlayer = value; }
         }
+        public Player Player
+        {
+            get { return this._conn.Player; }
+        }
 
         public RoomPlayer(GameConnection conn, Room room)
         {

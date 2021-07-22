@@ -41,15 +41,16 @@ namespace Qserver.GameServer.Qpang
             }
         }
 
-        public Room Create(string name, byte map, GameMode.Mode mode)
+        public Room Create(string name, byte map, GameMode.Mode mode, uint host = 0)
         {
             var id = GetAvailableRoomId();
-            //var room = new Room(id, name, map, mode, 0xA4447A93, (ushort)Settings.SERVER_PORT_ROOM);
-            var room = new Room(id, name, map, mode, 0x7F000002, (ushort)Settings.SERVER_PORT_ROOM);
+            Room room;
+            if (host == 0)
+                room = new Room(id, name, map, mode, host, (ushort)Settings.SERVER_PORT_ROOM); // Swap IP?
+            else
+                room = new Room(id, name, map, mode, 0x7F000001, (ushort)Settings.SERVER_PORT_ROOM); // Swap IP?
             lock(this._lock)
-            {
                 _rooms.Add(id, room);
-            }
 
             return room;
                 

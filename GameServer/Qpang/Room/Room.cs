@@ -75,6 +75,10 @@ namespace Qserver.GameServer.Qpang
         {
             get { return this._name; }
         }
+        public string Password
+        {
+            get { return this._password; }
+        }
         public byte Map
         {
             get { return this._map; }
@@ -137,6 +141,7 @@ namespace Qserver.GameServer.Qpang
         public bool EventRoom
         {
             get { return this._isEventRoom; }
+            set { this._isEventRoom = value; }
         }
 
         public uint ScorePoints
@@ -198,22 +203,22 @@ namespace Qserver.GameServer.Qpang
             };
         }
 
-        public void AddPlayer(ConnServer conn)
+        public void AddPlayer(GameConnection conn)
         {
             if (conn == null || conn.Player == null)
                 return;
 
-            //var roomPlayer = new RoomPlayer(conn, this);
-            //conn.Player.RoomPlayer = roomPlayer;
+            var roomPlayer = new RoomPlayer(conn, this);
+            conn.Player.RoomPlayer = roomPlayer;
 
-            //if (this._players.Count == 0)
-            //    this._masterPlayerId = roomPlayer.Player.PlayerId;
+            if (this._players.Count == 0)
+                this._masterPlayerId = roomPlayer.Player.PlayerId;
 
-            ////roomPlayer.setteam
-            //lock(this._lock)
-            //    this._players.Add(conn.Player.PlayerId, roomPlayer);
+            roomPlayer.SetTeam(GetAvailableTeam());
+            lock (this._lock)
+                this._players.Add(conn.Player.PlayerId, roomPlayer);
 
-            //conn.EnterRoom(this);
+            conn.EnterRoom(this);
             //SyncPlayers(roomPlayer);
 
         }

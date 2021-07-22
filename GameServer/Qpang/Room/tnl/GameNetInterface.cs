@@ -9,19 +9,19 @@ namespace Qserver.GameServer.Qpang
 {
     public class GameNetInterface : NetInterface
     {
-        public GameNetInterface(IPEndPoint a) : base(a.Port)
+        public GameNetInterface(int port) : base(port)
         {
             SetAllowConnections(true);
         }
 
-        //public void ProcessPacket(IPEndPoint address, BitStream bitStream)
-        //{
-        //    ProcessPacket(address, bitStream);
-        //}
-
-        public void HandleInfoPacket(IPEndPoint address, PacketType packetType, BitStream bitStream)
+        public override void ProcessPacket(IPEndPoint sourceAddress, BitStream stream)
         {
-            switch(packetType)
+            base.ProcessPacket(sourceAddress, stream);
+        }
+
+        public override void HandleInfoPacket(IPEndPoint address, byte packetType, BitStream bitStream)
+        {
+            switch((PacketType)packetType)
             {
                 case PacketType.FirstValidInfoPacketId:
                     PacketStream pingResponse = new PacketStream();

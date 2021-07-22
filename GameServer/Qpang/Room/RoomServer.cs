@@ -27,9 +27,7 @@ namespace Qserver.GameServer.Qpang
             this._connsToDispose = new List<uint>();
             this._isRunning = false;
             this._lastDisposal = Util.Util.Timestamp();
-            this._gameNetInterface = new GameNetInterface(new IPEndPoint(0x0100007F, Settings.SERVER_PORT_ROOM)); // No one cares about IP?
-            //this._gameNetInterface = new GameNetInterface(new IPEndPoint(0x7F000001, Settings.SERVER_PORT_ROOM));
-            //new Thread(new ThreadStart(Run)).Start();
+            this._gameNetInterface = new GameNetInterface(Settings.SERVER_PORT_ROOM); // No one cares about IP?
         }
 
         public void HandleEvent(GameNetEvent e)

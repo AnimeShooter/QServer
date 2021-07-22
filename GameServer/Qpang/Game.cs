@@ -201,7 +201,7 @@ namespace Qserver.GameServer.Qpang
             this._chatManager = new ChatManager(); // TODO: commands
             this._roomManager = new RoomManager();
             this._roomManager.Create("Vet, Cool en Fun!", 4, GameMode.Mode.TDM, 0x0100007F);
-            this._roomManager.Create("Kim kAm qPong?", 8, GameMode.Mode.PTE, 0x7F000001);
+            this._roomManager.Create("Kim kAm qPong?", 8, GameMode.Mode.PTE, 0x0100007F);
 
             this._weaponManager = new WeaponManager();
             this._spawnManager = new SpawnManager(); // TODO, DB

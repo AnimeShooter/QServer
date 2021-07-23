@@ -47,6 +47,7 @@ namespace Qserver.GameServer.Qpang
                         this._gameNetInterface.ProcessConnections();
                         this._gameNetInterface.CheckIncomingPackets();
                         Tick();
+                        Thread.Sleep(1); // dont fry the CPU
                     }catch(Exception ex)
                     {
                         Log.Message(LogType.ERROR, ex.ToString());

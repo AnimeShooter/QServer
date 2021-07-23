@@ -14,22 +14,6 @@ namespace Qserver.GameServer.Qpang
             SetAllowConnections(true);
         }
 
-        public static void RegisterNetClassReps()
-        {
-            CGArrangedComplete.RegisterNetClassReps();
-            CGAuth.RegisterNetClassReps();
-            CGRoom.RegisterNetClassReps();
-            CGRoomInfo.RegisterNetClassReps();
-
-            // shit switches here bro
-            GCArrangedAccept.RegisterNetClassReps();
-            GCArrangedConn.RegisterNetClassReps();
-            GCCard.RegisterNetClassReps();
-            GCRoom.RegisterNetClassReps();
-            GCRoomInfo.RegisterNetClassReps();
-
-        }
-
         public override void ProcessPacket(IPEndPoint sourceAddress, BitStream stream)
         {
             base.ProcessPacket(sourceAddress, stream);

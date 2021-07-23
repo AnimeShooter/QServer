@@ -19,9 +19,22 @@ namespace Qserver.GameServer.Qpang
             set { this._player = value; }
         }
 
-        public static void RegisterNetClassReps()
+        public new static void RegisterNetClassReps()
         {
             ImplementNetConnection(out _dynClassRep, out _connRep, true);
+
+            CGArrangedComplete.RegisterNetClassReps();
+            CGAuth.RegisterNetClassReps();
+            CGRoom.RegisterNetClassReps();
+            CGRoomInfo.RegisterNetClassReps();
+
+            // shit switches here bro
+            GCArrangedAccept.RegisterNetClassReps();
+            GCArrangedConn.RegisterNetClassReps();
+            GCCard.RegisterNetClassReps();
+            GCRoom.RegisterNetClassReps();
+            GCRoomInfo.RegisterNetClassReps();
+
         }
 
         public GameConnection()
@@ -29,6 +42,11 @@ namespace Qserver.GameServer.Qpang
             SetPingTimeouts(5000, 10);
             SetFixedRateParameters(50, 50, 1000, 1000);
             SetIsConnectionToClient();
+        }
+
+        public override NetClassRep GetClassRep()
+        {
+            return _dynClassRep;
         }
 
         public override void OnConnectionEstablished()

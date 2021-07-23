@@ -195,7 +195,7 @@ namespace Qserver.GameServer.Qpang
             Instance = this;
 
             // init TNL events
-            GameNetInterface.RegisterNetClassReps();
+            GameConnection.RegisterNetClassReps();
             ///EventRegister.RegisterTNLEvents();
 
             // init managers

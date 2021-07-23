@@ -3,13 +3,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TNL.Data;
 using TNL.Entities;
+using TNL.Types;
 using TNL.Utils;
 
 namespace Qserver.GameServer.Qpang
 {
     public class GCCard : GameNetEvent
     {
+        private static NetClassRepInstance<GCCard> _dynClassRep;
+
+        public override NetClassRep GetClassRep()
+        {
+            return _dynClassRep;
+        }
+
+        public static void RegisterNetClassReps()
+        {
+            ImplementNetEvent(out _dynClassRep, "GCCard", NetClassMask.NetClassGroupGameMask, 0);
+        }
+
         public byte cmd;
         public uint uid;
         public uint targetUid;

@@ -194,6 +194,10 @@ namespace Qserver.GameServer.Qpang
             // share
             Instance = this;
 
+            // init TNL events
+            GameNetInterface.RegisterNetClassReps();
+            ///EventRegister.RegisterTNLEvents();
+
             // init managers
             this._channelManager = new ChannelManager();
             this._shopManager = new ShopManager();
@@ -210,8 +214,6 @@ namespace Qserver.GameServer.Qpang
             this._craneManager = new CraneManager();
             this._leaderboard = new Leaderboard(); // TODO
             this._roomServer = new RoomServer(); // TODO
-
-            EventRegister.RegisterTNLEvents();
         }
 
         public void Tick()

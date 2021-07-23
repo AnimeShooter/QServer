@@ -5,11 +5,25 @@ using System.Text;
 using System.Threading.Tasks;
 using TNL.Entities;
 using TNL.Utils;
+using TNL.Data;
+using TNL.Types;
 
 namespace Qserver.GameServer.Qpang
 {
     public class CGAuth : GameNetEvent
     {
+        private static NetClassRepInstance<CGAuth> _dynClassRep;
+
+        public override NetClassRep GetClassRep()
+        {
+            return _dynClassRep;
+        }
+
+        public static void RegisterNetClassReps()
+        {
+            ImplementNetEvent(out _dynClassRep, "CGAuth", NetClassMask.NetClassGroupGameMask, 0);
+        }
+
         public uint PlayerId;
         public uint Cmd;
         public byte unk03 = 3;

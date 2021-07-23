@@ -3,17 +3,25 @@ using System.Collections.Generic;
 using System.Text;
 using Qserver.Util;
 using TNL.Entities;
+using TNL.Types;
 
 namespace Qserver.GameServer.Qpang
 {
     public class GameConnection : EventConnection
     {
         private Player _player;
+        private static NetClassRepInstance<GameConnection> _dynClassRep;
+        private static NetConnectionRep _connRep;
 
         public Player Player
         {
             get { return this._player; }
             set { this._player = value; }
+        }
+
+        public static void RegisterNetClassReps()
+        {
+            ImplementNetConnection(out _dynClassRep, out _connRep, true);
         }
 
         public GameConnection()

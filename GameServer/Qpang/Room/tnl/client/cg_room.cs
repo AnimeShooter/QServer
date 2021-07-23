@@ -4,12 +4,28 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TNL.Entities;
+using TNL.Types;
 using TNL.Utils;
+using TNL.Network;
+using TNL.Interfaces;
+using TNL.Data;
 
 namespace Qserver.GameServer.Qpang
 {
     public class CGRoom : GameNetEvent
     {
+        private static NetClassRepInstance<CGRoom> _dynClassRep;
+
+        public override NetClassRep GetClassRep()
+        {
+            return _dynClassRep;
+        }
+
+        public static void RegisterNetClassReps()
+        {
+            ImplementNetEvent(out _dynClassRep, "CGRoom", NetClassMask.NetClassGroupGameMask, 0);
+        }
+
         public enum Command : uint
         {
             MAP_ROOM = 1,

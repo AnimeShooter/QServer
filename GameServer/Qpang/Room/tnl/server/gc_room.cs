@@ -1,13 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using TNL.Data;
 using TNL.Entities;
+using TNL.Types;
 using TNL.Utils;
 
 namespace Qserver.GameServer.Qpang
 {
     public class GCRoom : GameNetEvent
     {
+        private static NetClassRepInstance<GCRoom> _dynClassRep;
+
+        public override NetClassRep GetClassRep()
+        {
+            return _dynClassRep;
+        }
+
+        public static void RegisterNetClassReps()
+        {
+            ImplementNetEvent(out _dynClassRep, "GCRoom", NetClassMask.NetClassGroupGameMask, 0);
+        }
+
         public GCRoom() : base(GameNetId.GC_ROOM, GuaranteeType.Guaranteed, EventDirection.DirAny)
         {
             

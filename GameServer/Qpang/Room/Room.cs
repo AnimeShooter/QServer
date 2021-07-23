@@ -150,6 +150,10 @@ namespace Qserver.GameServer.Qpang
             get { return this._scoreTime; }
         }
 
+        public uint MasterId
+        {
+            get { return this._masterPlayerId; }
+        }
 
         public Room(uint id, string name, byte map, GameMode.Mode mode, uint host, ushort port)
         {

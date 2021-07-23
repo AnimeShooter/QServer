@@ -114,7 +114,7 @@ namespace Qserver.GameServer
 
                 new Thread(new ThreadStart(game.Tick)).Start();
                 new Thread(new ThreadStart(game.RoomServer.Run)).Start();
-
+                Log.Message(LogType.NORMAL, $"RoomServer    listening on {Settings.SERVER_IP}:{Settings.SERVER_PORT_ROOM}");
             }
 
             // Starting websocket

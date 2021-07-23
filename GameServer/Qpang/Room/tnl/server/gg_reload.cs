@@ -10,9 +10,9 @@ using TNL.Types;
 
 namespace Qserver.GameServer.Qpang
 {
-    public class P_CSRttResponse : GameNetEvent
+    public class GGReload : GameNetEvent
     {
-        private static NetClassRepInstance<P_CSRttResponse> _dynClassRep;
+        private static NetClassRepInstance<GGReload> _dynClassRep;
 
         public override NetClassRep GetClassRep()
         {
@@ -21,9 +21,9 @@ namespace Qserver.GameServer.Qpang
 
         public static void RegisterNetClassReps()
         {
-            ImplementNetEvent(out _dynClassRep, "P_CSRttResponse", NetClassMask.NetClassGroupGameMask, 0);
+            ImplementNetEvent(out _dynClassRep, "GGReload", NetClassMask.NetClassGroupGameMask, 0);
         }
-        public P_CSRttResponse() : base(GameNetId.CS_RTT_RESPONSE, GuaranteeType.GuaranteedOrdered, EventDirection.DirAny) { }
+        public GGReload() : base(GameNetId.GG_RELOAD, GuaranteeType.GuaranteedOrdered, EventDirection.DirAny) { }
 
         public override void Pack(EventConnection ps, BitStream bitStream) { }
         public override void Unpack(EventConnection ps, BitStream bitStream) { }

@@ -28,12 +28,18 @@ namespace Qserver.GameServer.Qpang
             CGRoom.RegisterNetClassReps();
             CGRoomInfo.RegisterNetClassReps();
 
+            CSRttRequest.RegisterNetClassReps();
+
             // shit switches here bro
             GCArrangedAccept.RegisterNetClassReps();
             GCArrangedConn.RegisterNetClassReps();
             GCCard.RegisterNetClassReps();
             GCRoom.RegisterNetClassReps();
             GCRoomInfo.RegisterNetClassReps();
+
+            GGReload.RegisterNetClassReps();
+            P_CSRttReport.RegisterNetClassReps();
+            P_CSRttResponse.RegisterNetClassReps();
 
         }
 

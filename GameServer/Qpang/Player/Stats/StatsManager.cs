@@ -26,6 +26,10 @@ namespace Qserver.GameServer.Qpang
         private uint _teamDeaths;
         private uint _eventItemPickUps;
 
+        // TODO: add PvE stats for achievement manager!
+
+        // BossClear, BronzeCoin, cameraKiller, chessoflege, chessofmaster, defnderofdiorama/2, essemceDefender/2, goldCoin
+
         public uint Kills
         {
             get { return this._kills; }

@@ -136,6 +136,8 @@ namespace Qserver.GameServer.Qpang
                 { AchievementID.SPY, new TeamKillCondition(100) }, 
                 { AchievementID.SUSPECT, new TeamKillCondition(100) }
 
+                // TODO add PvE achievements
+
             };
         }
 

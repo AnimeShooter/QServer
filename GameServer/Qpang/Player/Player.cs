@@ -37,7 +37,7 @@ namespace Qserver.GameServer.Qpang
         private string _name;
         private byte _rank;
         private uint _experience;
-        private uint _level;
+        private byte _level;
         private byte _prestige;
         private ushort _character;
         private uint _don;
@@ -103,7 +103,7 @@ namespace Qserver.GameServer.Qpang
         {
             get { return this._name; }
         }
-        public uint Rank
+        public byte Rank
         {
             get { return this._rank; }
         }
@@ -111,7 +111,7 @@ namespace Qserver.GameServer.Qpang
         {
             get { return this._experience; }
         }
-        public uint Level
+        public byte Level
         {
             get { return this._level; }
             set { this._level = value; }

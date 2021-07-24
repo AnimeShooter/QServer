@@ -313,17 +313,17 @@ namespace Qserver.GameServer.Network.Managers
         #endregion
 
         #region Friend
-        public PacketWriter AcceptIncommingFriend()
+        public PacketWriter AcceptIncommingFriend(Friend friend)
         {
             throw new NotImplementedException();
         }
 
-        public PacketWriter AddIncommingFriend()
+        public PacketWriter AddIncommingFriend(Friend friend)
         {
             throw new NotImplementedException();
         }
 
-        public PacketWriter AddOutgoingFriend()
+        public PacketWriter AddOutgoingFriend(Friend friend)
         {
             throw new NotImplementedException();
         }
@@ -355,17 +355,16 @@ namespace Qserver.GameServer.Network.Managers
             foreach(var f in friends)
             {
                 // Friend
-                pw.WriteUInt32(f.PlayerId);
+                pw.WriteUInt32(f.FriendId);
                 pw.WriteBytes(new byte[4]);
                 pw.WriteUInt8(f.State);
                 pw.WriteUInt8(f.IsOnline ? (byte)1 : (byte)0);
                 pw.WriteUInt16(f.Level);
                 pw.WriteWString(f.Nickname, 16);
-                //pw.WriteBytes(new byte[16] {0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, });
             }
             return pw;
         }
-        public PacketWriter FriendRemove()
+        public PacketWriter FriendRemoved(Friend friend)
         {
             throw new NotImplementedException();
         }
@@ -373,7 +372,7 @@ namespace Qserver.GameServer.Network.Managers
         {
             throw new NotImplementedException();
         }
-        public PacketWriter OutgoingFriendAccepted()
+        public PacketWriter OutgoingFriendAccepted(Friend friend)
         {
             throw new NotImplementedException();
         }
@@ -381,7 +380,7 @@ namespace Qserver.GameServer.Network.Managers
         {
             throw new NotImplementedException();
         }
-        public PacketWriter RemoveFriend()
+        public PacketWriter RemoveFriend(uint friendId)
         {
             throw new NotImplementedException();
         }

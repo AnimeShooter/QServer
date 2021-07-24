@@ -7,9 +7,9 @@ using Qserver.GameServer.Qpang;
 
 namespace Qserver.GameServer.Database.Repositories
 {
-    public class LevelRepository
+    public class LevelsRepository
     {
-		public LevelRepository(IMySqlObjectFactory sqlObjectFactory)
+		public LevelsRepository(IMySqlObjectFactory sqlObjectFactory)
 		{
 			_sqlObjectFactory = sqlObjectFactory;
 		}

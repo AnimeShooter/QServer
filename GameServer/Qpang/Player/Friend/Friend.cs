@@ -6,7 +6,7 @@ namespace Qserver.GameServer.Qpang
 {
     public struct Friend
     {
-        public uint PlayerId;
+        public uint FriendId;
         public string Nickname;
         public byte Level;
         public byte Rank;

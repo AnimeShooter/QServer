@@ -7,7 +7,7 @@ using Qserver.GameServer.Qpang;
 
 namespace Qserver.GameServer.Database.Repositories
 {
-    public class MemoRepository
+    public class MemosRepository
     {
 		public struct DBMemo
         {
@@ -23,7 +23,7 @@ namespace Qserver.GameServer.Database.Repositories
 			public string Name;
         }
 
-		public MemoRepository(IMySqlObjectFactory sqlObjectFactory)
+		public MemosRepository(IMySqlObjectFactory sqlObjectFactory)
 		{
 			_sqlObjectFactory = sqlObjectFactory;
 		}

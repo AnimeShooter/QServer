@@ -60,12 +60,13 @@ namespace Qserver.GameServer.Qpang
         // Database managers
         private ChannelsRepository _channelsRepository;
         private CraneRepository _craneRepository;
-        private LevelRepository _levelRepository;
+        private LevelsRepository _levelsRepository;
         private MapsRepository _mapsRepository;
         private PlayersRepository _playersRepository;
         private ItemsRepository _itemsRepository;
         private UsersRepository _usersRepository;
-        private MemoRepository _memoRepository;
+        private MemosRepository _memosRepository;
+        private FriendsRepository _friendsRepository;
 
         private QpangServer _lobbyServer; // lobby?
         private QpangServer _squareServer;
@@ -145,9 +146,9 @@ namespace Qserver.GameServer.Qpang
         {
             get { return this._craneRepository; }
         }
-        public LevelRepository LevelRepository
+        public LevelsRepository LevelRepository
         {
-            get { return this._levelRepository; }
+            get { return this._levelsRepository; }
         }
         public MapsRepository MapsRepository
         {
@@ -165,9 +166,13 @@ namespace Qserver.GameServer.Qpang
         {
             get { return this._usersRepository; }
         }
-        public MemoRepository MemoRepository
+        public MemosRepository MemoRepository
         {
-            get { return this._memoRepository; }
+            get { return this._memosRepository; }
+        }
+        public FriendsRepository FriendsRepository
+        {
+            get { return this._friendsRepository; }
         }
 
         public Game(bool lobby)
@@ -190,12 +195,13 @@ namespace Qserver.GameServer.Qpang
             // init databases
             this._channelsRepository = new ChannelsRepository(DatabaseManager.MySqlFactory);
             this._craneRepository = new CraneRepository(DatabaseManager.MySqlFactory);
-            this._levelRepository = new LevelRepository(DatabaseManager.MySqlFactory);
+            this._levelsRepository = new LevelsRepository(DatabaseManager.MySqlFactory);
             this._mapsRepository = new MapsRepository(DatabaseManager.MySqlFactory);
             this._playersRepository = new PlayersRepository(DatabaseManager.MySqlFactory);
             this._itemsRepository = new ItemsRepository(DatabaseManager.MySqlFactory);
             this._usersRepository = new UsersRepository(DatabaseManager.MySqlFactory);
-            this._memoRepository = new MemoRepository(DatabaseManager.MySqlFactory);
+            this._memosRepository = new MemosRepository(DatabaseManager.MySqlFactory);
+            this._friendsRepository = new FriendsRepository(DatabaseManager.MySqlFactory);
 
             // share
             Instance = this;

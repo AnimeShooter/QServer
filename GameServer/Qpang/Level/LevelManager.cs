@@ -10,10 +10,10 @@ namespace Qserver.GameServer.Qpang
     public class LevelManager
     {
         private Dictionary<byte, Level> _levels;
-        private LevelRepository _levelRepository;
+        private LevelsRepository _levelRepository;
         public LevelManager()
         {
-            this._levelRepository = new LevelRepository(DatabaseManager.MySqlFactory);
+            this._levelRepository = new LevelsRepository(DatabaseManager.MySqlFactory);
             this._levels = new Dictionary<byte, Level>();
             foreach(var l in this._levelRepository.GetLevelInfo().Result)
             {

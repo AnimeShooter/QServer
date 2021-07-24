@@ -13,9 +13,9 @@ namespace Qserver.GameServer.Qpang
         private object _lock;
         private Player _player;
 
-        private ushort _incomingSlot = 10;
-        private ushort _outgoingSlot = 10;
-        private ushort _friendSlot = 30;
+        private ushort _incomingSlots = 10;
+        private ushort _outgoingSlots = 10;
+        private ushort _friendSlots = 30;
 
         private Dictionary<uint, Friend> _friends;
         private Dictionary<uint, Friend> _outgoingFriends;
@@ -70,14 +70,14 @@ namespace Qserver.GameServer.Qpang
         {
             lock (this._lock)
                 if (this._player != null)
-                    send(LobbyManager.Instance.AppearOnline());
+                    send(LobbyManager.Instance.AppearOnline(this._player.PlayerId));
         }
 
         public void AppearOffline()
         {
             lock (this._lock)
                 if (this._player != null)
-                    send(LobbyManager.Instance.AppearOffline());
+                    send(LobbyManager.Instance.AppearOffline(this._player.PlayerId));
         }
 
         public void send(PacketWriter packet)
@@ -95,22 +95,22 @@ namespace Qserver.GameServer.Qpang
 
         public void Close()
         {
-
+            AppearOffline();
         }
 
         public bool HasIncomingSlot()
         {
-
+            return this._incomingFriends.Count < this._incomingSlots;
         }
 
         public bool HasOutgoingSlot()
         {
-
+            return this._outgoingFriends.Count < this._outgoingSlots;
         }
 
         public bool HasFriendSlot()
         {
-
+            return this._friends.Count < this._friendSlots;
         }
 
         public bool Contains(uint playerId)

@@ -38,5 +38,14 @@ namespace Qserver.GameServer.Database.Repositories
 			return memos.Result.ToList();
 		}
 
+		// TODO
+		//public async Task<List<DBMemo>> DeleteMemo(uint id)
+		//{
+		//	Task<IEnumerable<DBMemo>> memos = null;
+		//	await _sqlObjectFactory.GetConnection().UsingAsync(connection =>
+		//		memos = connection.QueryAsync<DBMemo>("SELECT memos.id, memos.sender_id, memos.receiver_id, memos.message, memos.opened, memos.created, players.name FROM memos JOIN players ON players.id = memos.sender_id WHERE receiver_id = @Id", new { Id = playerId }));
+		//	return memos.Result.ToList();
+		//}
+
 	}
 }

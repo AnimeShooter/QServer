@@ -494,6 +494,13 @@ namespace Qserver.GameServer.Network.Managers
             return pw;
         }
 
+        public PacketWriter SendTradeRequest(uint playerId)
+        {
+            PacketWriter pw = new PacketWriter(Opcode.LOBBY_TRADE_ACT);
+            pw.WriteUInt32(playerId); //test
+            return pw;
+        }
+
         public PacketWriter CardExtended(InventoryCard card, uint balance, bool isCash)
         {
             PacketWriter pw = new PacketWriter((Opcode)810);
@@ -724,6 +731,20 @@ namespace Qserver.GameServer.Network.Managers
                 pw.WriteUInt8(memo.IsOpened ? (byte)1 : (byte)0);
             }
 
+            return pw;
+        }
+
+        public PacketWriter SendMemo(Memo memo)
+        {
+            PacketWriter pw = new PacketWriter(Opcode.LOBBY_SEND_MEMO);
+            // TODO
+            return pw;
+        }
+
+        public PacketWriter DeleteMemo(Memo memo)
+        {
+            PacketWriter pw = new PacketWriter(Opcode.LOBBY_DELETE_MEMO);
+            // TODO
             return pw;
         }
         #endregion

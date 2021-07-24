@@ -163,10 +163,12 @@ namespace Qserver.GameServer.Network.Handlers
         #region Inventory
         public static void HandleLobbyTrade(PacketReader packet, ConnServer manager)
         {
-            //uint unk1 = packet.ReadUInt32();
             uint playerId = packet.ReadUInt32(); // target
-            uint unk2 = packet.ReadUInt32();
+            var target = Game.Instance.GetOnlinePlayer(playerId);
+            if (target == null)
+                return;
 
+            target.SendLobby(LobbyManager.Instance.SendTradeRequest(playerId));
             manager.Send(LobbyManager.Instance.TradeResponse(playerId));
         }
 
@@ -272,6 +274,16 @@ namespace Qserver.GameServer.Network.Handlers
 
             List<Memo> memos = manager.Player.MemoManager.List();
             manager.Send(LobbyManager.Instance.Memos(memos));
+        }
+
+        public static void HandleMemoDelete(PacketReader packet, ConnServer manager)
+        {
+            // TODO
+        }
+
+        public static void HandleSendMemo(PacketReader packet, ConnServer manager)
+        {
+            // TODO
         }
         #endregion
 

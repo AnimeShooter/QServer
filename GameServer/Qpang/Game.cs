@@ -334,8 +334,5 @@ namespace Qserver.GameServer.Qpang
                 return null;
             }
         }
-
-        // TODO: event handles to kick player on connection close
-
     }
 }

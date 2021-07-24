@@ -34,10 +34,7 @@ namespace Qserver.GameServer.Network
                 pw.WriteUInt8(square.Capacity);
                 pw.WriteUInt8(square.PlayerCount);
                 pw.WriteUInt8(square.State);
-
                 pw.WriteWString(square.Name, 16);
-                //pw.WriteBytes(new byte[16] { 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, 0x41, 0x00, });
-
                 pw.WriteBytes(new byte[33]);
             }
 

@@ -25,6 +25,9 @@ namespace Qserver.GameServer.Qpang
         {
             this._player = player;
             this._lock = new object();
+            this._friends = new Dictionary<uint, Friend>();
+            this._outgoingFriends = new Dictionary<uint, Friend>();
+            this._incomingFriends = new Dictionary<uint, Friend>();
 
             var friends = Game.Instance.FriendsRepository.GetFriends(this._player.PlayerId).Result;
             foreach(var f in friends)
@@ -50,10 +53,6 @@ namespace Qserver.GameServer.Qpang
                         break;
                 }
             }
-
-            this._friends = new Dictionary<uint, Friend>();
-            this._outgoingFriends = new Dictionary<uint, Friend>();
-            this._incomingFriends = new Dictionary<uint, Friend>();
         }
 
         public List<Friend> List()

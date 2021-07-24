@@ -439,7 +439,6 @@ namespace Qserver.GameServer.Network.Handlers
                 manager.CloseSocket();
                 return;
             }
-                
 
             bool isBanned = false; // Game.Instance.BanManager.
             if (isBanned)

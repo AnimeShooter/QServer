@@ -225,7 +225,7 @@ namespace Qserver.GameServer.Qpang
             this._levelManger = new LevelManager(); // TODO-ish
             this._craneManager = new CraneManager();
             this._leaderboard = new Leaderboard(); // TODO
-            this._roomServer = new RoomServer(); // TODO
+            this._roomServer = new RoomServer(); 
         }
 
         public void Tick()

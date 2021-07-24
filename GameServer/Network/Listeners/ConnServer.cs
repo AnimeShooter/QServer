@@ -86,8 +86,6 @@ namespace Qserver.GameServer.Network
                                 if (Enum.IsDefined(typeof(Opcode), pkt.Opcode))
                                     if (Settings.DEBUG)
                                         Log.Message(LogType.DUMP, $"[{_socket.LocalEndPoint}] Recieved OpCode: {pkt.Opcode}, len: {pkt.Size}\n");
-                                    else
-                                        Log.Message(LogType.DUMP, $"[{_socket.LocalEndPoint}] Unknown OpCode: {pkt.Opcode}, len: {pkt.Size}\n");
                                 else
                                     Log.Message(LogType.ERROR, $"[{_socket.LocalEndPoint}] Unregistered OpCode: {pkt.Opcode}\n");
                                 PacketManager.InvokeHandler(pkt, this, pkt.Opcode);
@@ -102,7 +100,10 @@ namespace Qserver.GameServer.Network
                                 _socket.BeginReceive(PayloadBuffer, PayloadBuffer.Length - PayloadSizeToRead, PayloadSizeToRead, 0, ReceiveCallback, null); // continue reading payload
                         }
                     }
-                    catch { }
+                    catch (Exception e) 
+                    {
+                        Log.Message(LogType.ERROR, e.ToString());
+                    }
                 }
             }
             catch (Exception e)

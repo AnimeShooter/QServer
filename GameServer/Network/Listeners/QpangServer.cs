@@ -33,8 +33,7 @@ namespace Qserver.GameServer.Network
                         Thread.Sleep(1);
                         if(_listener.Pending())
                             _listener.BeginAcceptSocket(AcceptCallback, null);
-                    }
-                            
+                    }        
                 }
                 return true;
             }

@@ -34,14 +34,14 @@ namespace Qserver.GameServer.Database.Repositories
 		{
 			Task<IEnumerable<DBFriend>> friends = null;
 			await _sqlObjectFactory.GetConnection().UsingAsync(connection =>
-				friends = connection.QueryAsync<DBFriend>("SELECT friends.id, friends.player_from, friends.player_to, friends.status, players.name, players.level, players.rank FROM friends JOIN player on player.id = friends.player_to WHERE friends.player_from = @Id", new { Id = playerId }));
+				friends = connection.QueryAsync<DBFriend>("SELECT friends.id, friends.player_from, friends.player_to, friends.status, players.name, players.level, players.rank FROM friends JOIN players ON players.id = friends.player_to WHERE friends.player_from = @Id", new { Id = playerId }));
 			return friends.Result.ToList();
 		}
 
 		public async Task AddFriend(uint playerFrom, uint playerTo, byte status)
 		{
 			await _sqlObjectFactory.GetConnection().UsingAsync(connection =>
-				connection.QueryAsync("INSERT INTO friends (player_from, player_to, status) VALUES ()", new { FromId = playerFrom, ToId = playerTo, Status = status }));
+				connection.QueryAsync("INSERT INTO friends (player_from, player_to, status) VALUES (@FromId, @ToId, @Status)", new { FromId = playerFrom, ToId = playerTo, Status = status }));
 		}
 
 		public async Task UpdateFriendState(uint playerId, uint friendId, byte state)

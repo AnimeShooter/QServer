@@ -315,33 +315,65 @@ namespace Qserver.GameServer.Network.Managers
         #region Friend
         public PacketWriter AcceptIncommingFriend(Friend friend)
         {
-            throw new NotImplementedException();
+            PacketWriter pw = new PacketWriter((Opcode)702);
+            // Friend
+            pw.WriteUInt32(friend.FriendId);
+            pw.WriteBytes(new byte[4]);
+            pw.WriteUInt8(friend.State);
+            pw.WriteUInt8(friend.IsOnline ? (byte)1 : (byte)0);
+            pw.WriteUInt16(friend.Level);
+            pw.WriteWString(friend.Nickname, 16);
+            return pw;
         }
 
         public PacketWriter AddIncommingFriend(Friend friend)
         {
-            throw new NotImplementedException();
+            PacketWriter pw = new PacketWriter((Opcode)700);
+            // Friend
+            pw.WriteUInt32(friend.FriendId);
+            pw.WriteBytes(new byte[4]);
+            pw.WriteUInt8(friend.State);
+            pw.WriteUInt8(friend.IsOnline ? (byte)1 : (byte)0);
+            pw.WriteUInt16(friend.Level);
+            pw.WriteWString(friend.Nickname, 16);
+            return pw;
         }
 
         public PacketWriter AddOutgoingFriend(Friend friend)
         {
-            throw new NotImplementedException();
+            PacketWriter pw = new PacketWriter((Opcode)698);
+            // Friend
+            pw.WriteUInt32(friend.FriendId);
+            pw.WriteBytes(new byte[4]);
+            pw.WriteUInt8(friend.State);
+            pw.WriteUInt8(friend.IsOnline ? (byte)1 : (byte)0);
+            pw.WriteUInt16(friend.Level);
+            pw.WriteWString(friend.Nickname, 16);
+            return pw;
         }
-        public PacketWriter AppearOffline()
+        public PacketWriter AppearOffline(uint playerId)
         {
-            throw new NotImplementedException();
+            PacketWriter pw = new PacketWriter((Opcode)607);
+            pw.WriteUInt32(playerId);
+            return pw;
         }
-        public PacketWriter AppearOnline()
+        public PacketWriter AppearOnline(uint playerId)
         {
-            throw new NotImplementedException();
+            PacketWriter pw = new PacketWriter((Opcode)603);
+            pw.WriteUInt32(playerId);
+            return pw;
         }
-        public PacketWriter CancelOutgoingFriend()
+        public PacketWriter CancelOutgoingFriend(uint playerId)
         {
-            throw new NotImplementedException();
+            PacketWriter pw = new PacketWriter((Opcode)710);
+            pw.WriteUInt32(playerId);
+            return pw;
         }
-        public PacketWriter DenyIncomingFriend()
+        public PacketWriter DenyIncomingFriend(uint playerId)
         {
-            throw new NotImplementedException();
+            PacketWriter pw = new PacketWriter((Opcode)706);
+            pw.WriteUInt32(playerId);
+            return pw;
         }
         public PacketWriter FriendList(List<Friend> friends)
         {
@@ -366,23 +398,45 @@ namespace Qserver.GameServer.Network.Managers
         }
         public PacketWriter FriendRemoved(Friend friend)
         {
-            throw new NotImplementedException();
+            PacketWriter pw = new PacketWriter((Opcode)716);
+            pw.WriteUInt32(friend.FriendId);
+            pw.WriteBytes(new byte[8]);
+            pw.WriteWString(friend.Nickname, 16);
+            return pw;
         }
-        public PacketWriter IncomingFriendCancelled()
+        public PacketWriter IncomingFriendCancelled(Friend friend)
         {
-            throw new NotImplementedException();
+            PacketWriter pw = new PacketWriter((Opcode)712);
+            pw.WriteUInt32(friend.FriendId);
+            pw.WriteBytes(new byte[8]);
+            pw.WriteWString(friend.Nickname, 16);
+            return pw;
         }
         public PacketWriter OutgoingFriendAccepted(Friend friend)
         {
-            throw new NotImplementedException();
+            PacketWriter pw = new PacketWriter((Opcode)704);
+            // Friend
+            pw.WriteUInt32(friend.FriendId);
+            pw.WriteBytes(new byte[4]);
+            pw.WriteUInt8(friend.State);
+            pw.WriteUInt8(friend.IsOnline ? (byte)1 : (byte)0);
+            pw.WriteUInt16(friend.Level);
+            pw.WriteWString(friend.Nickname, 16);
+            return pw;
         }
-        public PacketWriter OutgoingFriendCancelled()
+        public PacketWriter OutgoingFriendCancelled(Player player)
         {
-            throw new NotImplementedException();
+            PacketWriter pw = new PacketWriter((Opcode)708);
+            pw.WriteUInt32(player.PlayerId);
+            pw.WriteBytes(new byte[8]);
+            pw.WriteWString(player.Name, 16);
+            return pw;
         }
         public PacketWriter RemoveFriend(uint friendId)
         {
-            throw new NotImplementedException();
+            PacketWriter pw = new PacketWriter((Opcode)714);
+            pw.WriteUInt32(friendId);
+            return pw;
         }
         #endregion
 

@@ -65,6 +65,7 @@ namespace Qserver.GameServer.Qpang
         private PlayersRepository _playersRepository;
         private ItemsRepository _itemsRepository;
         private UsersRepository _usersRepository;
+        private MemoRepository _memoRepository;
 
         private QpangServer _lobbyServer; // lobby?
         private QpangServer _squareServer;
@@ -164,6 +165,10 @@ namespace Qserver.GameServer.Qpang
         {
             get { return this._usersRepository; }
         }
+        public MemoRepository MemoRepository
+        {
+            get { return this._memoRepository; }
+        }
 
         public Game(bool lobby)
         {
@@ -190,6 +195,7 @@ namespace Qserver.GameServer.Qpang
             this._playersRepository = new PlayersRepository(DatabaseManager.MySqlFactory);
             this._itemsRepository = new ItemsRepository(DatabaseManager.MySqlFactory);
             this._usersRepository = new UsersRepository(DatabaseManager.MySqlFactory);
+            this._memoRepository = new MemoRepository(DatabaseManager.MySqlFactory);
 
             // share
             Instance = this;

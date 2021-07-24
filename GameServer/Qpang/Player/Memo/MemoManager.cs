@@ -8,19 +8,26 @@ namespace Qserver.GameServer.Qpang
     {
         private Player _player;
         private Dictionary<uint, Memo> _memos;
-
         private object _lock;
+
         public MemoManager(Player player)
         {
             this._player = player;
             this._lock = new object();
-
             this._memos = new Dictionary<uint, Memo>();
-            //this._memos.Add(0, new Memo()
-            //{
-                
-            //})
-            // TODO: memo SQL
+
+            var memos = Game.Instance.MemoRepository.GetMemos(player.PlayerId).Result;
+            foreach(var m in memos)
+            {
+                this._memos.Add(m.id, new Memo()
+                {
+                    Id = m.id,
+                    SenderId = m.sender_id,
+                    Nickname = m.Name,
+                    Message = m.message,
+                    IsOpened = m.opened == 1
+                });
+            }
 
         }
 

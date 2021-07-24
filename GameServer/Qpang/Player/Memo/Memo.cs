@@ -11,6 +11,6 @@ namespace Qserver.GameServer.Qpang
         public string Nickname;
         public string Message;
         public bool IsOpened;
-        public DateTime Created;
+        public uint Created;
     }
 }

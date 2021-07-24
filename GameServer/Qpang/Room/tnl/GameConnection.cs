@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Qserver.Util;
+using TNL.Data;
 using TNL.Entities;
 using TNL.Types;
 
@@ -55,12 +56,17 @@ namespace Qserver.GameServer.Qpang
             return _dynClassRep;
         }
 
+        public override NetClassGroup GetNetClassGroup()
+        {
+            return NetClassGroup.NetClassGroupGame;
+        }
+
         public override void OnConnectionEstablished()
         {
             SetIsConnectionToClient();
         }
 
-        public override void OnConnectionTerminated(TNL.Entities.TerminationReason reason, string msg)
+        public override void OnConnectionTerminated(TerminationReason reason, string msg)
         {
             if (this._player == null)
                 return;

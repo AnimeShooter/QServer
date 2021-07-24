@@ -404,12 +404,12 @@ namespace Qserver.GameServer.Network.Managers
             pw.WriteWString(friend.Nickname, 16);
             return pw;
         }
-        public PacketWriter IncomingFriendCancelled(Friend friend)
+        public PacketWriter IncomingFriendCancelled(Player friend)
         {
             PacketWriter pw = new PacketWriter((Opcode)712);
-            pw.WriteUInt32(friend.FriendId);
+            pw.WriteUInt32(friend.PlayerId);
             pw.WriteBytes(new byte[8]);
-            pw.WriteWString(friend.Nickname, 16);
+            pw.WriteWString(friend.Name, 16);
             return pw;
         }
         public PacketWriter OutgoingFriendAccepted(Friend friend)

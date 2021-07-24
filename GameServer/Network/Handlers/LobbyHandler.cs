@@ -61,19 +61,54 @@ namespace Qserver.GameServer.Network.Handlers
         #region Friend
         public static void HandleAcceptIncomingFriendRequestEvent(PacketReader packet, ConnServer manager)
         {
-            throw new NotImplementedException();
+            var playerId = packet.ReadUInt32();
+            var player = manager.Player;
+            var target = Game.Instance.GetPlayer(playerId);
+            if(target != null)
+            {
+                player.FriendManager.AcceptIncoming(target);
+                target.FriendManager.OnOutgoingAccepted(player);
+            }
         }
         public static void HandleCancleOutgoingFriendRequestEvent(PacketReader packet, ConnServer manager)
         {
-            throw new NotImplementedException();
+            var playerId = packet.ReadUInt32();
+            var player = manager.Player;
+            var target = Game.Instance.GetPlayer(playerId);
+            if(target != null)
+            {
+                player.FriendManager.RemoveOutgoing(playerId);
+                target.FriendManager.RemoveIncoming(player.PlayerId);
+
+                target.SendLobby(LobbyManager.Instance.IncomingFriendCancelled(player));
+            }
+
+            manager.Send(LobbyManager.Instance.CancelOutgoingFriend(playerId));
         }
         public static void HandleDenyIncomingFriendRequestEvent(PacketReader packet, ConnServer manager)
         {
-            throw new NotImplementedException();
+            var playerId = packet.ReadUInt32();
+            var player = manager.Player;
+            var target = Game.Instance.GetPlayer(playerId);
+            if(target != null)
+            {
+                player.FriendManager.RemoveIncoming(playerId);
+                target.FriendManager.RemoveOutgoing(player.PlayerId);
+
+                target.SendLobby(LobbyManager.Instance.OutgoingFriendCancelled(player));
+            }
+            manager.Send(LobbyManager.Instance.DenyIncomingFriend(playerId));
         }
         public static void HandleRemoveFriendEvent(PacketReader packet, ConnServer manager)
         {
-            throw new NotImplementedException();
+            var playerId = packet.ReadUInt32();
+            var player = manager.Player;
+            var target = Game.Instance.GetPlayer(playerId);
+            if(target != null)
+            {
+                player.FriendManager.Remove(target.PlayerId);
+                target.FriendManager.OnRemove(player.PlayerId);
+            }
         }
         public static void HandleRequestFriendList(PacketReader packet, ConnServer manager)
         {
@@ -82,7 +117,32 @@ namespace Qserver.GameServer.Network.Handlers
         }
         public static void HandleSendFriendRequestEvent(PacketReader packet, ConnServer manager)
         {
-            throw new NotImplementedException();
+            packet.ReadBytes(12);
+            string name = packet.ReadWString(16);
+
+            if (name == null || name.Length < 4 || name.Length > 16)
+                return;
+
+            var player = manager.Player;
+            if (name == player.Name)
+                return;
+
+            if (!player.FriendManager.HasOutgoingSlot())
+                return;
+
+            var target = Game.Instance.GetPlayer(name);
+
+            if (target == null)
+                return;
+
+            if (!target.FriendManager.HasIncomingSlot())
+                return;
+
+            if (player.FriendManager.Contains(target.PlayerId) || target.FriendManager.Contains(player.PlayerId))
+                return;
+
+            player.FriendManager.AddOutgoingFriend(target);
+            target.FriendManager.AddIncomingFriend(player);
         }
         #endregion
 

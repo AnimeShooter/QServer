@@ -36,7 +36,7 @@ namespace Qserver.GameServer.Qpang
                     IsOpened = dbitem.opened == 1,
                     IsGiftable = dbitem.giftable == 1,
                     BoostLevel = dbitem.boost_level,
-                    //TimeCreated = dbitem.time
+                    TimeCreated = dbitem.time
                 };
                 if (card.IsOpened)
                     this._cards[card.Id] = card;
@@ -121,7 +121,7 @@ namespace Qserver.GameServer.Qpang
 
                 if(isActive && !duplicate)
                 {
-                    card.TimeCreated = DateTime.UtcNow;
+                    card.TimeCreated = Util.Util.Timestamp();
                     card.IsActive = true;
                     this._player.EquipmentManager.AddFunctionCard(cardId);
                     this._player.SendLobby(LobbyManager.Instance.EnabledFunctionCard(card));
@@ -158,7 +158,7 @@ namespace Qserver.GameServer.Qpang
                 // TODO: INSERT INTO player_items (player_id, item_id, period, period_type, type, active, opened, giftable, boosted, boost_level, time) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 
                 //card.Id =;
-                card.TimeCreated = DateTime.UtcNow;
+                card.TimeCreated = Util.Util.Timestamp();
                 card.PlayerOwnedId = this._player.PlayerId;
 
                 AddCard(card);
@@ -216,7 +216,6 @@ namespace Qserver.GameServer.Qpang
 
                 return this._cards[cardId].Period == 0;
             }
-            return true;
         }
 
         public bool HasSpace()
@@ -234,11 +233,12 @@ namespace Qserver.GameServer.Qpang
                 if (!this._cards.ContainsKey(card.Id))
                     return;
 
-                this._cards.Remove(card.Id);
-                card.TimeCreated = DateTime.UtcNow;
-                player.InventoryManager.ReceiveGift(card, this._player.Name);
+                if (player.TestRealm)
+                    return; // no losing/duping cards
 
-                // TODO: UPDATE player_items SET player_id = ?, opened = 0, time = ? WHERE id = ?
+                this._cards.Remove(card.Id);
+                card.TimeCreated = Util.Util.Timestamp();
+                player.InventoryManager.ReceiveGift(card, this._player.Name);
 
                 this._player.SendLobby(LobbyManager.Instance.GiftCardSuccess(card.Id));
                 this._player.EquipmentManager.Save();
@@ -250,6 +250,9 @@ namespace Qserver.GameServer.Qpang
             lock(this._lock)
             {
                 if (this._player == null)
+                    return;
+
+                if (this._player.TestRealm)
                     return;
 
                 card.IsOpened = false;
@@ -265,6 +268,9 @@ namespace Qserver.GameServer.Qpang
             lock(this._lock)
             {
                 if (this._player == null)
+                    return;
+
+                if (this._player.TestRealm)
                     return;
 
                 if (!this._gifts.ContainsKey(cardId))
@@ -289,6 +295,9 @@ namespace Qserver.GameServer.Qpang
         }
         public void Close()
         {
+            if (this._player.TestRealm)
+                return;
+
             // TODO
             lock(this._lock)
             {

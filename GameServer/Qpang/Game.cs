@@ -295,7 +295,7 @@ namespace Qserver.GameServer.Qpang
         {
             lock(this._lock)
             {
-                if (this._playersByName.ContainsKey(name))
+                if (this._playersByName.ContainsKey(name) && !this._playersByName[name].TestRealm)
                     return this._playersByName[name];
                 return null;
             }
@@ -305,7 +305,7 @@ namespace Qserver.GameServer.Qpang
         {
             lock (this._lock)
             {
-                if (this._players.ContainsKey(playerId))
+                if (this._players.ContainsKey(playerId) && !this._players[playerId].TestRealm)
                     return this._players[playerId];
                 return null;
             }
@@ -320,7 +320,7 @@ namespace Qserver.GameServer.Qpang
         {
             lock(this._lock)
             {
-                if(this._players.ContainsKey(playerId))
+                if (this._players.ContainsKey(playerId))
                     return this._players[playerId];
                 return null;
             }

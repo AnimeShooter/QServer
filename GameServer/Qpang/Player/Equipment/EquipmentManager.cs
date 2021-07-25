@@ -419,6 +419,9 @@ namespace Qserver.GameServer.Qpang
                 if (this._player == null)
                     return;
 
+                if (this._player.TestRealm)
+                    return;
+
                 foreach(var character in this._unlockedCharacters)
                 {
                     Game.Instance.ItemsRepository.UpdateCharactersEquips(this._equips[character], character, this._player.PlayerId).GetAwaiter().GetResult();

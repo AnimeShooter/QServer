@@ -430,7 +430,7 @@ namespace Qserver.GameServer.Network.Handlers
         }
         public static void HandleRequestShopItems(PacketReader packet, ConnServer manager)
         {
-            List<ShopItem> items = Game.Instance.ShopManager.List();
+            List<ShopItem> items = manager.Player.TestRealm ? new List<ShopItem>() : Game.Instance.ShopManager.List();
             manager.Send(LobbyManager.Instance.ShopItems(items));
         }
         public static void HandleRequestShopPackages(PacketReader packet, ConnServer manager)

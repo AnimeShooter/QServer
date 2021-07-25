@@ -134,6 +134,9 @@ namespace Qserver.GameServer.Qpang
 
         public void Save()
         {
+            if (this._player.TestRealm)
+                return;
+
             Game.Instance.PlayersRepository.UpdatePlayerStats(this._player).GetAwaiter();
         }
 

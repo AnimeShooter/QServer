@@ -21,6 +21,7 @@ namespace Qserver.GameServer.Qpang
         public uint SniperKills;
         public uint BombKills;
         public bool Gm;
+        public bool TestRealm;
     }
 
     public class Player
@@ -50,6 +51,7 @@ namespace Qserver.GameServer.Qpang
         private bool _exists;
         private bool _isClosed;
         private bool _isOnline;
+        private bool _testRealm;
 
         private uint _currentSquareId;
 
@@ -146,6 +148,11 @@ namespace Qserver.GameServer.Qpang
         {
             get { return this._coins; }
         }
+        public bool TestRealm
+        {
+            get { return this._testRealm; }
+            set { this._testRealm = value; }
+        }
         public DateTime LoginTime
         {
             get { return this._loginTime; }
@@ -196,15 +203,13 @@ namespace Qserver.GameServer.Qpang
             this._experience = playerData.experience;
             this._isMuted = playerData.is_muted == 1;
 
-
-            this._inventoryManager = new InventoryManager(this);
-            this._equipmentManager = new EquipmentManager(this);
+            this._inventoryManager = new InventoryManager(this); // tok TODO: DB!!!
+            this._equipmentManager = new EquipmentManager(this); // tok
             this._friendManager = new FriendManager(this);
             this._memoManager = new MemoManager(this);
-            this._statsManager = new StatsManager(this);
-            this._achievementContainer = new AchievementContainer(playerId);
-            this._isOnline = true;
-        
+            this._statsManager = new StatsManager(this); // tok
+            this._achievementContainer = new AchievementContainer(playerId);  // TODO DB!
+            this._isOnline = true;        
         }
 
         public PlayerAPI ToAPI()
@@ -220,7 +225,8 @@ namespace Qserver.GameServer.Qpang
                 GunKills = this._statsManager.GunKills,
                 SniperKills = this._statsManager.LauncherKills,
                 BombKills = this._statsManager.BombKills,
-                Gm = this.Rank == 3
+                Gm = this.Rank == 3,
+                TestRealm = this._testRealm
             };
         }
 
@@ -236,7 +242,7 @@ namespace Qserver.GameServer.Qpang
 
             this._squarePlayer = squarePlayer;
             SetOnlineStatus(true);
-            SendSquare(Network.SquareManager.Instance.JoinSquareSuccess(squarePlayer)); // CRASH
+            SendSquare(Network.SquareManager.Instance.JoinSquareSuccess(squarePlayer));
         }
 
         public void SendSquare(PacketWriter packet)
@@ -308,10 +314,16 @@ namespace Qserver.GameServer.Qpang
         }
         public void Update()
         {
+            if (this._testRealm)
+                return;
+
             Game.Instance.PlayersRepository.UpdatePlayer(this).GetAwaiter().GetResult();
         }
         public void RemoveDon(uint count)
         {
+            if (this._testRealm)
+                return;
+
             if (this._don <= count)
                 this._don = 0;
             else
@@ -321,12 +333,18 @@ namespace Qserver.GameServer.Qpang
         }
         public void AddDon(uint count)
         {
+            if (this._testRealm)
+                return;
+
             this._don += count;
 
             Update();
         }
         public void RemoveCash(uint count)
         {
+            if (this._testRealm)
+                return;
+
             if (this._cash <= count)
                 this._cash = 0;
             else
@@ -336,12 +354,17 @@ namespace Qserver.GameServer.Qpang
         }
         public void AddCash(uint count)
         {
-            this._cash += count;
+            if (this._testRealm)
+                return;
 
+            this._cash += count;
             Update();
         }
         public void RemoveCoins(uint count)
         {
+            if (this._testRealm)
+                return;
+
             if (this._coins <= count)
                 this._coins = 0;
             else
@@ -351,14 +374,18 @@ namespace Qserver.GameServer.Qpang
         }
         public void AddCoins(uint count)
         {
-            this._coins += count;
+            if (this._testRealm)
+                return;
 
+            this._coins += count;
             Update();
         }
         public void AddExp(uint count)
         {
-            this._experience += count;
+            if (this._testRealm)
+                return;
 
+            this._experience += count;
             Update();
         }
     }

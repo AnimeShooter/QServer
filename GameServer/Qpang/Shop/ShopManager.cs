@@ -62,6 +62,9 @@ namespace Qserver.GameServer.Qpang
         {
             if (player == null)
                 return;
+
+            if (player.TestRealm)
+                return;
             
             if (!Exists(seqId))
                 return;

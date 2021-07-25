@@ -14,7 +14,7 @@ namespace Qserver.GameServer.Qpang
         {
             this._lock = new object();
             this._squares = new Dictionary<uint, Square>();
-            Create("TEST_SQUARE");
+            Create("Square");
         }
 
         public Square Create(string name)

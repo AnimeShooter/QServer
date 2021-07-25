@@ -16,7 +16,7 @@ namespace Qserver.GameServer.Qpang
         public bool IsOpened;
         public bool IsGiftable;
         public byte BoostLevel;
-        public DateTime TimeCreated;
+        public uint TimeCreated;
 
         public static InventoryCard FromShopItem(ShopItem item)
         {
@@ -32,7 +32,7 @@ namespace Qserver.GameServer.Qpang
                 IsOpened = true,
                 IsGiftable = true,
                 BoostLevel = 0,
-                TimeCreated = DateTime.UtcNow
+                TimeCreated = Util.Util.Timestamp()
             };
         }
     }

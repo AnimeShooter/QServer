@@ -22,6 +22,17 @@ namespace Qserver.GameServer.Network.Handlers
         {
             uint channelId = packet.ReadUInt32();
             Channel channel = Game.Instance.ChannelManager.GetChannel(channelId);
+            if(manager.Player.LoginTime > DateTime.UtcNow.AddSeconds(5) && manager.Player.TestRealm != (channel.TestMode == 1)) // 255 is default non set
+            {
+                manager.Player.Close(); // Not allowed to switch server
+                return;
+            }
+            manager.Player.TestRealm = channel.TestMode == 1;  // set mode to prevent swapping lateron
+
+            // NOTE: crashes
+            //if(manager.Player.TestRealm)
+            //    manager.Send(LobbyManager.Instance.ShopItems(new List<ShopItem>())); // erase the shop items
+
             manager.Send(LobbyManager.Instance.ChannelHost(channel));
         }
         #endregion Channel
@@ -285,6 +296,10 @@ namespace Qserver.GameServer.Network.Handlers
         {
             // TODO
         }
+        public static void HandleOpenMemo(PacketReader packet, ConnServer manager)
+        {
+            // TODO
+        }
         #endregion
 
         #region Misc
@@ -292,6 +307,10 @@ namespace Qserver.GameServer.Network.Handlers
         {
             var times = packet.ReadUInt16();
             var player = manager.Player;
+
+            if (player.TestRealm)
+                return;
+
             if (player.InventoryManager.List().Count >= 200 - times)
                 return;
 

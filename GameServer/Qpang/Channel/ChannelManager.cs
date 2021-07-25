@@ -17,7 +17,7 @@ namespace Qserver.GameServer.Qpang
         public ushort MinRank;
         public string IP;
         public ushort CurrPlayers;
-        public byte TestRealm;
+        public byte TestMode;
     }
 
     public class ChannelManager
@@ -30,7 +30,7 @@ namespace Qserver.GameServer.Qpang
             var channels = Game.Instance.ChannelsRepository.GetChannels().Result;
             foreach(var c in channels)
             {
-                Log.Message(LogType.DUMP, $"{$"[{c.Name + (c.TestRealm == 1 ? "*" : "")}]".PadRight(28)} MaxP:{c.MaxPlayers.ToString().PadLeft(3)} @ {c.IP}\n");
+                Log.Message(LogType.DUMP, $"{$"[{c.Name + (c.TestMode == 1 ? "*" : "")}]".PadRight(28)} MaxP:{c.MaxPlayers.ToString().PadLeft(3)} @ {c.IP}\n");
                 this._channels.Add(c.Id, c);
             }
             Log.Message(LogType.MISC, $"ChannelManager loaded {this._channels.Count} from the database!");

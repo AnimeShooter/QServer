@@ -33,6 +33,7 @@ namespace Qserver.GameServer.Packets
                 PacketManager.DefineOpcodeHandler(Opcode.LOBBY_MEMOS, LobbyHandler.HandleRequestMemos);
                 //PacketManager.DefineOpcodeHandler(Opcode.LOBBY_DELETE_MEMO, LobbyHandler.HandleMemoDelete);
                 //PacketManager.DefineOpcodeHandler(Opcode.LOBBY_SEND_MEMO, LobbyHandler.HandleSendMemo);
+                //PacketManager.DefineOpcodeHandler(Opcode.LOBBY_OPEN_MEMO, LobbyHandler.HandleOpenMemo);
                 PacketManager.DefineOpcodeHandler((Opcode)738, LobbyHandler.HandleWhisperEvent);
                 PacketManager.DefineOpcodeHandler((Opcode)742, LobbyHandler.HandleOpenGift);
                 PacketManager.DefineOpcodeHandler((Opcode)745, LobbyHandler.HandleRequestGifts);

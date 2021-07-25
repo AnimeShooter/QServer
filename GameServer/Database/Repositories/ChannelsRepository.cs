@@ -20,7 +20,7 @@ namespace Qserver.GameServer.Database.Repositories
 		{
 			Task<IEnumerable<Channel>> items = null;
 			await _sqlObjectFactory.GetConnection().UsingAsync(connection =>
-				items = connection.QueryAsync<Channel>("SELECT id, Name, MinLevel, MaxLevel, MaxPlayers, MinRank, IP FROM channels"));
+				items = connection.QueryAsync<Channel>("SELECT id, Name, MinLevel, MaxLevel, MaxPlayers, MinRank, IP, TestMode FROM channels"));
 			return items.Result.ToList();
 		}
 

@@ -176,7 +176,9 @@ namespace Qserver.External.HTTP.Nancy
                 var info = Game.Instance.PlayersRepository.GetPlayerByUserId(user.Value.id).Result;
                 Player player = new Player(info.id); // TODO: improve?
 
-                return Response.AsJson(new APIResponse<PlayerAPI>() { Result = player.ToAPI() });
+                var res = Response.AsJson(new APIResponse<PlayerAPI>() { Result = player.ToAPI() });
+                res.Headers.Add("x-auth-token", Request.Headers.Authorization);
+                return res;
             });
             #endregion
 

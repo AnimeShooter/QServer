@@ -16,7 +16,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="External\HTTP\API\" />
     <Folder Include="External\HTTP\Public\" />
   </ItemGroup>
 

@@ -10,6 +10,7 @@ using Qserver.GameServer;
 using Nancy.TinyIoc;
 using Nancy.Conventions;
 using Nancy.Bootstrapper;
+using Qserver.External.HTTP.API;
 
 namespace Qserver.External.HTTP.Nancy
 {
@@ -24,6 +25,7 @@ namespace Qserver.External.HTTP.Nancy
             // #       User         #
             // #====================#
 
+            #region User
             Post("/user/register/", async x =>
             {
                 byte[] body = new byte[Request.Body.Length];
@@ -176,11 +178,13 @@ namespace Qserver.External.HTTP.Nancy
 
                 return Response.AsJson(new APIResponse<PlayerAPI>() { Result = player.ToAPI() });
             });
+            #endregion
 
             // #====================#
             // #      Player        #
             // #====================#
 
+            #region Player
             Get("/player/online", async x =>
             {
                 List<PlayerAPI> APIPlayers = new List<PlayerAPI>();
@@ -207,11 +211,13 @@ namespace Qserver.External.HTTP.Nancy
                 // TODO
                 return null;
             });
+            #endregion
 
             // #====================#
             // #       Rooms        #
             // #====================#
 
+            #region Room
             Get("/room/", async x =>
             {
                 List<RoomAPI> roomApis = new List<RoomAPI>();
@@ -231,11 +237,13 @@ namespace Qserver.External.HTTP.Nancy
 
                 return Response.AsJson<RoomAPI>(room.ToAPI());
             });
+            #endregion
 
             // #====================#
             // #        Misc        #
             // #====================#
 
+            #region Misc
             Get("/img/level/{lvl}", async x =>
             {
                 string lvl = x.lvl;
@@ -287,6 +295,31 @@ namespace Qserver.External.HTTP.Nancy
                 return response;
             });
 
+            Get("/pkg/unpack", async x =>
+            {
+                byte[] body = new byte[Request.Body.Length];
+                Request.Body.Read(body, 0, body.Length);
+
+                if (body.Length < 0x88)
+                    return new Response().StatusCode = HttpStatusCode.BadRequest;
+
+                PkgUnpackAPI result;
+
+                try
+                {
+                    result = pkg.UnpackPkg(body);
+                }
+                catch (Exception e)
+                {
+                    return new Response().StatusCode = HttpStatusCode.BadRequest;
+                }
+
+                return Response.AsJson(new APIResponse<PkgUnpackAPI>()
+                {
+                    Result = result
+                });
+            });
+            #endregion
         }
     }
 }

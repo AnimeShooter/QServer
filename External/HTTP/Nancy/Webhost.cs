@@ -297,9 +297,11 @@ namespace Qserver.External.HTTP.Nancy
 
             Post("/pkg/unpack", async x =>
             {
+#if !DEBUG
                 var user = Helpers.UserAuth(Request);
                 if (user == null)
                     return Response.AsJson(new APIResponse<string>() { Message = "Authentication error." });
+#endif
 
                 byte[] body = new byte[Request.Body.Length];
                 Request.Body.Read(body, 0, body.Length);
@@ -330,7 +332,45 @@ namespace Qserver.External.HTTP.Nancy
                     Result = result
                 });
             });
-            #endregion
+
+            Post("/pga/unpack", async =>
+            {
+#if !DEBUG
+                var user = Helpers.UserAuth(Request);
+                if (user == null)
+                    return Response.AsJson(new APIResponse<string>() { Message = "Authentication error." });
+#endif
+
+                byte[] body = new byte[Request.Body.Length];
+                Request.Body.Read(body, 0, body.Length);
+
+                bool useBase64 = Request.Query["base64"] != null;
+
+                if (body.Length < 0x88)
+                    return Response.AsJson(new APIResponse<string>() { Message = "Invalid file format." });
+
+                PkgUnpackAPI result;
+
+                try
+                {
+                    result = pkg.PackPkg(body);
+                    if (useBase64)
+                    {
+                        for (int i = 0; i < result.Contents.Length; i++)
+                            result.Contents[i] = Convert.ToBase64String(Encoding.UTF8.GetBytes(result.Contents[i]));
+                    }
+                }
+                catch (Exception e)
+                {
+                    return Response.AsJson(new APIResponse<string>() { Message = "Unknown error while packing." });
+                }
+
+                return Response.AsJson(new APIResponse<PkgUnpackAPI>()
+                {
+                    Result = result
+                });
+            });
+#endregion
         }
     }
 }

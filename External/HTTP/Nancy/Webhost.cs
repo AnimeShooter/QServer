@@ -297,9 +297,9 @@ namespace Qserver.External.HTTP.Nancy
 
             Post("/pkg/unpack", async x =>
             {
-                //var user = Helpers.UserAuth(Request);
-                //if (user == null)
-                //    return Response.AsJson(new APIResponse<string>() { Message = "Authentication error." });
+                var user = Helpers.UserAuth(Request);
+                if (user == null)
+                    return Response.AsJson(new APIResponse<string>() { Message = "Authentication error." });
 
                 byte[] body = new byte[Request.Body.Length];
                 Request.Body.Read(body, 0, body.Length);

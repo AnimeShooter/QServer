@@ -68,14 +68,13 @@ namespace Qserver.External.HTTP.API
             byte[] bout = new byte[size];
             //byte[] bin; // edi
             int index; // ecx
-            int v5; // edi
+            int v5 = (size / 4) *4; // Takes chunks of 4 bbytes
             int index_2; // eax
             int v7; // esi
             int in2;
 
             if (size / 4 > 0)
             {
-                v5 = (size / 4) * 4; // Takes chunks of 4 bbytes
                 for (int i = 0; i < v5; i += 4)
                 {
                     // Read and NOT
@@ -94,9 +93,9 @@ namespace Qserver.External.HTTP.API
                 }
             }
             // NOTE: fixed the last few bytes after 4th
-            //index_2 = size % 4;
-            //for(int i = (size / 4) + (size % 4); i < size; i++)
-            //    bout[i] = bin[i]; //*(byte*)index_2 = *((byte*)bin + index_2 - out);
+            index_2 = size % 4;
+            for (int i = v5; i < size; i++)
+                bout[i] = bin[i]; //*(byte*)index_2 = *((byte*)bin + index_2 - out);
 
             return bout;
         }

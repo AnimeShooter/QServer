@@ -295,27 +295,34 @@ namespace Qserver.External.HTTP.Nancy
                 return response;
             });
 
-            Get("/pkg/unpack", async x =>
+            Post("/pkg/unpack", async x =>
             {
-                var user = Helpers.UserAuth(Request);
-                if (user == null)
-                    return Response.AsJson(new APIResponse<string>() { Message = "Authentication error." });
+                //var user = Helpers.UserAuth(Request);
+                //if (user == null)
+                //    return Response.AsJson(new APIResponse<string>() { Message = "Authentication error." });
 
                 byte[] body = new byte[Request.Body.Length];
                 Request.Body.Read(body, 0, body.Length);
 
+                bool useBase64 = Request.Query["base64"] != null;
+
                 if (body.Length < 0x88)
-                    return new Response().StatusCode = HttpStatusCode.BadRequest;
+                    return Response.AsJson(new APIResponse<string>() { Message = "Invalid file format." });
 
                 PkgUnpackAPI result;
 
                 try
                 {
                     result = pkg.UnpackPkg(body);
+                    if(useBase64)
+                    {
+                        for(int i = 0; i < result.Contents.Length;  i++)
+                            result.Contents[i] = Convert.ToBase64String(Encoding.UTF8.GetBytes(result.Contents[i]));
+                    }
                 }
                 catch (Exception e)
                 {
-                    return new Response().StatusCode = HttpStatusCode.BadRequest;
+                    return Response.AsJson(new APIResponse<string>() { Message = "Unknown error while unpacking." });
                 }
 
                 return Response.AsJson(new APIResponse<PkgUnpackAPI>()

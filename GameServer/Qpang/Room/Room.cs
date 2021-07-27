@@ -360,6 +360,15 @@ namespace Qserver.GameServer.Qpang
             return true;
         }
 
+        public RoomPlayer GetPlayer(uint id)
+        {
+            lock(this._lock)
+                if (this._players.ContainsKey(id))
+                    return this._players[id];    
+
+            return null;
+        }
+
         public uint FindNewMaster()
         {
             lock (this._lock)

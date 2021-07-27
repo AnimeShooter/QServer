@@ -640,5 +640,38 @@ namespace Qserver.GameServer.Qpang
             }
         }
 
+
+        //
+        public void Relay()
+        {
+            // TODO
+        }
+
+        public void RelayExcept<T>(uint playerId, T e)
+        {
+            // TODO
+        }
+
+        public void RelayPlaying<T>(T e)
+        {
+            // TODO
+        }
+
+        public void RelayPlayingExcept<T>(uint playerId, T e)
+        {
+            // TODO
+        }
+
+        public void RelayState()
+        {
+            // TODO
+            lock(this._lockPlayers)
+            {
+                //foreach(var p in  this._players)
+                //    p.Value.Post(new GCGameState(p.Key, ))
+            }
+        }
+
+
     }
 }

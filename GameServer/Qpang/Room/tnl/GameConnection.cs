@@ -24,8 +24,15 @@ namespace Qserver.GameServer.Qpang
         {
             ImplementNetConnection(out _dynClassRep, out _connRep, true);
 
+            CCCharm.RegisterNetClassReps();
+            CCUserInfo.RegisterNetClassReps();
             CGArrangedComplete.RegisterNetClassReps();
+            CGArrangedReject.RegisterNetClassReps();
             CGAuth.RegisterNetClassReps();
+            CGCard.RegisterNetClassReps();
+            CGCharm.RegisterNetClassReps();
+            CGEssence.RegisterNetClassReps();
+            CGExit.RegisterNetClassReps();
             CGRoom.RegisterNetClassReps();
             CGRoomInfo.RegisterNetClassReps();
 

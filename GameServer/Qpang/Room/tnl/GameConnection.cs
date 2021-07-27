@@ -42,6 +42,11 @@ namespace Qserver.GameServer.Qpang
             GCArrangedAccept.RegisterNetClassReps();
             GCArrangedConn.RegisterNetClassReps();
             GCCard.RegisterNetClassReps();
+            GCCharm.RegisterNetClassReps();
+            GCDisconnect.RegisterNetClassReps();
+            GCEssence.RegisterNetClassReps();
+            GCExit.RegisterNetClassReps();
+            GCJoin.RegisterNetClassReps();
             GCRoom.RegisterNetClassReps();
             GCRoomInfo.RegisterNetClassReps();
 

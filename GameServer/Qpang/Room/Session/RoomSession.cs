@@ -51,6 +51,22 @@ namespace Qserver.GameServer.Qpang
             get { return this._gameMode; }
         }
 
+        public GameItemManager ItemManager
+        {
+            get { return this._itemManager; }
+        }
+
+        //public RoomSkillManager SkillManager
+        //{
+        //    get { return this._skillManager; }
+        //}
+
+        public Room Room
+        {
+            get { return this._room; }
+        }
+
+
         public RoomSession(Room room, GameMode mode)
         {
             this._lockPlayers = new object();

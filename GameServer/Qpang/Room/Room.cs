@@ -90,6 +90,10 @@ namespace Qserver.GameServer.Qpang
         {
             get { return this._modeManager; }
         }
+        public RoomSession RoomSession 
+        {
+            get { return this._roomSession; }
+        }
         public byte State
         {
             get { return this._state; }
@@ -271,6 +275,23 @@ namespace Qserver.GameServer.Qpang
                     }
                     else
                         p.Value.Conn.StartGameButNotReady();
+                }
+            }
+        }
+
+        public void SyncPlayers(RoomPlayer player)
+        {
+            lock(this._lock)
+            {
+                player.Conn.PostNetEvent(new GCJoin(player));
+                foreach(var  p in this._players)
+                {
+                    if(player != p.Value)
+                    {
+                        if (!p.Value.Playing)
+                            p.Value.Conn.PostNetEvent(new GCJoin(player));
+                        p.Value.Conn.PostNetEvent(new GCJoin(p.Value));
+                    }
                 }
             }
         }
@@ -501,6 +522,27 @@ namespace Qserver.GameServer.Qpang
                         teamCount++;
 
             return teamCount * 2 < this._maxPlayers;
+        }
+
+
+
+        //
+        public void Broadcast<T>(T e)  // TODO
+        {
+            lock(this._lock)
+            {
+                //foreach (var p in this._players)
+                //    p.Value.Conn.PostNetEvent(new T());
+            }
+        }
+
+
+        public void BroadcastWaiting<T>(T e) // TODO
+        {
+            lock(this._lock)
+            {
+
+            }
         }
     }
 }

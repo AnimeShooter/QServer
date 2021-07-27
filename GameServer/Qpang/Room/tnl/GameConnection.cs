@@ -33,6 +33,8 @@ namespace Qserver.GameServer.Qpang
             CGCharm.RegisterNetClassReps();
             CGEssence.RegisterNetClassReps();
             CGExit.RegisterNetClassReps();
+            CGGameItem.RegisterNetClassReps();
+            CGGameState.RegisterNetClassReps();
             CGRoom.RegisterNetClassReps();
             CGRoomInfo.RegisterNetClassReps();
 

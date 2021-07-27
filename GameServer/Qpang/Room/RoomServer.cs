@@ -44,15 +44,15 @@ namespace Qserver.GameServer.Qpang
                 {
                     try
                     {
-                        this._gameNetInterface.ProcessConnections();
-                        this._gameNetInterface.CheckIncomingPackets();
-                        Tick();
-                        Thread.Sleep(1); // dont fry the CPU
+                        this._gameNetInterface.ProcessConnections(); // sending packets
+                        this._gameNetInterface.CheckIncomingPackets(); // receiving packets
+                        Tick(); // update room server
                     }catch(Exception ex)
                     {
                         Log.Message(LogType.ERROR, ex.ToString());
                     }
                 }
+                Thread.Sleep(1); // dont fry the CPU
             }
         }
         public void Tick()

@@ -155,7 +155,7 @@ namespace TNL.Entities
 
         protected uint ComputeClientIdentityToken(IPEndPoint address, Nonce theNonce)
         {
-            var buff = new byte[40];
+            var buff = new byte[40] { 0x67, 0xE6, 0x09, 0x6A, 0x85, 0xAE, 0x67, 0xBB, 0x72, 0xF3, 0x6E, 0x3C, 0x3A, 0xF5, 0x4F, 0xA5, 0x7F, 0x52, 0x0E, 0x51, 0x8C, 0x68, 0x05, 0x9B, 0xAB, 0xD9, 0x83, 0x1F, 0x19, 0xCD, 0xE0, 0x5B,0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
 
             Array.Copy(BitConverter.GetBytes(address.Port), 0, buff, 0, 4); // Port instead of transport + port
             Array.Copy(address.Address.GetAddressBytes(), 0, buff, 4, 4);
@@ -164,6 +164,18 @@ namespace TNL.Entities
 
             return BitConverter.ToUInt32(new SHA256Managed().ComputeHash(buff), 0);
         }
+        
+        //protected uint ComputeClientIdentityToken(IPEndPoint address, Nonce theNonce)
+        //{
+        //    var buff = new byte[40];
+
+        //    Array.Copy(BitConverter.GetBytes(address.Port), 0, buff, 0, 4); // Port instead of transport + port
+        //    Array.Copy(address.Address.GetAddressBytes(), 0, buff, 4, 4);
+        //    Array.Copy(theNonce.Data, 0, buff, 20, 8);
+        //    Array.Copy(RandomHashData, 0, buff, 28, 12);
+
+        //    return BitConverter.ToUInt32(new SHA256Managed().ComputeHash(buff), 0);
+        //}
 
         protected NetConnection FindPendingConnection(IPEndPoint address)
         {
@@ -341,6 +353,8 @@ namespace TNL.Entities
         {
             if ((stream.GetBuffer()[0] & 0x80) != 0)
             {
+                // NetInterface::processPacket dispatches the non game info or connection packet to the appropriate
+                // NetConnection by looking up the source address and calling readRawPacket
                 if (Connections.TryGetValue(sourceAddress, out NetConnection nc) && nc != null)
                     nc.ReadRawPacket(stream);
             }
@@ -452,7 +466,8 @@ namespace TNL.Entities
 
             clientNonce.Write(stream);
 
-            var identityToken = ComputeClientIdentityToken(addr, clientNonce);
+            var identityToken = ComputeClientIdentityToken(addr, clientNonce); //  NOTE: correct?
+            //identityToken = 0x123331; // false hash results in same behavior
             stream.Write(identityToken);
 
             PuzzleManager.CurrentNonce.Write(stream);

@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 
+// debug
+using System.IO;
+
 namespace TNL.Network
 {
     public enum NetError
@@ -21,6 +24,8 @@ namespace TNL.Network
         private readonly UdpClient _socket;
 
         public Queue<Tuple<IPEndPoint, byte[]>> PacketsToBeHandled = new();
+
+        private static object flock = new object();
 
         public TNLSocket()
         {
@@ -42,6 +47,17 @@ namespace TNL.Network
                 var ep = new IPEndPoint(0, 0);
 
                 var buff = _socket.EndReceive(result, ref ep);
+
+                // debug
+                lock(flock)
+                {
+                    string bytes = BitConverter.ToString(buff);
+                    if (!File.Exists("debug.txt"))
+                        File.Create("debug.txt").Close();
+                    string old = File.ReadAllText("debug.txt");
+                    File.WriteAllText("debug.txt", old + bytes + "\r\n");
+                }
+               
 
                 if (buff != null && buff.Length > 0)
                     PacketsToBeHandled.Enqueue(new(ep, buff));
@@ -79,6 +95,16 @@ namespace TNL.Network
         {
             try
             {
+                // debug
+                lock (flock)
+                {
+                    string bytes = BitConverter.ToString(buffer, 0, (int)bufferSize);
+                    if (!File.Exists("debug.txt"))
+                        File.Create("debug.txt").Close();
+                    string old = File.ReadAllText("debug.txt");
+                    File.WriteAllText("debug.txt", old + bytes + "\r\n");
+                }
+
                 _socket.BeginSend(buffer, (int) bufferSize, iep, OnEndSend, null);
 
                 return NetError.NoError;

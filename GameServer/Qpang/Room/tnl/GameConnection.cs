@@ -20,7 +20,7 @@ namespace Qserver.GameServer.Qpang
             set { this._player = value; }
         }
 
-        public new static void RegisterNetClassReps()
+        public static void RegisterNetClassReps()
         {
             ImplementNetConnection(out _dynClassRep, out _connRep, true);
 
@@ -98,14 +98,14 @@ namespace Qserver.GameServer.Qpang
         public void EnterRoom(Room room)
         {
             PostNetEvent(new GCRoom(this._player.PlayerId, 9, room));
-            //PostNetEvent(new GCRoomInfo(room));
+            PostNetEvent(new GCRoomInfo(room));
 
-            //UpdateRoom(room, room.PointsGame ? 4 : 20, room.PointsGame ? room.ScorePoints : room.ScoreTime);
+            UpdateRoom(room, room.PointsGame ? (uint)4 : (uint)20, room.PointsGame ? room.ScorePoints : room.ScoreTime);
         }
 
         public void UpdateRoom(Room room, uint cmd, uint val)
         {
-            // TODO
+            PostNetEvent(new GCRoom(this._player.PlayerId, cmd, val, room));
         }
 
         public void StartLoading(Room room, RoomPlayer player)

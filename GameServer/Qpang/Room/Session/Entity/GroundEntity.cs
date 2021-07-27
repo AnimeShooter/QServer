@@ -6,8 +6,8 @@ namespace Qserver.GameServer.Qpang
 {
     struct GroundEntity
     {
-        public uint entityId;
-        public TimeSpan DestroyalTime;
+        public uint EntityId;
+        public uint DestroyalTime;
         public float X;
         public float Y;
         public float Z;

@@ -8,9 +8,9 @@ namespace Qserver.GameServer.Qpang
 {
     public class RoomSessionPlayer
     {
-        private PlayerEffectManager _effectManager;
-        private PlayerWeaponManager _weaponManager;
-        private PlayerSkillManager _skillManager;
+        private PlayerEffectManager _effectManager; // TODO
+        private PlayerWeaponManager _weaponManager; // TODO
+        private PlayerSkillManager _skillManager; // todo
         private PlayerEntityManager _entityManager;
 
         private Position _position;
@@ -33,6 +33,7 @@ namespace Qserver.GameServer.Qpang
         private uint[] _armor = new uint[9];
 
         private object _bulletLock;
+        private object _playerLock;
 
         private bool _hasQuickRevive;
         private bool _isInvincible;
@@ -88,6 +89,25 @@ namespace Qserver.GameServer.Qpang
         {
             get { return this._eventItemPickUps; }
             set { this._eventItemPickUps = value; }
+        }
+
+        public bool Invincible
+        {
+            get { return _isInvincible; }
+        }
+
+        public ushort Health
+        {
+            get { return this._health; }
+        }
+        public ushort BonusHealth
+        {
+            get { return this._bonusHealth; }
+        }
+
+        public bool Death
+        {
+            get { return this._health <= 0; }
         }
 
         public bool Playing
@@ -207,13 +227,13 @@ namespace Qserver.GameServer.Qpang
                 this._skillManager.Tick();
             }
 
-            //var removeInvincible = this._invincibleRemovalTime <= Util.Util.Timestamp() && this._isInvincible;
-            //if (removeInvincible)
-            //    RemoveInvincibility();
+            var removeInvincible = this._invincibleRemovalTime <= Util.Util.Timestamp() && this._isInvincible;
+            if (removeInvincible)
+                RemoveInvincibility();
 
-            //var needRespawn = this._respawnTime <= Util.Util.Timestamp() && this._isRespawning;
-            //if (needRespawn)
-            //    Respawn();
+            var needRespawn = this._respawnTime <= Util.Util.Timestamp() && this._isRespawning;
+            if (needRespawn)
+                Respawn();
 
         }
 
@@ -269,7 +289,7 @@ namespace Qserver.GameServer.Qpang
             //this._conn.AddSession(player);
         }
 
-        public void AddHealth(ushort health, bool updateClient)
+        public void AddHealth(ushort health, bool updateClient = false)
         {
             if (this._health > this._baseHealth + this._bonusHealth)
                 return;
@@ -283,7 +303,7 @@ namespace Qserver.GameServer.Qpang
             SetHealth(this._health += health, updateClient);
         }
 
-        public void TakeHealth(ushort health, bool updateClient)
+        public void TakeHealth(ushort health, bool updateClient = false)
         {
             if (health > this._health)
                 SetHealth(0, updateClient);
@@ -294,19 +314,14 @@ namespace Qserver.GameServer.Qpang
         public void SetHealth(ushort health, bool updateClient = false)
         {
             this._health = health;
-            //if (updateClient)
-            //    Post(new GCGameState(this._conn.Player.PlayerId, 16, this._health));
-        }
-
-        public bool IsDead()
-        {
-            return this._health <= 0;
+            if (updateClient)
+                Post(new GCGameState(this._conn.Player.PlayerId, 16, this._health));
         }
 
         public void Respawn()
         {
             this._isRespawning = true;
-            //this._roomSession.SpawnPlayer(this);
+            this._roomSession.SpawnPlayer(this);
         }
 
         public void StartRespawnCooldown()
@@ -342,8 +357,8 @@ namespace Qserver.GameServer.Qpang
             don += (uint)(10 * this._eventItemPickUps);
             don += playtimeDon;
 
-            //if (this._roomSession.GameMode.IsMissionMode())
-            //    don += this._score;
+            if (this._roomSession.GameMode.IsMissionMode())
+                don += this._score;
             float bonus = this._donRate / 100f;
             don += (uint)(don * bonus);
             return don;

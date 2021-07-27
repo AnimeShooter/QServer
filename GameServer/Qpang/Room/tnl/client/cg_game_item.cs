@@ -67,7 +67,7 @@ namespace Qserver.GameServer.Qpang
             if (roomSessionPlayer == null)
                 return;
 
-            if (roomSessionPlayer.IsDead())
+            if (roomSessionPlayer.Death)
                 return;
 
             // TODO

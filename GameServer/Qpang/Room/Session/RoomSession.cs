@@ -66,6 +66,24 @@ namespace Qserver.GameServer.Qpang
             get { return this._room; }
         }
 
+        public RoomSessionPlayer EssenceHolder
+        {
+            get { return this._essenceHolder; }
+            set 
+            { 
+                this._essenceHolder = value;
+                if (value != null)
+                    this._essenceDropTime = uint.MaxValue;
+                else
+                    this._essenceDropTime = Util.Util.Timestamp();
+            }
+        }
+
+        public Spawn EssencePosition
+        {
+            get { return this._essencePosition; }
+            set { this._essencePosition = value; }
+        }
 
         public RoomSession(Room room, GameMode mode)
         {
@@ -133,7 +151,7 @@ namespace Qserver.GameServer.Qpang
             }
             
             var spawn = Game.Instance.SpawnManager.GetRandomSpawn(this._room.Map, team);
-            //player.Post(new GCGameState(player.Player.PlayerId, 11, 0)); // waiting for players
+            player.Post(new GCGameState(player.Player.PlayerId, 11, 0)); // waiting for players
             //player.Post(new GCRespawn(player.Player.PlayerId, player.Character, 1, spawn.X, spawn.Y, spawn.X));
             
             if(!player.Spectating)
@@ -219,6 +237,15 @@ namespace Qserver.GameServer.Qpang
                 }
             }
             return true;
+        }
+
+        public RoomSessionPlayer Find(uint playerId)
+        {
+            lock(this._lockPlayers)
+                if (this._players.ContainsKey(playerId))
+                    return this._players[playerId];
+            
+            return null;
         }
 
         public List<RoomSessionPlayer> GetPlayers()
@@ -503,7 +530,7 @@ namespace Qserver.GameServer.Qpang
         {
             if (this._nexBlueVIP == null)
                 return false;
-            return this._nexBlueVIP.IsDead();
+            return this._nexBlueVIP.Death;
         }
 
         public void SetBlueVip(RoomSessionPlayer player)
@@ -534,7 +561,7 @@ namespace Qserver.GameServer.Qpang
         {
             if (this._nexYellowVIP == null)
                 return false;
-            return this._nexYellowVIP.IsDead();
+            return this._nexYellowVIP.Death;
         }
 
         public void SetYellowVip(RoomSessionPlayer player)
@@ -572,9 +599,9 @@ namespace Qserver.GameServer.Qpang
             if(this._room.Mode == GameMode.Mode.VIP)
             {
                 // decide who s VIP at respawning
-                if ((this._blueVIP == null && player.Team == 1) || (player == this._nexBlueVIP && (GetElapsedBlueVipTime() > 100) || this._blueVIP.IsDead()))
+                if ((this._blueVIP == null && player.Team == 1) || (player == this._nexBlueVIP && (GetElapsedBlueVipTime() > 100) || this._blueVIP.Death))
                     SetBlueVip(player);
-                else if ((this._yellowVIP == null && player.Team == 2) || (player == this._nexYellowVIP && (GetElapsedYellowVipTime() > 100) || this._yellowVIP.IsDead()))
+                else if ((this._yellowVIP == null && player.Team == 2) || (player == this._nexYellowVIP && (GetElapsedYellowVipTime() > 100) || this._yellowVIP.Death))
                     SetYellowVip(player);
             }
 
@@ -641,7 +668,7 @@ namespace Qserver.GameServer.Qpang
                     if (p.Value.Spectating || p.Value.Player.Rank == 3 && this._room.EventRoom) // NOTE: rank 3 is special event?
                         continue;
 
-                    if(p.Value.Team == team && (noConditions || (p.Value.IsDead() && p.Value != this._blueVIP && p.Value != this._yellowVIP)))
+                    if(p.Value.Team == team && (noConditions || (p.Value.Death && p.Value != this._blueVIP && p.Value != this._yellowVIP)))
                     {
                         players.Add(p.Value);
                         playerCount++;

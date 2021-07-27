@@ -172,13 +172,13 @@ namespace Qserver.GameServer.Qpang
                 else if (player == this._yellowVIP)
                     this._yellowVIP = null;
 
-                //if (player.Playing)
-                //    Relay<GCGameState>(id, 15);
-                //else
-                //{
-                //    RelayPlaying<GCGameState>(id, 15);
-                //    player.Post(new GCGameState(id, 15));
-                //}
+                if (player.Playing)
+                    Relay<GCGameState>(id, 15);
+                else
+                {
+                    RelayPlaying<GCGameState>(id, 15);
+                    player.Post(new GCGameState(id, 15));
+                }
 
                 this._players.Remove(id);
             }
@@ -658,22 +658,24 @@ namespace Qserver.GameServer.Qpang
 
 
         //
-        public void Relay()
+        public void Relay<T>(params object[] args)
         {
             // TODO
         }
 
-        public void RelayExcept<T>(uint playerId, T e)
+        public void RelayExcept<T>(uint playerId, params object[] args)
         {
             // TODO
         }
 
-        public void RelayPlaying<T>(T e)
+        public void RelayPlaying<T>(params object[] args)
         {
-            // TODO
+            Type[] types = args.Select(x => x.GetType()).ToArray();
+            var ctor = typeof(T).GetConstructor(types);
+            ctor.Invoke(args);
         }
 
-        public void RelayPlayingExcept<T>(uint playerId, T e)
+        public void RelayPlayingExcept<T>(uint playerId, object[] args)
         {
             // TODO
         }

@@ -24,6 +24,7 @@ namespace Qserver.GameServer.Qpang
         {
             ImplementNetConnection(out _dynClassRep, out _connRep, true);
 
+            // Client
             CCCharm.RegisterNetClassReps();
             CCUserInfo.RegisterNetClassReps();
             CGArrangedComplete.RegisterNetClassReps();
@@ -37,12 +38,27 @@ namespace Qserver.GameServer.Qpang
             CGGameState.RegisterNetClassReps();
             CGHit.RegisterNetClassReps();
             CGHitEssence.RegisterNetClassReps();
+            CGLog.RegisterNetClassReps();
+            CGMapObject.RegisterNetClassReps();
+            CGMesg.RegisterNetClassReps();
+            CGMotion.RegisterNetClassReps();
+            CGMove.RegisterNetClassReps();
+            CGMoveReport.RegisterNetClassReps();
+            CGPlayerChange.RegisterNetClassReps();
+            CGReady.RegisterNetClassReps();
+            CGRespawn.RegisterNetClassReps();
             CGRoom.RegisterNetClassReps();
             CGRoomInfo.RegisterNetClassReps();
-
+            CGScore.RegisterNetClassReps();
+            CGShoot.RegisterNetClassReps();
+            CGShootReport.RegisterNetClassReps();
+            CGStart.RegisterNetClassReps();
+            CGSync.RegisterNetClassReps();
+            CGTarget.RegisterNetClassReps();
+            CGWeapon.RegisterNetClassReps();
             CSRttRequest.RegisterNetClassReps();
 
-            // shit switches here bro
+            // Server
             GCArrangedAccept.RegisterNetClassReps();
             GCArrangedConn.RegisterNetClassReps();
             GCCard.RegisterNetClassReps();

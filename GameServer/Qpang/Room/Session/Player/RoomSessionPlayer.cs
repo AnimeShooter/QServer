@@ -55,6 +55,11 @@ namespace Qserver.GameServer.Qpang
 
         private GameConnection _conn;
         private RoomSession _roomSession;
+        
+        public object Lock
+        {
+            get { return this._playerLock; }
+        }
         public ushort Streak
         {
             get { return this._streak; }
@@ -186,10 +191,10 @@ namespace Qserver.GameServer.Qpang
             this._highestMultiKill = 0;
             this._eventItemPickUps = 0;
 
-            this._effectManager = new PlayerEffectManager();
-            this._weaponManager = new PlayerWeaponManager();
+            this._effectManager = new PlayerEffectManager(this);
+            this._weaponManager = new PlayerWeaponManager();  // TODO
             //this._skillManager = new PlayerSkillManager();
-            this._entityManager = new PlayerEntityManager();
+            this._entityManager = new PlayerEntityManager(this);
 
             var player = conn.Player;
 

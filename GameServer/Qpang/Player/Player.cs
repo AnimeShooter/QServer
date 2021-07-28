@@ -93,6 +93,10 @@ namespace Qserver.GameServer.Qpang
         {
             get { return this._achievementContainer; }
         }
+        public object Lock
+        {
+            get { return this._lock; }
+        }
         public uint PlayerId
         {
             get { return this._playerId; }

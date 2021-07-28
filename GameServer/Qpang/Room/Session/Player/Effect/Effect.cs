@@ -4,7 +4,10 @@ using System.Text;
 
 namespace Qserver.GameServer.Qpang
 {
-    public class Effect
+    public struct Effect
     {
+        public uint EntityId;
+        public Weapon Weapon;
+        public RoomSessionPlayer Target;
     }
 }

@@ -24,6 +24,7 @@ namespace Qserver.GameServer.Qpang
         {
             this._id = id;
             this._killCount = 0;
+            this._hitPlayers = new List<uint>();
         }
 
         bool IsPlayerValidForHit(uint playerId)

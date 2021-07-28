@@ -31,26 +31,45 @@ namespace Qserver.GameServer.Qpang
                 this._skillPoints = 0;
             else
                 this._skillPoints -= amount;
-            lock(this._lock)
-            {
-                //if (this._player != null)
-                //    this._player.Post(new GCCard(this._player.Player.PlayerId, this._skillPoints & 100, this._skillPoints / 100)); // TODO
-            }
+
+            lock(this._player.Lock)
+                if (this._player != null)
+                    this._player.Post(new GCCard(this._player.Player.PlayerId, this._skillPoints % 100, this._skillPoints / 100));
         }
 
         public void AddSkillPoints(uint amount = 100)
         {
+            this._skillPoints += amount;
 
+            lock (this._player.Lock)
+                if (this._player != null)
+                    this._player.Post(new GCCard(this._player.Player.PlayerId, this._skillPoints % 100, this._skillPoints / 100));
+            
         }
 
         public void ResetPoints()
         {
+            this._skillPoints = 0;
 
+            lock (this._player.Lock)
+                if (this._player != null)
+                    this._player.Post(new GCCard(this._player.Player.PlayerId, 0, 0));
+            
         }
 
         public uint DrawSkill()
         {
-            return 0;
+            if (this._player == null)
+                return 0;
+
+            lock(this._player.Lock)
+            {
+                this._drawnSkillCard = this._player.RoomSession.SkillManager.GenerateRandomSkill();
+                // TODO
+                //this._drawnSkillCard.bind(this._player);
+            }
+
+            return 0; // TODO // this._drawnSkillCard.Id;
         }
     }
 }

@@ -28,7 +28,7 @@ namespace Qserver.GameServer.Qpang
 
         private GameMode _gameMode;
         private GameItemManager _itemManager;
-        private PlayerSkillManager _skillManager;
+        private RoomSkillManager _skillManager;
 
         private object _playerlock; // NOTE: multiple locks?
         private Dictionary<uint, RoomSessionPlayer> _players;
@@ -56,10 +56,10 @@ namespace Qserver.GameServer.Qpang
             get { return this._itemManager; }
         }
 
-        //public RoomSkillManager SkillManager
-        //{
-        //    get { return this._skillManager; }
-        //}
+        public RoomSkillManager SkillManager
+        {
+            get { return this._skillManager; }
+        }
 
         public bool Finished
         {

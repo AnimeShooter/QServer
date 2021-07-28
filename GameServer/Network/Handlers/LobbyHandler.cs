@@ -363,6 +363,17 @@ namespace Qserver.GameServer.Network.Handlers
             player.SendLobby(LobbyManager.Instance.UseCrainSuccess(player, cards));
 
         }
+        public static void HandleRedeemCode(PacketReader packet, ConnServer manager)
+        {
+            byte[] key = packet.ReadBytes(14);
+            packet.ReadBytes(15);  // unk
+
+            //  handle code
+            bool status = Game.Instance.CouponManager.ConsumeCoupon(manager.Player, Encoding.ASCII.GetString(key));
+
+            // TODO: reverse responses to send feedback!
+            //manager.Send(LobbyManger.)
+        } 
         #endregion
 
         #region Player

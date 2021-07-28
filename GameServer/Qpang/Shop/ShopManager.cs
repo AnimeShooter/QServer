@@ -86,7 +86,7 @@ namespace Qserver.GameServer.Qpang
             var card = InventoryCard.FromShopItem(shopItem);
 
             // db register purchase
-            card.Id = Game.Instance.ItemsRepository.PurchaseItem(card, player).Result;
+            card.Id = Game.Instance.ItemsRepository.CreateItem(card, player).Result;
 
             card.PlayerOwnedId = player.PlayerId;
             if (shopItem.IsCash)

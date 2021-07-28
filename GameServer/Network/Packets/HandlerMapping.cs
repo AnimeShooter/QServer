@@ -52,6 +52,7 @@ namespace Qserver.GameServer.Packets
                 PacketManager.DefineOpcodeHandler((Opcode)834, LobbyHandler.HandleEnableFunctionCardEvent);
                 PacketManager.DefineOpcodeHandler((Opcode)841, LobbyHandler.HandleResetWinLossEvent);
                 PacketManager.DefineOpcodeHandler((Opcode)844, LobbyHandler.HandleRestKillDeathEvent);
+                PacketManager.DefineOpcodeHandler(Opcode.LOBBY_REDEEM_CODE, LobbyHandler.HandleRedeemCode);
                 PacketManager.DefineOpcodeHandler((Opcode)861, LobbyHandler.HandleDisableFunctionCardEvent);
                 PacketManager.DefineOpcodeHandler((Opcode)897, LobbyHandler.HandleUseCraneEvent);
 

@@ -23,8 +23,7 @@ namespace Qserver.GameServer.Database.Repositories
             public ushort coins;
             public uint experience;
             public byte is_muted;
-            public DateTime created_at;
-            public DateTime updated_at;
+            public string discordId;
         }
 
         public struct DBPlayerStats
@@ -62,7 +61,7 @@ namespace Qserver.GameServer.Database.Repositories
         {
             Task<IEnumerable<DBPlayer>> items = null;
             await _sqlObjectFactory.GetConnection().UsingAsync(connection =>
-                items = connection.QueryAsync<DBPlayer>("SELECT id, user_id, name, default_character, rank, prestige, level, don, cash, coins, experience, is_muted, created_at, updated_at FROM players WHERE id = @Id", new { Id = id }));
+                items = connection.QueryAsync<DBPlayer>("SELECT id, user_id, name, default_character, rank, prestige, level, don, cash, coins, experience, is_muted FROM players WHERE id = @Id", new { Id = id }));
             return items.Result.FirstOrDefault();
         }
 
@@ -70,7 +69,7 @@ namespace Qserver.GameServer.Database.Repositories
         {
             Task<IEnumerable<DBPlayer>> items = null;
             await _sqlObjectFactory.GetConnection().UsingAsync(connection =>
-                items = connection.QueryAsync<DBPlayer>("SELECT id, user_id, name, default_character, rank, prestige, level, don, cash, coins, experience, is_muted, created_at, updated_at FROM players WHERE user_id = @Id", new { Id = id }));
+                items = connection.QueryAsync<DBPlayer>("SELECT id, user_id, name, default_character, rank, prestige, level, don, cash, coins, experience, is_muted, discordId FROM players WHERE user_id = @Id", new { Id = id }));
             return items.Result.FirstOrDefault();
         }
 
@@ -80,6 +79,13 @@ namespace Qserver.GameServer.Database.Repositories
                 connection.QueryAsync("UPDATE players SET default_character = @DefaultCharacter, don = @Don, cash = @Cash, coins = @Coins, level = @Level, prestige = @Prestige, experience = @Experience WHERE id = @Id",
                 new { DefaultCharacter = player.Character, Don = player.Don, Cash = player.Cash, Coins = player.Coins, Level = player.Level, Prestige = player.Prestige, Experience = player.Experience, Id = player.PlayerId }));
         }
+
+        // TODO move to users
+        //public async Task UpdatePlayerDiscordId(string discordId)
+        //{
+        //    await _sqlObjectFactory.GetConnection().UsingAsync(connection =>
+        //        connection.QueryAsync("UPDATE players SET discordId = @DiscordId WHERE id = @Id", new { DiscordId = discordId }));
+        //}
 
         public async Task<DBPlayerStats> GetPlayerStats(uint playerId)
         {
@@ -145,6 +151,14 @@ namespace Qserver.GameServer.Database.Repositories
             await _sqlObjectFactory.GetConnection().UsingAsync(connection =>
                 connection.QueryAsync("INSERT INTO player_equipment (player_id, character_id, melee, `primary`, secondary, throw, head, face, body, hands, legs, shoes, back, side) VALUES (@Playerid, @Characterid, 0, 0, 0, 0, 0 ,0, 0, 0, 0, 0, 0, 0);",
                 new { Playerid = playerid, Characterid = characterid }));
+        }
+
+        public async Task<List<DBPlayer>> GetLeaderboardPlayers()
+        {
+            Task<IEnumerable<DBPlayer>> players = null;
+            await _sqlObjectFactory.GetConnection().UsingAsync(connection =>
+                players = connection.QueryAsync<DBPlayer>("SELECT id, experience FROM players ORDER BY experience DESC LIMIT 500")); // NOTE: limit 500 to prevent DoS?
+            return players.Result.ToList();
         }
 
         // Load

@@ -126,7 +126,7 @@ namespace Qserver.GameServer.Database.Repositories
 			return;
 		}
 
-		public async Task<ulong> PurchaseItem(InventoryCard card, Player player)
+		public async Task<ulong> CreateItem(InventoryCard card, Player player)
 		{
 			Task<ulong> items = null;
 			await _sqlObjectFactory.GetConnection().UsingAsync(connection =>

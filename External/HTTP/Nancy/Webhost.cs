@@ -85,7 +85,7 @@ namespace Qserver.External.HTTP.Nancy
                         PlayerOwnedId = you.PlayerId,
                         Type = 87
                     };
-                    Game.Instance.ItemsRepository.PurchaseItem(card, you).GetAwaiter().GetResult();
+                    Game.Instance.ItemsRepository.CreateItem(card, you).GetAwaiter().GetResult();
                 }   
 
                 var res = Response.AsJson(new APIResponse<PlayerAPI>()

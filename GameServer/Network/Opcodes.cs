@@ -161,6 +161,8 @@ namespace Qserver.GameServer.Network
 		LOBBY_RECORD_CLEAR_FAIL = 840,
 		LOBBY_KILL_DEATH_CLEAR_FAIL = 843,
 
+		LOBBY_REDEEM_CODE = 851,
+
 		// 854 // bidyy pending
 
 		LOBBY_RECEIVE_GM_INVITE = 857,

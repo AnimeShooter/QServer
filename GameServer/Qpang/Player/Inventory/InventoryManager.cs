@@ -223,7 +223,7 @@ namespace Qserver.GameServer.Qpang
             return this._cards.Count + this._gifts.Count < 200;
         }
 
-        public void GiftCard(InventoryCard card, Player player)
+        public void GiftCard(InventoryCard card, Player target)
         {
             lock(this._lock)
             {
@@ -233,12 +233,12 @@ namespace Qserver.GameServer.Qpang
                 if (!this._cards.ContainsKey(card.Id))
                     return;
 
-                if (player.TestRealm)
+                if (target.TestRealm)
                     return; // no losing/duping cards
 
                 this._cards.Remove(card.Id);
                 card.TimeCreated = Util.Util.Timestamp();
-                player.InventoryManager.ReceiveGift(card, this._player.Name);
+                target.InventoryManager.ReceiveGift(card, this._player.Name);
 
                 this._player.SendLobby(LobbyManager.Instance.GiftCardSuccess(card.Id));
                 this._player.EquipmentManager.Save();

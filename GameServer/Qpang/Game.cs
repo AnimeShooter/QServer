@@ -41,19 +41,20 @@ namespace Qserver.GameServer.Qpang
         public static Game Instance;
 
         private RoomServer _roomServer;
-        private BanManager _banManager;
+        private BanManager _banManager; // TODO
         private ChannelManager _channelManager;
         private ShopManager _shopManager;
         private SquareManager _squareManager;
-        private CacheManager _cacheManager;
-        private ChatManager _chatManager;
+        private CacheManager _cacheManager; // TODO
+        private ChatManager _chatManager; // TODO: commands
         private RoomManager _roomManager;
         private WeaponManager _weaponManager;
-        private SpawnManager _spawnManager;
+        private SpawnManager _spawnManager; // TODO
         private SkillManager _skillManager;
-        private AchievementManager _achievementManager;
+        private AchievementManager _achievementManager; // TODO
         private LevelManager _levelManger;
         private CraneManager _craneManager;
+        private CouponManager _couponManager;
 
         private Leaderboard _leaderboard;
 
@@ -67,6 +68,7 @@ namespace Qserver.GameServer.Qpang
         private UsersRepository _usersRepository;
         private MemosRepository _memosRepository;
         private FriendsRepository _friendsRepository;
+        private CouponsRepository _couponsRepository;
 
         private QpangServer _lobbyServer; // lobby?
         private QpangServer _squareServer;
@@ -128,6 +130,10 @@ namespace Qserver.GameServer.Qpang
         {
             get { return this._craneManager; }
         }
+        public CouponManager CouponManager
+        {
+            get { return this._couponManager; }
+        }
         public Leaderboard Leaderboard
         {
             get { return this._leaderboard; }
@@ -174,6 +180,10 @@ namespace Qserver.GameServer.Qpang
         {
             get { return this._friendsRepository; }
         }
+        public CouponsRepository CouponsRepository
+        {
+            get { return this._couponsRepository; }
+        }
 
         public Game(bool lobby)
         {
@@ -202,6 +212,7 @@ namespace Qserver.GameServer.Qpang
             this._usersRepository = new UsersRepository(DatabaseManager.MySqlFactory);
             this._memosRepository = new MemosRepository(DatabaseManager.MySqlFactory);
             this._friendsRepository = new FriendsRepository(DatabaseManager.MySqlFactory);
+            this._couponsRepository = new CouponsRepository(DatabaseManager.MySqlFactory);
 
             // share
             Instance = this;
@@ -219,12 +230,15 @@ namespace Qserver.GameServer.Qpang
             this._roomManager.Create("Vet, Cool en Fun!", 4, GameMode.Mode.TDM, 0x0100007F);
             this._roomManager.Create("Kim kAm qPong?", 8, GameMode.Mode.PTE, 0x0100007F);
 
+            
             this._weaponManager = new WeaponManager();
             this._spawnManager = new SpawnManager(); // TODO, DB
             this._skillManager = new SkillManager(); // TODO
             this._levelManger = new LevelManager(); // TODO-ish
             this._craneManager = new CraneManager();
-            this._leaderboard = new Leaderboard(); // TODO
+            this._couponManager = new CouponManager();
+            this._leaderboard = new Leaderboard();
+            this._leaderboard.Refresh(); // initial update (TODO: refresh  every 12/24h?)
             this._roomServer = new RoomServer(); 
         }
 

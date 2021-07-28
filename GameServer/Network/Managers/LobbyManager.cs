@@ -700,7 +700,7 @@ namespace Qserver.GameServer.Network.Managers
             pw.WriteWString(sender, 16);
             pw.WriteUInt64(card.Id);
             pw.WriteUInt8(1);
-            pw.WriteUInt64(0); // TODO: card.TimeCreated)
+            pw.WriteUInt64(card.TimeCreated); // TODO: card.TimeCreated)
             return pw;
         }
         public PacketWriter RemoveCard(ulong cardId)
@@ -834,11 +834,9 @@ namespace Qserver.GameServer.Network.Managers
             pw.WriteUInt32(0);
             pw.WriteUInt32(1);
 
-            // TODO leaderboard
-            var leaderboardPos = 69; // Game.Instance.Leaderboard.
-
-            pw.WriteUInt32(1);
-            pw.WriteUInt32(100);
+            var leaderboardPos = Game.Instance.Leaderboard.GetPosition(player.PlayerId);
+            pw.WriteUInt32(leaderboardPos.Rank);
+            pw.WriteInt32(leaderboardPos.Difference);
 
             var achievements = player.AchievementContainer.List;
             pw.WriteUInt8((byte)achievements.Count);

@@ -25,7 +25,7 @@ namespace Qserver.GameServer.Qpang
         }
         public CGCard() : base(GameNetId.CG_CARD, GuaranteeType.GuaranteedOrdered, EventDirection.DirClientToServer) { }
 
-        public enum CMD
+        public enum Commands
         {
             ABILITY = 0x07,
             USE_CARD = 0x09

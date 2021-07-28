@@ -411,14 +411,14 @@ namespace Qserver.GameServer.Qpang
             this._modeManager.OnApply(this);
 
             UnreadyAll(true);
-            Update((uint)CGRoom.Command.MODE_ROOM, (uint)mode);
+            Update((uint)CGRoom.Commands.MODE_ROOM, (uint)mode);
 
             // this resets after chnage of mode
 
             if (this._isPointsGame)
-                Update((uint)CGRoom.Command.SET_POINTS, this._scorePoints);
+                Update((uint)CGRoom.Commands.SET_POINTS, this._scorePoints);
             else
-                Update((uint)CGRoom.Command.SET_TIME, this._scoreTime);
+                Update((uint)CGRoom.Commands.SET_TIME, this._scoreTime);
 
         }
 
@@ -428,23 +428,23 @@ namespace Qserver.GameServer.Qpang
                 return;
 
             this._map = map;
-            Update((uint)CGRoom.Command.MAP_ROOM, map);
+            Update((uint)CGRoom.Commands.MAP_ROOM, map);
         }
 
         public void SetMaxPlayers(byte maxPlayers)
         {
             this._maxPlayers = maxPlayers;
-            Update((uint)CGRoom.Command.PLAYERS_ROOM, maxPlayers);
+            Update((uint)CGRoom.Commands.PLAYERS_ROOM, maxPlayers);
         }
         public void SetScorePoints(uint points)
         {
             this._scorePoints = points;
-            Update((uint)CGRoom.Command.SET_POINTS, points);
+            Update((uint)CGRoom.Commands.SET_POINTS, points);
         }
         public void SetScoreTime(uint time)
         {
             this._scoreTime = time;
-            Update((uint)CGRoom.Command.SET_TIME, time);
+            Update((uint)CGRoom.Commands.SET_TIME, time);
         }
         public void SetPassword(string password)
         {
@@ -452,27 +452,27 @@ namespace Qserver.GameServer.Qpang
                 password = password.Substring(0, 4);
 
             this._password = password;
-            Update((uint)CGRoom.Command.PASS_ROOM, (uint)0);
+            Update((uint)CGRoom.Commands.PASS_ROOM, (uint)0);
         }
         public void SetLevelLimited(bool levelLimited)
         {
             this._isLevelLimited = levelLimited;
-            Update((uint)CGRoom.Command.LEVEL_ROOM, levelLimited ? (uint)1 : (uint)0);
+            Update((uint)CGRoom.Commands.LEVEL_ROOM, levelLimited ? (uint)1 : (uint)0);
         }
         public void SetTeamSorting(bool teamSorting)
         {
             this._isTeamSorting = teamSorting;
-            Update((uint)CGRoom.Command.TEAM_ROOM, teamSorting ? (uint)1 : (uint)0);
+            Update((uint)CGRoom.Commands.TEAM_ROOM, teamSorting ? (uint)1 : (uint)0);
         }
         public void SetSkillsEnabled(bool skillEnabled)
         {
             this._isSkillsEnabled = skillEnabled;
-            Update((uint)CGRoom.Command.TOGGLE_SKILL, skillEnabled ? (uint)1 : (uint)0);
+            Update((uint)CGRoom.Commands.TOGGLE_SKILL, skillEnabled ? (uint)1 : (uint)0);
         }
         public void SetMeleeOnly(bool meleeOnly)
         {
             this._isMeleeOnly = meleeOnly;
-            Update((uint)CGRoom.Command.TOGGLE_SKILL, meleeOnly ? (uint)1 : (uint)0);
+            Update((uint)CGRoom.Commands.TOGGLE_SKILL, meleeOnly ? (uint)1 : (uint)0);
         }
 
 

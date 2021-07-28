@@ -27,7 +27,7 @@ namespace Qserver.GameServer.Qpang
         public uint PlayerId;
         public byte unk01;
 
-        public CGStart() : base(GameNetId.GC_ARRANGED_CONN, GuaranteeType.GuaranteedOrdered, EventDirection.DirClientToServer) { }
+        public CGStart() : base(GameNetId.CG_START, GuaranteeType.GuaranteedOrdered, EventDirection.DirClientToServer) { }
 
         public override void Pack(EventConnection ps, BitStream bitStream) { }
         public override void Unpack(EventConnection ps, BitStream bitStream)

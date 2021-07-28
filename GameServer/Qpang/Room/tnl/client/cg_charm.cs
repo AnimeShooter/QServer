@@ -12,7 +12,7 @@ namespace Qserver.GameServer.Qpang
 {
     public class CGCharm : GameNetEvent
     {
-        private static NetClassRepInstance<GCArrangedConn> _dynClassRep;
+        private static NetClassRepInstance<CGCharm> _dynClassRep;
 
         public override NetClassRep GetClassRep()
         {
@@ -23,10 +23,11 @@ namespace Qserver.GameServer.Qpang
         {
             ImplementNetEvent(out _dynClassRep, "CGCharm", NetClassMask.NetClassGroupGameMask, 0);
         }
-        public CGCharm() : base(GameNetId.CG_CHARM, GuaranteeType.Guaranteed, EventDirection.DirClientToServer) { }
 
         public uint unk01;
         public uint unk02;
+
+        public CGCharm() : base(GameNetId.CG_CHARM, GuaranteeType.Guaranteed, EventDirection.DirClientToServer) { }
 
         public override void Pack(EventConnection ps, BitStream bitStream) { }
         public override void Unpack(EventConnection ps, BitStream bitStream)

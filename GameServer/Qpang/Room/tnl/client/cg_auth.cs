@@ -35,7 +35,7 @@ namespace Qserver.GameServer.Qpang
         public uint unk09;
         public uint unk10;
 
-        enum Command : uint
+        enum Commands : uint
         {
             REQUEST = 0,
             AUTHENTICATED,
@@ -43,11 +43,11 @@ namespace Qserver.GameServer.Qpang
         }
 
         public CGAuth() : base(GameNetId.CG_AUTH, GuaranteeType.Guaranteed, EventDirection.DirClientToServer) { }
-        public CGAuth(uint playerId, uint cmd) : base(GameNetId.CG_AUTH, GuaranteeType.Guaranteed, EventDirection.DirClientToServer) 
+        public CGAuth(uint playerId, uint cmd) : base(GameNetId.CG_AUTH, GuaranteeType.Guaranteed, EventDirection.DirAny) 
         {
             this.PlayerId = playerId;
             this.Cmd = cmd;
-            this.unk03 = (byte)Command.AUTHENTICATED;
+            this.unk03 = (byte)Commands.AUTHENTICATED;
         }
 
         public override void Pack(EventConnection ps, BitStream bitStream)
@@ -80,13 +80,13 @@ namespace Qserver.GameServer.Qpang
 
         public override void Handle(GameConnection conn, Player player)
         {
-            if (Cmd != (byte)Command.REQUEST)
+            if (Cmd != (byte)Commands.REQUEST)
                 return;
 
             if (Game.Instance.RoomServer.CreateConnection(PlayerId, base.GameConnection))
-                conn.PostNetEvent(new CGAuth(PlayerId, (uint)Command.AUTHENTICATED));
+                conn.PostNetEvent(new CGAuth(PlayerId, (uint)Commands.AUTHENTICATED));
             else
-                conn.PostNetEvent(new CGAuth(PlayerId, (uint)Command.FAIL));
+                conn.PostNetEvent(new CGAuth(PlayerId, (uint)Commands.FAIL));
         }
     }
 }

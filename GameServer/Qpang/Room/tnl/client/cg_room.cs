@@ -26,7 +26,7 @@ namespace Qserver.GameServer.Qpang
             ImplementNetEvent(out _dynClassRep, "CGRoom", NetClassMask.NetClassGroupGameMask, 0);
         }
 
-        public enum Command : uint
+        public enum Commands : uint
         {
             MAP_ROOM = 1,
             PLAYERS_ROOM = 2,
@@ -44,7 +44,7 @@ namespace Qserver.GameServer.Qpang
         };
 
         public uint PlayerId = 0; // 92;
-        public uint Cmd = (uint)Command.CREATE_ROOM;
+        public uint Cmd = (uint)Commands.CREATE_ROOM;
         public uint Value = 0;
         public uint Map;
         public byte Mode;
@@ -115,11 +115,11 @@ namespace Qserver.GameServer.Qpang
         }
         public override void Handle(GameConnection conn, Player player)
         {
-            switch((Command)Cmd)
+            switch((Commands)Cmd)
             {
-                case Command.CREATE_ROOM:
-                case Command.CREATE_EVENT_ROOM:
-                    if (Cmd == (uint)Command.CREATE_EVENT_ROOM && player.Rank != 3)
+                case Commands.CREATE_ROOM:
+                case Commands.CREATE_EVENT_ROOM:
+                    if (Cmd == (uint)Commands.CREATE_EVENT_ROOM && player.Rank != 3)
                     {
                         conn.Disconnect("Cannot create event room");
                         return;
@@ -140,10 +140,10 @@ namespace Qserver.GameServer.Qpang
                     }
 
                     var room = Game.Instance.RoomManager.Create(Title, (byte)Map, (GameMode.Mode)Mode);
-                    room.EventRoom = Cmd == (uint)Command.CREATE_EVENT_ROOM;
+                    room.EventRoom = Cmd == (uint)Commands.CREATE_EVENT_ROOM;
                     room.AddPlayer(conn);
                     break;
-                case Command.JOIN_ROOM:
+                case Commands.JOIN_ROOM:
                     var gameroom = Game.Instance.RoomManager.Get(RoomId);
 
                     if (gameroom == null)

@@ -24,7 +24,7 @@ namespace Qserver.GameServer.Qpang
             ImplementNetEvent(out _dynClassRep, "CGGameItem", NetClassMask.NetClassGroupGameMask, 0);
         }
 
-        public enum Command : byte
+        public enum Commands : byte
         {
             PICKUP = 1,
             SPAWN = 6,

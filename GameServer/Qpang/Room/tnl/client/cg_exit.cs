@@ -24,7 +24,7 @@ namespace Qserver.GameServer.Qpang
             ImplementNetEvent(out _dynClassRep, "CGExit", NetClassMask.NetClassGroupGameMask, 0);
         }
 
-        public enum Command : byte
+        public enum Commands : byte
         {
             LEAVE = 0,
             KICK = 1,
@@ -63,9 +63,9 @@ namespace Qserver.GameServer.Qpang
             if (player.RoomPlayer == null)
                 return;
 
-            if (Cmd == (byte)Command.LEAVE)
+            if (Cmd == (byte)Commands.LEAVE)
                 player.RoomPlayer.Room.RemovePlayer(player.PlayerId);
-            else if (Cmd == (byte)Command.KICK)
+            else if (Cmd == (byte)Commands.KICK)
             {
                 if (player.PlayerId != player.RoomPlayer.Room.MasterId)
                     return; // cannot kick master

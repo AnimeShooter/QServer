@@ -23,7 +23,7 @@ namespace Qserver.GameServer.Qpang
         {
             ImplementNetEvent(out _dynClassRep, "CGEssence", NetClassMask.NetClassGroupGameMask, 0);
         }
-        public CGEssence() : base(GameNetId.CG_ESSENCE, GuaranteeType.GuaranteedOrdered, EventDirection.DirClientToServer) { }
+        public CGEssence() : base(GameNetId.CG_ESSENCE, GuaranteeType.Guaranteed, EventDirection.DirClientToServer) { }
 
         public uint unk01;
         public uint unk02;

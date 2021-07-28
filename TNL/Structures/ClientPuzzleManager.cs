@@ -16,7 +16,7 @@ namespace TNL.Structures
     public class ClientPuzzleManager
     {
         public const uint PuzzleRefreshTime = 30000;
-        public const uint InitialPuzzleDifficulty = 17;
+        public const uint InitialPuzzleDifficulty = 6;
         public const uint MaxPuzzleDifficulty = 26;
         public const uint MaxSolutionComputeFragment = 30;
         public const uint SolutionFragmentIterations = 50000;

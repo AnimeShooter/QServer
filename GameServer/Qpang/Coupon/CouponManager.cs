@@ -40,6 +40,9 @@ namespace Qserver.GameServer
 
         public bool ConsumeCoupon(Player player, string code)
         {
+            if (player.TestRealm)
+                return false; // no rewards will be lost!
+
             lock (this._lock)
             {
                 if (!this._coupons.ContainsKey(code))
@@ -72,8 +75,9 @@ namespace Qserver.GameServer
                     player.InventoryManager.ReceiveGift(cardReward, "-");
                 }
 
-                // TODO update Coupon database
-                //this._coupons.Remove(code);
+                // Use and remove to prevent doops ;P
+                Game.Instance.CouponsRepository.UpdateCoupon(code, player.PlayerId).GetAwaiter().GetResult();
+                this._coupons.Remove(code);
             }
             return true;
         }

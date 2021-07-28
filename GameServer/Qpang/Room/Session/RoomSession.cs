@@ -61,6 +61,10 @@ namespace Qserver.GameServer.Qpang
         //    get { return this._skillManager; }
         //}
 
+        public bool Finished
+        {
+            get { return this._isFinished; }
+        }
         public Room Room
         {
             get { return this._room; }
@@ -702,7 +706,7 @@ namespace Qserver.GameServer.Qpang
             ctor.Invoke(args);
         }
 
-        public void RelayPlayingExcept<T>(uint playerId, object[] args)
+        public void RelayPlayingExcept<T>(uint playerId, params object[] args)
         {
             // TODO
         }

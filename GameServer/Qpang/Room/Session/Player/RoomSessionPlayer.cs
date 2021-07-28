@@ -134,6 +134,7 @@ namespace Qserver.GameServer.Qpang
         public Position Position
         {
             get { return this._position; }
+            set { this._position = value; }
         }
 
         public byte Team

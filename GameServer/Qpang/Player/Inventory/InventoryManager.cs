@@ -285,8 +285,7 @@ namespace Qserver.GameServer.Qpang
                 this._cards[card.Id] = card; // add to cards
                 this._gifts.Remove(cardId); // rm from gifts
 
-                // TODO: UPDATE player_items SET opened = 1 WHERE id = ?
-                
+                Game.Instance.ItemsRepository.OpenCardGift(cardId).GetAwaiter().GetResult();
 
                 this._player.SendLobby(LobbyManager.Instance.OpenGiftSuccess(this._player, card));
             }
@@ -301,10 +300,11 @@ namespace Qserver.GameServer.Qpang
             if (this._player.TestRealm)
                 return;
 
-            // TODO
             lock(this._lock)
             {
-                // TODO: UPDATE player_items SET active = ? WHERE id = ?"
+                foreach (var card in this._cards)
+                    if (ItemID.IsEquippableFunction(card.Value.ItemId))
+                        Game.Instance.ItemsRepository.SetCardActive(card.Key, card.Value.IsActive).GetAwaiter().GetResult();
             }
         }
     }

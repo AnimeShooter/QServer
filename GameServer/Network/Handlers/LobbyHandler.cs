@@ -358,7 +358,7 @@ namespace Qserver.GameServer.Network.Handlers
                 cards.Add(invCard);
             }
 
-            player.SendLobby(LobbyManager.Instance.UseCrainSuccess(player, cards));
+            player.SendLobby(LobbyManager.Instance.UseCrainSuccess(player, cards)); // TODO: fix active bug? (temp fix: relog)
 
         }
         public static void HandleRedeemCode(PacketReader packet, ConnServer manager)

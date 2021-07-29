@@ -458,13 +458,13 @@ namespace Qserver.GameServer.Network.Managers
                 pw.WriteUInt16(room.Port);
                 pw.WriteUInt32(room.Id);
                 pw.WriteBytes(new byte[2]);
-                pw.WriteWString("Kim Kam Kamel", 30); // todo
+                pw.WriteWString(room.Name, 30); 
                 pw.WriteBytes(new byte[14]);
                 pw.WriteUInt8(room.Map);
                 pw.WriteUInt8((byte)room.Mode);
                 pw.WriteUInt8(8); // pw
                 pw.WriteUInt8(room.State);
-                pw.WriteUInt8(1);// room.PlayerCount);
+                pw.WriteUInt8(room.PlayerCount);
                 pw.WriteUInt8(room.MaxPlayers);
                 pw.WriteBytes(new byte[5]);
                 pw.WriteUInt8(room.LevelLimited ? (byte)1 : (byte)0);
@@ -583,7 +583,7 @@ namespace Qserver.GameServer.Network.Managers
                 pw.WriteWString("", 16); // idk
                 pw.WriteUInt64(gift.Id);
                 pw.WriteUInt8(1);
-                pw.WriteUInt32(0); // TODO: gift.TimeCreated);
+                pw.WriteUInt32(gift.TimeCreated);
             }
             return pw;
         }
@@ -685,7 +685,7 @@ namespace Qserver.GameServer.Network.Managers
             pw.WriteWString(sender, 16);
             pw.WriteUInt64(card.Id);
             pw.WriteUInt8(1);
-            pw.WriteUInt64(card.TimeCreated); // TODO: card.TimeCreated)
+            pw.WriteUInt64(card.TimeCreated);
             return pw;
         }
         public PacketWriter RemoveCard(ulong cardId)

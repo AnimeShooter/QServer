@@ -7,7 +7,9 @@ using Qserver.GameServer.Qpang;
 
 namespace Qserver.Database.Repositories
 {
-	public struct DBItem
+
+    #region DBStructs
+    public struct DBItem
     {
 		public uint seq_id;
 		public uint item_id;
@@ -72,6 +74,7 @@ namespace Qserver.Database.Repositories
 		public ulong back;
 		public ulong side;	
 	}
+	#endregion
 
 	public class ItemsRepository
     {
@@ -133,6 +136,20 @@ namespace Qserver.Database.Repositories
 				items = connection.QuerySingleAsync<ulong>("INSERT INTO player_items (player_id, item_id, period, period_type, type, active, opened, giftable, boosted, boost_level, time) " +
 				"VALUES (@PlayerId, @ItemId, @Period, @PeriodType, @Type, @Active, @Opened, @Giftable, @Boosted, @BoostLevel, @Time); SELECT LAST_INSERT_ID()", new { PlayerId = player.PlayerId, ItemId = card.ItemId, Period = card.Period, PeriodType = card.PeriodeType, Type = card.Type, Active = card.IsActive, Opened = card.IsOpened, Giftable = card.IsGiftable, Boosted = (card.BoostLevel > 0), BoostLevel = card.BoostLevel, Time=card.TimeCreated}));
 			return items.Result;
+		}
+
+		public async Task OpenCardGift(ulong cardId)
+		{
+			await _sqlObjectFactory.GetConnection().UsingAsync(connection =>
+				 connection.QueryAsync("UPDATE player_items SET opened = 1 WHERE id = @CardId", new { CardId = cardId }));
+			return;
+		}
+
+		public async Task SetCardActive(ulong id, bool active)
+		{
+			await _sqlObjectFactory.GetConnection().UsingAsync(connection =>
+				 connection.QueryAsync("UPDATE player_items SET active = @Active WHERE id = @Id", new { Id = id, Active = active ? 1 : 0 }));
+			return;
 		}
 
 	}

@@ -30,7 +30,7 @@ namespace Qserver.GameServer.Qpang
             lock(this._lock)
             {
                 Random rnd = new Random();
-                var index = rnd.Next(0, this._items.Count);
+                var index = rnd.Next(0, this._items.Count); // TODO: fix RNG???
                 var item = this._items[index];
 
                 InventoryCard card = new InventoryCard();

@@ -42,7 +42,7 @@ namespace Qserver.GameServer.Qpang
                     WeaponType = GetWeaponType(w.item_id)
                 });
             }
-			Log.Message(LogType.MISC, $"WeaponManager loaded {this._weapons.Count} from the database!");
+			Log.Message(LogType.MISC, $"WeaponManager loaded {this._weapons.Count} Weapons from the database!");
         }
 
 		public bool CanEquip(uint weaponId, ushort characterId)

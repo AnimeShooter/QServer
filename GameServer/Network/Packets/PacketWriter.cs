@@ -1,8 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Text;
-//using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
-using Qserver.GameServer.Helpers;
 using Qserver.GameServer;
 using System.Linq;
 using System.Collections.Generic;
@@ -195,11 +193,11 @@ namespace Qserver.GameServer.Network.Packets
             base.Write(data);
         }
 
-        public void WriteVector(Vector data)
-        {
-            base.Write(data.X);
-            base.Write(data.Y);
-        }
+        //public void WriteVector(Vector data)
+        //{
+        //    base.Write(data.X);
+        //    base.Write(data.Y);
+        //}
 
         public void WriteChecksum()
         {

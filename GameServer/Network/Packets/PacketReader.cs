@@ -1,5 +1,4 @@
-﻿using Qserver.GameServer.Helpers;
-using System;
+﻿using System;
 using System.Linq;
 using System.IO;
 using System.Text;
@@ -154,10 +153,10 @@ namespace Qserver.GameServer.Network.Packets
             return _payload.ReadDouble();
         }
 
-        public Vector ReadVector()
-        {
-            return new Vector(_payload.ReadUInt16(), _payload.ReadUInt16());
-        }
+        //public Vector ReadVector()
+        //{
+        //    return new Vector(_payload.ReadUInt16(), _payload.ReadUInt16());
+        //}
 
         public string ReadString(byte terminator = 0)
         {

@@ -62,6 +62,7 @@ namespace Qserver.GameServer.Qpang
             bitStream.Read(out unk14);
             bitStream.Read(out unk15);
             bitStream.Read(out unk16);
+            bitStream.Read(out unk17);
         }
         public override void Process(EventConnection ps) { }
     }

@@ -28,7 +28,7 @@ namespace Qserver.GameServer.Qpang
         public uint unk02;
         public uint unk03;
         public uint unk04;
-        public uint unk05;
+        public byte unk05;
 
         public CCCharm() : base(GameNetId.CC_CHARM, GuaranteeType.GuaranteedOrdered, EventDirection.DirAny) { }
 

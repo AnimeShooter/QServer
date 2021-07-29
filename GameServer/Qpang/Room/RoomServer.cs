@@ -104,12 +104,6 @@ namespace Qserver.GameServer.Qpang
 
                 conn.Player = player;
                 this._connections.Add(playerId, conn);
-
-                bool alreadyqueuedDisposal = this._connsToDispose.Contains(playerId);
-                if (alreadyqueuedDisposal)
-                    return false;
-
-                this._connsToDispose.Add(playerId);
             }
             return true;
         }
@@ -136,6 +130,10 @@ namespace Qserver.GameServer.Qpang
             lock (this._lockConn)
             {
                 if (!this._connections.ContainsKey(playerId))
+                    return;
+
+                bool alreadyqueuedDisposal = this._connsToDispose.Contains(playerId);
+                if (alreadyqueuedDisposal)
                     return;
 
                 var conn = this._connections[playerId];

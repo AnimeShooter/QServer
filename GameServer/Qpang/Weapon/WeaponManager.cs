@@ -50,8 +50,8 @@ namespace Qserver.GameServer.Qpang
 			var weapon = Get(weaponId);
 			if (!this._characterPower.ContainsKey(characterId))
 				return false;
-			return weapon.Weight <= this._characterPower[characterId];
 
+			return weapon.Weight <= this._characterPower[characterId];
 		}
 
 		public Weapon Get(uint weaponId)

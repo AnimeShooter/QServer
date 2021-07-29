@@ -1,14 +1,11 @@
-﻿using System;
+﻿using Qserver.GameServer.Network.Managers;
 using System.Collections.Generic;
-using System.Text;
-using Qserver.GameServer.Network;
-using Qserver.GameServer.Network.Managers;
 
 namespace Qserver.GameServer.Qpang
 {
     public class EquipmentManager
     {
-        public static ushort[] CharacterIds = new ushort[] {333, 343, 578, 579, 850, 851};
+        public static ushort[] CharacterIds = new ushort[] { 333, 343, 578, 579, 850, 851 };
 
         private Dictionary<ushort, ulong[]> _equips; // long[13]
         private List<ushort> _unlockedCharacters;
@@ -23,7 +20,6 @@ namespace Qserver.GameServer.Qpang
             get { return _unlockedCharacters; }
         }
 
-
         public EquipmentManager(Player player)
         {
             this._player = player;
@@ -33,11 +29,11 @@ namespace Qserver.GameServer.Qpang
             this._functionCardlock = new object();
             this._equips = new Dictionary<ushort, ulong[]>();
             this._skillCards = new ulong[3];
-            
+
             lock (this._lock)
             {
                 var characterEquipments = Game.Instance.ItemsRepository.GetCharactersEquips(player.PlayerId).Result;
-                foreach(var ce in characterEquipments)
+                foreach (var ce in characterEquipments)
                 {
                     ulong[] equips = new ulong[13];
                     ushort characterId = ce.character_id;
@@ -59,10 +55,10 @@ namespace Qserver.GameServer.Qpang
             }
         }
 
-       
+
         public ulong[] GetEquipmentByCharacter(ushort characterId)
         {
-            lock(this._lock)
+            lock (this._lock)
             {
                 if (!this._equips.ContainsKey(characterId))
                     return new ulong[13];
@@ -79,7 +75,7 @@ namespace Qserver.GameServer.Qpang
                     return new ulong[9];
 
                 ulong[] armorOnly = new ulong[9];
-                for(int i = 0; i < armorOnly.Length; i++)
+                for (int i = 0; i < armorOnly.Length; i++)
                 {
                     armorOnly[i] = this._equips[characterId][i];
                 }
@@ -114,7 +110,7 @@ namespace Qserver.GameServer.Qpang
 
             lock (this._lock)
             {
-                for(int i = 0; i < armor.Length; i++)
+                for (int i = 0; i < armor.Length; i++)
                     armorItemIds[i] = this._player.InventoryManager.Get(armor[i]).ItemId;
                 return armorItemIds;
             }
@@ -154,15 +150,15 @@ namespace Qserver.GameServer.Qpang
 
         public void RemoveFunctionCard(ulong cardId)
         {
-            lock(this._functionCardlock)
+            lock (this._functionCardlock)
                 this._functionCards.Remove(cardId);
         }
 
         public void UnequipItem(ulong cardId)
         {
-            lock(this._lock)
+            lock (this._lock)
             {
-                for(int i = 0; i < this._unlockedCharacters.Count; i++)
+                for (int i = 0; i < this._unlockedCharacters.Count; i++)
                 {
                     var characterId = this._unlockedCharacters[i];
                     if (!this._equips.ContainsKey(characterId))
@@ -198,16 +194,15 @@ namespace Qserver.GameServer.Qpang
             if (this._player == null)
                 return;
 
-            lock(this._lock)
+            lock (this._lock)
             {
-                foreach(var weapon in weapons)
+                foreach (var weapon in weapons)
                 {
                     if (weapon == 0)
                         continue;
 
-                    // TODO
-                    //if (!Game.Instance.WeaponManager.CanEquip(this._player.InventoryManager.Get(weapon).ItemId), characterId)
-                    //    return;
+                    if (!Game.Instance.WeaponManager.CanEquip(this._player.InventoryManager.Get(weapon).ItemId, characterId))
+                        return;
                     if (!this._player.InventoryManager.HasCard(weapon) || this._player.InventoryManager.IsExpired(weapon))
                         return;
                 }
@@ -227,9 +222,9 @@ namespace Qserver.GameServer.Qpang
             if (this._player == null)
                 return;
 
-            lock(this._lock)
+            lock (this._lock)
             {
-                foreach(var piece  in armor)
+                foreach (var piece in armor)
                 {
                     if (piece == 0)
                         continue;
@@ -247,7 +242,7 @@ namespace Qserver.GameServer.Qpang
 
         public ushort CharacterIndexToId(ushort characterIndex)
         {
-            switch(characterIndex)
+            switch (characterIndex)
             {
                 default: case 0: return 333;
                 case 1: return 343;
@@ -282,7 +277,7 @@ namespace Qserver.GameServer.Qpang
             foreach (var functionCard in this._functionCards)
                 if (functionCard == cardId)
                     return true;
-            
+
             return false;
         }
 
@@ -291,7 +286,7 @@ namespace Qserver.GameServer.Qpang
             if (this._player == null)
                 return 0;
 
-            lock(this._lock)
+            lock (this._lock)
             {
                 var characterId = this._player.Character;
                 var weapons = GetWeaponItemIdsByCharacter(characterId);
@@ -317,21 +312,23 @@ namespace Qserver.GameServer.Qpang
 
         public ushort GetBaseHealth()
         {
-            lock(this._lock)
+            lock (this._lock)
             {
                 if (this._player == null)
                     return 0;
 
                 switch (this._player.Character)
                 {
-                    case 850: case 851: // Dr Uru & Sai
+                    case 850:
+                    case 851: // Dr Uru & Sai
                         return 125;
                     case 578: // kumma
                         return 150;
                     case 579: // miu miu
                         return 90;
-                    case 343: case 333: // Hanna & Ken
-                    default: 
+                    case 343:
+                    case 333: // Hanna & Ken
+                    default:
                         return 100;
                 }
             }
@@ -345,7 +342,7 @@ namespace Qserver.GameServer.Qpang
                     return 0;
 
                 var equip = this._equips[this._player.Character];
-                switch(this._player.InventoryManager.Get(equip[6]).ItemId)
+                switch (this._player.InventoryManager.Get(equip[6]).ItemId)
                 {
                     case 1429407489: // green turtle
                         return 10;
@@ -368,7 +365,7 @@ namespace Qserver.GameServer.Qpang
 
         public bool HasFunctionCard(uint functionId)
         {
-            lock(this._player.Lock)
+            lock (this._player.Lock)
             {
                 if (this._player == null)
                     return false;
@@ -409,21 +406,22 @@ namespace Qserver.GameServer.Qpang
                     return;
 
                 //var character = session.Character
-                    // TODO
+                // TODO
             }
         }
 
         public void Save()
         {
-            lock (this._player.Lock)
-            {
+            
                 if (this._player == null)
                     return;
 
+            lock (this._player.Lock)
+            {
                 if (this._player.TestRealm)
                     return;
 
-                foreach(var character in this._unlockedCharacters)
+                foreach (var character in this._unlockedCharacters)
                 {
                     Game.Instance.ItemsRepository.UpdateCharactersEquips(this._equips[character], character, this._player.PlayerId).GetAwaiter().GetResult();
                 }

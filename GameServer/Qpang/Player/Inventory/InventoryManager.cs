@@ -155,9 +155,9 @@ namespace Qserver.GameServer.Qpang
                 if (this._player == null)
                     return;
 
-                // TODO: INSERT INTO player_items (player_id, item_id, period, period_type, type, active, opened, giftable, boosted, boost_level, time) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                // db register purchase
+                card.Id = Game.Instance.ItemsRepository.CreateItem(card, this._player).Result;
 
-                //card.Id =;
                 card.TimeCreated = Util.Util.Timestamp();
                 card.PlayerOwnedId = this._player.PlayerId;
 
@@ -171,6 +171,9 @@ namespace Qserver.GameServer.Qpang
             {
                 if (this._player == null)
                     return;
+
+                if (this._player.TestRealm)
+                    return; // no consuming cards on test realm
 
                 if (!this._cards.ContainsKey(cardId))
                     return;

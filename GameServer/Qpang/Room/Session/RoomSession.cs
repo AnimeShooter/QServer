@@ -658,7 +658,7 @@ namespace Qserver.GameServer.Qpang
 
         public void KillPlayer(RoomSessionPlayer killer, RoomSessionPlayer target, uint weaponId, bool isHeadshot)
         {
-            //RelayPlaying<GCGameState>(target.Player.PlayerId, isHeadshot ? 28 : 17, weaponId, killer.Player.PlayerId);
+            RelayPlaying<GCGameState>(target.Player.PlayerId, isHeadshot ? 28 : 17, weaponId, killer.Player.PlayerId);
         }
 
         public RoomSessionPlayer FindEligibleVip(byte team, bool noConditions)
@@ -686,7 +686,6 @@ namespace Qserver.GameServer.Qpang
                 return players[rnd.Next(0, playerCount)];
             }
         }
-
 
         //
         public void Relay<T>(params object[] args)
@@ -720,7 +719,5 @@ namespace Qserver.GameServer.Qpang
                 //    p.Value.Post(new GCGameState(p.Key, ))
             }
         }
-
-
     }
 }

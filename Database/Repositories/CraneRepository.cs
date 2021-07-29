@@ -16,11 +16,11 @@ namespace Qserver.Database.Repositories
 
 		private readonly IMySqlObjectFactory _sqlObjectFactory;
 
-		public async Task<List<CraneItem>> GetCraneItems()
+		public async Task<List<DBCraneItem>> GetCraneItems()
 		{
-			Task<IEnumerable<CraneItem>> items = null;
+			Task<IEnumerable<DBCraneItem>> items = null;
 			await _sqlObjectFactory.GetConnection().UsingAsync(connection => 
-				items = connection.QueryAsync<CraneItem>("SELECT id, item_id, use_up, period, active, created_at, updated_at FROM crane_items WHERE active = 1"));
+				items = connection.QueryAsync<DBCraneItem>("SELECT id, item_id, item_type, use_up, period, active, created_at, updated_at FROM crane_items WHERE active = 1"));
 			return items.Result.ToList();
 		}
 

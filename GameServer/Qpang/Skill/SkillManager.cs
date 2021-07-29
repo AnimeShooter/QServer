@@ -6,5 +6,6 @@ namespace Qserver.GameServer.Qpang
 {
     public class SkillManager
     {
+        // NOTE: unused?
     }
 }

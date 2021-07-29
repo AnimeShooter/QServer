@@ -10,7 +10,7 @@ namespace Qserver.GameServer.Qpang
     public class CraneManager
     {
         private object _lock;
-        private List<CraneItem> _items;
+        private List<DBCraneItem> _items;
 
         public bool Enabled
         {
@@ -39,6 +39,8 @@ namespace Qserver.GameServer.Qpang
                 card.IsGiftable = true;
                 card.IsOpened = true;
                 card.IsActive = false;
+                card.BoostLevel = 0;
+                card.TimeCreated = Util.Util.Timestamp();
 
                 bool IsUnlimited = (rnd.Next(0, 1000) % 100 == 0); // 1% 
 

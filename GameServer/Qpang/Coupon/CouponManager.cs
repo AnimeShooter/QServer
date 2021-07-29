@@ -82,5 +82,6 @@ namespace Qserver.GameServer
             return true;
         }
 
+        // NOTE: generate coupon(s)?
     }
 }

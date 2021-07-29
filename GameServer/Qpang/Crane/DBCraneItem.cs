@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Qserver.GameServer.Qpang
 {
-    public struct CraneItem
+    public struct DBCraneItem
     {
         public int id { get; set; }
         public uint item_id { get; set; }

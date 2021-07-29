@@ -131,7 +131,7 @@ namespace Qserver.Database.Repositories
 			Task<ulong> items = null;
 			await _sqlObjectFactory.GetConnection().UsingAsync(connection =>
 				items = connection.QuerySingleAsync<ulong>("INSERT INTO player_items (player_id, item_id, period, period_type, type, active, opened, giftable, boosted, boost_level, time) " +
-				"VALUES (@PlayerId, @ItemId, @Period, @PeriodType, @Type, @Active, @Opened, @Giftable, @Boosted, @BoostLevel, @Time); SELECT LAST_INSERT_ID()", new { PlayerId = player.PlayerId, ItemId = card.ItemId, Period = card.Period, PeriodType = card.PeriodeType, Type = card.Type, Active = card.IsActive, Opened = card.IsOpened, Giftable = card.IsGiftable, Boosted = (card.BoostLevel > 0), BoostLevel = card.BoostLevel, /* TODO */ Time=0}));
+				"VALUES (@PlayerId, @ItemId, @Period, @PeriodType, @Type, @Active, @Opened, @Giftable, @Boosted, @BoostLevel, @Time); SELECT LAST_INSERT_ID()", new { PlayerId = player.PlayerId, ItemId = card.ItemId, Period = card.Period, PeriodType = card.PeriodeType, Type = card.Type, Active = card.IsActive, Opened = card.IsOpened, Giftable = card.IsGiftable, Boosted = (card.BoostLevel > 0), BoostLevel = card.BoostLevel, Time=card.TimeCreated}));
 			return items.Result;
 		}
 

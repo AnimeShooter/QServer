@@ -354,8 +354,6 @@ namespace Qserver.GameServer.Network.Handlers
             for(int i = 0; i < times; i++)
             {
                 var invCard = craneManager.GetRandomItem();
-                invCard.PlayerOwnedId = player.PlayerId;
-                invCard.IsOpened = true;
                 player.InventoryManager.StoreCard(invCard);
                 cards.Add(invCard);
             }

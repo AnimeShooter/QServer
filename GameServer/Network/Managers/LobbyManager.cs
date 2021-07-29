@@ -272,8 +272,8 @@ namespace Qserver.GameServer.Network.Managers
                     pw.WriteUInt8(0);               // 14
                     pw.WriteUInt8(card.IsGiftable ? (byte)1 : (byte)0); // 15
                     pw.WriteBytes(new byte[6]);     // 16
-                    pw.WriteUInt32(0); // card.TimeCreated);   // 22 (TODO: timestamp?)
-                    pw.WriteUInt8(card.IsOpened ? (byte)0 : (byte)1); // 26
+                    pw.WriteUInt32(card.TimeCreated);   // 22 
+                    pw.WriteUInt8(card.IsOpened ? (byte)1 : (byte)0); // 26
                     pw.WriteUInt16(card.IsActive ? (ushort)0 : (ushort)1); // 27
                     pw.WriteUInt8(0);         // 28 hidden
                     pw.WriteUInt8(0);         // 29
@@ -522,10 +522,7 @@ namespace Qserver.GameServer.Network.Managers
             pw.WriteUInt8(0); // 14
             pw.WriteUInt8(card.IsGiftable ? (byte)1 : (byte)0); // 15
             pw.WriteBytes(new byte[6]); // 16
-
-            //pw.WriteUInt32(Util.Util. card.TimeCreated);
-            pw.WriteUInt32(1); // to timestamp? // 22
-
+            pw.WriteUInt32(card.TimeCreated);
             pw.WriteUInt8(card.IsOpened ? (byte)1 : (byte)0); // 26
             pw.WriteUInt16(card.IsActive ? (ushort)0 : (ushort)1); // 27
             pw.WriteUInt8(0); // 28; hidden
@@ -551,11 +548,8 @@ namespace Qserver.GameServer.Network.Managers
             pw.WriteUInt8(card.Type); // 13
             pw.WriteUInt8(0); // 14
             pw.WriteUInt8(card.IsGiftable ? (byte)1 : (byte)0); // 15
-            pw.WriteBytes(new byte[6]); // 16
-            
-            //pw.WriteUInt32(Util.Util. card.TimeCreated);
-            pw.WriteUInt32(1); // to timestamp? // 22
-
+            pw.WriteBytes(new byte[6]); // 16 
+            pw.WriteUInt32(card.TimeCreated);
             pw.WriteUInt8(card.IsOpened ? (byte)1 : (byte)0); // 26
             pw.WriteUInt16(card.IsActive ? (ushort)0 : (ushort)1); // 27
             pw.WriteUInt8(0); // 28; hidden
@@ -610,10 +604,7 @@ namespace Qserver.GameServer.Network.Managers
                 pw.WriteUInt8(0); // 14
                 pw.WriteUInt8(card.IsGiftable ? (byte)1 : (byte)0); // 15
                 pw.WriteBytes(new byte[6]); // 16
-
-                //pw.WriteUInt32(Util.Util. card.TimeCreated);
-                pw.WriteUInt32(1); // to timestamp? // 22
-
+                pw.WriteUInt32(card.TimeCreated);
                 pw.WriteUInt8(card.IsOpened ? (byte)1 : (byte)0); // 26
                 pw.WriteUInt16(card.IsActive ? (ushort)0 : (ushort)1); // 27
                 pw.WriteUInt8(0); // 28; hidden
@@ -643,10 +634,7 @@ namespace Qserver.GameServer.Network.Managers
             pw.WriteUInt8(0); // 14
             pw.WriteUInt8(card.IsGiftable ? (byte)1 : (byte)0); // 15
             pw.WriteBytes(new byte[6]); // 16
-
-            //pw.WriteUInt32(Util.Util. card.TimeCreated);
-            pw.WriteUInt32(1); // to timestamp? // 22
-
+            pw.WriteUInt32(card.TimeCreated);
             pw.WriteUInt8(card.IsOpened ? (byte)1 : (byte)0); // 26
             pw.WriteUInt16(card.IsActive ? (ushort)0 : (ushort)1); // 27
             pw.WriteUInt8(0); // 28; hidden
@@ -676,10 +664,7 @@ namespace Qserver.GameServer.Network.Managers
             pw.WriteUInt8(0); // 14
             pw.WriteUInt8(card.IsGiftable ? (byte)1 : (byte)0); // 15
             pw.WriteBytes(new byte[6]); // 16
-
-            //pw.WriteUInt32(Util.Util. card.TimeCreated);
-            pw.WriteUInt32(1); // to timestamp? // 22
-
+            pw.WriteUInt32(card.TimeCreated);
             pw.WriteUInt8(card.IsOpened ? (byte)1 : (byte)0); // 26
             pw.WriteUInt16(card.IsActive ? (ushort)0 : (ushort)1); // 27
             pw.WriteUInt8(0); // 28; hidden
@@ -775,8 +760,8 @@ namespace Qserver.GameServer.Network.Managers
                 pw.WriteUInt8(0);               // 14
                 pw.WriteUInt8(card.IsGiftable ? (byte)1 : (byte)0); // 15
                 pw.WriteBytes(new byte[6]);     // 16
-                pw.WriteUInt32(0); // card.TimeCreated);   // 22 (TODO: timestamp?)
-                pw.WriteUInt8(card.IsOpened ? (byte)0 : (byte)1); // 26
+                pw.WriteUInt32(card.TimeCreated);   // 22
+                pw.WriteUInt8(card.IsOpened ? (byte)1 : (byte)0); // 26
                 pw.WriteUInt16(card.IsActive ? (ushort)0 : (ushort)1); // 27
                 pw.WriteUInt8(0);         // 28 hidden
                 pw.WriteUInt8(0);         // 29
@@ -882,8 +867,8 @@ namespace Qserver.GameServer.Network.Managers
             pw.WriteUInt8(0);               // 14
             pw.WriteUInt8(card.IsGiftable ? (byte)1 : (byte)0); // 15
             pw.WriteBytes(new byte[6]);     // 16
-            pw.WriteUInt32(0); // card.TimeCreated);   // 22 (TODO: timestamp?)
-            pw.WriteUInt8(card.IsOpened ? (byte)0 : (byte)1); // 26
+            pw.WriteUInt32(card.TimeCreated);   // 22
+            pw.WriteUInt8(card.IsOpened ? (byte)1 : (byte)0); // 26
             pw.WriteUInt16(card.IsActive ? (ushort)0 : (ushort)1); // 27
             pw.WriteUInt8(0);         // 28 hidden
             pw.WriteUInt8(0);         // 29
@@ -923,8 +908,8 @@ namespace Qserver.GameServer.Network.Managers
             pw.WriteUInt8(0);               // 14
             pw.WriteUInt8(card.IsGiftable ? (byte)1 : (byte)0); // 15
             pw.WriteBytes(new byte[6]);     // 16
-            pw.WriteUInt32(0); // card.TimeCreated);   // 22 (TODO: timestamp?)
-            pw.WriteUInt8(card.IsOpened ? (byte)0 : (byte)1); // 26
+            pw.WriteUInt32(card.TimeCreated);   // 22
+            pw.WriteUInt8(card.IsOpened ? (byte)1 : (byte)0); // 26
             pw.WriteUInt16(card.IsActive ? (ushort)0 : (ushort)1); // 27
             pw.WriteUInt8(0);         // 28 hidden
             pw.WriteUInt8(0);         // 29
@@ -1002,7 +987,7 @@ namespace Qserver.GameServer.Network.Managers
                 pw.WriteUInt8(0);               // 14
                 pw.WriteUInt8(card.IsGiftable ? (byte)1 : (byte)0); // 15
                 pw.WriteBytes(new byte[6]);     // 16
-                pw.WriteUInt32(0); // card.TimeCreated);   // 22 (TODO: timestamp?)
+                pw.WriteUInt32(card.TimeCreated);   // 22
                 pw.WriteUInt8(card.IsOpened ? (byte)1 : (byte)0); // 26
                 pw.WriteUInt16(card.IsActive ? (ushort)0 : (ushort)1); // 27
                 pw.WriteUInt8(0);         // 28 hidden

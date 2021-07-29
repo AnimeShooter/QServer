@@ -173,7 +173,7 @@ namespace Qserver.GameServer.Qpang
             }
         }
 
-        public void UseCard(uint cardId, uint playtime)
+        public void UseCard(ulong cardId, uint playtime)
         {
             lock (this._lock)
             {

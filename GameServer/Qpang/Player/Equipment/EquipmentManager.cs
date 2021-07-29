@@ -1,5 +1,6 @@
 ﻿using Qserver.GameServer.Network.Managers;
 using System.Collections.Generic;
+using Qserver.GameServer.Network.Managers;
 
 namespace Qserver.GameServer.Qpang
 {
@@ -400,21 +401,36 @@ namespace Qserver.GameServer.Qpang
 
         public void FinishRound(RoomSessionPlayer session)
         {
+            if (this._player == null)
+                return;
+
             lock (this._player.Lock)
             {
-                if (this._player == null)
-                    return;
+                var character = session.Character;
+                var playtime = session.GetPlaytime();
 
-                //var character = session.Character
-                // TODO
+                if (!this._equips.ContainsKey(character))
+                    return;
+                
+                var equips = this._equips[character];
+
+                lock(this._functionCardlock)
+                {
+                    foreach (var func in this._functionCards)
+                        this._player.InventoryManager.UseCard(func, playtime);
+                }
+
+                var cards = this._player.InventoryManager.List();
+                this._player.SendLobby(LobbyManager.Instance.Inventory(cards));
+
+                Save();
             }
         }
 
         public void Save()
         {
-            
-                if (this._player == null)
-                    return;
+            if (this._player == null)
+                return;
 
             lock (this._player.Lock)
             {

@@ -205,6 +205,7 @@ namespace Qserver.GameServer.Qpang
                     if (weapon == 0)
                         continue;
 
+                    // TODO
                     //if (!Game.Instance.WeaponManager.CanEquip(this._player.InventoryManager.Get(weapon).ItemId), characterId)
                     //    return;
                     if (!this._player.InventoryManager.HasCard(weapon) || this._player.InventoryManager.IsExpired(weapon))
@@ -367,7 +368,7 @@ namespace Qserver.GameServer.Qpang
 
         public bool HasFunctionCard(uint functionId)
         {
-            lock(this._lock)
+            lock(this._player.Lock)
             {
                 if (this._player == null)
                     return false;
@@ -384,8 +385,8 @@ namespace Qserver.GameServer.Qpang
         {
             if (index == 3)
                 return 0; // melee
-            
-            lock(this._lock)
+
+            lock (this._player.Lock)
             {
                 var equip = this._equips[this._player.Character];
                 var itemId = this._player.InventoryManager.Get(equip[6]).ItemId;
@@ -402,7 +403,7 @@ namespace Qserver.GameServer.Qpang
 
         public void FinishRound(RoomSessionPlayer session)
         {
-            lock(this._lock)
+            lock (this._player.Lock)
             {
                 if (this._player == null)
                     return;
@@ -414,7 +415,7 @@ namespace Qserver.GameServer.Qpang
 
         public void Save()
         {
-            lock(this._lock)
+            lock (this._player.Lock)
             {
                 if (this._player == null)
                     return;

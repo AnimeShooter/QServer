@@ -90,7 +90,10 @@ namespace Qserver.GameServer.Qpang
             if (!HasCard(cardId))
                 return;
 
-            lock(this._lock)
+            if (this._player.TestRealm)
+                return; // no deleting in test realm
+
+            lock (this._player.Lock)
             {
                 if (this._player == null)
                     return;
@@ -101,7 +104,7 @@ namespace Qserver.GameServer.Qpang
 
                 this._cards.Remove(cardId);
 
-                // TODO: remove from database!
+                Game.Instance.ItemsRepository.DeleteCard(this._player.PlayerId, cardId).GetAwaiter().GetResult();
 
                 this._player.SendLobby(LobbyManager.Instance.RemoveCard(cardId));
             }
@@ -111,28 +114,30 @@ namespace Qserver.GameServer.Qpang
 
         public void SetCardActive(ulong cardId, bool isActive)
         {
-            lock(this._lock)
+            lock (this._lock)
             {
                 if (!this._cards.ContainsKey(cardId))
                     return;
 
-                var card = this._cards[cardId];
-                var duplicate = this._player.EquipmentManager.HasFunctionCard(card.ItemId);
+                lock (this._player.Lock)
+                {
+                    var card = this._cards[cardId];
+                    var alreadyEquipped = this._player.EquipmentManager.HasFunctionCard(card.ItemId);
 
-                if(isActive && !duplicate)
-                {
-                    card.TimeCreated = Util.Util.Timestamp();
-                    card.IsActive = true;
-                    this._player.EquipmentManager.AddFunctionCard(cardId);
-                    this._player.SendLobby(LobbyManager.Instance.EnabledFunctionCard(card));
-                }else if(!isActive && duplicate)
-                {
-                    card.IsActive = false;
-                    this._player.EquipmentManager.RemoveFunctionCard(cardId);
-                    this._player.SendLobby(LobbyManager.Instance.EnabledFunctionCard(card));
+                    if (isActive && !alreadyEquipped)
+                    {
+                        card.TimeCreated = Util.Util.Timestamp();
+                        card.IsActive = true;
+                        this._player.EquipmentManager.AddFunctionCard(cardId);
+                        this._player.SendLobby(LobbyManager.Instance.EnabledFunctionCard(card));
+                    } else if (!isActive && alreadyEquipped)
+                    {
+                        card.IsActive = false;
+                        this._player.EquipmentManager.RemoveFunctionCard(cardId);
+                        this._player.SendLobby(LobbyManager.Instance.DisableFunctionCard(card));
+                    }
+                    this._cards[card.Id] = card;
                 }
-
-                this._cards[card.Id] = card;
             }
             return;
         }
@@ -155,19 +160,22 @@ namespace Qserver.GameServer.Qpang
                 if (this._player == null)
                     return;
 
-                // db register purchase
-                card.Id = Game.Instance.ItemsRepository.CreateItem(card, this._player).Result;
+                lock(this._player.Lock)
+                {
+                    // db register purchase
+                    card.Id = Game.Instance.ItemsRepository.CreateItem(card, this._player).Result;
 
-                card.TimeCreated = Util.Util.Timestamp();
-                card.PlayerOwnedId = this._player.PlayerId;
+                    card.TimeCreated = Util.Util.Timestamp();
+                    card.PlayerOwnedId = this._player.PlayerId;
 
-                AddCard(card);
+                    AddCard(card);
+                }
             }
         }
 
         public void UseCard(uint cardId, uint playtime)
         {
-            lock(this._lock)
+            lock (this._lock)
             {
                 if (this._player == null)
                     return;
@@ -178,33 +186,36 @@ namespace Qserver.GameServer.Qpang
                 if (!this._cards.ContainsKey(cardId))
                     return;
 
-                var card = this._cards[cardId];
-
-                if (card.PeriodeType == 254)
-                    return; // Unlimited
-
-                if (card.PeriodeType == 3) // rounds
+                lock(this._player.Lock)
                 {
-                    if (card.Period > 0)
-                        card.Period--;
-                }
-                else if (card.PeriodeType == 2) // time based?
-                    card.Period = card.Period <= playtime ? (ushort)0 : (ushort)(card.Period - playtime); 
+                    var card = this._cards[cardId];
 
-                if(card.PeriodeType != 254)
-                {
-                    // TODO:   UPDATE player_items SET period = IF(period_type = 3, period - 1, period - ?) WHERE id = ?
-                }
+                    if (card.PeriodeType == 254)
+                        return; // Unlimited
 
-                if(card.Period == 0)
-                {
-                    // expired?
-                    if (card.Type == 86 || card.Type == 87)
-                        this._player.EquipmentManager.UnequipItem(cardId);
-                    else if(card.Type == 70)
+                    if (card.PeriodeType == 3) // rounds
                     {
-                        card.IsActive = false;
-                        this._player.EquipmentManager.RemoveFunctionCard(cardId);
+                        if (card.Period > 0)
+                            card.Period--;
+                    }
+                    else if (card.PeriodeType == 2) // time based?
+                        card.Period = card.Period <= playtime ? (ushort)0 : (ushort)(card.Period - playtime);
+
+                    if (card.PeriodeType != 254)
+                    {
+                        Game.Instance.ItemsRepository.UserCard(playtime, cardId).GetAwaiter().GetResult();
+                    }
+
+                    if (card.Period == 0)
+                    {
+                        // expired?
+                        if (card.Type == 86 || card.Type == 87)
+                            this._player.EquipmentManager.UnequipItem(cardId);
+                        else if (card.Type == 70)
+                        {
+                            card.IsActive = false;
+                            this._player.EquipmentManager.RemoveFunctionCard(cardId);
+                        }
                     }
                 }
             }
@@ -228,7 +239,7 @@ namespace Qserver.GameServer.Qpang
 
         public void GiftCard(InventoryCard card, Player target)
         {
-            lock(this._lock)
+            lock (this._player.Lock)
             {
                 if (this._player == null)
                     return;
@@ -258,11 +269,14 @@ namespace Qserver.GameServer.Qpang
                 if (this._player.TestRealm)
                     return;
 
-                card.IsOpened = false;
-                card.PlayerOwnedId = this._player.PlayerId;
-                this._gifts[card.Id] = card;
+                lock (this._player.Lock)
+                {
+                    card.IsOpened = false;
+                    card.PlayerOwnedId = this._player.PlayerId;
+                    this._gifts[card.Id] = card;
 
-                this._player.SendLobby(LobbyManager.Instance.ReceiveGift(card, sender));
+                    this._player.SendLobby(LobbyManager.Instance.ReceiveGift(card, sender));
+                }
             }
         }
 
@@ -279,15 +293,18 @@ namespace Qserver.GameServer.Qpang
                 if (!this._gifts.ContainsKey(cardId))
                     return;
 
-                var card = this._gifts[cardId];
-                card.IsOpened = true;
+                lock (this._player.Lock)
+                {
+                    var card = this._gifts[cardId];
+                    card.IsOpened = true;
 
-                this._cards[card.Id] = card; // add to cards
-                this._gifts.Remove(cardId); // rm from gifts
+                    this._cards[card.Id] = card; // add to cards
+                    this._gifts.Remove(cardId); // rm from gifts
 
-                Game.Instance.ItemsRepository.OpenCardGift(cardId).GetAwaiter().GetResult();
+                    Game.Instance.ItemsRepository.OpenCardGift(cardId).GetAwaiter().GetResult();
 
-                this._player.SendLobby(LobbyManager.Instance.OpenGiftSuccess(this._player, card));
+                    this._player.SendLobby(LobbyManager.Instance.OpenGiftSuccess(this._player, card));
+                }  
             }
         }
 

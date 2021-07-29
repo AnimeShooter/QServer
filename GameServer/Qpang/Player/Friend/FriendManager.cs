@@ -123,7 +123,7 @@ namespace Qserver.GameServer.Qpang
             if (target == null)
                 return;
 
-            lock(this._lock)
+            lock (this._player.Lock)
             {
                 Game.Instance.FriendsRepository.AddFriend(this._player.PlayerId, target.PlayerId, 4).GetAwaiter().GetResult();
                 var newFriend = new Friend()
@@ -143,7 +143,7 @@ namespace Qserver.GameServer.Qpang
             if (target == null)
                 return;
 
-            lock (this._lock)
+            lock (this._player.Lock)
             {
                 Game.Instance.FriendsRepository.AddFriend(this._player.PlayerId, target.PlayerId, 2).GetAwaiter().GetResult();
                 var newFriend = new Friend()
@@ -166,7 +166,8 @@ namespace Qserver.GameServer.Qpang
                     return;
 
                 this._outgoingFriends.Remove(friendId);
-                Game.Instance.FriendsRepository.RemoveFriend(this._player.PlayerId, friendId).GetAwaiter().GetResult();
+                lock (this._player.Lock)
+                    Game.Instance.FriendsRepository.RemoveFriend(this._player.PlayerId, friendId).GetAwaiter().GetResult();
             }
         }
 
@@ -178,7 +179,8 @@ namespace Qserver.GameServer.Qpang
                     return;
 
                 this._incomingFriends.Remove(friendId);
-                Game.Instance.FriendsRepository.RemoveFriend(this._player.PlayerId, friendId).GetAwaiter().GetResult();
+                lock (this._player.Lock)
+                    Game.Instance.FriendsRepository.RemoveFriend(this._player.PlayerId, friendId).GetAwaiter().GetResult();
             }
         }
 
@@ -187,7 +189,7 @@ namespace Qserver.GameServer.Qpang
             if (target == null)
                 return;
 
-            lock(this._lock)
+            lock (this._player.Lock)
             {
                 if (!this._incomingFriends.ContainsKey(target.PlayerId))
                     return;
@@ -209,7 +211,7 @@ namespace Qserver.GameServer.Qpang
             if (target == null)
                 return;
 
-            lock (this._lock)
+            lock (this._player.Lock)
             {
                 if (!this._outgoingFriends.ContainsKey(target.PlayerId))
                     return;
@@ -230,7 +232,7 @@ namespace Qserver.GameServer.Qpang
             if (this._player == null)
                 return;
 
-            lock(this._lock)
+            lock (this._player.Lock)
             {
                 if (!this._friends.ContainsKey(friendId))
                     return;
@@ -246,7 +248,7 @@ namespace Qserver.GameServer.Qpang
             if (this._player == null)
                 return;
 
-            lock (this._lock)
+            lock (this._player.Lock)
             {
                 if (!this._friends.ContainsKey(friendId))
                     return;

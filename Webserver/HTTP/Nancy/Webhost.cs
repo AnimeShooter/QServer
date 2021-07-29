@@ -249,7 +249,7 @@ namespace Qserver.Webserver.HTTP.Nancy
             Get("/img/level/{lvl}", async x =>
             {
                 string lvl = x.lvl;
-                string filename = Directory.GetCurrentDirectory() + $"/External/HTTP/Public/img/levels/{lvl}.png";
+                string filename = Directory.GetCurrentDirectory() + $"/Webserver/HTTP/Public/img/levels/{lvl}.png";
                 if (!File.Exists(filename))
                     return new Response().StatusCode = HttpStatusCode.NotFound;
 
@@ -279,7 +279,7 @@ namespace Qserver.Webserver.HTTP.Nancy
                         name = mapNames[mapId];
                 }
 
-                string filename = Directory.GetCurrentDirectory() + $"/External/HTTP/Public/img/maps/small/{name}.png";
+                string filename = Directory.GetCurrentDirectory() + $"/Webserver/HTTP/Public/img/maps/small/{name}.png";
                 if (!File.Exists(filename))
                     return new Response().StatusCode = HttpStatusCode.NotFound;
 

@@ -54,7 +54,7 @@ namespace Qserver.GameServer.Qpang
         {
             bitStream.Write(PlayerId);
             bitStream.Write(Cmd);
-            bitStream.Write((byte)unk03);
+            bitStream.Write(unk03);
             bitStream.Write(unk04);
             bitStream.Write(Port);
             bitStream.Write(Ip);
@@ -76,7 +76,10 @@ namespace Qserver.GameServer.Qpang
             bitStream.Read(out unk09);
             bitStream.Read(out unk10);
         }
-        public override void Process(EventConnection ps) { }
+        public override void Process(EventConnection ps)
+        {
+            Post(ps);
+        }
 
         public override void Handle(GameConnection conn, Player player)
         {

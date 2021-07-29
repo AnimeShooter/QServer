@@ -81,8 +81,25 @@ namespace Qserver.GameServer.Qpang
 
         public GameConnection()
         {
-            SetPingTimeouts(5000, 10);
+            //#------------------------------------------------------------------------------
+            //
+            //## UDP네트워크 타임아웃검사 
+            //
+            //#------------------------------------------------------------------------------
+            //    pingTimeout = 5000	# 밀리초 단위
+            //    pingRetryCnt = 10 	# 최대 검사 횟수 
+            //#------------------------------------------------------------------------------
+            //## flowControl을 auto off 하면 사용하는 값 
+            //#------------------------------------------------------------------------------
+            //    flowControl = 1 # auto = 1, manual = 0, auto일 경우 아래 설정을 사용하지 않는다. 
+            //    minSendPeriod = 50		# Minimum millisecond delay (maximum rate) between packet sends
+            //    minRecvPeriod = 50 		# Minimum millisecond delay the remote host should allow between sends
+            //    maxSendBandwidth = 1000		# Number of bytes per second we can send over the connection.
+            //    maxRecvBandwidth = 1000		# Number of bytes per second max that the remote instance should send.
+            //##------------------------------------------------------------------------------
+
             SetFixedRateParameters(50, 50, 1000, 1000);
+            SetPingTimeouts(5000, 10);
             SetIsConnectionToClient();
         }
 
@@ -115,7 +132,7 @@ namespace Qserver.GameServer.Qpang
             }
         }
 
-        public override void OnConnectTerminated(TNL.Entities.TerminationReason reason, string msg)
+        public override void OnConnectTerminated(TerminationReason reason, string msg)
         {
             if (this._player == null)
                 return;
@@ -136,6 +153,7 @@ namespace Qserver.GameServer.Qpang
             PostNetEvent(new GCRoomInfo(room));
 
             UpdateRoom(room, room.PointsGame ? (uint)4 : (uint)20, room.PointsGame ? room.ScorePoints : room.ScoreTime);
+            UpdateRoom(room, 26, 0); // t s
         }
 
         public void UpdateRoom(Room room, uint cmd, uint val)

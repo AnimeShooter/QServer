@@ -5,9 +5,9 @@ using Qserver.Util;
 using Qserver.GameServer.Network;
 using Qserver.GameServer.Packets;
 using System.Threading;
-using Qserver.External.Websocket;
+using Qserver.Webserver.Websocket;
 using Qserver.GameServer.Qpang;
-using Qserver.External.HTTP.Nancy;
+using Qserver.Webserver.HTTP.Nancy;
 using Nancy.Hosting.Self;
 
 namespace Qserver.GameServer

@@ -4,8 +4,8 @@ using System.Text;
 using Qserver.GameServer.Network;
 using Qserver.GameServer.Network.Packets;
 using Qserver.GameServer.Network.Managers;
-using Qserver.GameServer.Database.Repositories;
-using Qserver.GameServer.Database;
+using Qserver.Database.Repositories;
+using Qserver.Database;
 
 namespace Qserver.GameServer.Qpang
 {

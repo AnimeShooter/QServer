@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
-using Qserver.GameServer.Database;
-using Qserver.GameServer.Database.Repositories;
+using Qserver.Database;
+using Qserver.Database.Repositories;
 using Qserver.GameServer.Network;
 using Qserver.GameServer.Network.Managers;
 using Qserver.Util;

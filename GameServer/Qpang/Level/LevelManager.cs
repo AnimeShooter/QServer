@@ -1,5 +1,5 @@
-﻿using Qserver.GameServer.Database;
-using Qserver.GameServer.Database.Repositories;
+﻿using Qserver.Database;
+using Qserver.Database.Repositories;
 using Qserver.Util;
 using System;
 using System.Collections.Generic;

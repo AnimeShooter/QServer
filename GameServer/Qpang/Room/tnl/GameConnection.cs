@@ -68,6 +68,7 @@ namespace Qserver.GameServer.Qpang
             GCExit.RegisterNetClassReps();
             GCGameItem.RegisterNetClassReps();
             GCGameState.RegisterNetClassReps();
+            GCHitEssence.RegisterNetClassReps();
 
             GCJoin.RegisterNetClassReps();
             GCRoom.RegisterNetClassReps();

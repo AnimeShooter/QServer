@@ -35,22 +35,80 @@ namespace Qserver.GameServer.Qpang
         public uint Unk04 = 1;
 
         public GCScore() : base(GameNetId.GC_SCORE, GuaranteeType.GuaranteedOrdered, EventDirection.DirAny) { }
-        //public GCScore(List<RoomSessionPlayer> players, RoomSession roomSession, byte cmd) : base(GameNetId.GC_SCORE, GuaranteeType.GuaranteedOrdered, EventDirection.DirAny) 
-        //{
-        //    Players = players;
-        //    Cmd = cmd;
-        //    Unk04 = roomSession.GetElapsedTime();
+        public GCScore(List<RoomSessionPlayer> players, RoomSession roomSession, byte cmd) : base(GameNetId.GC_SCORE, GuaranteeType.GuaranteedOrdered, EventDirection.DirAny)
+        {
+            Players = players;
+            Cmd = cmd;
+            Unk04 = roomSession.GetElapsedTime();
 
-        //    if (roomSession.GameMode.IsTeamMode())
-        //    {
-        //        Unk02 = BlueTotallKill = roomSession.BluePouints
-        //    }
-        //    else
-        //        BlueTotallKill = (ushort)roomSession.GetTopScore();
-        //}
-        //public GCScore() : base(GameNetId.GC_SCORE, GuaranteeType.GuaranteedOrdered, EventDirection.DirAny) { }
+            if (roomSession.GameMode.IsTeamMode())
+            {
+                Unk02 = BlueTotallKill = (ushort)roomSession.BluePoints;
+                Unk03 = YellowTotalKill = (ushort)roomSession.YellowPoints;
+            }
+            else
+                BlueTotallKill = (ushort)roomSession.GetTopScore();
+        }
 
-        public override void Pack(EventConnection ps, BitStream bitStream) { }
+        public GCScore(RoomSession roomSession, byte cmd) : base(GameNetId.GC_SCORE, GuaranteeType.GuaranteedOrdered, EventDirection.DirAny)
+        {
+            Cmd = cmd;
+            Unk04 = roomSession.GetElapsedTime();
+
+            if (roomSession.GameMode.IsTeamMode())
+            {
+                Unk02 = BlueTotallKill = (ushort)roomSession.BluePoints;
+                Unk03 = YellowTotalKill = (ushort)roomSession.YellowPoints;
+            }
+            else
+                BlueTotallKill = (ushort)roomSession.GetTopScore();
+        }
+
+        public override void Pack(EventConnection ps, BitStream bitStream) 
+        {
+            bitStream.Write(Cmd);
+            bitStream.Write(Unk02);
+            bitStream.Write(BlueTotallKill);
+            bitStream.Write(BlueTotalDeath);
+            bitStream.Write(Unk03);
+            bitStream.Write(YellowTotalKill);
+            bitStream.Write(YellowTotalDeath);
+            bitStream.Write(Unk04);
+
+            byte playerCount = (byte)Players.Count;
+            if (playerCount > 16)
+                playerCount = 16;
+
+            bitStream.Write(playerCount);
+
+            byte team0Spot = 1;
+            byte team1Spot = 1;
+            byte team2Spot = 1; // ??
+
+            byte playerIndex = 0;
+
+            foreach(var player in Players)
+            {
+                var actPlayer = player.Player;
+
+                bitStream.Write(actPlayer.PlayerId);
+                bitStream.Write((ushort)actPlayer.Level);
+                bitStream.Write((byte)4);
+
+                bitStream.Write((ushort)player.Score); // essence
+                bitStream.Write((ushort)player.Kills);
+                bitStream.Write((ushort)player.Deaths);
+                bitStream.Write((ushort)player.Score);
+                bitStream.Write(player.Team);
+
+                bitStream.WriteString(actPlayer.Name, 16);
+                bitStream.Write((uint)3);
+
+                playerIndex++;
+                if (playerIndex >= 16)
+                    break;
+            }
+        }
         public override void Unpack(EventConnection ps, BitStream bitStream) { }
         public override void Process(EventConnection ps) { }
     }

@@ -46,6 +46,15 @@ namespace Qserver.GameServer.Qpang
         private RoomSessionPlayer _nexYellowVIP;
         private uint _yellowVIPSetTime;
 
+        public uint BluePoints
+        {
+            get { return this._bluePoints; }
+        }
+        public uint YellowPoints
+        {
+            get { return this._yellowPoints; }
+        }
+
         public GameMode GameMode
         {
             get { return this._gameMode; }

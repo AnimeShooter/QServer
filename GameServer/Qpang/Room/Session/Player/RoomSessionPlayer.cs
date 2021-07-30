@@ -128,6 +128,14 @@ namespace Qserver.GameServer.Qpang
             get { return this._isSpectating; }
         }
 
+        public ushort ExpRate
+        {
+            get { return this._expRate; }
+        }
+        public ushort DonRate
+        {
+            get { return this._donRate; }
+        }
         public ushort Character
         {
             get { return this._character; }

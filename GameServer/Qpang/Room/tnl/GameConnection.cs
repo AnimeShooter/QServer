@@ -79,6 +79,28 @@ namespace Qserver.GameServer.Qpang
             GCPlayerChange.RegisterNetClassReps();
             GCPvEAreaTriggerInit.RegisterNetClassReps();
             GCPvEDestroyObject.RegisterNetClassReps();
+            GCPvEDestroyParts.RegisterNetClassReps();
+            GCPvEDieNpc.RegisterNetClassReps();
+            GCPvEDoor.RegisterNetClassReps();
+            GCPvEEventObject.RegisterNetClassReps();
+            GCPvEHitN2N.RegisterNetClassReps();
+            GCPvEHitN2P.RegisterNetClassReps();
+            GCPvEHitNpc.RegisterNetClassReps();
+            GCPvEHitNpcToObject.RegisterNetClassReps();
+            GCPvEHitObject.RegisterNetClassReps();
+            GCPvEItemInit.RegisterNetClassReps();
+            GCPvEMoveNodesNpc.RegisterNetClassReps();
+            GCPvEMoveNpc.RegisterNetClassReps();
+            GCPvENewRound.RegisterNetClassReps();
+            GCPvENpcInit.RegisterNetClassReps();
+            GCPvEObjectInit.RegisterNetClassReps();
+            GCPvEObjectMove.RegisterNetClassReps();
+            GCPvERoundEnd.RegisterNetClassReps();
+            GCPvEScoreResult.RegisterNetClassReps();
+            GCPvEShootN2P.RegisterNetClassReps();
+            GCPvESpecialAttack.RegisterNetClassReps();
+            GCPvEStart.RegisterNetClassReps();
+            GCPvEUserInit.RegisterNetClassReps();
             GCQuest.RegisterNetClassReps();
             GCReady.RegisterNetClassReps();
             GCRespawn.RegisterNetClassReps();
@@ -91,7 +113,6 @@ namespace Qserver.GameServer.Qpang
             GCSync.RegisterNetClassReps();
             GCTarget.RegisterNetClassReps();
             GCWeapon.RegisterNetClassReps();
-
             GGReload.RegisterNetClassReps();
             P_CSRttReport.RegisterNetClassReps();
             P_CSRttResponse.RegisterNetClassReps();

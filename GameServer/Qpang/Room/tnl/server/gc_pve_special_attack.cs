@@ -10,9 +10,9 @@ using TNL.Types;
 
 namespace Qserver.GameServer.Qpang
 {
-    public class GCPvEAreaTriggerInit : GameNetEvent
+    public class GCPvESpecialAttack : GameNetEvent
     {
-        private static NetClassRepInstance<GCPvEAreaTriggerInit> _dynClassRep;
+        private static NetClassRepInstance<GCPvESpecialAttack> _dynClassRep;
 
         public override NetClassRep GetClassRep()
         {
@@ -21,9 +21,9 @@ namespace Qserver.GameServer.Qpang
 
         public static void RegisterNetClassReps()
         {
-            ImplementNetEvent(out _dynClassRep, "GCPvEAreaTriggerinit", NetClassMask.NetClassGroupGameMask, 0);
+            ImplementNetEvent(out _dynClassRep, "GCPvESpecialAttack", NetClassMask.NetClassGroupGameMask, 0);
         }
-        public GCPvEAreaTriggerInit() : base(GameNetId.GC_PVE_AREA_TRIGGER_INIT, GuaranteeType.Guaranteed, EventDirection.DirAny) { }
+        public GCPvESpecialAttack() : base(GameNetId.GC_PVE_SPECIAL_ATTACK, GuaranteeType.Guaranteed, EventDirection.DirAny) { }
 
         public override void Pack(EventConnection ps, BitStream bitStream) { }
         public override void Unpack(EventConnection ps, BitStream bitStream) { }

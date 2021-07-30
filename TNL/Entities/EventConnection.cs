@@ -365,6 +365,7 @@ namespace TNL.Entities
                     return;
                 }
 
+                Console.WriteLine("Net Event ID: " + ((Qserver.GameServer.Qpang.GameNetId)classId).ToString());
                 var evt = (NetEvent) Create((uint) GetNetClassGroup(), (uint) NetClassType.NetClassTypeEvent, (int) classId);
                 if (evt == null)
                 {

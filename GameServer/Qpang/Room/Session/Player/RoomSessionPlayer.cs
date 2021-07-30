@@ -233,12 +233,12 @@ namespace Qserver.GameServer.Qpang
             if (CanStart())
             {
                 Start();
-                //this._roomSession.SpawnPlayer(this);
+                this._roomSession.SpawnPlayer(this);
             }
 
             if (this._isPlaying)
             {
-                //this._effectManager.Tick();
+                this._effectManager.Tick();
                 this._skillManager.Tick();
             }
 
@@ -258,15 +258,15 @@ namespace Qserver.GameServer.Qpang
 
             this._conn.Player.AchievementContainer.ResetRecent();
 
-            //this._roomSession.RelayExcept<GCGameState>(this._conn.Player.PlayerId, this._conn.Player.PlayerId, 3);
-            //this._conn.PostNetEvent(new GCGameState(this._conn.Player.PlayerId), 4);
+            this._roomSession.RelayExcept<GCGameState>(this._conn.Player.PlayerId, this._conn.Player.PlayerId, 3);
+            this._conn.PostNetEvent(new GCGameState(this._conn.Player.PlayerId, 4));
 
-            //this._roomSession.SyncPlayer(this);
+            this._roomSession.SyncPlayer(this);
         }
 
         public void Stop()
         {
-            //this._effectManager.Clear();
+            this._effectManager.Clear();
             this._entityManager.Close();
 
             var player = this._conn.Player;
@@ -296,12 +296,12 @@ namespace Qserver.GameServer.Qpang
         public void RemoveInvincibility()
         {
             this._isInvincible = false;
-            //this._roomSession.RelayPlaying<GCGameState>(this._conn.Player.PlayerId, 8);
+            this._roomSession.RelayPlaying<GCGameState>(this._conn.Player.PlayerId, 8);
         }
 
         public void AddPlayer(RoomSessionPlayer player)
         {
-            //this._conn.AddSession(player);
+            this._conn.AddSession(player);
         }
 
         public void AddHealth(ushort health, bool updateClient = false)
@@ -344,10 +344,10 @@ namespace Qserver.GameServer.Qpang
             this._isRespawning = true;
             this._skillManager.ResetPoints();
 
-            //var cooldown = GetRespawnCooldown();
+            var cooldown = GetRespawnCooldown();
 
-            //this._respawnTime = Util.Util.Timestamp() + cooldown;
-            //Post(new GCGameState(this._conn.Player.PlayerId, 29, cooldown * 1000));
+            this._respawnTime = Util.Util.Timestamp() + cooldown;
+            Post(new GCGameState(this._conn.Player.PlayerId, 29, (uint)(cooldown * 1000)));
         }
 
         public void AddEventItemPickup()
@@ -391,7 +391,7 @@ namespace Qserver.GameServer.Qpang
                 this._highestStreak = this._streak;
         }
 
-        public void HealTeam(uint healing)
+        public void HealTeam(uint healing) //  TODO
         {
             //var players = this._roomSession.GetPlayersFromTeam(this._team);
 
@@ -446,8 +446,8 @@ namespace Qserver.GameServer.Qpang
             exp += (uint)(10 * this._eventItemPickUps);
             exp += playExp;
 
-            //if (this._roomSession.GameMode.IsMissionMode())
-            //    exp += this._score;
+            if (this._roomSession.GameMode.IsMissionMode())
+                exp += this._score;
             float bonus = this._expRate / 100f;
             exp += (uint)(exp * bonus);
             return exp;
@@ -475,7 +475,7 @@ namespace Qserver.GameServer.Qpang
         public void AddScore(ushort score = 1)
         {
             this._score += score;
-            //this._roomSession.AddPointsForTeam(this._team, score);
+            this._roomSession.AddPointsForTeam(this._team, score);
         }
 
         public ushort GetDefaultHealth()

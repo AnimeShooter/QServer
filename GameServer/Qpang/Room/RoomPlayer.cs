@@ -80,7 +80,7 @@ namespace Qserver.GameServer.Qpang
         public void SetReady(bool ready)
         {
             this._isReady = ready;
-            //this._room.BroadcastWaiting<GCReady>(this._conn.Player.PlayerId, ready);
+            this._room.BroadcastWaiting<GCReady>(this._conn.Player.PlayerId, ready);
         }
     }
 }

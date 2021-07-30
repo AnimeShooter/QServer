@@ -29,81 +29,81 @@ namespace Qserver.GameServer.Qpang
 
         public GCRoom(uint playerId, uint cmd, Room room) : base(GameNetId.GC_ROOM, GuaranteeType.Guaranteed, EventDirection.DirAny)
         {
-            this.zero = 0;
-            this.playerId = playerId;
-            this.cmd = cmd;
-            this.roomId = room.Id;
-            this.mode = (byte)room.Mode;
-            this.memberCount = room.PlayerCount;
-            this.title = room.Name;
-            this.meleeOnly = room.MeleeOnly ? (byte)1 : (byte)0;
-            this.skillsEnabled = room.SkillsEnabled ? (byte)1 : (byte)0;
+            this.Zero = 0;
+            this.PlayerId = playerId;
+            this.Cmd = cmd;
+            this.RoomId = room.Id;
+            this.Mode = (byte)room.Mode;
+            this.MemberCount = room.PlayerCount;
+            this.Title = room.Name;
+            this.MeleeOnly = room.MeleeOnly ? (byte)1 : (byte)0;
+            this.SkillsEnabled = room.SkillsEnabled ? (byte)1 : (byte)0;
         }
         public GCRoom(uint playerId, uint cmd, uint val, Room room) : base(GameNetId.GC_ROOM, GuaranteeType.Guaranteed, EventDirection.DirAny)
         {
-            this.zero = 0;
-            this.playerId = playerId;
-            this.cmd = cmd;
-            this.roomId = room.Id;
-            this.mode = (byte)room.Mode;
-            this.memberCount = room.PlayerCount;
-            this.title = "-";
-            this.value = val;
-            this.meleeOnly = room.MeleeOnly ? (byte)1 : (byte)0;
-            this.skillsEnabled = room.SkillsEnabled ? (byte)1 : (byte)0;
+            this.Zero = 0;
+            this.PlayerId = playerId;
+            this.Cmd = cmd;
+            this.RoomId = room.Id;
+            this.Mode = (byte)room.Mode;
+            this.MemberCount = room.PlayerCount;
+            this.Title = "-";
+            this.Value = val;
+            this.MeleeOnly = room.MeleeOnly ? (byte)1 : (byte)0;
+            this.SkillsEnabled = room.SkillsEnabled ? (byte)1 : (byte)0;
         }
 
         public override void Pack(EventConnection conn, BitStream bitStream)
         {
-            bitStream.Write(playerId);
-            bitStream.Write(cmd);
-            bitStream.Write(value);
+            bitStream.Write(PlayerId);
+            bitStream.Write(Cmd);
+            bitStream.Write(Value);
 
-            bitStream.Write(mode);
-            bitStream.Write(memberCount);
-            bitStream.Write(goal);
+            bitStream.Write(Mode);
+            bitStream.Write(MemberCount);
+            bitStream.Write(Goal);
 
-            bitStream.WriteString(password);
-            bitStream.WriteString(title);
-            bitStream.Write(time);
-            bitStream.Write(rounds);
-            bitStream.Write(_160);
+            bitStream.WriteString(Password);
+            bitStream.WriteString(Title);
+            bitStream.Write(Time);
+            bitStream.Write(Rounds);
+            bitStream.Write(Unk160);
 
-            bitStream.Write(zero);
+            bitStream.Write(Zero);
 
-            bitStream.Write(_161);
-            bitStream.Write(skillsEnabled);
-            bitStream.Write(meleeOnly);
+            bitStream.Write(Unk161);
+            bitStream.Write(SkillsEnabled);
+            bitStream.Write(MeleeOnly);
         }
 
         public override void Unpack(EventConnection ps, BitStream bitStream) { }
         public override void Process(EventConnection ps) { }
 
-        private uint playerId; // 92
-        private uint cmd; // 96
+        private uint PlayerId; // 92
+        private uint Cmd; // 96
 
         // union
-        private uint value;
-        private uint roomId;
+        public uint Value;
+        public uint RoomId;
 
-        private byte mode;
-        private byte memberCount;
-        private byte goal = 10;
+        public byte Mode;
+        public byte MemberCount;
+        public byte Goal = 10;
 
-        string password;
-        string title;
-        byte time = 6;
+        public string Password;
+        public string Title;
+        public byte Time = 6;
 
         // union
-        private byte rounds = 1;
-        private byte gameId;
+        public byte Rounds = 1;
+        public byte GameId;
 
-        byte _160 = 1; // in CGRoom
+        public byte Unk160 = 1; // in CGRoom
 
-        private uint zero = 0;
-        private byte _161 = 0;
-        private byte skillsEnabled = 0;
-        private byte meleeOnly = 0;  // 166
+        public uint Zero = 0;
+        public byte Unk161 = 0;
+        public byte SkillsEnabled = 0;
+        public byte MeleeOnly = 0;  // 166
 
         
     }

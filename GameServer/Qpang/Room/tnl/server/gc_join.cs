@@ -28,7 +28,7 @@ namespace Qserver.GameServer.Qpang
         public uint PlayerId = 1;
         public ushort CharacterId = 333;
         public uint SelectedWeapon = 0;
-        public uint unk05;
+        public uint Unk05 = 0;
         public byte Team = 1;
         public byte Ready = 0;
         public ushort WeaponCount = 4;
@@ -37,16 +37,16 @@ namespace Qserver.GameServer.Qpang
         public uint[] Weapons = new uint[4];
         public string Nickname;
 
-        public byte unk10;
-        public byte unk11;
+        public byte Unk10 = 0;
+        public byte Unk11 = 0;
 
         public uint Level = 1;
         public uint ActionId = 0;
-        public ushort Refers;
-        public ushort Life;
+        public ushort Refers = 0;
+        public ushort Life = 0;
         public byte PlayerRank = 1;
         public uint Experience = 0;
-        public ushort PartnerKey;
+        public ushort PartnerKey = 0;
 
 
         public GCJoin() : base(GameNetId.GC_JOIN, GuaranteeType.GuaranteedOrdered, EventDirection.DirServerToClient) { }
@@ -100,17 +100,20 @@ namespace Qserver.GameServer.Qpang
             bitStream.Write(PlayerId);
             bitStream.Write(CharacterId);
             bitStream.Write(SelectedWeapon);
-            bitStream.Write(unk05);
+            bitStream.Write(Unk05);
             bitStream.Write(Team);
             bitStream.Write(Ready);
             bitStream.Write(WeaponCount);
+            
             foreach(uint item in Armor)
                 bitStream.Write(item);
+            
             foreach (uint item in Weapons)
                 bitStream.Write(item);
+
             bitStream.WriteString(Nickname, 16);
-            bitStream.Write(unk10);
-            bitStream.Write(unk11);
+            bitStream.Write(Unk10);
+            bitStream.Write(Unk11);
             bitStream.Write(Level);
             bitStream.Write(ActionId);
             bitStream.Write(Refers);

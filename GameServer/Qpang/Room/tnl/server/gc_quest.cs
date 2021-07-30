@@ -10,9 +10,9 @@ using TNL.Types;
 
 namespace Qserver.GameServer.Qpang
 {
-    public class GGReload : GameNetEvent
+    public class GCQuest : GameNetEvent
     {
-        private static NetClassRepInstance<GGReload> _dynClassRep;
+        private static NetClassRepInstance<GCQuest> _dynClassRep;
 
         public override NetClassRep GetClassRep()
         {
@@ -21,18 +21,22 @@ namespace Qserver.GameServer.Qpang
 
         public static void RegisterNetClassReps()
         {
-            ImplementNetEvent(out _dynClassRep, "GGReload", NetClassMask.NetClassGroupGameMask, 0);
+            ImplementNetEvent(out _dynClassRep, "GCQuest", NetClassMask.NetClassGroupGameMask, 0);
         }
 
         public uint Unk01;
-        public byte Unk02;
+        public byte Cmd;
+        public ushort Unk02;
+        public byte Unk03;
 
-        public GGReload() : base(GameNetId.GG_RELOAD, GuaranteeType.GuaranteedOrdered, EventDirection.DirAny) { }
+        public GCQuest() : base(GameNetId.GC_QUEST, GuaranteeType.Guaranteed, EventDirection.DirAny) { }
 
         public override void Pack(EventConnection ps, BitStream bitStream)
         {
             bitStream.Write(Unk01);
+            bitStream.Write(Cmd);
             bitStream.Write(Unk02);
+            bitStream.Write(Unk03);
         }
 
         public override void Unpack(EventConnection ps, BitStream bitStream) { }

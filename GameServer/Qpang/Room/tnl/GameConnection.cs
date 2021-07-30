@@ -68,11 +68,20 @@ namespace Qserver.GameServer.Qpang
             GCExit.RegisterNetClassReps();
             GCGameItem.RegisterNetClassReps();
             GCGameState.RegisterNetClassReps();
+            GCHit.RegisterNetClassReps();
             GCHitEssence.RegisterNetClassReps();
-
             GCJoin.RegisterNetClassReps();
+            GCMapObject.RegisterNetClassReps();
+            GCMasterLog.RegisterNetClassReps();
+            GCMesg.RegisterNetClassReps();
+            GCQuest.RegisterNetClassReps();
+            GCReady.RegisterNetClassReps();
             GCRoom.RegisterNetClassReps();
             GCRoomInfo.RegisterNetClassReps();
+            GCStart.RegisterNetClassReps();
+            GCSync.RegisterNetClassReps();
+            GCTarget.RegisterNetClassReps();
+            GCWeapon.RegisterNetClassReps();
 
             GGReload.RegisterNetClassReps();
             P_CSRttReport.RegisterNetClassReps();

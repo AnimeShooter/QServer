@@ -124,7 +124,7 @@ namespace Qserver.GameServer.Qpang
             this._itemManager.Initialize(this);
             //this._skillManager.Initialize(this);
 
-            //this._gameMode.OnStart(this);
+            this._gameMode.OnStart(this);
             this._essencePosition = Game.Instance.SpawnManager.GetEssenceSpawn(this._room.Map);
         }
 
@@ -423,7 +423,7 @@ namespace Qserver.GameServer.Qpang
                 lock(this._lockPlayers)
                 {
                     this._itemManager.Tick();
-                    //this._gameMode.Tick(this);
+                    this._gameMode.Tick(this);
 
                     foreach (var p in this._players)
                         p.Value.Tick();
@@ -500,8 +500,8 @@ namespace Qserver.GameServer.Qpang
 
             this._essencePosition = pos;
 
-            //foreach (var p in players)
-            //    p.Post(new GCHitEssence(p.Player.PlayerId, p.Player.PlayerId, 3, pos.X, pos.Y, pos.Z, 0, 6));
+            foreach (var p in players)
+                p.Post(new GCHitEssence(p.Player.PlayerId, p.Player.PlayerId, 3, pos.X, pos.Y, pos.Z, 0, 6));
         }
 
         public void SetEssenceHolder(RoomSessionPlayer player)
@@ -622,14 +622,14 @@ namespace Qserver.GameServer.Qpang
                         continue;
 
                     //player.Post(new GCRespawn(p.Key, p.Value.Character, 0, 255f, 255f, 255f, IsVip(player)));
-                    //player.Post(new GCGameState(p.Key, 8));
+                    player.Post(new GCGameState(p.Key, 8));
                     //var weapon = p.Value.WeaponManager.GetSelectedWeapon();
                     //player.Post(new GCWeapon(p.Key, 0, weapon.ItemId, 0));
                 }
             }
 
             this._itemManager.SyncPlayer(player);
-            //this._gameMode.OnPlayerSync(player);
+            this._gameMode.OnPlayerSync(player);
         }
 
         public uint GetElapsedTime()
@@ -690,34 +690,56 @@ namespace Qserver.GameServer.Qpang
         //
         public void Relay<T>(params object[] args)
         {
-            // TODO
+            Type[] types = args.Select(x => x.GetType()).ToArray();
+            var ctor = typeof(T).GetConstructor(types);
+
+            lock (this._lockPlayers)
+                foreach (var p in this._players)
+                        p.Value.Post((GameNetEvent)ctor.Invoke(args));
         }
 
         public void RelayExcept<T>(uint playerId, params object[] args)
         {
-            // TODO
+            Type[] types = args.Select(x => x.GetType()).ToArray();
+            var ctor = typeof(T).GetConstructor(types);
+
+            lock (this._lockPlayers)
+                foreach (var p in this._players)
+                    if (p.Key != playerId)
+                        p.Value.Post((GameNetEvent)ctor.Invoke(args));
         }
 
         public void RelayPlaying<T>(params object[] args)
         {
             Type[] types = args.Select(x => x.GetType()).ToArray();
             var ctor = typeof(T).GetConstructor(types);
-            ctor.Invoke(args);
+
+            lock (this._lockPlayers)
+                foreach (var p in this._players)
+                        if (p.Value.Playing)
+                            p.Value.Post((GameNetEvent)ctor.Invoke(args));
         }
 
         public void RelayPlayingExcept<T>(uint playerId, params object[] args)
         {
-            // TODO
+            Type[] types = args.Select(x => x.GetType()).ToArray();
+            var ctor = typeof(T).GetConstructor(types);
+
+            lock(this._lockPlayers)
+                foreach(var p in this._players)
+                    if(p.Key != playerId)
+                        if(p.Value.Playing)
+                            p.Value.Post((GameNetEvent)ctor.Invoke(args));
         }
 
-        public void RelayState()
+        public void RelayState(params object[] args)
         {
-            // TODO
-            lock(this._lockPlayers)
-            {
-                //foreach(var p in  this._players)
-                //    p.Value.Post(new GCGameState(p.Key, ))
-            }
+            Type[] types = args.Select(x => x.GetType()).ToArray();
+            var ctor = typeof(GCGameState).GetConstructor(types);
+
+            lock (this._lockPlayers)
+                foreach (var p in this._players)
+                    p.Value.Post((GCGameState)ctor.Invoke(args));
         }
     }
 }

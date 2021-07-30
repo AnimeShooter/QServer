@@ -180,34 +180,42 @@ namespace Qserver.GameServer.Qpang
             PostNetEvent(new GCRoom(this._player.PlayerId, cmd, val, room));
         }
 
-        public void StartLoading(Room room, RoomPlayer player)
+        public void StartLoading(Room room, RoomPlayer roomPlayer)
         {
-            // TODO
+            PostNetEvent(new GCStart(room, this._player.PlayerId));
+            PostNetEvent(new GCJoin(roomPlayer));
+            PostNetEvent(new GCGameState(this._player.PlayerId, 12));
         }
 
         public void StartSpectating(Room room, RoomPlayer roomPlayer)
         {
-            // TODO
+            PostNetEvent(new GCRoomInfo(room, true));
+            PostNetEvent(new GCStart(room, this._player.PlayerId));
+            PostNetEvent(new GCJoin(roomPlayer, true));
+            PostNetEvent(new GCGameState(this._player.PlayerId, 12));
         }
 
         public void StartGameButNotReady()
         {
-            // TODO
+            PostNetEvent(new GCGameState(this._player.PlayerId, 3));
+            PostNetEvent(new GCPlayerChange(this._player, 0, 0));
         }
 
         public void AddSession(RoomSessionPlayer session)
         {
-            // TODO
+            PostNetEvent(new GCArrangedAccept(this._player.PlayerId, session.Player.PlayerId));
+            PostNetEvent(new GCJoin(session, this._player.RoomPlayer.Spectating));
+            PostNetEvent(new GCRespawn(session.Player.PlayerId, session.Character, 1));
         }
 
         public void SpawnEssence(Spawn spawn)
         {
-            // TODO
+            PostNetEvent(new GCRespawn(0, 3, 5, spawn.X, spawn.Y, spawn.X));
         }
 
         public void DropEssence(Spawn spawn)
         {
-
+            // empty ;P
         }
     }
 }

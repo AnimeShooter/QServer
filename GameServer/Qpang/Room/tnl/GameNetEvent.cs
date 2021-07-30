@@ -13,42 +13,15 @@ namespace Qserver.GameServer.Qpang
         public GameNetId Id;
         public GameConnection GameConnection;
 
-        public GameNetEvent() : base(GuaranteeType.GuaranteedOrdered, EventDirection.DirUnset)
-        {
-
-        }
+        public GameNetEvent() : base(GuaranteeType.GuaranteedOrdered, EventDirection.DirUnset) { }
 
         public GameNetEvent(GameNetId gameNetId, GuaranteeType guaranteeType, EventDirection eventDirection) : base(guaranteeType, eventDirection)
         {
-            this.Id = gameNetId;
+            Id = gameNetId;
         }
 
-        //public string ByteBufferToString(byte[] buffer)
-        //{
-
-        //}
-
-        //public override void Pack(EventConnection ps, BitStream stream)
-        //{
-
-        //}
-        //public override void Unpack(EventConnection ps, BitStream steam)
-        //{
-
-        //}
-        //public override void Process(EventConnection ps)
-        //{
-
-        //}
-
-        public override void NotifyPosted(EventConnection e)
-        {
-
-        }
-        public override void NotifyDelivered(EventConnection e, bool madeId)
-        {
-
-        }
+        public override void NotifyPosted(EventConnection e) { }
+        public override void NotifyDelivered(EventConnection e, bool madeId) { }
 
         public void Post(EventConnection ps)
         {

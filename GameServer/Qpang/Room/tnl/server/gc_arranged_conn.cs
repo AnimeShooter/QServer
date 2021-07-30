@@ -23,6 +23,9 @@ namespace Qserver.GameServer.Qpang
         {
             ImplementNetEvent(out _dynClassRep, "GCArrangedConn", NetClassMask.NetClassGroupGameMask, 0);
         }
+
+        public GameConnection Connection;
+
         public GCArrangedConn() : base(GameNetId.GC_ARRANGED_CONN, GuaranteeType.GuaranteedOrdered, EventDirection.DirAny) { }
 
         public override void Pack(EventConnection ps, BitStream bitStream) { }

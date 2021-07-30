@@ -46,9 +46,9 @@ namespace Qserver.GameServer.Qpang
             var id = GetAvailableRoomId();
             Room room;
             if (host != 0)
-                room = new Room(id, name, map, mode, host, (ushort)Settings.SERVER_PORT_ROOM); // Swap IP?
+                room = new Room(id, name, map, mode, host, (ushort)Settings.SERVER_PORT_ROOM);
             else
-                room = new Room(id, name, map, mode, 0x7F000001, (ushort)Settings.SERVER_PORT_ROOM); // Swap IP?
+                room = new Room(id, name, map, mode, 0x0100007F, (ushort)Settings.SERVER_PORT_ROOM);
             lock(this._lock)
                 _rooms.Add(id, room);
 

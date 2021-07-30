@@ -126,6 +126,7 @@ namespace Qserver.GameServer.Qpang
         public bool Spectating
         {
             get { return this._isSpectating; }
+            set { this._isSpectating = value; }
         }
 
         public ushort ExpRate

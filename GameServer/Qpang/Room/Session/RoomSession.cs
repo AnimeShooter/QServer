@@ -141,11 +141,11 @@ namespace Qserver.GameServer.Qpang
         {
             var player = new RoomSessionPlayer(conn, this, team);
 
-            //if (conn.Player.RoomPlayer != null)
-            //    RoomPlayer.SetRoomSessionPlayer(player);
+            if (conn.Player.RoomPlayer != null)
+                conn.Player.RoomPlayer.RoomSessionPlayer = player;
 
             player.Initialize();
-            //player.SetSpectating(conn.Player.RoomPlayer.Spectating);
+            player.Spectating = conn.Player.RoomPlayer.Spectating;
 
             lock(this._lockPlayers)
             {
@@ -157,25 +157,31 @@ namespace Qserver.GameServer.Qpang
                     if (!player.Spectating)
                         p.Value.AddPlayer(player);
 
-                    //if (p.Value.Playing)
-                    //    player.Post(new GCGameState(IDictionary, 3));
+                    if (p.Value.Playing)
+                        player.Post(new GCGameState(p.Key, 3));
                 }
-                this._players[player.Player.PlayerId] = player;
+                this._players[player.Player.PlayerId] = player; // add or set?
             }
             
             var spawn = Game.Instance.SpawnManager.GetRandomSpawn(this._room.Map, team);
             player.Post(new GCGameState(player.Player.PlayerId, 11, 0)); // waiting for players
-            //player.Post(new GCRespawn(player.Player.PlayerId, player.Character, 1, spawn.X, spawn.Y, spawn.X));
+            player.Post(new GCRespawn(player.Player.PlayerId, player.Character, 1, spawn.X, spawn.Y, spawn.X));
             
             if(!player.Spectating)
             {
 
-                // Hadnle Leaving
+                // TODO verify Hadnle Leaving
 
-                //lock(this._lock)
-                //{
-                //    this._leavers.Contains()
-                //}
+                lock (this._leaverLock)
+                {
+                    RoomSessionPlayer found = null;
+                    foreach (var p in this._leavers)
+                        if (p.Player.PlayerId == player.Player.PlayerId)
+                            found = p;
+
+                    if (found != null)
+                        this._leavers.Remove(found);
+                }
             }
         }
 
@@ -194,8 +200,8 @@ namespace Qserver.GameServer.Qpang
                 {
                     SetEssenceHolder(null);
                     var pos = player.Position;
-                    //foreach (var p in this._players)
-                    //    p.Value.Post(new GCHitEssence(p.Value.Player.PlayerId, p.Value.Player.PlayerId, 3, pos.X, pos.Y, pos.X, 0, 6));
+                    foreach (var p in this._players)
+                        p.Value.Post(new GCHitEssence(p.Value.Player.PlayerId, p.Value.Player.PlayerId, 3, pos.X, pos.Y, pos.X, 0, 6));
                 }
 
                 if (player == this._blueVIP)
@@ -618,7 +624,7 @@ namespace Qserver.GameServer.Qpang
                     SetYellowVip(player);
             }
 
-            //RelayPlaying<GCRespawn>(player.Player.PlayerId, player.Character, 0, spawn.X, spawn.Y, spawn.Z, IsVip(player));
+            RelayPlaying<GCRespawn>(player.Player.PlayerId, player.Character, 0, spawn.X, spawn.Y, spawn.Z, IsVip(player));
         }
 
         public void SyncPlayer(RoomSessionPlayer player)
@@ -630,7 +636,7 @@ namespace Qserver.GameServer.Qpang
                     if (p.Value == player)
                         continue;
 
-                    //player.Post(new GCRespawn(p.Key, p.Value.Character, 0, 255f, 255f, 255f, IsVip(player)));
+                    player.Post(new GCRespawn(p.Key, p.Value.Character, 0, 255f, 255f, 255f, IsVip(player)));
                     player.Post(new GCGameState(p.Key, 8));
                     //var weapon = p.Value.WeaponManager.GetSelectedWeapon();
                     //player.Post(new GCWeapon(p.Key, 0, weapon.ItemId, 0));

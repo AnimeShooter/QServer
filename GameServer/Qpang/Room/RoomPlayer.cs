@@ -63,7 +63,7 @@ namespace Qserver.GameServer.Qpang
 
         public void Send(GameNetEvent e)
         {
-            this._conn.PostNetEvent(e); // TODO
+            this._conn.PostNetEvent(e);
         }
 
         public void OnStart()
@@ -74,7 +74,7 @@ namespace Qserver.GameServer.Qpang
         public void SetTeam(byte team)
         {
             this._team = team;
-            //this._room.BroadcastWaiting<GCPlayerChange>(this._conn.Player, 2, team);
+            this._room.BroadcastWaiting<GCPlayerChange>(this._conn.Player, 2, team);
         }
 
         public void SetReady(bool ready)

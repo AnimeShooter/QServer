@@ -26,26 +26,27 @@ namespace Qserver.GameServer.Qpang
 
         private const string key = "123456781234567892345672345672345672345672345678";
 
-        public uint senderId;
-        public uint targetId;
+        public uint SenderId;
+        public uint TargetId;
 
-        public GCArrangedAccept() : base(GameNetId.GC_ARRANGED_ACCEPT, GuaranteeType.GuaranteedOrdered, EventDirection.DirAny) { }
+        public GCArrangedAccept() : base(GameNetId.GC_ARRANGED_ACCEPT, GuaranteeType.Guaranteed, EventDirection.DirAny) { }
 
-        public GCArrangedAccept(uint senderId, uint targetId) : base(GameNetId.GC_ARRANGED_ACCEPT, GuaranteeType.GuaranteedOrdered, EventDirection.DirAny) 
+        public GCArrangedAccept(uint senderId, uint targetId) : base(GameNetId.GC_ARRANGED_ACCEPT, GuaranteeType.Guaranteed, EventDirection.DirAny) 
         {
-            this.senderId = senderId;
-            this.targetId = targetId;
+            SenderId = senderId;
+            TargetId = targetId;
         }
 
 
         public override void Pack(EventConnection ps, BitStream bitStream)
         {
-            bitStream.Write(senderId);
-            bitStream.Write(targetId);
+            bitStream.Write(SenderId);
+            bitStream.Write(TargetId);
             bitStream.Write(1);
             bitStream.Write(1);
             bitStream.Write((uint)222);
-            bitStream.Write((ushort)targetId);
+            bitStream.Write((ushort)TargetId);
+            bitStream.WriteString(key, (byte)key.Length);
         }
 
         public override void Unpack(EventConnection ps, BitStream bitStream) { }

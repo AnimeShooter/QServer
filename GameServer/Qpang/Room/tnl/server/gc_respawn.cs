@@ -34,7 +34,7 @@ namespace Qserver.GameServer.Qpang
 
         public GCRespawn() : base(GameNetId.GC_RESPAWN, GuaranteeType.Guaranteed, EventDirection.DirAny) { }
 
-        public GCRespawn(uint playerId, uint characterId, uint cmd, float x = 0xFF, float y = 0xFF, float z = 0xFF, byte isVip = 0) : base(GameNetId.GC_RESPAWN, GuaranteeType.Guaranteed, EventDirection.DirAny) 
+        public GCRespawn(uint playerId, uint characterId, uint cmd, float x = 0xFF, float y = 0xFF, float z = 0xFF, bool isVip = false) : base(GameNetId.GC_RESPAWN, GuaranteeType.Guaranteed, EventDirection.DirAny) 
         {
             PlayerId = playerId;
             Cmd = cmd;
@@ -42,7 +42,7 @@ namespace Qserver.GameServer.Qpang
             X = x;
             Y = y;
             Z = z;
-            IsVip = isVip;
+            IsVip = isVip ? (byte)1 : (byte)0;
         }
 
         public override void Pack(EventConnection ps, BitStream bitStream)

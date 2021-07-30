@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Qserver.GameServer.Qpang
 {
@@ -224,7 +226,7 @@ namespace Qserver.GameServer.Qpang
                 this._players.Add(conn.Player.PlayerId, roomPlayer);
 
             conn.EnterRoom(this);
-            //SyncPlayers(roomPlayer);
+            SyncPlayers(roomPlayer);
 
         }
 
@@ -241,7 +243,15 @@ namespace Qserver.GameServer.Qpang
                 if (this._roomSession != null)
                     this._roomSession.RemovePlayer(id);
 
-                //BroadcastWaiting
+                BroadcastWaiting<GCExit>(id, CGExit.Commands.LEAVE, this._masterPlayerId);
+
+                if(this._masterPlayerId == 0)
+                {
+                    if (this._players.Count != 0)
+                        foreach (var p in this._players)
+                            p.Value.Conn.Disconnect("Room closed");
+                    Game.Instance.RoomManager.Remove(this._id);
+                }
             }
         }
 
@@ -527,22 +537,26 @@ namespace Qserver.GameServer.Qpang
 
 
         //
-        public void Broadcast<T>(T e)  // TODO
+        public void Broadcast<T>(params object[] args)  // TODO
         {
-            lock(this._lock)
-            {
-                //foreach (var p in this._players)
-                //    p.Value.Conn.PostNetEvent(new T());
-            }
+            Type[] types = args.Select(x => x.GetType()).ToArray();
+            var ctor = typeof(T).GetConstructor(types);
+
+            lock (this._lock)
+                foreach (var p in this._players)
+                        p.Value.Conn.PostNetEvent((GameNetEvent)ctor.Invoke(args));
         }
 
 
-        public void BroadcastWaiting<T>(T e) // TODO
+        public void BroadcastWaiting<T>(params object[] args) 
         {
-            lock(this._lock)
-            {
+            Type[] types = args.Select(x => x.GetType()).ToArray();
+            var ctor = typeof(T).GetConstructor(types);
 
-            }
+            lock (this._lock)
+                foreach (var p in this._players)
+                    if (!p.Value.Playing)
+                            p.Value.Conn.PostNetEvent((GameNetEvent)ctor.Invoke(args));
         }
     }
 }

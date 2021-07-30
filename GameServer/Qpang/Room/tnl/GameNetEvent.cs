@@ -33,5 +33,21 @@ namespace Qserver.GameServer.Qpang
         {
             Log.Message(LogType.ERROR, $"GameNetEvent Unhandeled {Id}!");
         }
+
+
+        // helpers
+        public void WriteWString(BitStream bitSteam, string str, uint maxLen = 0)
+        {
+            if (maxLen == 0)
+                maxLen = (uint)str.Length;
+
+            for (int i = 0; i < maxLen && i < str.Length; i++)
+            {
+                bitSteam.Write((byte)str[i]);
+                bitSteam.Write((byte)0x00);
+            }
+            bitSteam.Write((ushort)0x0000);
+        }
     }
+
 }

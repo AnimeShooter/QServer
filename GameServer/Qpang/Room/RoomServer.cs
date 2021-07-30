@@ -103,7 +103,10 @@ namespace Qserver.GameServer.Qpang
                     return false;
 
                 conn.Player = player;
-                this._connections.Add(playerId, conn);
+                if (this._connections.ContainsKey(playerId))
+                    this._connections[playerId] = conn;
+                else
+                    this._connections.Add(playerId, conn);
             }
             return true;
         }

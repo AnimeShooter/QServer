@@ -44,11 +44,10 @@ namespace Qserver.GameServer.Qpang
             this.Zero = 0;
             this.PlayerId = playerId;
             this.Cmd = cmd;
-            this.RoomId = room.Id;
-            this.Mode = (byte)room.Mode;
-            this.MemberCount = room.PlayerCount;
-            this.Title = "-";
             this.Value = val;
+            this.Mode = (byte)room.Mode;
+            this.Title = "-";
+            this.Password = room.Password;
             this.MeleeOnly = room.MeleeOnly ? (byte)1 : (byte)0;
             this.SkillsEnabled = room.SkillsEnabled ? (byte)1 : (byte)0;
         }
@@ -63,8 +62,9 @@ namespace Qserver.GameServer.Qpang
             bitStream.Write(MemberCount);
             bitStream.Write(Goal);
 
-            bitStream.WriteString(Password);
-            bitStream.WriteString(Title);
+            bitStream.WriteString(Password, 255);
+            //bitStream.WriteString(Title);
+            WriteWString(bitStream, Title);
             bitStream.Write(Time);
             bitStream.Write(Rounds);
             bitStream.Write(Unk160);
@@ -90,8 +90,8 @@ namespace Qserver.GameServer.Qpang
         public byte MemberCount;
         public byte Goal = 10;
 
-        public string Password;
-        public string Title;
+        public string Password = "";
+        public string Title = "";
         public byte Time = 6;
 
         // union

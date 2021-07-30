@@ -61,11 +61,11 @@ namespace Qserver.GameServer.Qpang
 
                 var players = roomSession.GetPlayingPlayers();
                 // TODO: sort players?
-                //session.Post(new GCScore(players, RoomSession, 1));
+                session.Post(new GCScore(players, session.RoomSession, 1));
             }
             else if(Cmd == (uint)Commands.GAME)
             {
-                //session.Post(new GCScore(session.RoomSession, -56));
+                session.Post(new GCScore(session.RoomSession, (byte)(0xC8)));
             }
 
             // send twice cuz bugfix spectator psoition reset?

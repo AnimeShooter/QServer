@@ -83,11 +83,12 @@ namespace Qserver.GameServer.Network
                             if (PayloadSizeToRead == 0) // fully body!
                             {
                                 PacketReader pkt = new PacketReader(HeaderBuffer, PayloadBuffer, "test", KeyPart);
-                                if (Enum.IsDefined(typeof(Opcode), pkt.Opcode))
-                                    if (Settings.DEBUG)
+                                if (Settings.DEBUG)
+                                    if (Enum.IsDefined(typeof(Opcode), pkt.Opcode))
                                         Log.Message(LogType.DUMP, $"[{_socket.LocalEndPoint}] Recieved OpCode: {pkt.Opcode}, len: {pkt.Size}\n");
-                                else
-                                    Log.Message(LogType.ERROR, $"[{_socket.LocalEndPoint}] Unregistered OpCode: {pkt.Opcode}\n");
+                                    else
+                                        Log.Message(LogType.ERROR, $"[{_socket.LocalEndPoint}] Unregistered OpCode: {pkt.Opcode}\n");
+                                
                                 PacketManager.InvokeHandler(pkt, this, pkt.Opcode);
 
                                 // reset

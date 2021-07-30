@@ -74,13 +74,13 @@ namespace Qserver.GameServer.Qpang
         public void SetTeam(byte team)
         {
             this._team = team;
-            this._room.BroadcastWaiting<GCPlayerChange>(this._conn.Player, 2, team);
+            this._room.BroadcastWaiting<GCPlayerChange>(this._conn.Player, (byte)2, team);
         }
 
         public void SetReady(bool ready)
         {
             this._isReady = ready;
-            this._room.BroadcastWaiting<GCReady>(this._conn.Player.PlayerId, ready);
+            this._room.BroadcastWaiting<GCReady>(this._conn.Player.PlayerId, ready ? (uint)1 : (uint)0);
         }
     }
 }

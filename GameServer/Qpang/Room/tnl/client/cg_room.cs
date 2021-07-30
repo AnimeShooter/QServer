@@ -84,17 +84,25 @@ namespace Qserver.GameServer.Qpang
         {
             bitStream.Read(out PlayerId);
             bitStream.Read(out Cmd);
-            bitStream.Read(out Value);
-            //bitStream.Read(out Map);
+            //bitStream.Read(out Value);
+            bitStream.Read(out Map);
+            Value = Map; // union
             bitStream.Read(out Mode);
             //bitStream.Read(out RoomId);
+            RoomId = Mode;
             bitStream.Read(out MemberCount);
             //bitStream.Read(out RoomId2);
+            RoomId2 = MemberCount; // union
             bitStream.Read(out Goal);
+            //bitStream.ReadString(out Password);
+            //bitStream.ReadString(out Title);
             bitStream.ReadString(out Password);
-            bitStream.ReadString(out Title);
+            ByteBuffer titleBuffer = new ByteBuffer(32);
+            bitStream.Read(titleBuffer);
+            Title = Encoding.UTF8.GetString(titleBuffer.GetBuffer());
             bitStream.Read(out TimeAmount);
             //bitStream.Read(out PointsAmount);
+            PointsAmount = TimeAmount;
             bitStream.Read(out IsRounds);
             bitStream.Read(out unk11);
             bitStream.Read(out unk12);

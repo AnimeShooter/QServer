@@ -130,10 +130,18 @@ namespace TNL.Network
 
         public void Connect(IPEndPoint ep)
         {
-            _socket.Connect(ep);
-            _socket.BeginReceive(OnEndReceive, null);
+            try
+            {
+                _socket.Connect(ep);
+                _socket.BeginReceive(OnEndReceive, null);
 
-            _needRun = true;
+                _needRun = true;
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e);
+            }
+            
         }
     }
 }

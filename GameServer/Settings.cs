@@ -23,7 +23,7 @@ namespace Qserver.GameServer
         public static string ReCaptchaSecret = "6LfAoqsbAAAAAJon6b2LcRkoItnPMZH5c07nxAut";
 
 #if DEBUG
-        public static bool DEBUG = true;
+        public static bool DEBUG = false;
 #else
         public static bool DEBUG = false;
 #endif

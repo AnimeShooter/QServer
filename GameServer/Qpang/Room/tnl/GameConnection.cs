@@ -44,6 +44,17 @@ namespace Qserver.GameServer.Qpang
             CGMotion.RegisterNetClassReps();
             CGMove.RegisterNetClassReps();
             CGMoveReport.RegisterNetClassReps();
+            CGPvEAreaTrigger.RegisterNetClassReps();
+            CGPvEEventObject.RegisterNetClassReps();
+            CGPvEFloor.RegisterNetClassReps();
+            CGPvEGetItem.RegisterNetClassReps();
+            CGPvEHitN2P.RegisterNetClassReps();
+            CGPvEHitNpcToObject.RegisterNetClassReps();
+            CGPvEHitNpc.RegisterNetClassReps();
+            CGPvEHitObject.RegisterNetClassReps();
+            CGPvERespawnReq.RegisterNetClassReps();
+            CGPvERoundStart.RegisterNetClassReps();
+            CGPvEStart.RegisterNetClassReps();
             CGPlayerChange.RegisterNetClassReps();
             CGReady.RegisterNetClassReps();
             CGRespawn.RegisterNetClassReps();

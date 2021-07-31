@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Collections.Generic;
 using System.Text;
 
@@ -7,9 +8,9 @@ namespace Qserver.GameServer
     public static class Settings
     {
 #if DEBUG
-        public static string SERVER_IP = "127.0.0.1";
+        public static uint SERVER_IP = BitConverter.ToUInt32(IPAddress.Parse("127.0.0.1").GetAddressBytes(), 0); // "127.0.0.1";
 #else
-        public static string SERVER_IP = Util.Util.GetLocalIPAddress().ToString();
+        public static uint SERVER_IP = BitConverter.ToUInt32(IPAddress.Parse(Util.Util.GetLocalIPAddress().ToString()).GetAddressBytes(), 0);
 #endif
         public static int SERVER_PORT_AUTH = 8003; // Auth
         public static int SERVER_PORT_LOBBY = 8005; // Park/Lobby

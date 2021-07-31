@@ -270,7 +270,7 @@ namespace Qserver.Webserver.HTTP.Nancy
             Get("/img/maps/small/{name}", async x =>
             {
                 //string[] mapNames = new string[] { "garden", "diorama", "fly", "keep", "doll", "sweety", "river", "bunker", "temple", "bridge", "castaway" };
-                string[] mapNames = new string[] { "", "diorama", "fly", "keep", "doll", "garden", "river", "practice", "bunker", "temple", "fly", "bridge", "castaway", "garden" }; // Overflow??
+                string[] mapNames = new string[] { "garden", "diorama", "fly", "keep", "doll", "garden", "river", "practice", "bunker", "temple", "fly", "bridge", "castaway" }; // Overflow??
                 int mapId = -1;
                 string name = x.name;
                 if (Int32.TryParse(x.name, out mapId))

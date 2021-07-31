@@ -43,12 +43,7 @@ namespace Qserver.GameServer.Network.Handlers
             string uuid = Util.Util.GenerateUUID();
             Game.Instance.UsersRepository.UpdateUUID(wUsername, uuid).GetAwaiter();
 
-            uint IP = 0x0100007F;
-            string[] ipSplit = Settings.SERVER_IP.Split('.');
-            if (ipSplit.Length == 4)
-                IP = (uint)((Convert.ToByte(ipSplit[3]) * 0x1_00_00_00) + (Convert.ToByte(ipSplit[2]) * 0x1_00_00) + (Convert.ToByte(ipSplit[1]) * 0x1_00) + (Convert.ToByte(ipSplit[0])));
-
-            manager.Send(AuthManager.Instance.LoginSuccess(Encoding.ASCII.GetBytes(uuid), IP)); // game host local
+            manager.Send(AuthManager.Instance.LoginSuccess(Encoding.ASCII.GetBytes(uuid), Settings.SERVER_IP)); // game host local
         }
     }
 }

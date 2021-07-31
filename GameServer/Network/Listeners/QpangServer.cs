@@ -26,7 +26,7 @@ namespace Qserver.GameServer.Network
                 new Thread(handleNew).Start();
                 void handleNew()
                 {
-                    _listener = new TcpListener(IPAddress.Parse(Settings.SERVER_IP), this._port);
+                    _listener = new TcpListener(new IPAddress((long)Settings.SERVER_IP), this._port);
                     _listener.Start();
                     while (true)
                     {

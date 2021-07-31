@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Collections.Generic;
 using System.Text;
 
@@ -48,7 +49,7 @@ namespace Qserver.GameServer.Qpang
             if (host != 0)
                 room = new Room(id, name, map, mode, host, (ushort)Settings.SERVER_PORT_ROOM);
             else
-                room = new Room(id, name, map, mode, 0x0100007F, (ushort)Settings.SERVER_PORT_ROOM);
+                room = new Room(id, name, map, mode, Settings.SERVER_IP, (ushort)Settings.SERVER_PORT_ROOM);
             lock(this._lock)
                 _rooms.Add(id, room);
 

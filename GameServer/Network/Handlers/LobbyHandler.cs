@@ -167,17 +167,7 @@ namespace Qserver.GameServer.Network.Handlers
         {
             var rooms = Game.Instance.RoomManager.List();
             manager.Send(LobbyManager.Instance.RoomList(rooms));
-
-            uint ip = 0x0100007F;
-            byte[] bag = new byte[4];
-            string[] ipSplit = Settings.SERVER_IP.Split('.');
-            if (ipSplit.Length == 4)
-            {
-                for (int i = 0; i < 4; i++)
-                    bag[i] = Convert.ToByte(ipSplit[i]);
-                ip = BitConverter.ToUInt32(bag);
-            }
-            manager.Send(LobbyManager.Instance.UpdateGameSettings(ip, (ushort)Settings.SERVER_PORT_ROOM, true));
+            manager.Send(LobbyManager.Instance.UpdateGameSettings(Settings.SERVER_IP, (ushort)Settings.SERVER_PORT_ROOM, true));
         }
         #endregion
 

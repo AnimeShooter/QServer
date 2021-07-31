@@ -48,7 +48,7 @@ namespace Qserver.GameServer.Qpang
             Room room;
 
             // TODO: remove to be server 
-            host = BitConverter.ToUInt32(IPAddress.Parse(Util.Util.GetLocalIPAddress().ToString()).GetAddressBytes(), 0); // test local peer to peer?
+            //host = BitConverter.ToUInt32(IPAddress.Parse(Util.Util.GetLocalIPAddress().ToString()).GetAddressBytes(), 0); // test local peer to peer?
 
             if (host != 0)
                 room = new Room(id, name, map, mode, host, (ushort)Settings.SERVER_PORT_ROOM);
@@ -58,7 +58,6 @@ namespace Qserver.GameServer.Qpang
                 _rooms.Add(id, room);
 
             return room;
-                
         }
 
         public void Remove(uint id)

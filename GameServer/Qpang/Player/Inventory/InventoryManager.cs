@@ -112,7 +112,7 @@ namespace Qserver.GameServer.Qpang
             return;
         }
 
-        public void SetCardActive(ulong cardId, bool isActive)
+        public void SetCardActive(ulong cardId, bool status)
         {
             lock (this._lock)
             {
@@ -124,13 +124,13 @@ namespace Qserver.GameServer.Qpang
                     var card = this._cards[cardId];
                     var alreadyEquipped = this._player.EquipmentManager.HasFunctionCard(card.ItemId);
 
-                    if (isActive && !alreadyEquipped)
+                    if (status && !alreadyEquipped)
                     {
-                        card.TimeCreated = Util.Util.Timestamp();
+                        //card.TimeCreated = Util.Util.Timestamp(); // dont set #1 in inventory?
                         card.IsActive = true;
                         this._player.EquipmentManager.AddFunctionCard(cardId);
                         this._player.SendLobby(LobbyManager.Instance.EnabledFunctionCard(card));
-                    } else if (!isActive && alreadyEquipped)
+                    } else if (!status && alreadyEquipped)
                     {
                         card.IsActive = false;
                         this._player.EquipmentManager.RemoveFunctionCard(cardId);

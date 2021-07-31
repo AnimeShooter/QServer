@@ -153,7 +153,15 @@ namespace Qserver.GameServer
                 // TODO: listen on console
             }
             else
-                Thread.Sleep(-1);
+            {
+                while(true)
+                {
+                    GC.Collect();
+                    Log.Message(LogType.NORMAL, $"Total Memory: {Convert.ToSingle(GC.GetTotalMemory(false) / 1024 / 1024f).ToString("0,000.00")}MB");
+                    Thread.Sleep(30000);
+                }
+            }
+            Thread.Sleep(-1);
 
         }
     }

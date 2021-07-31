@@ -22,6 +22,33 @@ namespace Qserver.GameServer.Qpang
             ImplementNetEvent(out _dynClassRep, "GCRoom", NetClassMask.NetClassGroupGameMask, 0);
         }
 
+        private uint PlayerId; // 92
+        private uint Cmd; // 96
+
+        // union
+        public uint Value;
+        public uint RoomId;
+
+        public byte Mode;
+        public byte MemberCount;
+        public byte Goal = 10;
+
+        public string Password = "";
+        public string Title = "";
+        public byte Time = 6;
+
+        // union
+        public byte Rounds = 1;
+        public byte GameId;
+
+        public byte Unk160 = 1; // in CGRoom
+
+        public uint Zero = 0;
+        public byte Unk161 = 0;
+        public byte SkillsEnabled = 0;
+        public byte MeleeOnly = 0;  // 166
+
+
         public GCRoom() : base(GameNetId.GC_ROOM, GuaranteeType.Guaranteed, EventDirection.DirAny)
         {
             
@@ -79,32 +106,7 @@ namespace Qserver.GameServer.Qpang
         public override void Unpack(EventConnection ps, BitStream bitStream) { }
         public override void Process(EventConnection ps) { }
 
-        private uint PlayerId; // 92
-        private uint Cmd; // 96
-
-        // union
-        public uint Value;
-        public uint RoomId;
-
-        public byte Mode;
-        public byte MemberCount;
-        public byte Goal = 10;
-
-        public string Password = "";
-        public string Title = "";
-        public byte Time = 6;
-
-        // union
-        public byte Rounds = 1;
-        public byte GameId;
-
-        public byte Unk160 = 1; // in CGRoom
-
-        public uint Zero = 0;
-        public byte Unk161 = 0;
-        public byte SkillsEnabled = 0;
-        public byte MeleeOnly = 0;  // 166
-
+       
         
     }
 }

@@ -32,6 +32,7 @@ namespace Qserver.GameServer.Qpang
 
         private uint _host;
         private ushort _port;
+        private bool _isP2p;
 
         private uint _id;
         private string _name;
@@ -65,6 +66,10 @@ namespace Qserver.GameServer.Qpang
         public ushort Port
         {
             get { return this._port; }
+        }
+        public bool P2P
+        {
+            get { return this._isP2p; }
         }
         public uint Id
         {
@@ -161,7 +166,7 @@ namespace Qserver.GameServer.Qpang
             get { return this._masterPlayerId; }
         }
 
-        public Room(uint id, string name, byte map, GameMode.Mode mode, uint host, ushort port)
+        public Room(uint id, string name, byte map, GameMode.Mode mode, uint host, ushort port, bool isp2p = false)
         {
             this._lock = new object();
             this._id = id;
@@ -170,6 +175,7 @@ namespace Qserver.GameServer.Qpang
             this._mode = mode;
             this._host = host;
             this._port = port;
+            this._isP2p = isp2p;
 
             this._state = 2;
             this._maxPlayers = 16;

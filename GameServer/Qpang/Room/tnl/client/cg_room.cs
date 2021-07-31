@@ -151,7 +151,7 @@ namespace Qserver.GameServer.Qpang
                         return;
                     }
 
-                    var newroom = Game.Instance.RoomManager.Create(Title, (byte)Map, (GameMode.Mode)Mode);
+                    var newroom = Game.Instance.RoomManager.Create(Title, (byte)Map, (GameMode.Mode)Mode, (uint)conn.GetNetAddress().Address.Address);
                     newroom.EventRoom = Cmd == (uint)Commands.CREATE_EVENT_ROOM;
                     newroom.AddPlayer(conn);
                     break;

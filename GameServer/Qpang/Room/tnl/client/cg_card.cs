@@ -23,7 +23,7 @@ namespace Qserver.GameServer.Qpang
         {
             ImplementNetEvent(out _dynClassRep, "CGCard", NetClassMask.NetClassGroupGameMask, 0);
         }
-        public CGCard() : base(GameNetId.CG_CARD, GuaranteeType.GuaranteedOrdered, EventDirection.DirClientToServer) { }
+        public CGCard() : base(GameNetId.CG_CARD, GuaranteeType.Guaranteed, EventDirection.DirClientToServer) { }
 
         public enum Commands
         {

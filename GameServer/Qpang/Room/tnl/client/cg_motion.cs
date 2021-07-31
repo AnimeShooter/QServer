@@ -38,7 +38,19 @@ namespace Qserver.GameServer.Qpang
         public CGMotion() : base(GameNetId.CG_MOTION, GuaranteeType.Unguaranteed, EventDirection.DirClientToServer) { }
 
         public override void Pack(EventConnection ps, BitStream bitStream) { }
-        public override void Unpack(EventConnection ps, BitStream bitStream) { }
+        public override void Unpack(EventConnection ps, BitStream bitStream) 
+        {
+            bitStream.Read(out Cmd);
+            bitStream.Read(out unk02);
+            bitStream.Read(out unk03);
+            bitStream.Read(out unk04);
+            bitStream.Read(out unk05);
+            bitStream.Read(out unk06);
+            bitStream.Read(out unk07);
+            bitStream.Read(out unk08);
+            bitStream.Read(out unk09);
+            bitStream.Read(out PlayerId);
+        }
         public override void Process(EventConnection ps)
         {
             Post(ps);

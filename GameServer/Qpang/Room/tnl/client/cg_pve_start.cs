@@ -23,10 +23,18 @@ namespace Qserver.GameServer.Qpang
         {
             ImplementNetEvent(out _dynClassRep, "CGPvEStart", NetClassMask.NetClassGroupGameMask, 0);
         }
+
+        public uint MasterUid;
+        public byte Unk02;
+
         public CGPvEStart() : base(GameNetId.CG_PVE_START, GuaranteeType.GuaranteedOrdered, EventDirection.DirAny) { }
 
         public override void Pack(EventConnection ps, BitStream bitStream) { }
-        public override void Unpack(EventConnection ps, BitStream bitStream) { }
+        public override void Unpack(EventConnection ps, BitStream bitStream) 
+        {
+            bitStream.Read(out MasterUid);
+            bitStream.Read(out Unk02);
+        }
         public override void Process(EventConnection ps) { }
     }
 }

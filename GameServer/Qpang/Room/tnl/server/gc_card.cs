@@ -40,7 +40,7 @@ namespace Qserver.GameServer.Qpang
         public byte count;
 
         public GCCard() : base(GameNetId.GC_CARD, GuaranteeType.GuaranteedOrdered, EventDirection.DirAny) { }
-        public GCCard(uint playerId, uint targetId, byte cmd, uint cardType, uint itemId, ulong seqId) : base(GameNetId.GC_ARRANGED_CONN, GuaranteeType.GuaranteedOrdered, EventDirection.DirAny)
+        public GCCard(uint playerId, uint targetId, byte cmd, uint cardType, uint itemId, ulong seqId) : base(GameNetId.GC_CARD, GuaranteeType.GuaranteedOrdered, EventDirection.DirAny)
         {
             this.uid = playerId;
             this.targetUid = targetId;
@@ -49,7 +49,7 @@ namespace Qserver.GameServer.Qpang
             this.itemId = itemId;
             this.seqId = seqId;
         }
-        public GCCard(uint playerId, uint guagePercentage, uint guagePoints) : base(GameNetId.GC_ARRANGED_CONN, GuaranteeType.GuaranteedOrdered, EventDirection.DirAny)
+        public GCCard(uint playerId, uint guagePercentage, uint guagePoints) : base(GameNetId.GC_CARD, GuaranteeType.Guaranteed, EventDirection.DirClientToServer)
         {
             this.uid = playerId;
             this.cmd = 8;

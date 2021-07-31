@@ -23,7 +23,7 @@ namespace Qserver.GameServer.Qpang
         {
             ImplementNetEvent(out _dynClassRep, "GCDisconnect", NetClassMask.NetClassGroupGameMask, 0);
         }
-        public GCDisconnect() : base(GameNetId.CG_DISCONNECT, GuaranteeType.GuaranteedOrdered, EventDirection.DirAny) { } // cg, gc whatever?
+        public GCDisconnect() : base(GameNetId.CG_DISCONNECT, GuaranteeType.Guaranteed, EventDirection.DirAny) { } // cg, gc whatever?
 
         public override void Pack(EventConnection ps, BitStream bitStream) { }
         public override void Unpack(EventConnection ps, BitStream bitStream) { }

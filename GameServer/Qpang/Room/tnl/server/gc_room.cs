@@ -64,7 +64,7 @@ namespace Qserver.GameServer.Qpang
 
             bitStream.WriteString(Password, 255);
             //bitStream.WriteString(Title);
-            WriteWString(bitStream, Title);
+            WriteWString(bitStream, Title, 32);
             bitStream.Write(Time);
             bitStream.Write(Rounds);
             bitStream.Write(Unk160);

@@ -242,7 +242,7 @@ namespace Qserver.GameServer.Qpang
 
         public void SpawnEssence(Spawn spawn)
         {
-            PostNetEvent(new GCRespawn(0, 3, 5, spawn.X, spawn.Y, spawn.X));
+            PostNetEvent(new GCRespawn(0, 3, 5, spawn.X, spawn.Y, spawn.Z));
         }
 
         public void DropEssence(Spawn spawn)

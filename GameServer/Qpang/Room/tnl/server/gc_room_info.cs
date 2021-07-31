@@ -69,8 +69,7 @@ namespace Qserver.GameServer.Qpang
             Event = (room.EventRoom || spectating ) ? (byte)1 : (byte)0;
         }
 
-        public override void Pack(EventConnection ps, BitStream bitStream) { }
-        public override void Unpack(EventConnection ps, BitStream bitStream) 
+        public override void Pack(EventConnection ps, BitStream bitStream) 
         {
             bitStream.Write(MasterUid);
             bitStream.Write(JoinNum);
@@ -80,7 +79,7 @@ namespace Qserver.GameServer.Qpang
             bitStream.Write(RoomState);
             bitStream.Write(RespawnTime);
             bitStream.Write(P2PWaitTime);
-            bitStream.WriteString(Title);
+            WriteWString(bitStream, Title, 32);
             bitStream.Write(IsTime);
             bitStream.Write(Rounds);
             bitStream.Write(LevelLimit);
@@ -91,6 +90,7 @@ namespace Qserver.GameServer.Qpang
             bitStream.Write(Melee);
             bitStream.Write(Event);
         }
+        public override void Unpack(EventConnection ps, BitStream bitStream)  { }
         public override void Process(EventConnection ps) { }
     }
 }

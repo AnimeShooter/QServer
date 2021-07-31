@@ -111,7 +111,8 @@ namespace Qserver.GameServer.Qpang
             foreach (uint item in Weapons)
                 bitStream.Write(item);
 
-            bitStream.WriteString(Nickname, 16);
+            //bitStream.WriteString(Nickname, 16);
+            WriteWString(bitStream, Nickname, 16);
             bitStream.Write(Unk10);
             bitStream.Write(Unk11);
             bitStream.Write(Level);

@@ -151,30 +151,30 @@ namespace Qserver.GameServer.Qpang
                         return;
                     }
 
-                    var room = Game.Instance.RoomManager.Create(Title, (byte)Map, (GameMode.Mode)Mode);
-                    room.EventRoom = Cmd == (uint)Commands.CREATE_EVENT_ROOM;
-                    room.AddPlayer(conn);
+                    var newroom = Game.Instance.RoomManager.Create(Title, (byte)Map, (GameMode.Mode)Mode);
+                    newroom.EventRoom = Cmd == (uint)Commands.CREATE_EVENT_ROOM;
+                    newroom.AddPlayer(conn);
                     break;
                 case Commands.JOIN_ROOM:
-                    var gameroom = Game.Instance.RoomManager.Get(RoomId);
+                    var joinroom = Game.Instance.RoomManager.Get(RoomId);
 
-                    if (gameroom == null)
+                    if (joinroom == null)
                     {
                         conn.Disconnect("Could not find selected room");
                         return;
                     }
 
-                    if(gameroom.PlayerCount >= gameroom.MaxPlayers)
+                    if(joinroom.PlayerCount >= joinroom.MaxPlayers)
                     {
                         conn.Disconnect("Room is full");
                         return;
                     }
 
-                    if (gameroom.Password != "" && player.Rank < 3)
-                        if (gameroom.Password != Password)
+                    if (joinroom.Password != "" && player.Rank < 3)
+                        if (joinroom.Password != Password)
                             return;
 
-                    gameroom.AddPlayer(conn);
+                    joinroom.AddPlayer(conn);
                        
                     break;
                 default:

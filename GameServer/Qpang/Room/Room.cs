@@ -230,11 +230,9 @@ namespace Qserver.GameServer.Qpang
                 else
                     this._players[conn.Player.PlayerId] =  roomPlayer;
             }
-                
 
             conn.EnterRoom(this);
             SyncPlayers(roomPlayer);
-
         }
 
         public void RemovePlayer(uint id)
@@ -301,7 +299,7 @@ namespace Qserver.GameServer.Qpang
             lock(this._lock)
             {
                 player.Conn.PostNetEvent(new GCJoin(player));
-                foreach(var  p in this._players)
+                foreach(var p in this._players)
                 {
                     if(player != p.Value)
                     {

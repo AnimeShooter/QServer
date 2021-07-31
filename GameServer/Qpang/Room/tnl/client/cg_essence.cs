@@ -55,8 +55,8 @@ namespace Qserver.GameServer.Qpang
 
         public override void Handle(GameConnection conn, Player player)
         {
-            //if (player.RoomPlayer != null && player.RoomPlayer.RoomSessionPlayer != null)
-            //    player.RoomPlayer.RoomSessionPlayer.RoomSession.RelayPlaying < GCEssence(unk01, unk02, unk03, unk04, unk05, unk06, unk07, unk08, unk09);
+            if (player.RoomPlayer != null && player.RoomPlayer.RoomSessionPlayer != null)
+                player.RoomPlayer.RoomSessionPlayer.RoomSession.RelayPlaying<GCEssence>(unk01, unk02, unk03, unk04, unk05, unk06, unk07, unk08, unk09);
         }
 
     }

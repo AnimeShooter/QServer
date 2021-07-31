@@ -88,7 +88,7 @@ namespace Qserver.GameServer.Qpang
                 session.EntityManager.Shoot(EntityId);
 
             // TODO
-            //session.RoomSession.RelayPlayingExcept<GCShoot>(playerId, playerId, ItemId, SrcX, SrcY, SrcZ, DstX, DstY, DstZ, EntityId, false);
+            session.RoomSession.RelayPlayingExcept<GCShoot>(playerId, playerId, ItemId, SrcX, SrcY, SrcZ, DstX, DstY, DstZ, EntityId, false);
         }
 
     }

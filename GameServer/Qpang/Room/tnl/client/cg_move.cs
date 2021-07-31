@@ -79,8 +79,8 @@ namespace Qserver.GameServer.Qpang
             session.Position = new Position() { X = PosX, Y = PosY, Z = PosZ };
 
             var roomSession = roomPlayer.Room.RoomSession;
-            //if (roomSession != null)
-            //    roomSession.RelayPlayingExcept<GCMove>(player.PlayerId, PlayerId, Cmd, PosX, PosY, PosZ, unk04, unk05, unk06, unk07, unk08, unk09, unk10);
+            if (roomSession != null)
+                roomSession.RelayPlayingExcept<GCMove>(player.PlayerId, PlayerId, Cmd, PosX, PosY, PosZ, unk04, unk05, unk06, unk07, unk08, unk09, unk10);
         }
     }
 }

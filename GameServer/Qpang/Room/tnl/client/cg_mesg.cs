@@ -36,8 +36,12 @@ namespace Qserver.GameServer.Qpang
         {
             bitStream.Read(out PlayerId);
             bitStream.Read(out Cmd);
-            bitStream.ReadString(out Nickname);
-            bitStream.ReadString(out Message);
+            var nickBuff = new ByteBuffer(16);
+            bitStream.Read(nickBuff);
+            Nickname = ByteBufferToString(nickBuff);
+            var msgBuff = new ByteBuffer(255);
+            bitStream.Read(msgBuff);
+            Message = ByteBufferToString(msgBuff); // TODO: debug?
         }
         public override void Process(EventConnection ps) 
         {
@@ -65,13 +69,13 @@ namespace Qserver.GameServer.Qpang
             if (Message == "")
                 return;
 
-            //if (roomSession == null) // TODO
-            //    room.Broadcast<GCMesg>(player.PlayerId, Cmd, player.Name, Message);
-            //else
-            //    if (roomPlayer.Playing)
-            //        roomSession.Relay<GCMesg>(player.PlayerId, Cmd, player.Name, Message);
-            //    else
-            //        room.BroadcastWaiting<GCMesg>(player.PlayerId, Cmd, player.Name, Message);
+            if (roomSession == null)
+                room.Broadcast<GCMesg>(player.PlayerId, Cmd, player.Name, Message);
+            else
+                if (roomPlayer.Playing)
+                roomSession.Relay<GCMesg>(player.PlayerId, Cmd, player.Name, Message);
+            else
+                room.BroadcastWaiting<GCMesg>(player.PlayerId, Cmd, player.Name, Message);
 
         }
     }

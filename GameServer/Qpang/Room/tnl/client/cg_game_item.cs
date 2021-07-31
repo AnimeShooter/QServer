@@ -70,7 +70,6 @@ namespace Qserver.GameServer.Qpang
             if (roomSessionPlayer.Death)
                 return;
 
-            // TODO
             //roomSessionPlayer.RoomSession.ItemManager.OnPickUp(roomSessionPlayer, Uid);
         }
 

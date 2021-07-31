@@ -37,14 +37,14 @@ namespace Qserver.GameServer.Qpang
             MasterId = masterId;
         }
 
-        public override void Pack(EventConnection ps, BitStream bitStream) { }
-        public override void Unpack(EventConnection ps, BitStream bitStream)
+        public override void Pack(EventConnection ps, BitStream bitStream)
         {
             bitStream.Write(PlayerId);
             bitStream.Write(Cmd);
             bitStream.Write(MasterId);
             bitStream.Write(unk01);
         }
+        public override void Unpack(EventConnection ps, BitStream bitStream) { }
         public override void Process(EventConnection ps) { }
     }
 }

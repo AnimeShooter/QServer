@@ -151,7 +151,7 @@ namespace Qserver.GameServer.Qpang
             }
             else
             {
-                if(WeaponId != 1095434246) // octo
+                if(WeaponId != 1095434246) // octo TODO filter all mines
                     if (!srcPlayer.EntityManager.IsValidShot(EntityId))
                         return;
 
@@ -193,8 +193,7 @@ namespace Qserver.GameServer.Qpang
                 if(applyEffect)
                 {
                     effectId = weapon.EffectId;
-                    //  TODO
-                    //dstPlayer.EffectManager.AddEffect(srcPlayer, weapon, EntityId);
+                    dstPlayer.EffectManager.AddEffect(srcPlayer, weapon, EntityId);
                 }
             }
 
@@ -202,15 +201,15 @@ namespace Qserver.GameServer.Qpang
             var dstId = dstPlayer.Player.PlayerId;
 
             // NOTE: may add anti-cheat manager to verify Start & End location (last position tracking) followed with a LoS check to verify kill
-            //roomSession.RelayPlaying<GCHit>(SrcPlayerId, dstPlayer, unk03, SrcPosX, SrcPosY, SrcPosZ, DstPosX, DstPosX, DstPosY, DstPosZ, EntityId,
-            //    HitType, HitLocation, dstPlayer.Health, dmg, WeaponId, RTT, WeaponType, unk16, srcPlayer.Streak+1, unk18, effectId); // NOTE: Health as in abse health?
+            roomSession.RelayPlaying<GCHit>(SrcPlayerId, dstPlayer, unk03, SrcPosX, SrcPosY, SrcPosZ, DstPosX, DstPosX, DstPosY, DstPosZ, EntityId,
+                HitType, HitLocation, dstPlayer.Health, dmg, WeaponId, RTT, WeaponType, unk16, srcPlayer.Streak + 1, unk18, effectId); // NOTE: Health as in abse health?
         }
 
         public void HitEmpty(uint weaponId, RoomSessionPlayer srcPlayer)
         {
             var roomSession = srcPlayer.RoomSession;
-            //roomSession.RelayPlaying<GCHit>(SrcPlayerId, 0, unk03, SrcPosX, SrcPosY, SrcPosZ, DstPosX, DstPosY, DstPosZ, EntityId,
-            //    HitType, HitLocation, 0, 0, WeaponId, RTT, WeaponType, unk16, srcPlayer.Streak + 1, unk18, 0);
+            roomSession.RelayPlaying<GCHit>(SrcPlayerId, 0, unk03, SrcPosX, SrcPosY, SrcPosZ, DstPosX, DstPosY, DstPosZ, EntityId,
+                HitType, HitLocation, 0, 0, WeaponId, RTT, WeaponType, unk16, srcPlayer.Streak + 1, unk18, 0);
         }
 
         public bool IsTrap(uint weaponId)

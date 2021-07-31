@@ -67,5 +67,31 @@ namespace Qserver.GameServer.Qpang
         {
 
         }
+        public void Reset()
+        {
+
+        }
+
+        // TODO TODO
+
+        public uint GetRandomItem()
+        {
+            return 0;
+        }
+
+        public void OnPickUp(RoomSessionPlayer player, uint spawnId)
+        {
+            return;
+        }
+
+        public void OnPickupEventItem(RoomSessionPlayer player, uint id)
+        {
+            return;
+        }
+
+        private void SpawnItem(GameItemSpawn item)
+        {
+
+        }
     }
 }

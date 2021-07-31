@@ -48,6 +48,22 @@ namespace Qserver.GameServer.Qpang
             bitStream.Read(out ItemId);
             bitStream.Read(out SeqId);
         }
-        public override void Process(EventConnection ps) { }
+        public override void Process(EventConnection ps)
+        {
+            Post(ps);
+        }
+
+        public override void Handle(GameConnection conn, Player player)
+        {
+            var roomPlayer = player.RoomPlayer;
+            if (roomPlayer == null)
+                return;
+
+            var roomSession = roomPlayer.Room.RoomSession;
+            if (roomSession == null)
+                return;
+
+            roomSession.RelayPlaying<GCCard>(Uid, TargetUid, Cmd, CardType, ItemId, SeqId);
+        }
     }
 }

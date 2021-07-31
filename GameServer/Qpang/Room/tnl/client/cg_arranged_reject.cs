@@ -23,12 +23,15 @@ namespace Qserver.GameServer.Qpang
         {
             ImplementNetEvent(out _dynClassRep, "CGArrangedReject", NetClassMask.NetClassGroupGameMask, 0);
         }
-        public CGArrangedReject() : base(GameNetId.CG_ARRANGED_REJECT, GuaranteeType.GuaranteedOrdered, EventDirection.DirClientToServer) { }
+        public CGArrangedReject() : base(GameNetId.CG_ARRANGED_REJECT, GuaranteeType.GuaranteedOrdered, EventDirection.DirClientToServer)
+        {
+            unk04 = new ByteBuffer();
+        }
 
         public uint SourcePlayerId;
         public uint TargetPlayerId;
         public uint unk03;
-        public ByteBuffer unk04 = new ByteBuffer();
+        public ByteBuffer unk04;
 
         public override void Pack(EventConnection ps, BitStream bitStream) { }
         public override void Unpack(EventConnection ps, BitStream bitStream)

@@ -99,7 +99,11 @@ namespace Qserver.GameServer.Qpang
             bitStream.ReadString(out Password);
             ByteBuffer titleBuffer = new ByteBuffer(32);
             bitStream.Read(titleBuffer);
-            Title = Encoding.UTF8.GetString(titleBuffer.GetBuffer());
+            //byte[] titleB = new byte[32];
+
+            //Title = Encoding.UTF32.GetString(titleBuffer.GetBuffer());
+            Title = ByteBufferToString(titleBuffer);
+
             bitStream.Read(out TimeAmount);
             //bitStream.Read(out PointsAmount);
             PointsAmount = TimeAmount;

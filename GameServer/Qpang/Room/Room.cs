@@ -223,7 +223,14 @@ namespace Qserver.GameServer.Qpang
 
             roomPlayer.SetTeam(GetAvailableTeam());
             lock (this._lock)
-                this._players.Add(conn.Player.PlayerId, roomPlayer);
+            {
+
+                if(!this._players.ContainsKey(conn.Player.PlayerId))
+                    this._players.Add(conn.Player.PlayerId, roomPlayer);
+                else
+                    this._players[conn.Player.PlayerId] =  roomPlayer;
+            }
+                
 
             conn.EnterRoom(this);
             SyncPlayers(roomPlayer);

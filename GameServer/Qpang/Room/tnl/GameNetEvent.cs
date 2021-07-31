@@ -48,6 +48,18 @@ namespace Qserver.GameServer.Qpang
             }
             bitSteam.Write((ushort)0x0000);
         }
+
+        public string ByteBufferToString(ByteBuffer bb)
+        {
+            byte[] data = bb.GetBuffer();
+            string result = "";
+            for(int i = 0; i < data.Length; i+= 2)
+            {
+                if (data[i] != 0x00)
+                    result += (char)data[i];
+            }
+            return result;
+        }
     }
 
 }

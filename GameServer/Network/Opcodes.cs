@@ -202,6 +202,8 @@ namespace Qserver.GameServer.Network
 
 		LOBBY_CHEST_OPEN = 906, // TODO?
 
+		LEET_ANTI_CHEET = 1337,
+
 		SQUARE_LOGIN = 6500,
 		SQUARE_LOGIN_RSP = 6501,
 

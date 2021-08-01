@@ -52,6 +52,7 @@ namespace Qserver.GameServer.Qpang
         private bool _isClosed;
         private bool _isOnline;
         private bool _testRealm;
+        private bool _hasAntiCheating;
 
         private uint _currentSquareId;
 
@@ -154,6 +155,11 @@ namespace Qserver.GameServer.Qpang
         {
             get { return this._testRealm; }
             set { this._testRealm = value; }
+        } 
+        public bool AntiCheat
+        {
+            get { return this._hasAntiCheating; }
+            set { this._hasAntiCheating = value; }
         }
         public DateTime LoginTime
         {
@@ -234,7 +240,11 @@ namespace Qserver.GameServer.Qpang
 
         public void Broadcast(string message)
         {
-            // TODO
+            if (this._lobbyConnection == null)
+                return;
+
+            lock(this._lobbyConnection)
+                this._lobbyConnection.Send(LobbyManager.Instance.Broadcast(message));
         }
 
         public void EnterSquare(SquarePlayer squarePlayer)

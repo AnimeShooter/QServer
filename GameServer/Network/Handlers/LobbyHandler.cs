@@ -468,6 +468,14 @@ namespace Qserver.GameServer.Network.Handlers
         }
         #endregion
 
+        #region AntiCheating
+        public static void HandleAntiCheat(PacketReader packet, ConnServer manager)
+        {
+            manager.Player.AntiCheat = true;
+            Log.Message(LogType.NORMAL, $"Anti-Cheating module active on {manager.Player.Name}!");
+        }
+        #endregion
+
         public static void HandleLobbyLogin(PacketReader packet, ConnServer manager)
         {
             byte[] uuid = packet.ReadBytes(16);

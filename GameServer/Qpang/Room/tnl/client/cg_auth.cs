@@ -86,6 +86,13 @@ namespace Qserver.GameServer.Qpang
             if (Cmd != (byte)Commands.REQUEST)
                 return;
 
+            var p = Game.Instance.GetOnlinePlayer(PlayerId);
+            if (p != null && !(p.AntiCheat || p.TestRealm)) // p null when ttestRealm
+            {
+                p.Broadcast("Anti-cheating not present!");
+                return;
+            }
+
             if (Game.Instance.RoomServer.CreateConnection(PlayerId, base.GameConnection))
                 conn.PostNetEvent(new CGAuth(PlayerId, (uint)Commands.AUTHENTICATED));
             else

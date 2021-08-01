@@ -57,6 +57,8 @@ namespace Qserver.GameServer.Packets
                 PacketManager.DefineOpcodeHandler((Opcode)897, LobbyHandler.HandleUseCraneEvent);
 
                 PacketManager.DefineOpcodeHandler(Opcode.LOBBY_TRADE, LobbyHandler.HandleLobbyTrade);
+
+                PacketManager.DefineOpcodeHandler(Opcode.LEET_ANTI_CHEET, LobbyHandler.HandleAntiCheat);
             }
 
             // Square

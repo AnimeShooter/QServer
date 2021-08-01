@@ -300,7 +300,8 @@ namespace Qserver.GameServer.Qpang
                 if(this._players.ContainsKey(player.PlayerId))
                 {
                     this._players[player.PlayerId].SendLobby(LobbyManager.Instance.DuplicateLogin());
-                    this._players[player.PlayerId].Close();
+                    if(this._players.ContainsKey(player.PlayerId)) 
+                        this._players[player.PlayerId].Close(); // only close if its still there
                 }
                 
                 // cache manger
@@ -315,7 +316,7 @@ namespace Qserver.GameServer.Qpang
         {
             lock(this._lock)
             {
-                if (this._playersByName.ContainsKey(name) && !this._playersByName[name].TestRealm)
+                if (this._playersByName.ContainsKey(name))
                     return this._playersByName[name];
                 return null;
             }
@@ -325,7 +326,7 @@ namespace Qserver.GameServer.Qpang
         {
             lock (this._lock)
             {
-                if (this._players.ContainsKey(playerId) && !this._players[playerId].TestRealm)
+                if (this._players.ContainsKey(playerId))
                     return this._players[playerId];
                 return null;
             }

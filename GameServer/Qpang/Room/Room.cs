@@ -108,8 +108,7 @@ namespace Qserver.GameServer.Qpang
         }
         public byte PlayerCount
         {
-            get { return this._playerCount; }
-            set { this._playerCount = value; }
+            get { return (byte)this._players.Count; }
         }
 
         public byte MaxPlayers
@@ -203,7 +202,7 @@ namespace Qserver.GameServer.Qpang
                 Password = this._password != "",
                 Map = this._map,
                 Mode = ((GameModeName)this._mode).ToString(),
-                PlayerCount = this._playerCount,
+                PlayerCount = this.PlayerCount,
                 MaxPlayers = this._maxPlayers,
                 LevelLimited = this._isLevelLimited,
                 TeamSorting = this._isTeamSorting,
@@ -268,6 +267,7 @@ namespace Qserver.GameServer.Qpang
 
         public void Tick()
         {
+            Console.WriteLine($"{this._id}: {this._players.Count}");
             if (this._isPlaying && this._roomSession != null)
                 this._roomSession.Tick();
         }

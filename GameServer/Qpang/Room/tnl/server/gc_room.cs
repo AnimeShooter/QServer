@@ -56,27 +56,35 @@ namespace Qserver.GameServer.Qpang
 
         public GCRoom(uint playerId, uint cmd, Room room) : base(GameNetId.GC_ROOM, GuaranteeType.Guaranteed, EventDirection.DirAny)
         {
-            this.Zero = 0;
-            this.PlayerId = playerId;
-            this.Cmd = cmd;
-            this.RoomId = room.Id;
-            this.Mode = (byte)room.Mode;
-            this.MemberCount = room.PlayerCount;
-            this.Title = room.Name;
-            this.MeleeOnly = room.MeleeOnly ? (byte)1 : (byte)0;
-            this.SkillsEnabled = room.SkillsEnabled ? (byte)1 : (byte)0;
+            Zero = 0;
+            PlayerId = playerId;
+            Cmd = cmd;
+
+            // union
+            RoomId = room.Id;
+            Value = RoomId;
+
+            Mode = (byte)room.Mode;
+            MemberCount = room.PlayerCount;
+            Title = room.Name;
+            MeleeOnly = room.MeleeOnly ? (byte)1 : (byte)0;
+            SkillsEnabled = room.SkillsEnabled ? (byte)1 : (byte)0;
         }
         public GCRoom(uint playerId, uint cmd, uint val, Room room) : base(GameNetId.GC_ROOM, GuaranteeType.Guaranteed, EventDirection.DirAny)
         {
-            this.Zero = 0;
-            this.PlayerId = playerId;
-            this.Cmd = cmd;
-            this.Value = val;
-            this.Mode = (byte)room.Mode;
-            this.Title = "-";
-            this.Password = room.Password;
-            this.MeleeOnly = room.MeleeOnly ? (byte)1 : (byte)0;
-            this.SkillsEnabled = room.SkillsEnabled ? (byte)1 : (byte)0;
+            Zero = 0;
+            PlayerId = playerId;
+            Cmd = cmd;
+
+            // union
+            Value = val;
+            RoomId = Value;
+
+            Mode = (byte)room.Mode;
+            Title = "-";
+            Password = room.Password;
+            MeleeOnly = room.MeleeOnly ? (byte)1 : (byte)0;
+            SkillsEnabled = room.SkillsEnabled ? (byte)1 : (byte)0;
         }
 
         public override void Pack(EventConnection conn, BitStream bitStream)
@@ -91,7 +99,7 @@ namespace Qserver.GameServer.Qpang
 
             bitStream.WriteString(Password, 255);
             //bitStream.WriteString(Title);
-            WriteWString(bitStream, Title, 32);
+            WriteWString(bitStream, Title, 22);
             bitStream.Write(Time);
             bitStream.Write(Rounds);
             bitStream.Write(Unk160);

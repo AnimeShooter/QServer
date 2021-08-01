@@ -84,9 +84,8 @@ namespace Qserver.GameServer.Qpang
         {
             bitStream.Read(out PlayerId);
             bitStream.Read(out Cmd);
-            //bitStream.Read(out Value);
-            bitStream.Read(out Map);
-            Value = Map; // union
+            bitStream.Read(out Value);
+            Map = Value; // union
             bitStream.Read(out Mode);
             //bitStream.Read(out RoomId);
             RoomId = Mode;
@@ -94,10 +93,8 @@ namespace Qserver.GameServer.Qpang
             //bitStream.Read(out RoomId2);
             RoomId2 = MemberCount; // union
             bitStream.Read(out Goal);
-            //bitStream.ReadString(out Password);
-            //bitStream.ReadString(out Title);
             bitStream.ReadString(out Password);
-            ByteBuffer titleBuffer = new ByteBuffer(32);
+            ByteBuffer titleBuffer = new ByteBuffer(22);
             bitStream.Read(titleBuffer);
             //byte[] titleB = new byte[32];
 
@@ -105,8 +102,8 @@ namespace Qserver.GameServer.Qpang
             Title = ByteBufferToString(titleBuffer);
 
             bitStream.Read(out TimeAmount);
-            //bitStream.Read(out PointsAmount);
             PointsAmount = TimeAmount;
+
             bitStream.Read(out IsRounds);
             bitStream.Read(out unk11);
             bitStream.Read(out unk12);
@@ -151,7 +148,8 @@ namespace Qserver.GameServer.Qpang
                         return;
                     }
 
-                    var newroom = Game.Instance.RoomManager.Create(Title, (byte)Map, (GameMode.Mode)Mode, (uint)conn.GetNetAddress().Address.Address);
+                    var newroom = Game.Instance.RoomManager.Create(Title, (byte)Map, (GameMode.Mode)Mode, Settings.SERVER_IP);
+                    //var newroom = Game.Instance.RoomManager.Create(Title, (byte)Map, (GameMode.Mode)Mode, (uint)conn.GetNetAddress().Address.Address); // P2P ?
                     newroom.EventRoom = Cmd == (uint)Commands.CREATE_EVENT_ROOM;
                     newroom.AddPlayer(conn);
                     break;

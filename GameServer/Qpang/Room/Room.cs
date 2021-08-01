@@ -267,7 +267,6 @@ namespace Qserver.GameServer.Qpang
 
         public void Tick()
         {
-            Console.WriteLine($"{this._id}: {this._players.Count}");
             if (this._isPlaying && this._roomSession != null)
                 this._roomSession.Tick();
         }
@@ -305,7 +304,7 @@ namespace Qserver.GameServer.Qpang
             lock(this._lock)
             {
                 player.Conn.PostNetEvent(new GCJoin(player));
-                foreach(var p in this._players)
+                foreach (var p in this._players)
                 {
                     if(player != p.Value)
                     {
@@ -548,7 +547,7 @@ namespace Qserver.GameServer.Qpang
 
 
         //
-        public void Broadcast<T>(params object[] args)  // TODO
+        public void Broadcast<T>(params object[] args) 
         {
             Type[] types = args.Select(x => x.GetType()).ToArray();
             var ctor = typeof(T).GetConstructor(types);
@@ -557,7 +556,6 @@ namespace Qserver.GameServer.Qpang
                 foreach (var p in this._players)
                         p.Value.Conn.PostNetEvent((GameNetEvent)ctor.Invoke(args));
         }
-
 
         public void BroadcastWaiting<T>(params object[] args) 
         {

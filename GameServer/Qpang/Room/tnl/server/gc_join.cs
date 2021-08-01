@@ -112,7 +112,9 @@ namespace Qserver.GameServer.Qpang
                 bitStream.Write(item);
 
             //bitStream.WriteString(Nickname, 16);
-            WriteWString(bitStream, Nickname, 16);
+            //WriteWString(bitStream, Nickname, 16);
+            bitStream.WriteString(Nickname, 16);
+
             bitStream.Write(Unk10);
             bitStream.Write(Unk11);
             bitStream.Write(Level);
@@ -123,7 +125,10 @@ namespace Qserver.GameServer.Qpang
             bitStream.Write(Experience);
             bitStream.Write(PartnerKey);
         }
-        public override void Unpack(EventConnection ps, BitStream bitStream) { }
+        public override void Unpack(EventConnection ps, BitStream bitStream)
+        {
+
+        }
         public override void Process(EventConnection ps) { }
     }
 }

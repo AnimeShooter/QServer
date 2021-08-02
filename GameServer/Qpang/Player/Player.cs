@@ -52,7 +52,7 @@ namespace Qserver.GameServer.Qpang
         private bool _isClosed;
         private bool _isOnline;
         private bool _testRealm;
-        private bool _hasAntiCheating;
+        private uint _lastAntiCheatBeat;
 
         private uint _currentSquareId;
 
@@ -156,10 +156,10 @@ namespace Qserver.GameServer.Qpang
             get { return this._testRealm; }
             set { this._testRealm = value; }
         } 
-        public bool AntiCheat
+        public uint AntiCheat
         {
-            get { return this._hasAntiCheating; }
-            set { this._hasAntiCheating = value; }
+            get { return this._lastAntiCheatBeat; }
+            set { this._lastAntiCheatBeat = value; }
         }
         public DateTime LoginTime
         {

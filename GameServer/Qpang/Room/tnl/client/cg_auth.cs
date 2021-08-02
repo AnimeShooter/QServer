@@ -70,7 +70,7 @@ namespace Qserver.GameServer.Qpang
             bitStream.Read(out unk03);
             bitStream.Read(out unk04);
             bitStream.Read(out Port);
-            bitStream.Read(out Ip);
+            bitStream.Read(out Ip); // obtain client IP:PORT
             bitStream.Read(out unk07);
             bitStream.Read(out unk08);
             bitStream.Read(out unk09);
@@ -87,9 +87,10 @@ namespace Qserver.GameServer.Qpang
                 return;
 
             var p = Game.Instance.GetOnlinePlayer(PlayerId);
-            if (p != null && !(p.AntiCheat || p.TestRealm)) // p null when ttestRealm
+            if (p != null && !(p.AntiCheat < Util.Util.Timestamp()-30 || p.TestRealm)) // p null when ttestRealm
             {
                 p.Broadcast("Anti-cheating not present!");
+                conn.Disconnect("No anticheating present");
                 return;
             }
 

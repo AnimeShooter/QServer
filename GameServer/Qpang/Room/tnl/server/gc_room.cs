@@ -99,9 +99,9 @@ namespace Qserver.GameServer.Qpang
 
             bitStream.WriteString(Password, 255);
             //bitStream.WriteString(Title);
-            WriteWString(bitStream, Title, 22);
+            WriteWString(bitStream, Title, 20);
             bitStream.Write(Time);
-            bitStream.Write(Rounds);
+            bitStream.Write(Rounds); // untion gameId
             bitStream.Write(Unk160);
 
             bitStream.Write(Zero);

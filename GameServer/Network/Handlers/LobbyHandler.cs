@@ -471,8 +471,11 @@ namespace Qserver.GameServer.Network.Handlers
         #region AntiCheating
         public static void HandleAntiCheat(PacketReader packet, ConnServer manager)
         {
-            manager.Player.AntiCheat = true;
-            Log.Message(LogType.NORMAL, $"Anti-Cheating module active on {manager.Player.Name}!");
+            if (manager.Player == null)
+                return;
+
+            manager.Player.AntiCheat = Util.Util.Timestamp();
+            Log.Message(LogType.NORMAL, $"Anti-Cheat hearthbeat for {manager.Player.Name}!");
         }
         #endregion
 

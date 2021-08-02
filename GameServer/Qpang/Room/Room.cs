@@ -229,11 +229,10 @@ namespace Qserver.GameServer.Qpang
             roomPlayer.SetTeam(GetAvailableTeam());
             lock (this._lock)
             {
-
                 if(!this._players.ContainsKey(conn.Player.PlayerId))
                     this._players.Add(conn.Player.PlayerId, roomPlayer);
                 else
-                    this._players[conn.Player.PlayerId] =  roomPlayer;
+                    this._players[conn.Player.PlayerId] = roomPlayer;
             }
 
             conn.EnterRoom(this);
@@ -306,7 +305,7 @@ namespace Qserver.GameServer.Qpang
                 player.Conn.PostNetEvent(new GCJoin(player));
                 foreach (var p in this._players)
                 {
-                    if(player != p.Value)
+                    if (player != p.Value)
                     {
                         if (!p.Value.Playing)
                             p.Value.Conn.PostNetEvent(new GCJoin(player));

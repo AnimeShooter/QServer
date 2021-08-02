@@ -225,7 +225,6 @@ namespace Qserver.GameServer.Qpang
 
             // init TNL events
             GameConnection.RegisterNetClassReps();
-            ///EventRegister.RegisterTNLEvents();
 
             // init managers
             this._channelManager = new ChannelManager();
@@ -233,9 +232,8 @@ namespace Qserver.GameServer.Qpang
             this._squareManager = new SquareManager();
             this._chatManager = new ChatManager(); // TODO: commands
             this._roomManager = new RoomManager();
-            this._roomManager.Create("L Vet, Cool en Fun!", 4, GameMode.Mode.TDM, 0x0100007F);
-            this._roomManager.Create("B Kim kAm qPong?", 8, GameMode.Mode.PTE, 0x0100007F);
-
+            this._roomManager.Create("Vet, Cool en Fun!", 4, GameMode.Mode.TDM);
+            this._roomManager.Create("Kim kAm qPong?", 8, GameMode.Mode.PTE);
             
             this._weaponManager = new WeaponManager();
             this._spawnManager = new SpawnManager(); // TODO, DB
@@ -251,16 +249,30 @@ namespace Qserver.GameServer.Qpang
 
         public void Tick()
         {
+            uint lastLeaderRefresh = Util.Util.Timestamp();
             while(true)
             {
                 try
                 {
+                    uint currTime = Util.Util.Timestamp();
 
-                }catch(Exception e)
+                    // Update leaderboard
+                    if(lastLeaderRefresh + (60 * 60 * 24 * 1) < currTime) // 24h
+                    {
+                        this._leaderboard.Refresh();
+                        lastLeaderRefresh = currTime;
+                    }
+
+                    // NOTE: Enabled/Disable Exp weekend, broadcast stuff, reset weekly leaderboard?
+
+
+                    // take some rest? 
+                    Thread.Sleep(250); 
+                }
+                catch(Exception e)
                 {
                     Log.Message(LogType.ERROR, "Fatal error: " + e.ToString());
                 }
-                Thread.Sleep(1);
             }
         }
 

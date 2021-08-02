@@ -79,7 +79,7 @@ namespace Qserver.GameServer.Qpang
             bitStream.Write(RoomState);
             bitStream.Write(RespawnTime);
             bitStream.Write(P2PWaitTime);
-            WriteWString(bitStream, Title, 22);
+            WriteWString(bitStream, Title, 20);
             bitStream.Write(IsTime);
             bitStream.Write(Rounds);
             bitStream.Write(LevelLimit);

@@ -94,7 +94,7 @@ namespace Qserver.GameServer.Qpang
             RoomId2 = MemberCount; // union
             bitStream.Read(out Goal);
             bitStream.ReadString(out Password);
-            ByteBuffer titleBuffer = new ByteBuffer(22);
+            ByteBuffer titleBuffer = new ByteBuffer(22); // 20 wchar?
             bitStream.Read(titleBuffer);
             //byte[] titleB = new byte[32];
 

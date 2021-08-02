@@ -211,8 +211,8 @@ namespace Qserver.GameServer.Qpang
             this._experience = playerData.experience;
             this._isMuted = playerData.is_muted == 1;
 
-            this._inventoryManager = new InventoryManager(this);
             this._equipmentManager = new EquipmentManager(this); // tok
+            this._inventoryManager = new InventoryManager(this);
             this._friendManager = new FriendManager(this);
             this._memoManager = new MemoManager(this);
             this._statsManager = new StatsManager(this); // ok

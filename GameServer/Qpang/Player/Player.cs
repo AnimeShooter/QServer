@@ -18,7 +18,7 @@ namespace Qserver.GameServer.Qpang
         public uint Deaths;
         public uint MeleeKills;
         public uint GunKills;
-        public uint SniperKills;
+        public uint LauncherKills;
         public uint BombKills;
         public bool Gm;
         public bool TestRealm;
@@ -231,7 +231,7 @@ namespace Qserver.GameServer.Qpang
                 Level = this._level,
                 MeleeKills = this._statsManager.MeleeKills,
                 GunKills = this._statsManager.GunKills,
-                SniperKills = this._statsManager.LauncherKills,
+                LauncherKills = this._statsManager.LauncherKills,
                 BombKills = this._statsManager.BombKills,
                 Gm = this.Rank == 3,
                 TestRealm = this._testRealm

@@ -8,6 +8,19 @@ namespace Qserver.GameServer.Qpang
 {
     public class Leaderboard
     {
+        public struct PositionAPI
+        {
+            public uint Rank;
+            public string Name;
+            public uint Experience;
+            public uint Level;
+            public uint Kills;
+            public uint Deaths;
+            public uint MeleeKills;
+            public uint GunKills;
+            public uint LauncherKills;
+            public uint BombKills;
+        }
         public struct Position
         {
             public uint Rank;
@@ -23,6 +36,45 @@ namespace Qserver.GameServer.Qpang
             this._currentRanking = new Dictionary<uint, Position>();
             this._lastRanking = new Dictionary<uint, Position>();
             this._lock = new object();
+        }
+
+        public List<PositionAPI> List()
+        {
+            List<PositionAPI> positions = new List<PositionAPI>();
+            lock(this._lock)
+            {
+                foreach (var pos in this._currentRanking)
+                {
+                    var newPos = new PositionAPI()
+                    {
+                        Rank = pos.Value.Rank
+                    };
+                    
+
+                    var player = Game.Instance.GetPlayer(pos.Key);
+                    if (player == null)
+                    {
+                        positions.Add(newPos);
+                        continue;
+                    }
+
+                    newPos.Name = player.Name;
+                    newPos.Experience = player.Experience;
+                    newPos.Level = player.Level;
+                    newPos.Kills = player.StatsManager.Kills;
+                    newPos.Deaths = player.StatsManager.Deaths;
+                    newPos.MeleeKills = player.StatsManager.MeleeKills;
+                    newPos.GunKills = player.StatsManager.GunKills;
+                    newPos.LauncherKills = player.StatsManager.LauncherKills;
+                    newPos.BombKills = player.StatsManager.BombKills;
+
+                    positions.Add(newPos);
+
+                    if (positions.Count >= 100)
+                        break;
+                }    
+            }
+            return positions;
         }
 
         public void Refresh()

@@ -118,7 +118,7 @@ namespace Qserver.Webserver.HTTP.Nancy
                 bool illegalCharFound = false;
                 foreach(var c in username)
                 {
-                    byte ascii = (byte)c;
+                    char ascii = (char)c;
                     //illegalCharFound = !((ascii >= 0x30 && ascii <= 39) /* 0-9 */ || (ascii >= 0x41 || ascii <= 0x5A) /* a-z */ || (ascii >= 0x61 || ascii <= 0x7A) /* A-Z */|| ascii == 0x5B /* [ */ || ascii == 0x6D /* ] */ || ascii == 0x7C /* | */);
                     illegalCharFound = (c == '*' || c == ' ' || c == '"' || c == '\\' || c == '/' || c == '\'' || c == '`' || c == ',' || c == '.' || c == '?' || c == '&' || c == ':' || c == ';' || c == '%' || c == '\x00');
                 }
@@ -131,7 +131,8 @@ namespace Qserver.Webserver.HTTP.Nancy
                     return Response.AsJson(new APIResponse<string>() { Message = "Error, invalid Login" });
 
                 var id = Game.Instance.UsersRepository.GetPlayerId(user.id).Result;
-                Player player = new Player(id); // TODO: improve?
+                //Player player = new Player(id); // TODO: improve?
+                Player player = Game.Instance.GetPlayer(id);
 
                 user.token = Util.Util.GenerateToken();
                 Game.Instance.UsersRepository.UpdateToken(user.id, user.token).GetAwaiter().GetResult();
@@ -183,7 +184,7 @@ namespace Qserver.Webserver.HTTP.Nancy
             #endregion
 
             // #====================#
-            // #      Player        #
+            // #      Players       #
             // #====================#
 
             #region Player
@@ -193,10 +194,9 @@ namespace Qserver.Webserver.HTTP.Nancy
                 var players = Game.Instance.PlayersList();
                 foreach (var p in players)
                     APIPlayers.Add(p.ToAPI());
-                return Response.AsJson<List<PlayerAPI>>(APIPlayers);
+                return Response.AsJson(new APIResponse<List<PlayerAPI>>() { Result = APIPlayers });
             });
 
-            // TODO: Only online, fix?
             Get("/player/{id}", async x =>
             {
                 uint playerId = x.id;
@@ -204,14 +204,13 @@ namespace Qserver.Webserver.HTTP.Nancy
                 if (player == null)
                     return new Response().StatusCode = HttpStatusCode.NotFound;
 
-                return Response.AsJson<PlayerAPI>(player.ToAPI());
+                return Response.AsJson(new APIResponse<PlayerAPI>() { Result = player.ToAPI() });
             });
 
-            // TODO
             Get("/player/leaderboard", async x =>
             {
-                // TODO
-                return null;
+                var leads = Game.Instance.Leaderboard.List();
+                return Response.AsJson(new APIResponse<List<Leaderboard.PositionAPI>>() { Result = leads });
             });
             #endregion
 
@@ -227,7 +226,7 @@ namespace Qserver.Webserver.HTTP.Nancy
                 foreach (var room in rooms)
                     roomApis.Add(room.ToAPI());
 
-                return Response.AsJson<List<RoomAPI>>(roomApis);
+                return Response.AsJson(new APIResponse<List<RoomAPI>>() { Result = roomApis });
             });
 
             Get("/room/{id}", async x =>
@@ -237,7 +236,7 @@ namespace Qserver.Webserver.HTTP.Nancy
                 if (room == null)
                     return new Response().StatusCode = HttpStatusCode.NotFound;
 
-                return Response.AsJson<RoomAPI>(room.ToAPI());
+                return Response.AsJson(new APIResponse<RoomAPI>() { Result = room.ToAPI() });
             });
             #endregion
 

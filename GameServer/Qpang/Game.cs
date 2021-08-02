@@ -45,7 +45,7 @@ namespace Qserver.GameServer.Qpang
         private ChannelManager _channelManager;
         private ShopManager _shopManager;
         private SquareManager _squareManager;
-        private CacheManager _cacheManager; // TODO
+        private CacheManager _cacheManager; 
         private ChatManager _chatManager; // TODO: commands
         private RoomManager _roomManager;
         private WeaponManager _weaponManager;
@@ -243,6 +243,7 @@ namespace Qserver.GameServer.Qpang
             this._levelManger = new LevelManager(); // TODO-ish
             this._craneManager = new CraneManager();
             this._couponManager = new CouponManager();
+            this._cacheManager = new CacheManager();
             this._leaderboard = new Leaderboard();
             this._leaderboard.Refresh(); // initial update (TODO: refresh  every 12/24h?)
             this._roomServer = new RoomServer(); 
@@ -285,6 +286,8 @@ namespace Qserver.GameServer.Qpang
                     _players.Remove(player.PlayerId);
                 if (this._playersByName.ContainsKey(player.Name))
                     _playersByName.Remove(player.Name);
+
+                this._cacheManager.PlayerCacheManager.Cache(player);
             }
         }
 
@@ -303,8 +306,9 @@ namespace Qserver.GameServer.Qpang
                     if(this._players.ContainsKey(player.PlayerId)) 
                         this._players[player.PlayerId].Close(); // only close if its still there
                 }
+
+                this._cacheManager.PlayerCacheManager.Invalidate(playerId);
                 
-                // cache manger
                 this._players[player.PlayerId] = player;
                 this._playersByName[player.Name] = player;
             }
@@ -339,21 +343,27 @@ namespace Qserver.GameServer.Qpang
 
         public Player GetPlayer(uint playerId)
         {
-            lock(this._lock)
-            {
-                if (this._players.ContainsKey(playerId))
-                    return this._players[playerId];
-                return null;
-            }
+            var player = GetOnlinePlayer(playerId);
+            if (player != null)
+                return player;
+
+            var cachedPlayer = this._cacheManager.PlayerCacheManager.Get(playerId);
+            if (cachedPlayer != null)
+                return cachedPlayer;
+
+            return this._cacheManager.PlayerCacheManager.Cache(playerId);
         }
         public Player GetPlayer(string name)
         {
-            lock (this._lock)
-            {
-                if (this._playersByName.ContainsKey(name))
-                    return this._playersByName[name];
-                return null;
-            }
+            var player = GetOnlinePlayer(name);
+            if (player != null)
+                return player;
+
+            var cachedPlayer = this._cacheManager.PlayerCacheManager.Get(name);
+            if (cachedPlayer != null)
+                return cachedPlayer;
+
+            return this._cacheManager.PlayerCacheManager.Cache(name); // TODO: add DB query
         }
     }
 }

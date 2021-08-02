@@ -260,17 +260,15 @@ namespace Qserver.GameServer.Qpang
         public void SendSquare(PacketWriter packet)
         {
             lock(this._squareLock)
-            {
-                this._squareConnection.Send(packet);
-            }
+                if (this._squareConnection != null)
+                    this._squareConnection.Send(packet);
         }
 
         public void SendLobby(PacketWriter packet)
         {
             lock (this._lobbyLock)
-            {
-                this._lobbyConnection.Send(packet);
-            }
+                if(this._lobbyConnection != null)
+                    this._lobbyConnection.Send(packet);
         }
 
         public void LeaveSquare()

@@ -130,6 +130,14 @@ namespace Qserver.Database.Repositories
             return res.Result;
         }
 
+        public async Task<uint> GetPlayerId(string name)
+        {
+            Task<uint> res = null;
+            await _sqlObjectFactory.GetConnection().UsingAsync(connection =>
+                res = connection.QuerySingleAsync<uint>("SELECT id FROM players WHERE name = @Name", new { Name = name }));
+            return res.Result;
+        }
+
         public async Task<uint> CreatePlayer(uint userid, string name, int don, int cash)
         {
             Task<uint> playerid = null;

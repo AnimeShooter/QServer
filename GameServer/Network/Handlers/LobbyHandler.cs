@@ -391,12 +391,12 @@ namespace Qserver.GameServer.Network.Handlers
         }
         public static void HandleRequestPlayerRanking(PacketReader packet, ConnServer manager)
         {
-            var playerId = packet.ReadUInt32();
-            var targetPlayer = Game.Instance.GetPlayer(playerId);
-            if (targetPlayer == null)
+            //var playerId = packet.ReadUInt32();
+            //var targetPlayer = Game.Instance.GetPlayer(playerId);
+            //if (targetPlayer == null)
                 return;
 
-            manager.Send(LobbyManager.Instance.PlayerInfoInspector(targetPlayer));
+            //manager.Send(LobbyManager.Instance.PlayerInfoInspector(targetPlayer));
         }
         public static void HandleRestKillDeathEvent(PacketReader packet, ConnServer manager)
         {

@@ -260,6 +260,8 @@ namespace Qserver.GameServer.Qpang
                 card.TimeCreated = Util.Util.Timestamp();
                 target.InventoryManager.ReceiveGift(card, this._player.Name);
 
+                // TODO: UPDATE player_items SET player_id = ?, opened = 0, time = ? WHERE id = ?", { player->getId(), card.timeCreated, card.id
+
                 this._player.SendLobby(LobbyManager.Instance.GiftCardSuccess(card.Id));
                 this._player.EquipmentManager.Save();
             }

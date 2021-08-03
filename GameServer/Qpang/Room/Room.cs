@@ -140,6 +140,7 @@ namespace Qserver.GameServer.Qpang
         public bool PointsGame
         {
             get { return this._isPointsGame; }
+            set { this._isPointsGame = value; }
         }
         public bool Playing
         {
@@ -236,7 +237,7 @@ namespace Qserver.GameServer.Qpang
             }
 
             conn.EnterRoom(this);
-            SyncPlayers(roomPlayer);
+            //SyncPlayers(roomPlayer);
         }
 
         public void RemovePlayer(uint id)

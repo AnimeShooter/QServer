@@ -149,6 +149,7 @@ namespace Qserver.GameServer.Qpang
             //    maxRecvBandwidth = 1000		# Number of bytes per second max that the remote instance should send.
             //##------------------------------------------------------------------------------
 
+            //SetFixedRateParameters(50, 50, 1000, 1000);
             SetFixedRateParameters(50, 50, 1000, 1000);
             SetPingTimeouts(5000, 10);
             SetIsConnectionToClient();

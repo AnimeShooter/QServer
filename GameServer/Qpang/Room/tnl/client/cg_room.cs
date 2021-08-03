@@ -93,13 +93,14 @@ namespace Qserver.GameServer.Qpang
             //bitStream.Read(out RoomId2);
             RoomId2 = MemberCount; // union
             bitStream.Read(out Goal);
-            bitStream.ReadString(out Password);
-            ByteBuffer titleBuffer = new ByteBuffer(22); // 20 wchar?
+
+            bitStream.Read(new ByteBuffer(256));
+            //bitStream.ReadString(out Password); // pw?
+            ByteBuffer titleBuffer = new ByteBuffer(); // 20 wchar?
             bitStream.Read(titleBuffer);
-            //byte[] titleB = new byte[32];
 
             //Title = Encoding.UTF32.GetString(titleBuffer.GetBuffer());
-            Title = ByteBufferToString(titleBuffer);
+            Title = ByteBufferToString(titleBuffer); // 30? (or 20?)
 
             bitStream.Read(out TimeAmount);
             PointsAmount = TimeAmount;
@@ -124,64 +125,116 @@ namespace Qserver.GameServer.Qpang
         }
         public override void Handle(GameConnection conn, Player player)
         {
-            switch((Commands)Cmd)
+
+            if (Cmd == (uint)Commands.CREATE_ROOM || Cmd == (uint)Commands.CREATE_EVENT_ROOM)
             {
-                case Commands.CREATE_ROOM:
-                case Commands.CREATE_EVENT_ROOM:
-                    if (Cmd == (uint)Commands.CREATE_EVENT_ROOM && player.Rank != 3)
-                    {
-                        conn.Disconnect("Cannot create event room");
-                        return;
-                    }
+                if (Cmd == (uint)Commands.CREATE_EVENT_ROOM && player.Rank != 3)
+                {
+                    conn.Disconnect("Cannot create event room");
+                    return;
+                }
 
-                    bool isValidMode = Mode == (uint)GameMode.Mode.DM || Mode == (uint)GameMode.Mode.TDM || Mode == (uint)GameMode.Mode.PTE || Mode == (uint)GameMode.Mode.VIP;
-                    if (!isValidMode || Map > 12)
-                    {
-                        conn.Disconnect("Invalid GameMode");
-                        player.Broadcast("GameMode has not been implemented yet");
-                        return;
-                    }
+                bool isValidMode = Mode == (uint)GameMode.Mode.DM || Mode == (uint)GameMode.Mode.TDM || Mode == (uint)GameMode.Mode.PTE || Mode == (uint)GameMode.Mode.VIP;
+                if (!isValidMode || Map > 12)
+                {
+                    conn.Disconnect("Invalid GameMode");
+                    player.Broadcast("GameMode has not been implemented yet");
+                    return;
+                }
 
-                    if (Game.Instance.RoomManager.List().Count >= 50) // NOTE: dont harcode?
-                    {
-                        conn.Disconnect("Failed creating room");
-                        return;
-                    }
+                if (Game.Instance.RoomManager.List().Count >= 50) // NOTE: dont harcode?
+                {
+                    conn.Disconnect("Failed creating room");
+                    return;
+                }
 
-                    var newroom = Game.Instance.RoomManager.Create(Title, (byte)Map, (GameMode.Mode)Mode, Settings.SERVER_IP);
-                    //var newroom = Game.Instance.RoomManager.Create(Title, (byte)Map, (GameMode.Mode)Mode, (uint)conn.GetNetAddress().Address.Address); // P2P ?
-                    newroom.EventRoom = Cmd == (uint)Commands.CREATE_EVENT_ROOM;
-                    newroom.AddPlayer(conn);
-                    break;
-                case Commands.JOIN_ROOM:
-                    var joinroom = Game.Instance.RoomManager.Get(RoomId);
-
-                    if (joinroom == null)
-                    {
-                        conn.Disconnect("Could not find selected room");
-                        return;
-                    }
-
-                    if(joinroom.PlayerCount >= joinroom.MaxPlayers)
-                    {
-                        conn.Disconnect("Room is full");
-                        return;
-                    }
-
-                    if (joinroom.Password != "" && player.Rank < 3)
-                        if (joinroom.Password != Password)
-                            return;
-
-                    joinroom.AddPlayer(conn);
-                       
-                    break;
-                default:
-
-                    break;
+                var newroom = Game.Instance.RoomManager.Create(Title, (byte)Map, (GameMode.Mode)Mode, Settings.SERVER_IP);
+                //var newroom = Game.Instance.RoomManager.Create(Title, (byte)Map, (GameMode.Mode)Mode, (uint)conn.GetNetAddress().Address.Address); // P2P ?
+                newroom.EventRoom = Cmd == (uint)Commands.CREATE_EVENT_ROOM;
+                newroom.AddPlayer(conn);
             }
+            else if (Cmd == (uint)Commands.JOIN_ROOM)
+            {
+                var joinroom = Game.Instance.RoomManager.Get(RoomId);
 
+                if (joinroom == null)
+                {
+                    conn.Disconnect("Could not find selected room");
+                    return;
+                }
+
+                if (joinroom.PlayerCount >= joinroom.MaxPlayers)
+                {
+                    conn.Disconnect("Room is full");
+                    return;
+                }
+
+                if (joinroom.Password != "" && player.Rank < 3)
+                    if (joinroom.Password != Password)
+                        return;
+
+                joinroom.AddPlayer(conn);
+
+            }
+            else
+            {
+                var roomPlayer = player.RoomPlayer;
+                if (roomPlayer == null)
+                    return;
+
+                var room = roomPlayer.Room;
+                if (room.MasterId != player.PlayerId)
+                    return;
+
+                if (room.Playing)
+                    return;
+
+                switch ((Commands)Cmd)
+                {
+                    case Commands.MAP_ROOM:
+                        room.SetMap((byte)Value);
+                        return;
+                    case Commands.MODE_ROOM:
+                        bool validMode = Mode == (uint)GameMode.Mode.DM ||
+                            Mode == (uint)GameMode.Mode.TDM ||
+                            Mode == (uint)GameMode.Mode.PTE ||
+                            Mode == (uint)GameMode.Mode.VIP;
+                        if(!validMode)
+                        {
+                            conn.PostNetEvent(new GCRoom(player.PlayerId, (uint)Commands.MODE_ROOM, room));
+                            player.Broadcast("Sorry, this game mode has not been implemented yet");
+                            return;
+                        }
+                        room.SetMode((GameMode.Mode)Mode);
+                        break;
+                    case Commands.SET_POINTS:
+                        room.SetScorePoints(Value);
+                        room.PointsGame = true;
+                        break;
+                    case Commands.SET_TIME:
+                        room.SetScoreTime(Value);
+                        room.PointsGame = false;
+                        break;
+                    case Commands.PLAYERS_ROOM:
+                        if (Value == 4 || Value == 8 || Value == 12 || Value == 16)
+                            room.SetMaxPlayers((byte)Value);
+                        break;
+                    case Commands.PASS_ROOM:
+                        room.SetPassword(Password);
+                        break;
+                    case Commands.LEVEL_ROOM:
+                        room.SetLevelLimited(Value == 1 ? true : false);
+                        break;
+                    case Commands.TOGGLE_MELEE:
+                        room.SetMeleeOnly(Value == 1 ? true : false);
+                        break;
+                    case Commands.TEAM_ROOM:
+                        room.SetTeamSorting(Value == 1 ? true : false);
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
-
     }
-    
 }

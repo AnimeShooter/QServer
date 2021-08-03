@@ -93,7 +93,10 @@ namespace Qserver.GameServer.Qpang
             Life = (ushort)(player.EquipmentManager.GetBaseHealth() + player.EquipmentManager.GetBonusHealth());
             Experience = player.Experience;
         }
+        public override void Unpack(EventConnection ps, BitStream bitStream)
+        {
 
+        }
         public override void Pack(EventConnection ps, BitStream bitStream)
         {
             bitStream.Write(State);
@@ -124,10 +127,6 @@ namespace Qserver.GameServer.Qpang
             bitStream.Write(PlayerRank);
             bitStream.Write(Experience);
             bitStream.Write(PartnerKey);
-        }
-        public override void Unpack(EventConnection ps, BitStream bitStream)
-        {
-
         }
         public override void Process(EventConnection ps) { }
     }

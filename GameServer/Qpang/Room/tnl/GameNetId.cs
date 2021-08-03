@@ -11,6 +11,7 @@ namespace Qserver.GameServer.Qpang
 
 		CG_ARRANGED_COMPLETE = 145,
 		CG_ARRANGED_REJECT = 143,
+
 		CG_AUTH = 154,
 		CG_CARD = 147,
 		CG_CHARM = 172,
@@ -54,6 +55,8 @@ namespace Qserver.GameServer.Qpang
 		CS_RTT_REPORT = 162,
 		CS_RTT_RESPONSE = 163,
 
+		GC_ESSENCE = 167, //
+
 		GC_ARRANGED_CONN = 140,
 		GC_ARRANGED_ACCEPT = 142,
 		GC_CARD = 148,
@@ -66,6 +69,7 @@ namespace Qserver.GameServer.Qpang
 		GC_MAPOBJECT = 178,
 		GC_MASTERLOG = 183,
 		GC_MESG = 136,
+		GC_DISCONNECT = 150,
 		GC_MOTION = 165,
 		GC_MOVE = 106,
 		GC_PLAYER_CHANGE = 132,

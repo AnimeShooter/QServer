@@ -21,7 +21,7 @@ namespace Qserver.GameServer.Qpang
 
         public static void RegisterNetClassReps()
         {
-            ImplementNetEvent(out _dynClassRep, "GCPvEEventObject", NetClassMask.NetClassGroupGameMask, 0);
+            ImplementNetEvent(out _dynClassRep, "GCPvEDoor", NetClassMask.NetClassGroupGameMask, 0);
         }
         public GCPvEDoor() : base(GameNetId.GC_PVE_DOOR, GuaranteeType.Guaranteed, EventDirection.DirAny) { }
 

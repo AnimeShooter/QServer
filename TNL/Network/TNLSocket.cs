@@ -96,14 +96,14 @@ namespace TNL.Network
             try
             {
                 // debug
-                lock (flock)
-                {
-                    string bytes = BitConverter.ToString(buffer, 0, (int)bufferSize);
-                    if (!File.Exists("debug.txt"))
-                        File.Create("debug.txt").Close();
-                    string old = File.ReadAllText("debug.txt");
-                    File.WriteAllText("debug.txt", old + bytes + "\r\n");
-                }
+                //lock (flock)
+                //{
+                //    string bytes = BitConverter.ToString(buffer, 0, (int)bufferSize);
+                //    if (!File.Exists("debug.txt"))
+                //        File.Create("debug.txt").Close();
+                //    string old = File.ReadAllText("debug.txt");
+                //    File.WriteAllText("debug.txt", old + bytes + "\r\n");
+                //}
 
                 _socket.BeginSend(buffer, (int) bufferSize, iep, OnEndSend, null);
 

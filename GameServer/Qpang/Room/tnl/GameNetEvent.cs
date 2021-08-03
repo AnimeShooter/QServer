@@ -41,7 +41,7 @@ namespace Qserver.GameServer.Qpang
             if (maxLen == 0)
                 maxLen = (uint)str.Length;
 
-            for (int i = 0; i < maxLen; i++)
+            for (int i = 0; i < maxLen/2; i++)
             //for (int i = 0; i < maxLen && i < str.Length; i++)
             {
                 if(i < str.Length)
@@ -59,7 +59,7 @@ namespace Qserver.GameServer.Qpang
                 maxLen = (uint)str.Length;
 
             //for (int i = 0; i < maxLen; i++)
-            for (int i = 0; i < maxLen && i < str.Length; i++)
+            for (int i = 0; i < (maxLen/2) && i < str.Length; i++)
             {
                 if (i < str.Length)
                     bitSteam.Write((byte)str[i]);

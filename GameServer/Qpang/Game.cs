@@ -232,11 +232,9 @@ namespace Qserver.GameServer.Qpang
             this._squareManager = new SquareManager();
             this._chatManager = new ChatManager(); // TODO: commands
             this._roomManager = new RoomManager();
-            this._roomManager.Create("Vet, Cool en Fun!", 4, GameMode.Mode.TDM);
-            this._roomManager.Create("Kim kAm qPong?", 8, GameMode.Mode.PTE);
             
             this._weaponManager = new WeaponManager();
-            this._spawnManager = new SpawnManager(); // TODO, DB
+            this._spawnManager = new SpawnManager();
             this._skillManager = new SkillManager(); // TODO
             this._levelManger = new LevelManager(); // TODO-ish
             this._craneManager = new CraneManager();

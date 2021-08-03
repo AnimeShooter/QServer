@@ -91,7 +91,6 @@ namespace Qserver.GameServer.Qpang
         public override void Pack(EventConnection conn, BitStream bitStream)
         {
             // NOTE: packing is fucked up (title incorrect)
-            System.Threading.Thread.Sleep(100); // delay to see in-game stuff
             bitStream.Write(PlayerId);
             bitStream.Write(Cmd);
             bitStream.Write(Value);
@@ -105,15 +104,12 @@ namespace Qserver.GameServer.Qpang
             //bitStream.WriteString(Password, 4);
             //bitStream.WriteString(Title);
 
-            //bitStream.Write(new ByteBuffer(256));
             WriteWString(bitStream, Title, 254);
             //WriteWStringMax(bitStream, Title, 254);
             bitStream.Write(Time);
             bitStream.Write(Rounds); // untion gameId
             bitStream.Write(Unk160);
-
             bitStream.Write(Zero);
-
             bitStream.Write(Unk161);
             bitStream.Write(SkillsEnabled);
             bitStream.Write(MeleeOnly);

@@ -237,7 +237,7 @@ namespace Qserver.GameServer.Qpang
             }
 
             conn.EnterRoom(this);
-            //SyncPlayers(roomPlayer);
+            SyncPlayers(roomPlayer);
         }
 
         public void RemovePlayer(uint id)

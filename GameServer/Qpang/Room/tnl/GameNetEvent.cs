@@ -41,14 +41,17 @@ namespace Qserver.GameServer.Qpang
             if (maxLen == 0)
                 maxLen = (uint)str.Length;
 
+            //uint bitp = bitSteam.GetBitPosition();
+            //uint n = 8 - (bitp % 8);
+            //bitSteam.SetBitPosition(bitp + n);
             for (int i = 0; i < maxLen/2; i++)
             //for (int i = 0; i < maxLen && i < str.Length; i++)
             {
                 if(i < str.Length)
-                    bitSteam.Write((byte)str[i]);
+                    bitSteam.Write((char)str[i]);
                 else
-                    bitSteam.Write((byte)0x00);
-                bitSteam.Write((byte)0x00);
+                    bitSteam.Write((char)0x00);
+                //bitSteam.Write((byte)0x00);
             }
             bitSteam.Write((ushort)0x0000);
         }
@@ -62,20 +65,19 @@ namespace Qserver.GameServer.Qpang
             for (int i = 0; i < (maxLen/2) && i < str.Length; i++)
             {
                 if (i < str.Length)
-                    bitSteam.Write((byte)str[i]);
+                    bitSteam.Write((char)str[i]);
                 else
-                    bitSteam.Write((byte)0x00);
-                bitSteam.Write((byte)0x00);
+                    bitSteam.Write((char)0x00);
             }
             bitSteam.Write((ushort)0x0000);
         }
 
 
-        public string ByteBufferToString(ByteBuffer bb)
+        public string ByteBufferToString(ByteBuffer bb, bool wchar = true)
         {
             byte[] data = bb.GetBuffer();
             string result = "";
-            for(int i = 0; i < data.Length; i+= 2)
+            for(int i = 0; i < data.Length; i+= (wchar ? 2 : 1))
             {
                 if (data[i] != 0x00)
                     result += (char)data[i];

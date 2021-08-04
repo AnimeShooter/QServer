@@ -94,12 +94,13 @@ namespace Qserver.GameServer.Qpang
             RoomId2 = MemberCount; // union
             bitStream.Read(out Goal);
 
-            bitStream.Read(new ByteBuffer(256));
-            //bitStream.ReadString(out Password); // pw?
-            ByteBuffer titleBuffer = new ByteBuffer(); // 20 wchar?
-            bitStream.Read(titleBuffer);
+            ByteBuffer passwordBuffer = new ByteBuffer(256);
+            bitStream.Read(passwordBuffer);
+            Password = ByteBufferToString(passwordBuffer, false);
 
-            //Title = Encoding.UTF32.GetString(titleBuffer.GetBuffer());
+            //bitStream.ReadString(out Password); // pw?
+            ByteBuffer titleBuffer = new ByteBuffer(256); // 20 wchar?
+            bitStream.Read(titleBuffer);
             Title = ByteBufferToString(titleBuffer); // 30? (or 20?)
 
             bitStream.Read(out TimeAmount);
@@ -174,7 +175,6 @@ namespace Qserver.GameServer.Qpang
                         return;
 
                 joinroom.AddPlayer(conn);
-
             }
             else
             {

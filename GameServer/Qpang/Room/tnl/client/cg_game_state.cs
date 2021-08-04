@@ -81,7 +81,7 @@ namespace Qserver.GameServer.Qpang
             {
 				case State.INV_IN:
 				case State.INV_OUT:
-					roomPlayer.Room.BroadcastWaiting<GCGameState>(player.PlayerId, Cmd);
+					roomPlayer.Room.BroadcastWaiting<GCGameState>(player.PlayerId, Cmd, (uint)0, (uint)0);
 					break;
 				case State.LEAVE_GAME:
 					var roomSessionLg = roomPlayer.Room.RoomSession;

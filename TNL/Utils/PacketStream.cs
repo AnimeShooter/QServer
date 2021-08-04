@@ -35,9 +35,13 @@ namespace TNL.Utils
 
             var d = incomingSocket.PacketsToBeHandled.Dequeue();
 
-            var dataSize = d.Item2.Length > TNLSocket.MaxPacketDataSize ? TNLSocket.MaxPacketDataSize : (uint) d.Item2.Length;
-
-            Array.Copy(d.Item2, _buffer, dataSize);
+            // NOTE: prevent d from null
+            uint dataSize = 0;
+            if (d != null)
+            {
+                dataSize = d.Item2.Length > TNLSocket.MaxPacketDataSize ? TNLSocket.MaxPacketDataSize : (uint)d.Item2.Length;
+                Array.Copy(d.Item2, _buffer, dataSize);
+            }
 
             SetBuffer(_buffer, dataSize);
             SetMaxSizes(dataSize, 0U);

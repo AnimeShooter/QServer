@@ -99,6 +99,7 @@ namespace Qserver.GameServer.Qpang
         }
         public override void Pack(EventConnection ps, BitStream bitStream)
         {
+            //bitStream.SetBitPosition((uint)(bitStream.GetBitPosition() - 4));
             bitStream.Write(State);
             bitStream.Write(PlayerId);
             bitStream.Write(CharacterId);
@@ -120,7 +121,8 @@ namespace Qserver.GameServer.Qpang
             bitStream.Write(Unk10);
             bitStream.Write(Unk11);
             bitStream.Write(Level);
-            bitStream.Write((uint)(Level >> 2));
+            bitStream.WriteBits(6, new byte[1]);
+            bitStream.Write((uint)(Level));
             bitStream.Write(ActionId);
             bitStream.Write(Refers);
             bitStream.Write(Life);

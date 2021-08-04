@@ -310,7 +310,7 @@ namespace Qserver.GameServer.Qpang
                     {
                         if (!p.Value.Playing)
                             p.Value.Conn.PostNetEvent(new GCJoin(player));
-                        p.Value.Conn.PostNetEvent(new GCJoin(p.Value));
+                        player.Conn.PostNetEvent(new GCJoin(p.Value));
                     }
                 }
             }

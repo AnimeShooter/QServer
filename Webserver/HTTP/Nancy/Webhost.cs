@@ -128,7 +128,6 @@ namespace Qserver.Webserver.HTTP.Nancy
                 if(illegalCharFound)
                     return Response.AsJson(new APIResponse<string>() { Message = "Error, illegal character in name." });
 
-
                 var user = Game.Instance.UsersRepository.GetUserCredentials(username).Result;
                 if (user.password == null || !BCrypt.Net.BCrypt.Verify(password, user.password))
                     return Response.AsJson(new APIResponse<string>() { Message = "Error, invalid Login" });
@@ -168,9 +167,8 @@ namespace Qserver.Webserver.HTTP.Nancy
                 if (newPassword.Length > 20)
                     return Response.AsJson(new APIResponse<string>() { Message = "Error, password must be less then 20 characters." });
 
-                string oldHashedPassword = BCrypt.Net.BCrypt.HashPassword(oldPassword);
                 string pwHash = Game.Instance.UsersRepository.GetPasswordByToken(user.Value.token).Result.password;
-                if(pwHash != null || oldHashedPassword != pwHash)
+                if(pwHash == null || !BCrypt.Net.BCrypt.Verify(oldPassword, pwHash))
                     return Response.AsJson(new APIResponse<string>() { Message = "Error, invalid OldPassword" });
 
                 string hashedPassword = BCrypt.Net.BCrypt.HashPassword(newPassword);

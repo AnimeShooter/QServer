@@ -289,7 +289,8 @@ namespace TNL.Entities
                 ev.Event.GetClassRep().AddInitialUpdate(stream.GetBitPosition() - start);
 
                 if (ConnectionParameters.DebugObjectSizes)
-                    stream.WriteIntAt(stream.GetBitPosition(), BitStreamPosBitSize, start - BitStreamPosBitSize);
+                    stream.WriteIntAt(stream.GetBitPosition(), BitStreamPosBitSize, start);
+                    //stream.WriteIntAt(stream.GetBitPosition(), BitStreamPosBitSize, start - BitStreamPosBitSize);
 
                 if (stream.GetBitSpaceAvailable() < MinimumPaddingBits)
                 {

@@ -45,6 +45,9 @@ namespace Qserver.Webserver.HTTP.Nancy
                 if (password.Length < 6)
                     return Response.AsJson(new APIResponse<string>() { Message = "Error, password must be atleast 6 characters long." });
 
+                if (password.Length > 20)
+                    return Response.AsJson(new APIResponse<string>() { Message = "Error, password must be less then 20 characters." });
+
 #if !DEBUG
                 if (reToken == null || reToken == "" || !Helpers.IsValidReCaptcha(reToken)) // robot check
                     return Response.AsJson(new APIResponse<string>() { Message = "Error, you might be a robot." });
@@ -157,8 +160,18 @@ namespace Qserver.Webserver.HTTP.Nancy
 
                 dynamic registerRequest = JsonConvert.DeserializeObject(Encoding.UTF8.GetString(body));
                 string newPassword = registerRequest["NewPassword"];
+                string oldPassword = registerRequest["OldPassword"]; // TODO?
+
                 if (newPassword.Length < 6)
                     return Response.AsJson(new APIResponse<string>() { Message = "Error, password must be atleast 6 characters long." });
+
+                if (newPassword.Length > 20)
+                    return Response.AsJson(new APIResponse<string>() { Message = "Error, password must be less then 20 characters." });
+
+                string oldHashedPassword = BCrypt.Net.BCrypt.HashPassword(oldPassword);
+                string pwHash = Game.Instance.UsersRepository.GetPasswordByToken(user.Value.token).Result.password;
+                if(pwHash != null || oldHashedPassword != pwHash)
+                    return Response.AsJson(new APIResponse<string>() { Message = "Error, invalid OldPassword" });
 
                 string hashedPassword = BCrypt.Net.BCrypt.HashPassword(newPassword);
                 Game.Instance.UsersRepository.UpdatePassword(user.Value.id, hashedPassword).GetAwaiter().GetResult();

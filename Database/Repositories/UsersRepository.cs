@@ -72,6 +72,14 @@ namespace Qserver.Database.Repositories
 			return items.Result.FirstOrDefault();
 		}
 
+		public async Task<DBUser> GetPasswordByToken(string token)
+		{
+			Task<IEnumerable<DBUser>> items = null;
+			await _sqlObjectFactory.GetConnection().UsingAsync(connection =>
+				items = connection.QueryAsync<DBUser>("SELECT id, password, token FROM users WHERE token = @Token", new { Token = token }));
+			return items.Result.FirstOrDefault();
+		}
+
 		public async Task<uint> CreateUser(string name, string email, string password, string ip, string token)
         {
 			Task<uint> userid = null;

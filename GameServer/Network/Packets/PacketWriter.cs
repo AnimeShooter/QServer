@@ -176,14 +176,13 @@ namespace Qserver.GameServer.Network.Packets
 
         public void WriteWString(string data, int max)
         {
-            byte[] sBytes = Encoding.ASCII.GetBytes(data);
+            //char[] sBytes = Encoding.UTF8.GetBytes(data);
             for(int i = 0; i < max; i++)
             {
-                if(i < sBytes.Length)
-                    this.WriteUInt8(sBytes[i]);
+                if(i < data.Length)
+                    this.WriteUInt16((char)data[i]);
                 else
-                    this.WriteUInt8(0);
-                this.WriteUInt8(0);
+                    this.WriteUInt16(0);
             }
             base.Write(new byte[2]);    // String null null terminated
         }

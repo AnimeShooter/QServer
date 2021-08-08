@@ -80,8 +80,11 @@ namespace Qserver.GameServer.Qpang
             bitStream.Write(RespawnTime);
             bitStream.Write(P2PWaitTime);
 
-            bitStream.Write((ushort)0); // idk but this fixes shit?
-            //WriteWString(bitStream, Title, 254);
+            //bitStream.Write((byte)0); // idk but this fixes shit?
+            //bitStream.Write((byte)0); // idk but this fixes shit?
+
+            //bitStream.Write((byte)0); // idk but this fixes shit?
+            WriteWString(bitStream, Title, 254);
 
             bitStream.Write(IsTime);
             bitStream.Write(Rounds);
@@ -92,6 +95,10 @@ namespace Qserver.GameServer.Qpang
             bitStream.Write(PingLevel);
             bitStream.Write(Melee);
             bitStream.Write(Event);
+
+            //Debug
+            Console.WriteLine(Title);
+            Console.WriteLine($"MasterUid:{MasterUid},JoinNum:{JoinNum},GameMode:{GameMode},GoalPoint:{GoalPoint},MapNo:{MapNum},RoomState:{RoomState},RespawnTime:{RespawnTime},P2PWaitTime:{P2PWaitTime},limitTime:{IsTime},round:{Rounds},levelLimit:{LevelLimit},gameId:{GameId},teamBalance:{TeamBalance},skillMode:{SkillMode},pingLevel:{PingLevel}melee:{Melee}mEvent:{Event}");
         }
         public override void Unpack(EventConnection ps, BitStream bitStream)  { }
         public override void Process(EventConnection ps) { }

@@ -145,6 +145,13 @@ namespace Qserver.Database.Repositories
 			return;
 		}
 
+		public async Task ChangeItemOwner(ulong playerId, InventoryCard card)
+		{
+			await _sqlObjectFactory.GetConnection().UsingAsync(connection =>
+				 connection.QueryAsync("UPDATE player_items SET player_id = @PlayerId, opened = 0 WHERE id = @CardId", new { PlayerId  = playerId, CardTime = card.TimeCreated, CardId = card.Id }));
+			return;
+		}
+
 		public async Task SetCardActive(ulong id, bool active)
 		{
 			await _sqlObjectFactory.GetConnection().UsingAsync(connection =>

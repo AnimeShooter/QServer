@@ -72,7 +72,7 @@ namespace Qserver.GameServer
                         TimeCreated = Util.Util.Timestamp()
                     };
                     cardReward.Id = Game.Instance.ItemsRepository.CreateItem(cardReward, player).Result;
-                    player.InventoryManager.ReceiveGift(cardReward, "-");
+                    player.InventoryManager.ReceiveGift(cardReward, "AnimeShooter.com");
                 }
 
                 // Use and remove to prevent doops ;P

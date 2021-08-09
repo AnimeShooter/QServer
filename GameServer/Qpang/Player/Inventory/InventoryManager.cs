@@ -260,7 +260,7 @@ namespace Qserver.GameServer.Qpang
                 card.TimeCreated = Util.Util.Timestamp();
                 target.InventoryManager.ReceiveGift(card, this._player.Name);
 
-                // TODO: UPDATE player_items SET player_id = ?, opened = 0, time = ? WHERE id = ?", { player->getId(), card.timeCreated, card.id
+                Game.Instance.ItemsRepository.ChangeItemOwner(target.PlayerId, card).GetAwaiter().GetResult();
 
                 this._player.SendLobby(LobbyManager.Instance.GiftCardSuccess(card.Id));
                 this._player.EquipmentManager.Save();
@@ -280,6 +280,7 @@ namespace Qserver.GameServer.Qpang
                 lock (this._player.Lock)
                 {
                     card.IsOpened = false;
+                    card.IsActive = false;
                     card.PlayerOwnedId = this._player.PlayerId;
                     this._gifts[card.Id] = card;
 
@@ -305,7 +306,7 @@ namespace Qserver.GameServer.Qpang
                 {
                     var card = this._gifts[cardId];
                     card.IsOpened = true;
-
+                    card.IsActive = false;
                     this._cards[card.Id] = card; // add to cards
                     this._gifts.Remove(cardId); // rm from gifts
 

@@ -1070,6 +1070,13 @@ namespace Qserver.GameServer.Network.Managers
             // empty
             return pw;
         }
+        
+        public PacketWriter Send_699() // LobbyBuddyAddFail
+        {
+            PacketWriter pw = new PacketWriter((Opcode)699);
+            // empty
+            return pw;
+        }
 
         public PacketWriter Broadcast(string message)
         {

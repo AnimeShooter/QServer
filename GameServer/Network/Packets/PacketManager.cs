@@ -20,13 +20,20 @@ namespace Qserver.GameServer.Packets
 
         public static bool InvokeHandler(PacketReader reader, ConnServer manager, Opcode opcode)
         {
-            if (OpcodeHandlers.ContainsKey(opcode))
+            try
             {
-                OpcodeHandlers[opcode].Invoke(reader, manager);
-                return true;
+                if (OpcodeHandlers.ContainsKey(opcode))
+                {
+                    OpcodeHandlers[opcode].Invoke(reader, manager);
+                    return true;
+                }
+                else
+                    Log.Message(LogType.ERROR, $"Unknown OpCode: {opcode}");
             }
-            else
-                Log.Message(LogType.ERROR, $"Unknown OpCode: {opcode}");
+            catch(Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
             return false;
         }
 

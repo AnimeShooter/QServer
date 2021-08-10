@@ -132,25 +132,43 @@ namespace Qserver.GameServer.Network.Handlers
             string name = packet.ReadWString(16);
 
             if (name == null || name.Length < 4 || name.Length > 16)
+            {
+                manager.Send(LobbyManager.Instance.Send_699());
                 return;
+            }
 
             var player = manager.Player;
             if (name == player.Name)
+            {
+                manager.Send(LobbyManager.Instance.Send_699());
                 return;
+            }
 
             if (!player.FriendManager.HasOutgoingSlot())
+            {
+                manager.Send(LobbyManager.Instance.Send_699());
                 return;
+            }
 
             var target = Game.Instance.GetPlayer(name);
 
             if (target == null)
+            {
+                manager.Send(LobbyManager.Instance.Send_699());
                 return;
+            }
 
             if (!target.FriendManager.HasIncomingSlot())
+            {
+                manager.Send(LobbyManager.Instance.Send_699());
                 return;
+            }
 
             if (player.FriendManager.Contains(target.PlayerId) || target.FriendManager.Contains(player.PlayerId))
+            {
+                manager.Send(LobbyManager.Instance.Send_699());
                 return;
+            }
 
             player.FriendManager.AddOutgoingFriend(target);
             target.FriendManager.AddIncomingFriend(player);

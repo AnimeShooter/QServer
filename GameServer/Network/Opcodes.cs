@@ -99,8 +99,8 @@ namespace Qserver.GameServer.Network
 		LOBBY_DELETE_MEMO_RSP = 736,			// out
 
 		LOBBY_WHISPER = 738,					// in
-		LOBBY_WHISPER_RSP = 739,				// rsp
-		LOBBY_WHISPER_FAIL = 740,
+		LOBBY_WHISPER_RSP = 739,				// out
+		LOBBY_WHISPER_FAIL = 740,				// out
 
 		LOBBY_OPEN_PLAYER_CARD = 742,			// in
 		LOBBY_OPEN_PLAYER_CARD_RSP = 743,		// out
@@ -128,15 +128,15 @@ namespace Qserver.GameServer.Network
 		LOBBY_REGISTER_CARD_FAIL = 779,
 		// 797									// in
 		// 780									// in
-		LOBBY_INVENTORY_CARDS = 780,
-		LOBBY_INVENTORY_CARDS_RSP = 781,
+		LOBBY_INVENTORY_CARDS = 780,			// in
+		LOBBY_INVENTORY_CARDS_RSP = 781,		// out
 		// 785									// in
 
 		LOBBY_PLAYER_RANKING = 791,				// in
-		LOBBY_PLAYER_RANKING_RSP = 792,
+		LOBBY_PLAYER_RANKING_RSP = 792,			// out
 
-		LOBBY_REQUEST_GOODS = 797,
-		LOBBY_NORMAL_GOODS = 798,
+		LOBBY_REQUEST_GOODS = 797,				// in
+		LOBBY_NORMAL_GOODS = 798,				// out
 
 		LOBBY_REQUEST_PACKAGE_GOODS = 800,		// in
 		LOBBY_REQUEST_PACKAGE_GOODS_RSP = 801,	// out
@@ -146,7 +146,7 @@ namespace Qserver.GameServer.Network
 		// 806									// in
 		LOBBY_GIFT_ITEM = 812,					// in
 		LOBBY_GIFT_ITEM_RSP = 813,				// out
-		LOBBY_GIFT_ITEM_FAIL = 814,
+		LOBBY_GIFT_ITEM_FAIL = 814,				// out
 		LOBBY_SHOP_GIFT = 815,					// in
 		LOBBY_SHOP_GIFT_RSP = 816,				// out
 		// 818									// in
@@ -172,6 +172,8 @@ namespace Qserver.GameServer.Network
 		// 844									// in
 
 		LOBBY_REDEEM_CODE = 851,				// in
+		// 852									// out
+		// 853									// out (msg?)
 
 		// 854 // bidyy pending
 
@@ -189,11 +191,11 @@ namespace Qserver.GameServer.Network
 		LOBBY_TRADE_ERROR_1 = 874,
 		// 875									// in
 
-		LOBBY_TRADE = 875,
-		LOBBY_TRADE_RSP = 876,
+		LOBBY_TRADE = 875,						// in
+		LOBBY_TRADE_RSP = 876,					// out
 
 		// 877 trading now / not want trade
-		LOBBY_TRADE_ERROR_2 = 878,
+		LOBBY_TRADE_ERROR_2 = 878,	
 		// 879									// in
 		// 881 TRADE_REQUEST_CANCEL
 		// 882 TRADE_REQUEST_REJECT_MESSAGE
@@ -234,19 +236,21 @@ namespace Qserver.GameServer.Network
 		SQUARE_PLAYER_UPDATE = 6514,			// in
 		SQUARE_UPDATE_PLAYER = 6517,
 		SQUARE_CHAT = 6526,						// in
-		SQUARE_CHAT_RSP = 6529,
+		SQUARE_CHAT_RSP = 6529,					// out
 		SQUARE_JOIN_BACK = 6530,				// in
-		SQUARE_JOIN_BACK_RSP = 6531,
+		SQUARE_JOIN_BACK_RSP = 6531,			// out
 		SQUARE_JOIN_PARK = 6537,				// in
 		SQUARE_JOIN_PARK_RSP = 6538,			// out
 		SQUARE_JOIN_PARK_FAIL = 6539,			// out
-		SQUARE_UPDATE_LIST = 6543,
+		SQUARE_UPDATE_LIST = 6543,				// out
 		SQUARE_START_TUTORIAL = 6544,			// in
-		SQUARE_PLAYER_CHANGE_STATE = 6547,
+		SQUARE_PLAYER_CHANGE_STATE = 6547,		// out
 		// 6549									// in
+		// 6552									// out
 		SQUARE_PLAYER_CHANGE_LEVEL = 6553,		// in
 		SQUARE_PLAYER_CHANGE_CHANNEL = 6554,	// in
 		SQUARE_PLAYER_CHANGE_CHANNEL_RSP = 6555,// out
+		// 6556									// out
 		SQUARE_PLAYER_EMOTE = 6557,				// in
 		SQUARE_EMOTE_PLAYER = 6558,				// out
 

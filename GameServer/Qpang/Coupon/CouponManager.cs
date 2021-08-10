@@ -54,7 +54,7 @@ namespace Qserver.GameServer
                     player.AddCash(coupon.CashReward);
 
                 if (coupon.DonReward != 0)
-                    player.AddCash(coupon.DonReward);
+                    player.AddDon(coupon.DonReward);
 
                 if(coupon.ItemReward != 0)
                 {

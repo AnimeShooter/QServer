@@ -1033,6 +1033,32 @@ namespace Qserver.GameServer.Network.Managers
             return pw;
         }
 
+        public PacketWriter Send_852(uint newDon, uint newCash)
+        {
+            PacketWriter pw = new PacketWriter((Opcode)852);
+            // a2+16, a2+25
+            // 0
+            // 4
+            pw.WriteUInt32(0); // 8 unk1
+            pw.WriteUInt32(0); // C unk2
+            pw.WriteUInt32(newDon); // 10 NewDon
+            pw.WriteUInt32(newCash); // 18 NewCash
+
+            byte count = 0; // max 1? 
+            pw.WriteUInt8(count); // 19 count
+            for(int i = 0; i < count; i++)
+            {
+                // unk 0x2B size
+            }
+            return pw;
+        }
+
+        public PacketWriter Send_853() // invalid code redeemd
+        {
+            PacketWriter pw = new PacketWriter((Opcode)853);
+            return pw;
+        }
+
         public PacketWriter Broadcast(string message)
         {
             PacketWriter pw = new PacketWriter((Opcode)4);

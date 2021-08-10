@@ -364,8 +364,10 @@ namespace Qserver.GameServer.Network.Handlers
             //  handle code
             bool status = Game.Instance.CouponManager.ConsumeCoupon(manager.Player, Encoding.ASCII.GetString(key));
 
-            // TODO: reverse responses to send feedback!
-            //manager.Send(LobbyManger.)
+            if (!status)
+                manager.Send(LobbyManager.Instance.Send_853());
+            else
+                manager.Send(LobbyManager.Instance.Send_852(manager.Player.Don, manager.Player.Cash));
         } 
         #endregion
 

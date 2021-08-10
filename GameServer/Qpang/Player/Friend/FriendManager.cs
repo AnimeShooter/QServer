@@ -43,13 +43,13 @@ namespace Qserver.GameServer.Qpang
                 switch(f.status)
                 {
                     case 1:
-                        this._friends.Add(f.id, nf);
+                        this._friends.Add(f.player_to, nf);
                         break;
                     case 2:
-                        this._outgoingFriends.Add(f.id, nf);
+                        this._outgoingFriends.Add(f.player_to, nf);
                         break;
                     case 4:
-                        this._incomingFriends.Add(f.id, nf);
+                        this._incomingFriends.Add(f.player_to, nf);
                         break;
                 }
             }
@@ -131,7 +131,9 @@ namespace Qserver.GameServer.Qpang
                     FriendId = target.PlayerId,
                     Nickname = target.Name,
                     Level = target.Level,
-                    Rank = target.Rank
+                    Rank = target.Rank,
+                    State = 4,
+                    IsOnline = false
                 };
                 this._incomingFriends.Add(target.PlayerId, newFriend);
                 this._player.SendLobby(LobbyManager.Instance.AddIncommingFriend(newFriend));
@@ -151,7 +153,9 @@ namespace Qserver.GameServer.Qpang
                     FriendId = target.PlayerId,
                     Nickname = target.Name,
                     Level = target.Level,
-                    Rank = target.Rank
+                    Rank = target.Rank,
+                    State = 2,
+                    IsOnline = false
                 };
                 this._outgoingFriends.Add(target.PlayerId, newFriend);
                 this._player.SendLobby(LobbyManager.Instance.AddOutgoingFriend(newFriend));
@@ -237,9 +241,8 @@ namespace Qserver.GameServer.Qpang
                 if (!this._friends.ContainsKey(friendId))
                     return;
 
-                this._friends.Remove(friendId);
-                
                 this._player.SendLobby(LobbyManager.Instance.RemoveFriend(friendId));
+                this._friends.Remove(friendId);
                 Game.Instance.FriendsRepository.RemoveFriend(this._player.PlayerId, friendId).GetAwaiter().GetResult();
             }
         }

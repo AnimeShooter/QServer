@@ -62,6 +62,8 @@ namespace Qserver.GameServer.Packets
                 // test
                 PacketManager.DefineOpcodeHandler(Opcode.LOBBY_TRADE, LobbyHandler.HandleLobbyTrade);
                 //PacketManager.DefineOpcodeHandler((Opcode)844, LobbyHandler.Handle_884);
+
+                PacketManager.DefineOpcodeHandler((Opcode)728, LobbyHandler.Handle_728);
             }
 
             // Square

@@ -112,13 +112,13 @@ namespace Qserver.GameServer.Network.Handlers
         }
         public static void HandleRemoveFriendEvent(PacketReader packet, ConnServer manager)
         {
-            var playerId = packet.ReadUInt32();
+            var friendId = packet.ReadUInt32();
             var player = manager.Player;
-            var target = Game.Instance.GetPlayer(playerId);
-            if(target != null)
+            var friend = Game.Instance.GetPlayer(friendId);
+            if(friend != null)
             {
-                player.FriendManager.Remove(target.PlayerId);
-                target.FriendManager.OnRemove(player.PlayerId);
+                player.FriendManager.Remove(friend.PlayerId);
+                friend.FriendManager.OnRemove(player.PlayerId);
             }
         }
         public static void HandleRequestFriendList(PacketReader packet, ConnServer manager)
@@ -487,14 +487,17 @@ namespace Qserver.GameServer.Network.Handlers
         #endregion
 
         // testing
-        public static void Handle_xxx(PacketReader packet, ConnServer manager)
+        public static void Handle_728(PacketReader packet, ConnServer manager) // Lobby Send Memo
         {
-            uint unk1 = packet.ReadUInt32();
-            uint unk2 = packet.ReadUInt32();
-            uint unk3 = packet.ReadUInt32();
+            uint playerId = packet.ReadUInt32();
+            string nickname = packet.ReadString(); // target?
+            string message = packet.ReadString();
 
-            throw new NotImplementedException();
+            // ok?
+            manager.Send(LobbyManager.Instance.Send_729());
         }
+
+
 
         public static void HandleLobbyLogin(PacketReader packet, ConnServer manager)
         {

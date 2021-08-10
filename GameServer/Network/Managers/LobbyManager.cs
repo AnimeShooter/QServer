@@ -1033,12 +1033,9 @@ namespace Qserver.GameServer.Network.Managers
             return pw;
         }
 
-        public PacketWriter Send_852(uint newDon, uint newCash)
+        public PacketWriter Send_852(uint newDon, uint newCash) // lobby code success
         {
             PacketWriter pw = new PacketWriter((Opcode)852);
-            // a2+16, a2+25
-            // 0
-            // 4
             pw.WriteUInt32(0); // 8 unk1
             pw.WriteUInt32(0); // C unk2
             pw.WriteUInt32(newDon); // 10 NewDon
@@ -1053,9 +1050,24 @@ namespace Qserver.GameServer.Network.Managers
             return pw;
         }
 
-        public PacketWriter Send_853() // invalid code redeemd
+        public PacketWriter Send_853() // Lobby Code Invalid
         {
             PacketWriter pw = new PacketWriter((Opcode)853);
+            // empty
+            return pw;
+        }
+
+        public PacketWriter Send_729() // Lobby Send Memo Rsp
+        {
+            PacketWriter pw = new PacketWriter((Opcode)729);
+            // epty
+            return pw;
+        }
+
+        public PacketWriter Send_731() // Lobby Recv Memo
+        {
+            PacketWriter pw = new PacketWriter((Opcode)731);
+            // empty
             return pw;
         }
 

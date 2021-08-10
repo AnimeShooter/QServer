@@ -88,10 +88,11 @@ namespace Qserver.GameServer.Network
 
 		LOBBY_MEMOS = 725,						// in
 		LOBBY_MEMOS_RSP = 726,					// out
+		// 727									// out
 		LOBBY_SEND_MEMO = 728,					// in
 		LOBBY_SEND_MEMO_RSP = 729,				// out
-		LOBBY_SEND_MEMO_FAIL = 730,
-		LOBBY_RECEIVE_MEMO = 731,
+		LOBBY_SEND_MEMO_FAIL = 730,				// out
+		LOBBY_RECEIVE_MEMO = 731,				// out
 		LOBBY_OPEN_MEMO = 732,					// int
 		LOBBY_OPEN_MEMO_RSP = 733,				// out
 

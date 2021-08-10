@@ -490,7 +490,9 @@ namespace Qserver.GameServer.Network.Managers
         public PacketWriter TradeResponse(uint  playerId)
         {
             PacketWriter pw = new PacketWriter(Opcode.LOBBY_TRADE_RSP);
-
+            pw.WriteUInt32(0); // unk 1
+            pw.WriteUInt32(0); // unk 2
+            pw.WriteUInt32(0); // unk 3
             return pw;
         }
 
@@ -1021,6 +1023,15 @@ namespace Qserver.GameServer.Network.Managers
             return pw;
         }
         #endregion
+
+        // testing
+        public PacketWriter Send_884()
+        {
+            PacketWriter pw = new PacketWriter((Opcode)884);
+            pw.WriteUInt32(0); // unk1
+            pw.WriteUInt32(0); // unk2
+            return pw;
+        }
 
         public PacketWriter Broadcast(string message)
         {

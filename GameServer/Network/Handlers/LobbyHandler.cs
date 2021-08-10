@@ -174,13 +174,18 @@ namespace Qserver.GameServer.Network.Handlers
         #region Inventory
         public static void HandleLobbyTrade(PacketReader packet, ConnServer manager)
         {
-            uint playerId = packet.ReadUInt32(); // target
+            uint playerId = packet.ReadUInt32(); // target (875)
             var target = Game.Instance.GetOnlinePlayer(playerId);
             if (target == null)
                 return;
 
             target.SendLobby(LobbyManager.Instance.SendTradeRequest(playerId));
             manager.Send(LobbyManager.Instance.TradeResponse(playerId));
+        }
+
+        public static void HandleLobbyTradeAct(PacketReader packet, ConnServer manager)
+        {
+            // no opcode?
         }
 
         public static void HandleDeleteCard(PacketReader packet, ConnServer manager)
@@ -398,7 +403,7 @@ namespace Qserver.GameServer.Network.Handlers
 
             //manager.Send(LobbyManager.Instance.PlayerInfoInspector(targetPlayer));
         }
-        public static void HandleRestKillDeathEvent(PacketReader packet, ConnServer manager)
+        public static void HandleResetKillDeathEvent(PacketReader packet, ConnServer manager)
         {
             ulong cardId = packet.ReadUInt64();
             var player = manager.Player;
@@ -478,6 +483,16 @@ namespace Qserver.GameServer.Network.Handlers
             Log.Message(LogType.NORMAL, $"Anti-Cheat hearthbeat for {manager.Player.Name}!");
         }
         #endregion
+
+        // testing
+        public static void Handle_xxx(PacketReader packet, ConnServer manager)
+        {
+            uint unk1 = packet.ReadUInt32();
+            uint unk2 = packet.ReadUInt32();
+            uint unk3 = packet.ReadUInt32();
+
+            throw new NotImplementedException();
+        }
 
         public static void HandleLobbyLogin(PacketReader packet, ConnServer manager)
         {

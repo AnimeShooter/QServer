@@ -61,7 +61,6 @@ namespace Qserver.GameServer.Network.Handlers
 
             manager.Player.EquipmentManager.SetWeapons(characterIndex, weapons);
         }
-
         public static void HandleRequestEquippedSkillCards(PacketReader packet, ConnServer manager)
         {
             var skills = manager.Player.EquipmentManager.GetSkillCards();
@@ -190,23 +189,60 @@ namespace Qserver.GameServer.Network.Handlers
         #endregion
 
         #region Inventory
-        public static void HandleLobbyTrade(PacketReader packet, ConnServer manager)
+        public static void HandleTradeRequest(PacketReader packet, ConnServer manager)
         {
+            var player = manager.Player;
+            if (player == null)
+                return;
+
             uint playerId = packet.ReadUInt32(); // target (875)
             var target = Game.Instance.GetOnlinePlayer(playerId);
             if (target == null)
                 return;
 
-            //target.SendLobby(LobbyManager.Instance.SendTradeRequest(playerId));
-            target.SendLobby(LobbyManager.Instance.TradeResp());
+            // update trade manager
+            Game.Instance.TradeManager.OnRequest(player, target.PlayerId);
+
+            // Untested:
+            /* 883 -
+             * 889 nothing
+             * 891 unk func
+             * 892 - Trade Complete
+             * 895 nothing
+             * 896 nothing
+             */
+
+            // NOTE: Find packet for requested player
+
+            
+            // respond client
             manager.Send(LobbyManager.Instance.TradeResponse(playerId));
-            Thread.Sleep(5000);
-            manager.Send(LobbyManager.Instance.TradeCanceledBYOther());
+
+            // emulate trade accept
+            target.SendLobby(LobbyManager.Instance.TradeAccepted());
+            manager.Send(LobbyManager.Instance.TradeAccepted());
         }
 
-        public static void HandleLobbyTradeAct(PacketReader packet, ConnServer manager)
+        public static void HandleTradeCancle(PacketReader packet, ConnServer manager)
         {
-            // no opcode?
+            var player = manager.Player;
+            if (player == null)
+                return;
+
+            var target = Game.Instance.TradeManager.FindTradingBuddy(player);
+            if (target == null)
+                return;
+
+            // erase trade from manager
+            Game.Instance.TradeManager.OnCancel(player);
+
+            // TODO: find out the reason
+
+            // TODO: Update target
+            //target.SendLobby(LobbyManager.Instance.());
+
+            // Update player
+            manager.Send(LobbyManager.Instance.SendTradeCanceled());
         }
 
         public static void HandleDeleteCard(PacketReader packet, ConnServer manager)
@@ -312,12 +348,10 @@ namespace Qserver.GameServer.Network.Handlers
             List<Memo> memos = manager.Player.MemoManager.List();
             manager.Send(LobbyManager.Instance.Memos(memos));
         }
-
         public static void HandleMemoDelete(PacketReader packet, ConnServer manager)
         {
             // TODO
         }
-
         public static void HandleSendMemo(PacketReader packet, ConnServer manager)
         {
             // TODO
@@ -507,29 +541,7 @@ namespace Qserver.GameServer.Network.Handlers
         }
         #endregion
 
-        // testing
-        public static void Handle_728(PacketReader packet, ConnServer manager) // Lobby Send Memo
-        {
-            uint playerId = packet.ReadUInt32();
-            string nickname = packet.ReadString(); // target?
-            string message = packet.ReadString();
-
-            // ok?
-            manager.Send(LobbyManager.Instance.Send_729());
-        }
-
-        public static void Handle_882(PacketReader packet, ConnServer manager)
-        {
-            uint unk1 = packet.ReadUInt32();
-            byte unk2 = packet.ReadUInt8();
-
-            // do smthing?
-
-            throw new NotImplementedException();
-        }
-
-
-
+        #region Lobby
         public static void HandleLobbyLogin(PacketReader packet, ConnServer manager)
         {
             byte[] uuid = packet.ReadBytes(16);
@@ -555,5 +567,56 @@ namespace Qserver.GameServer.Network.Handlers
 
             manager.Send(LobbyManager.Instance.Authenticated(player));
         }
+        #endregion 
+
+        // testing
+        public static void Handle_728(PacketReader packet, ConnServer manager) // Lobby Send Memo
+        {
+            uint playerId = packet.ReadUInt32();
+            string nickname = packet.ReadString(); // target?
+            string message = packet.ReadString();
+
+            // ok?
+            manager.Send(LobbyManager.Instance.Send_729());
+        }
+
+        public static void Handle_882(PacketReader packet, ConnServer manager)
+        {
+            uint unk1 = packet.ReadUInt32();
+            byte unk2 = packet.ReadUInt8();
+
+            // do smthing?
+
+            throw new NotImplementedException();
+        }
+
+        public static void Handle_888(PacketReader packet, ConnServer manager)
+        {
+            // TODO: trigger me
+
+            //uint CardOrItemId = packet.ReadUInt32();
+            //Console.WriteLine("Possible item/card: " + CardOrItemId);
+
+
+            // Size: 3C
+
+            uint unk1 = packet.ReadUInt32(); //  0x95099509         // 0
+
+            // cmd:
+            // - 100: insert item
+            // - 101: ???
+            // - 102: ???
+            uint cmd = packet.ReadUInt16(); // 0x64 (rounds?)    // 4
+            byte unk3 = packet.ReadUInt8();                         // 6
+            var card = packet.ReadInventoryCard();  // InventoryCard// 7
+            uint unk14 = packet.ReadUInt32(); // 0x00632DF0         // 
+            uint unk15 = packet.ReadUInt32(); // 0x00632DF0         // 
+            uint unk16 = packet.ReadUInt16(); // 0x00632DF0         // 
+                        // do smthing?
+
+            //throw new NotImplementedException();
+        }
+
+
     }
 }

@@ -191,6 +191,9 @@ namespace Qserver.GameServer.Network
 		// 872									// in
 		// 873 functional						// out
 		// 874,	OnLsQuestionnaireFail			// out
+		
+		
+		
 		LOBBY_TRADE = 875,						// in
 		LOBBY_TRADE_RSP = 876,					// out
 		// 877 trading now / not want trade		// out
@@ -199,12 +202,12 @@ namespace Qserver.GameServer.Network
 		// 880									// out
 		// 881 OnLsTradeRespFail				// out
 		// 882 TRADE_REQUEST_REJECT_MESSAGE		// out
-		// 883									// out
+		// 883 TradeAccepted					// out
 		LOBBY_TRADE_ACT = 884, // onTradeCancle // in
 		LOBBY_TRADE_ACT_RSP = 885,              // out
 		// 886	OnLsTradeUserActFail			// out
 		LOBBY_TRADE_ERROR_3 = 887, // dword, byte // out
-		// 888									// in
+		// 888 SetTradeItem						// in
 		// 889 1byte							// out
 		// 890 OnLsTradeSetElementFail			// out
 		// 891 functional						// out
@@ -213,6 +216,9 @@ namespace Qserver.GameServer.Network
 
 		// 895									// out
 		// 896									// out
+
+
+
 
 		LOBBY_USE_CRANE = 897,					// in
 		LOBBY_USE_CRANE_RSP = 898,

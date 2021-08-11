@@ -5,6 +5,7 @@ using System.Text;
 using Qserver.Util;
 using System.Net;
 using System.Net.Sockets;
+using Qserver.GameServer.Qpang;
 
 namespace Qserver.GameServer.Network.Packets
 {
@@ -211,6 +212,33 @@ namespace Qserver.GameServer.Network.Packets
             }
 
             return ip[0] + "." + ip[1] + "." + ip[2] + "." + ip[3];
+        }
+
+        public InventoryCard ReadInventoryCard()
+        {
+            var card = new InventoryCard();
+
+            card.Id = _payload.ReadUInt64(); // 0
+            card.ItemId = _payload.ReadUInt32(); // 8
+            _payload.ReadByte(); // 12
+            card.Type = _payload.ReadByte(); // 13
+            _payload.ReadByte(); // 14
+            card.IsGiftable = _payload.ReadByte() == 1; // 15
+            _payload.ReadBytes(6); // 16
+            card.TimeCreated = _payload.ReadUInt32(); // 22
+            card.IsOpened = _payload.ReadByte() == 1; // 26
+            card.IsActive = _payload.ReadUInt16() == 0; // 27
+            _payload.ReadByte(); // 28; hidden
+            _payload.ReadByte(); // 29
+            card.Period = _payload.ReadUInt16(); // 31
+            card.PeriodeType = _payload.ReadByte(); // 33
+            _payload.ReadByte(); // 34
+            card.BoostLevel = (byte)_payload.ReadUInt16(); // 35
+            _payload.ReadByte(); // 37
+            _payload.ReadByte(); //  38
+            _payload.ReadBytes(4); // 39
+
+            return card;
         }
 
         public void SkipBytes(int count)

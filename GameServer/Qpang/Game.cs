@@ -55,6 +55,7 @@ namespace Qserver.GameServer.Qpang
         private LevelManager _levelManger;
         private CraneManager _craneManager;
         private CouponManager _couponManager;
+        private TradeManager _tradeManager;
 
         private Leaderboard _leaderboard;
 
@@ -134,6 +135,10 @@ namespace Qserver.GameServer.Qpang
         public CouponManager CouponManager
         {
             get { return this._couponManager; }
+        }
+        public TradeManager TradeManager
+        {
+            get { return this._tradeManager; }
         }
         public Leaderboard Leaderboard
         {
@@ -232,13 +237,13 @@ namespace Qserver.GameServer.Qpang
             this._squareManager = new SquareManager();
             this._chatManager = new ChatManager(); // TODO: commands
             this._roomManager = new RoomManager();
-            
             this._weaponManager = new WeaponManager();
             this._spawnManager = new SpawnManager();
             this._skillManager = new SkillManager(); // TODO
             this._levelManger = new LevelManager(); // TODO-ish
             this._craneManager = new CraneManager();
             this._couponManager = new CouponManager();
+            this._tradeManager = new TradeManager(); // TODO
             this._cacheManager = new CacheManager();
             this._leaderboard = new Leaderboard();
             this._leaderboard.Refresh(); // initial update (TODO: refresh  every 12/24h?)

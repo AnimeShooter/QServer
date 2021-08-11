@@ -97,28 +97,24 @@ namespace Qserver.GameServer.Network.Managers
 
             return pw;
         }
-
         public PacketWriter Banned()
         {
             PacketWriter pw = new PacketWriter(Opcode.LOBBY_LOGIN_FAIL);
             pw.WriteUInt32(819);
             return pw;
         }
-
         public PacketWriter DuplicateLogin()
         {
             PacketWriter pw = new PacketWriter(Opcode.LOBBY_LOGIN_FAIL);
             pw.WriteUInt32(802);
             return pw;
         }
-
         public PacketWriter VerificationFailure()
         {
             PacketWriter pw = new PacketWriter(Opcode.LOBBY_LOGIN_FAIL);
             pw.WriteUInt32(204);
             return pw;
         }
-
         public PacketWriter UpdateAccount(Player player)
         {
             PacketWriter pw = new PacketWriter(Opcode.LOBBY_UPDATE_ACCOUNT);
@@ -203,7 +199,6 @@ namespace Qserver.GameServer.Network.Managers
 
             return pw;
         }
-
         #endregion Account
 
         #region Channel
@@ -233,7 +228,6 @@ namespace Qserver.GameServer.Network.Managers
 
             return pw;
         }
-
         public PacketWriter ChannelHost(Channel channel)
         {
             PacketWriter pw = new PacketWriter(Opcode.LOBBY_CHANNEL_CONNECT_RSP, 0x05);
@@ -288,7 +282,6 @@ namespace Qserver.GameServer.Network.Managers
             }
             return pw;
         }
-
         public PacketWriter SetArmor(ushort characterOffset, ulong[] armor)
         {
             PacketWriter pw = new PacketWriter((Opcode)621);
@@ -297,7 +290,6 @@ namespace Qserver.GameServer.Network.Managers
                 pw.WriteUInt64(piece);
             return pw;
         }
-
         public PacketWriter SetWeapons(ushort characterOffset, ulong[] weapons)
         {
             PacketWriter pw = new PacketWriter((Opcode)624);
@@ -309,7 +301,6 @@ namespace Qserver.GameServer.Network.Managers
             } 
             return pw;
         }
-
         #endregion
 
         #region Friend
@@ -325,7 +316,6 @@ namespace Qserver.GameServer.Network.Managers
             pw.WriteWString(friend.Nickname, 16);
             return pw;
         }
-
         public PacketWriter AddIncommingFriend(Friend friend)
         {
             PacketWriter pw = new PacketWriter((Opcode)700);
@@ -338,7 +328,6 @@ namespace Qserver.GameServer.Network.Managers
             pw.WriteWString(friend.Nickname, 16);
             return pw;
         }
-
         public PacketWriter AddOutgoingFriend(Friend friend)
         {
             PacketWriter pw = new PacketWriter((Opcode)698);
@@ -486,8 +475,8 @@ namespace Qserver.GameServer.Network.Managers
         }
         #endregion
 
-        #region Inventory
-        public PacketWriter TradeResponse(uint  playerId)
+        #region Trade
+        public PacketWriter TradeResponse(uint playerId)
         {
             PacketWriter pw = new PacketWriter(Opcode.LOBBY_TRADE_RSP);
             pw.WriteUInt32(0); // unk 1
@@ -495,14 +484,15 @@ namespace Qserver.GameServer.Network.Managers
             pw.WriteUInt32(0); // unk 3
             return pw;
         }
-
         public PacketWriter SendTradeRequest(uint playerId)
         {
             PacketWriter pw = new PacketWriter(Opcode.LOBBY_TRADE_ACT);
             pw.WriteUInt32(playerId); //test
             return pw;
         }
+        #endregion
 
+        #region Inventory
         public PacketWriter CardExtended(InventoryCard card, uint balance, bool isCash)
         {
             PacketWriter pw = new PacketWriter((Opcode)810);
@@ -606,7 +596,7 @@ namespace Qserver.GameServer.Network.Managers
                 pw.WriteUInt8(0); // 14
                 pw.WriteUInt8(card.IsGiftable ? (byte)1 : (byte)0); // 15
                 pw.WriteBytes(new byte[6]); // 16
-                pw.WriteUInt32(card.TimeCreated);
+                pw.WriteUInt32(card.TimeCreated); // 22
                 pw.WriteUInt8(card.IsOpened ? (byte)1 : (byte)0); // 26
                 pw.WriteUInt16(card.IsActive ? (ushort)0 : (ushort)1); // 27
                 pw.WriteUInt8(0); // 28; hidden
@@ -720,14 +710,12 @@ namespace Qserver.GameServer.Network.Managers
 
             return pw;
         }
-
         public PacketWriter SendMemo(Memo memo)
         {
             PacketWriter pw = new PacketWriter(Opcode.LOBBY_SEND_MEMO);
             // TODO
             return pw;
         }
-
         public PacketWriter DeleteMemo(Memo memo)
         {
             PacketWriter pw = new PacketWriter(Opcode.LOBBY_DELETE_MEMO);
@@ -784,10 +772,11 @@ namespace Qserver.GameServer.Network.Managers
             pw.WriteUInt32(0); // 8 unk1
             pw.WriteUInt32(0); // C unk2
             pw.WriteUInt32(newDon); // 10 NewDon
-            pw.WriteUInt32(newCash); // 18 NewCash
+            pw.WriteUInt32(newCash); // 14 NewCash
 
             byte count = 0; // max 1? 
-            pw.WriteUInt8(count); // 19 count
+            pw.WriteUInt8(count); // 18 count
+            pw.WriteUInt8(count); // 19 unk src
             for (int i = 0; i < count; i++)
             {
                 // unk 0x2B size
@@ -799,7 +788,14 @@ namespace Qserver.GameServer.Network.Managers
             PacketWriter pw = new PacketWriter((Opcode)853);
             return pw;
         }
-
+        public PacketWriter Broadcast(string message)
+        {
+            PacketWriter pw = new PacketWriter((Opcode)4);
+            pw.WriteUInt32(0);
+            pw.WriteBytes(new byte[34]);
+            pw.WriteWString(message, 254);
+            return pw;
+        }
         #endregion
 
         #region Player
@@ -860,7 +856,6 @@ namespace Qserver.GameServer.Network.Managers
 
             return pw;
         }
-
         public PacketWriter PlayerInfoInspectorFailed()
         {
             PacketWriter pw = new PacketWriter((Opcode)693);
@@ -1089,6 +1084,7 @@ namespace Qserver.GameServer.Network.Managers
             // todo
             return pw;
         }
+
         public PacketWriter TradeFailed() // trade failed
         {
             PacketWriter pw = new PacketWriter((Opcode)877);
@@ -1124,13 +1120,68 @@ namespace Qserver.GameServer.Network.Managers
             return pw;
         }
 
+        
 
-        public PacketWriter Broadcast(string message)
+        public PacketWriter TradeAccepted() // TradeAccepted
         {
-            PacketWriter pw = new PacketWriter((Opcode)4);
-            pw.WriteUInt32(0);
-            pw.WriteBytes(new byte[34]);
-            pw.WriteWString(message, 254);
+            PacketWriter pw = new PacketWriter((Opcode)883);
+            // todo
+            return pw;
+        }
+
+        public PacketWriter Send_889() // unk
+        {
+            PacketWriter pw = new PacketWriter((Opcode)889);
+            // todo
+            return pw;
+        }
+
+        public PacketWriter Send_891() // unk
+        {
+            PacketWriter pw = new PacketWriter((Opcode)891);
+            pw.WriteUInt8(0); // targetId?
+
+            // _DWORD interpreted as _BYTE
+            pw.WriteUInt8(0); // unk2
+            pw.Write(new byte[3]); // gap?
+
+            pw.WriteUInt32(0); // unk3 qmemcpy src
+            return pw;
+        }
+        public PacketWriter Send_892() // unk
+        {
+            PacketWriter pw = new PacketWriter((Opcode)892);
+            // todo
+            return pw;
+        }
+
+        public PacketWriter Send_895() // unk
+        {
+            PacketWriter pw = new PacketWriter((Opcode)895);
+            // todo
+            return pw;
+        }
+
+        public PacketWriter Send_896() // unk
+        {
+            PacketWriter pw = new PacketWriter((Opcode)896);
+            // todo
+            return pw;
+        }
+
+        
+        public PacketWriter Send_885()
+        {
+            PacketWriter pw = new PacketWriter((Opcode)885);
+            // TODO?
+            return pw;
+        }
+
+
+        public PacketWriter SendTradeCanceled() // unk
+        {
+            PacketWriter pw = new PacketWriter((Opcode)885);
+            // todo
             return pw;
         }
     }

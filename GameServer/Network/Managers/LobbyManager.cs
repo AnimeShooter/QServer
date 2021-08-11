@@ -778,6 +778,28 @@ namespace Qserver.GameServer.Network.Managers
 
             return pw;
         }
+        public PacketWriter CouponSuccess(uint newDon, uint newCash) // lobby code success
+        {
+            PacketWriter pw = new PacketWriter((Opcode)852);
+            pw.WriteUInt32(0); // 8 unk1
+            pw.WriteUInt32(0); // C unk2
+            pw.WriteUInt32(newDon); // 10 NewDon
+            pw.WriteUInt32(newCash); // 18 NewCash
+
+            byte count = 0; // max 1? 
+            pw.WriteUInt8(count); // 19 count
+            for (int i = 0; i < count; i++)
+            {
+                // unk 0x2B size
+            }
+            return pw;
+        }
+        public PacketWriter CouponInvalid() // Lobby Code Invalid
+        {
+            PacketWriter pw = new PacketWriter((Opcode)853);
+            return pw;
+        }
+
         #endregion
 
         #region Player
@@ -1033,30 +1055,6 @@ namespace Qserver.GameServer.Network.Managers
             return pw;
         }
 
-        public PacketWriter Send_852(uint newDon, uint newCash) // lobby code success
-        {
-            PacketWriter pw = new PacketWriter((Opcode)852);
-            pw.WriteUInt32(0); // 8 unk1
-            pw.WriteUInt32(0); // C unk2
-            pw.WriteUInt32(newDon); // 10 NewDon
-            pw.WriteUInt32(newCash); // 18 NewCash
-
-            byte count = 0; // max 1? 
-            pw.WriteUInt8(count); // 19 count
-            for(int i = 0; i < count; i++)
-            {
-                // unk 0x2B size
-            }
-            return pw;
-        }
-
-        public PacketWriter Send_853() // Lobby Code Invalid
-        {
-            PacketWriter pw = new PacketWriter((Opcode)853);
-            // empty
-            return pw;
-        }
-
         public PacketWriter Send_729() // Lobby Send Memo Rsp
         {
             PacketWriter pw = new PacketWriter((Opcode)729);
@@ -1077,6 +1075,55 @@ namespace Qserver.GameServer.Network.Managers
             // empty
             return pw;
         }
+
+        public PacketWriter Send_879() // nothing
+        {
+            PacketWriter pw = new PacketWriter((Opcode)879);
+            // todo
+            return pw;
+        }
+
+        public PacketWriter Send_887() // nothing
+        {
+            PacketWriter pw = new PacketWriter((Opcode)887);
+            // todo
+            return pw;
+        }
+        public PacketWriter TradeFailed() // trade failed
+        {
+            PacketWriter pw = new PacketWriter((Opcode)877);
+            // todo
+            return pw;
+        }
+
+        public PacketWriter TradeCanceledBYOther() // trade cancle? TRADE_REQUEST_CANCEL
+        {
+            PacketWriter pw = new PacketWriter((Opcode)881);
+            // todo
+            return pw;
+        }
+
+        public PacketWriter TradeResp()
+        {
+            PacketWriter pw = new PacketWriter((Opcode)880);
+            // todo
+            return pw;
+        }
+
+        public PacketWriter TradeRespFailBYOther() // OnLsTradeRespFail
+        {
+            PacketWriter pw = new PacketWriter((Opcode)881);
+            // todo
+            return pw;
+        }
+
+        public PacketWriter Send_882() // trade rejected
+        {
+            PacketWriter pw = new PacketWriter((Opcode)882);
+            // todo
+            return pw;
+        }
+
 
         public PacketWriter Broadcast(string message)
         {

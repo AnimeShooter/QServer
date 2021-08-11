@@ -197,8 +197,11 @@ namespace Qserver.GameServer.Network.Handlers
             if (target == null)
                 return;
 
-            target.SendLobby(LobbyManager.Instance.SendTradeRequest(playerId));
+            //target.SendLobby(LobbyManager.Instance.SendTradeRequest(playerId));
+            target.SendLobby(LobbyManager.Instance.TradeResp());
             manager.Send(LobbyManager.Instance.TradeResponse(playerId));
+            Thread.Sleep(5000);
+            manager.Send(LobbyManager.Instance.TradeCanceledBYOther());
         }
 
         public static void HandleLobbyTradeAct(PacketReader packet, ConnServer manager)
@@ -383,9 +386,9 @@ namespace Qserver.GameServer.Network.Handlers
             bool status = Game.Instance.CouponManager.ConsumeCoupon(manager.Player, Encoding.ASCII.GetString(key));
 
             if (!status)
-                manager.Send(LobbyManager.Instance.Send_853());
+                manager.Send(LobbyManager.Instance.CouponInvalid());
             else
-                manager.Send(LobbyManager.Instance.Send_852(manager.Player.Don, manager.Player.Cash));
+                manager.Send(LobbyManager.Instance.CouponSuccess(manager.Player.Don, manager.Player.Cash));
         } 
         #endregion
 
@@ -513,6 +516,16 @@ namespace Qserver.GameServer.Network.Handlers
 
             // ok?
             manager.Send(LobbyManager.Instance.Send_729());
+        }
+
+        public static void Handle_882(PacketReader packet, ConnServer manager)
+        {
+            uint unk1 = packet.ReadUInt32();
+            byte unk2 = packet.ReadUInt8();
+
+            // do smthing?
+
+            throw new NotImplementedException();
         }
 
 

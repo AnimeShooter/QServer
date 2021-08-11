@@ -14,14 +14,14 @@ namespace Qserver.GameServer.Qpang
 
         private Dictionary<uint, uint> _traders;
         private Dictionary<uint, uint> _pending;
-        private Dictionary<uint, List<InventoryCard>> _items;
+        private Dictionary<uint, Dictionary<ulong, InventoryCard>> _items;
         private object _lock;
 
         public TradeManager()
         {
             this._traders = new Dictionary<uint, uint>();
             this._pending = new Dictionary<uint, uint>();
-            this._items = new Dictionary<uint, List<InventoryCard>>();
+            this._items = new Dictionary<uint, Dictionary<ulong, InventoryCard>>();
             this._lock = new object();
         }
 
@@ -31,15 +31,15 @@ namespace Qserver.GameServer.Qpang
                 return false;
 
             lock(this._lock)
-                lock(player.Lock)
-                {
-                    if (this._pending.ContainsKey(targetId))
-                        return false; // do not alow trading while already requestion a trade?
-                    this._pending.Add(player.PlayerId, targetId);
+            {
+                if (this._pending.ContainsKey(targetId))
+                    return false; // do not alow trading while already requestion a trade?
+                this._pending.Add(player.PlayerId, targetId);
+                this._pending.Add(targetId, player.PlayerId);
 
-                    this._items.Add(player.PlayerId, new List<InventoryCard>());
-                    this._items.Add(targetId, new List<InventoryCard>());
-                }
+                this._items.Add(player.PlayerId, new Dictionary<ulong, InventoryCard>());
+                this._items.Add(targetId, new Dictionary<ulong, InventoryCard>());
+            }
 
             return true;
         }
@@ -49,68 +49,96 @@ namespace Qserver.GameServer.Qpang
             if (player == null)
                 return;
 
-            lock(this._lock)
-                lock(player.Lock)
+            lock (this._lock)
+            {
+                uint targetId = 0;
+                if (this._items.ContainsKey(player.PlayerId))
                 {
-                    uint targetId = 0;
-                    if (this._items.ContainsKey(player.PlayerId))
+                    // remove traders
+                    if (this._pending.ContainsKey(player.PlayerId))
                     {
-                        // remove traders
-                        if (this._pending.ContainsKey(player.PlayerId))
-                        {
-                            targetId = this._pending[player.PlayerId];
-                            this._pending.Remove(player.PlayerId);
-                        }
-                        if (this._traders.ContainsKey(player.PlayerId))
-                        {
-                            targetId = this._traders[player.PlayerId];
-                            this._traders.Remove(player.PlayerId);
-                        }
-
-                        // remove items
-                        this._items.Remove(player.PlayerId);
+                        targetId = this._pending[player.PlayerId];
+                        this._pending.Remove(player.PlayerId);
                     }
+                    if (this._traders.ContainsKey(player.PlayerId))
+                    {
+                        targetId = this._traders[player.PlayerId];
+                        this._traders.Remove(player.PlayerId);
+                    }
+
+                    // remove items
+                    this._items.Remove(player.PlayerId);
+                    this._items.Remove(targetId);
                 }
+            }
         }
 
-        public void OnComplete(Player player)
+        public bool OnComplete(Player player)
         {
             lock (this._lock)
-                lock (player.Lock)
+            {
+                if (!this._traders.ContainsKey(player.PlayerId))
+                    return false;
+
+                var targetId = this._traders[player.PlayerId];
+                var target = Game.Instance.GetPlayer(targetId);
+
+                // grab items from trade
+                Dictionary<ulong, InventoryCard> playerStash = null;
+                Dictionary<ulong, InventoryCard> targetStash = null;
+
+                if (this._items.ContainsKey(player.PlayerId))
                 {
-                    if (!this._traders.ContainsKey(player.PlayerId))
-                        return;
-
-                    var targetId = this._traders[player.PlayerId];
-                    var target = Game.Instance.GetPlayer(targetId);
-
-                    // grab items from trade
-                    List<InventoryCard> playerStach = null;
-                    List<InventoryCard> targetStach = null;
-
-                    if (this._items.ContainsKey(player.PlayerId))
-                    {
-                        playerStach = this._items[player.PlayerId];
-                        this._items.Remove(player.PlayerId);
-                    }
-                    if (this._items.ContainsKey(player.PlayerId))
-                    {
-                        targetStach = this._items[targetId];
-                        this._items.Remove(targetId);
-                    }
-
-                    // Make sure nothing got fucked up for some  reason
-                    if (playerStach == null || targetStach == null)
-                        return;
-
-                    // transfer
-                    lock(target.Lock)
-                    {
-
-                    }
-
-                    this._traders.Remove(player.PlayerId);
+                    playerStash = this._items[player.PlayerId];
+                    this._items.Remove(player.PlayerId);
                 }
+                if (this._items.ContainsKey(player.PlayerId))
+                {
+                    targetStash = this._items[targetId];
+                    this._items.Remove(targetId);
+                }
+
+                // Make sure nothing got fucked up for some  reason
+                if (playerStash == null || targetStash == null)
+                    return false;
+
+                // TODO: transfer
+
+                this._traders.Remove(player.PlayerId);
+            }
+            return true;
+        }
+
+        public bool AddItem(Player player, InventoryCard card)
+        {
+            if (player.InventoryManager.HasCard(card.Id))
+                return false; // cheater
+
+            lock (this._lock)
+            {
+                if (!this._items.ContainsKey(player.PlayerId))
+                    return false; // unk error
+
+                var stash = this._items[player.PlayerId];
+                if (stash.ContainsKey(card.Id))
+                    return false; // duplicate card
+
+                stash.Add(card.Id, card);                    
+            }
+            return true;
+        }
+
+        public bool RemoveItem(Player player, uint cardid)
+        {
+            lock (this._lock)
+            {
+                if (!this._items.ContainsKey(player.PlayerId))
+                    return false; // unk error
+
+                var stash = this._items[player.PlayerId];
+                stash.Remove(cardid);
+            }
+            return true;
         }
 
         //
@@ -121,14 +149,13 @@ namespace Qserver.GameServer.Qpang
         {
             // NOTE: do different event based on, pending or already in trade?
             lock (this._lock)
-                lock (player.Lock)
-                {
-                    if (this._pending.ContainsKey(player.PlayerId))
-                        return Game.Instance.GetPlayer(this._pending[player.PlayerId]);
+            {
+                if (this._pending.ContainsKey(player.PlayerId))
+                    return Game.Instance.GetPlayer(this._pending[player.PlayerId]);
 
-                    if (this._traders.ContainsKey(player.PlayerId))
-                        return Game.Instance.GetPlayer(this._traders[player.PlayerId]);
-                }
+                if (this._traders.ContainsKey(player.PlayerId))
+                    return Game.Instance.GetPlayer(this._traders[player.PlayerId]);
+            }
 
             return null;
         }

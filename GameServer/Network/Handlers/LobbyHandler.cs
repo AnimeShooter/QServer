@@ -606,15 +606,64 @@ namespace Qserver.GameServer.Network.Handlers
             // - 100: insert item
             // - 101: ???
             // - 102: ???
-            uint cmd = packet.ReadUInt16(); // 0x64 (rounds?)    // 4
-            byte unk3 = packet.ReadUInt8();                         // 6
-            var card = packet.ReadInventoryCard();  // InventoryCard// 7
-            uint unk14 = packet.ReadUInt32(); // 0x00632DF0         // 
-            uint unk15 = packet.ReadUInt32(); // 0x00632DF0         // 
-            uint unk16 = packet.ReadUInt16(); // 0x00632DF0         // 
-                        // do smthing?
+            uint cmd = packet.ReadUInt32(); // 0x64 (cmd?)          // 4
+            byte unk3 = packet.ReadUInt8();                         // 8
 
-            //throw new NotImplementedException();
+            // 2B
+            ulong cardId = packet.ReadUInt64(); // 0
+            uint itemId = packet.ReadUInt32(); // 8
+
+            packet.ReadUInt8(); //  0A must be 0x0A? // 12
+            uint type = packet.ReadUInt8(); // 57 // 13
+            packet.ReadUInt8(); // 00 // 14
+            uint isGiftable = packet.ReadUInt8(); // 01 // 15
+
+            packet.ReadBytes(6); // 000000000000 // 16
+            uint timeCreated = packet.ReadUInt32(); // DA 2A 14 16 // 22
+
+            byte isOpened = packet.ReadUInt8(); // 26
+            ushort isActive = packet.ReadUInt16(); // 27
+            packet.ReadUInt8(); // 29
+            packet.ReadUInt8(); // 30
+            uint period = packet.ReadUInt16(); // 00 64 Rounds? // 31
+            uint periodType = packet.ReadUInt16(); // 00 03 // 33
+            packet.ReadUInt8(); // 35
+            uint boostLevel = packet.ReadUInt8(); // 36
+            packet.ReadUInt8(); // 37
+            packet.ReadUInt8(); // 38
+            packet.ReadBytes(4); // unk // 39
+
+            uint unk38 = packet.ReadUInt32(); //
+
+
+            var invCard = new InventoryCard()
+            {
+                Id = cardId,
+                ItemId = itemId,
+                Type = (byte)type,
+                PeriodeType = (byte)periodType,
+                Period = (ushort)period,
+                IsActive = isActive == 1,
+                IsOpened = isOpened == 0,
+                IsGiftable = isGiftable == 1,
+                BoostLevel = (byte)boostLevel,
+                TimeCreated = timeCreated
+            };
+
+            var player = manager.Player;
+            if (player == null)
+                return;
+
+            var target = Game.Instance.TradeManager.FindTradingBuddy(player);
+            if (target == null)
+                return; // TODO: send trade error?
+
+            bool status = Game.Instance.TradeManager.AddItem(player, invCard);
+            
+            // update clients
+            manager.Send(LobbyManager.Instance.Send_889());
+            target.SendLobby(LobbyManager.Instance.Send_889());
+            
         }
 
 

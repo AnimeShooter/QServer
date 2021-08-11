@@ -88,7 +88,7 @@ namespace Qserver.GameServer.Network
                                         Log.Message(LogType.DUMP, $"[{_socket.LocalEndPoint}] Recieved OpCode: {pkt.Opcode}, len: {pkt.Size}\n");
                                     else
                                         Log.Message(LogType.ERROR, $"[{_socket.LocalEndPoint}] Unregistered OpCode: {pkt.Opcode}\n");
-                                
+
                                 PacketManager.InvokeHandler(pkt, this, pkt.Opcode);
 
                                 // reset

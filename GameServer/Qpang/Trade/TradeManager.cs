@@ -89,10 +89,9 @@ namespace Qserver.GameServer.Qpang
                         targetId = this._pending[player.PlayerId];
                         this._pending.Remove(player.PlayerId);
                     }
-                    if (this._traders.ContainsKey(player.PlayerId))
+                    if (this._traders.ContainsKey(targetId))
                     {
-                        targetId = this._traders[player.PlayerId];
-                        this._traders.Remove(player.PlayerId);
+                        this._traders.Remove(targetId);
                     }
 
                     // remove items
@@ -149,8 +148,8 @@ namespace Qserver.GameServer.Qpang
 
         public bool AddItem(Player player, InventoryCard card)
         {
-            if (player.InventoryManager.HasCard(card.Id))
-                return false; // cheater
+            if (!player.InventoryManager.HasCard(card.Id))
+                return false; // TODO bugfix?
 
             lock (this._lock)
             {
@@ -166,7 +165,7 @@ namespace Qserver.GameServer.Qpang
             return true;
         }
 
-        public bool RemoveItem(Player player, uint cardid)
+        public bool RemoveItem(Player player, ulong cardid)
         {
             lock (this._lock)
             {

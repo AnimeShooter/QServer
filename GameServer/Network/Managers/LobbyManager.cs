@@ -1129,12 +1129,51 @@ namespace Qserver.GameServer.Network.Managers
             return pw;
         }
 
-        public PacketWriter Send_889(uint token) // item response
+        public PacketWriter Send_889(uint token) // TradeCmdRsp response
         {
             PacketWriter pw = new PacketWriter((Opcode)889);
-            // todo
             pw.WriteUInt32(token); // 8 (token)?
-            pw.WriteUInt8(0); // c
+            pw.WriteUInt8(0); // c // unk
+
+            // 891, 892, inform
+            // fail inform 893?
+            return pw;
+        }
+
+        public PacketWriter Send_891(uint token, InventoryCard card, uint cmd) // Notify target with new Item?
+        {
+            PacketWriter pw = new PacketWriter((Opcode)891);
+            
+            pw.WriteUInt32(token); // 0x08
+            pw.WriteUInt32(0); // unk // 0x0C
+            pw.WriteUInt8((byte)cmd); // cmd - 0x10
+            pw.WriteUInt32(0); // unk  // 0x11
+            // InventoryCard // 0x15
+            pw.WriteUInt64(card.Id); // 0
+            pw.WriteUInt32(card.ItemId); // 8
+            pw.WriteUInt8(10); // 12
+            pw.WriteUInt8(card.Type); // 13
+            pw.WriteUInt8(0); // 14
+            pw.WriteUInt8(card.IsGiftable ? (byte)1 : (byte)0); // 15
+            pw.WriteBytes(new byte[6]); // 16
+            pw.WriteUInt32(card.TimeCreated); // 22
+            pw.WriteUInt8(card.IsOpened ? (byte)1 : (byte)0); // 26
+            pw.WriteUInt16(card.IsActive ? (ushort)0 : (ushort)1); // 27
+            pw.WriteUInt8(0); // 28; hidden
+            pw.WriteUInt8(0); // 29
+            pw.WriteUInt16(card.Period); // 31
+            pw.WriteUInt8(card.PeriodeType); // 33
+            pw.WriteUInt8(0); // 34
+            pw.WriteUInt16(card.BoostLevel); // 35
+            pw.WriteUInt8(card.BoostLevel > 0 ? (byte)1 : (byte)0); // 37
+            pw.WriteUInt8(0); //  38
+            pw.WriteBytes(new byte[4]); // 39
+            return pw;
+        }
+
+        public PacketWriter Send_890() // fail adding item (888)
+        {
+            PacketWriter pw = new PacketWriter((Opcode)890);
             return pw;
         }
 
@@ -1150,10 +1189,19 @@ namespace Qserver.GameServer.Network.Managers
             pw.WriteUInt32(0); // unk3 qmemcpy src
             return pw;
         }
-        public PacketWriter Send_892() // unk
+
+
+        public PacketWriter Send_892()
         {
             PacketWriter pw = new PacketWriter((Opcode)892);
-            // todo
+
+            return pw;
+        }
+
+        public PacketWriter Send_893()
+        {
+            PacketWriter pw = new PacketWriter((Opcode)893);
+
             return pw;
         }
 

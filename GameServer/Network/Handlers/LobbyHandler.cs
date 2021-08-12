@@ -223,8 +223,17 @@ namespace Qserver.GameServer.Network.Handlers
             manager.Send(LobbyManager.Instance.TradeAccepted());
         }
 
-        public static void HandleTradeCancle(PacketReader packet, ConnServer manager)
+        public static void HandleTradeAct(PacketReader packet, ConnServer manager)
         {
+            // cmds:
+            /*
+             *  50 (2x)
+             *  51
+             *  52
+             */
+            uint token = packet.ReadUInt32();
+            uint unk2 = packet.ReadUInt32();
+
             var player = manager.Player;
             if (player == null)
                 return;
@@ -241,7 +250,7 @@ namespace Qserver.GameServer.Network.Handlers
             // TODO: Update target
             //target.SendLobby(LobbyManager.Instance.());
 
-            // Update player
+            // Update player (TODO: or 866, fail)
             manager.Send(LobbyManager.Instance.SendTradeCanceled());
         }
 
@@ -600,13 +609,13 @@ namespace Qserver.GameServer.Network.Handlers
 
             // Size: 3C
 
-            uint unk1 = packet.ReadUInt32(); //  0x95099509         // 0
+            uint unk1 = packet.ReadUInt32(); //  0x95099509   target/token?  // 0
 
             // cmd:
             // - 100: insert item
             // - 101: ???
             // - 102: ???
-            uint cmd = packet.ReadUInt32(); // 0x64 (cmd?)          // 4
+            uint cmd = packet.ReadUInt32(); // 0x64 (cmd?)          // 4 (100: add, 101: remove, 102: unk)
             byte unk3 = packet.ReadUInt8();                         // 8
 
             // 2B
@@ -636,7 +645,7 @@ namespace Qserver.GameServer.Network.Handlers
             uint unk38 = packet.ReadUInt32(); //
 
 
-            var invCard = new InventoryCard()
+            var card = new InventoryCard()
             {
                 Id = cardId,
                 ItemId = itemId,
@@ -658,14 +667,28 @@ namespace Qserver.GameServer.Network.Handlers
             if (target == null)
                 return; // TODO: send trade error?
 
-            bool status = Game.Instance.TradeManager.AddItem(player, invCard);
-            
+            bool status = false;
+
+            if (cmd == 100)
+                status = Game.Instance.TradeManager.AddItem(player, card);
+            else if (cmd == 101)
+                status = Game.Instance.TradeManager.RemoveItem(player, card.Id);
+            else if (cmd == 102)
+                throw new NotImplementedException(); // TODO don?
+            else
+                status = false;
+
             // update clients
-            manager.Send(LobbyManager.Instance.Send_889(0));
-            target.SendLobby(LobbyManager.Instance.Send_889(0));
-            
+            if (status)
+            {
+                manager.Send(LobbyManager.Instance.Send_889(unk1)); // unk magic value
+                target.SendLobby(LobbyManager.Instance.Send_891(unk1, card, cmd));
+            }
+            else
+                manager.Send(LobbyManager.Instance.Send_890());
+
+            // NOTE: find 891 and 892 (add trade info to target?)
+
         }
-
-
     }
 }

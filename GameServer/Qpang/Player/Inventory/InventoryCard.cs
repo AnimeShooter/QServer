@@ -35,5 +35,10 @@ namespace Qserver.GameServer.Qpang
                 TimeCreated = Util.Util.Timestamp()
             };
         }
+
+        public static byte[] WriteBytes(InventoryCard card)
+        {
+            return null;
+        }
     }
 }

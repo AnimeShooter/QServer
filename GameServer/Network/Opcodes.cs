@@ -207,7 +207,7 @@ namespace Qserver.GameServer.Network
 		LOBBY_TRADE_ACT_RSP = 885,              // out
 		// 886	OnLsTradeUserActFail			// out
 		LOBBY_TRADE_ERROR_3 = 887, // dword, byte // out
-		// 888 SetTradeItem						// in
+		LOBBY_TRADE_CMD = 888,					// in (cmds 100, 101, 102)
 		// 889 1byte							// out
 		// 890 OnLsTradeSetElementFail			// out
 		// 891 functional						// out
@@ -216,7 +216,6 @@ namespace Qserver.GameServer.Network
 
 		// 895									// out
 		// 896									// out
-
 
 
 

@@ -64,7 +64,7 @@ namespace Qserver.GameServer.Packets
                 //PacketManager.DefineOpcodeHandler((Opcode)844, LobbyHandler.Handle_884);
 
                 PacketManager.DefineOpcodeHandler((Opcode)728, LobbyHandler.Handle_728);
-                PacketManager.DefineOpcodeHandler(Opcode.LOBBY_TRADE_ACT, LobbyHandler.HandleTradeCancle);
+                PacketManager.DefineOpcodeHandler(Opcode.LOBBY_TRADE_ACT, LobbyHandler.HandleTradeAct);
                 PacketManager.DefineOpcodeHandler((Opcode)888, LobbyHandler.Handle_888);
             }
 

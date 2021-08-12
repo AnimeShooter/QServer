@@ -661,8 +661,8 @@ namespace Qserver.GameServer.Network.Handlers
             bool status = Game.Instance.TradeManager.AddItem(player, invCard);
             
             // update clients
-            manager.Send(LobbyManager.Instance.Send_889());
-            target.SendLobby(LobbyManager.Instance.Send_889());
+            manager.Send(LobbyManager.Instance.Send_889(0));
+            target.SendLobby(LobbyManager.Instance.Send_889(0));
             
         }
 

@@ -1129,12 +1129,12 @@ namespace Qserver.GameServer.Network.Managers
             return pw;
         }
 
-        public PacketWriter Send_889() // item response
+        public PacketWriter Send_889(uint token) // item response
         {
             PacketWriter pw = new PacketWriter((Opcode)889);
             // todo
-            pw.WriteUInt32(0xff); // 8
-            pw.WriteUInt8(0);
+            pw.WriteUInt32(token); // 8 (token)?
+            pw.WriteUInt8(0); // c
             return pw;
         }
 

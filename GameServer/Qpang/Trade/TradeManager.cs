@@ -25,6 +25,35 @@ namespace Qserver.GameServer.Qpang
             this._lock = new object();
         }
 
+        public bool OnTradeAccept(Player player)
+        {
+            lock (this._lock)
+            {
+                // copy from pending to trading
+                uint targetId = 0;
+                if(this._pending.ContainsKey(player.PlayerId))
+                {
+                    targetId = this._pending[player.PlayerId];
+                    this._traders.Add(player.PlayerId, targetId);
+                    this._pending.Remove(player.PlayerId);
+                }
+                if(this._pending.ContainsKey(targetId))
+                {
+                    this._traders.Add(targetId, this._pending[targetId]);
+                    this._pending.Remove(targetId);
+                }
+
+                // This should not yet be possible?
+                if (this._traders.ContainsKey(player.PlayerId) || this._traders.ContainsKey(targetId))
+                    return false;
+
+                this._traders.Add(player.PlayerId, targetId);
+                this._traders.Add(targetId, player.PlayerId);
+
+            }
+            return true;
+        }
+
         public bool OnRequest(Player player, uint targetId)
         {
             if (player == null)
@@ -87,6 +116,7 @@ namespace Qserver.GameServer.Qpang
                 Dictionary<ulong, InventoryCard> playerStash = null;
                 Dictionary<ulong, InventoryCard> targetStash = null;
 
+                // remove items data
                 if (this._items.ContainsKey(player.PlayerId))
                 {
                     playerStash = this._items[player.PlayerId];
@@ -102,9 +132,17 @@ namespace Qserver.GameServer.Qpang
                 if (playerStash == null || targetStash == null)
                     return false;
 
-                // TODO: transfer
+                // Transfer player
+                foreach(var item in playerStash.Values)
+                    player.InventoryManager.TradeItem(item.Id, targetId);
 
+                // Transfer target
+                foreach (var item in targetStash.Values)
+                    target.InventoryManager.TradeItem(item.Id, player.PlayerId);
+
+                // remove trade data
                 this._traders.Remove(player.PlayerId);
+                this._traders.Remove(targetId);
             }
             return true;
         }
@@ -140,10 +178,6 @@ namespace Qserver.GameServer.Qpang
             }
             return true;
         }
-
-        //
-
-        // TODO: keep track of items in trade?
 
         public Player FindTradingBuddy(Player player)
         {

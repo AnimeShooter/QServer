@@ -91,9 +91,26 @@ namespace Qserver.GameServer.Qpang
                 return this._cards.ContainsKey(cardId);
         }
 
-        public void DeleteCard(ulong cardId)
+        public void RemoveCard(ulong cardId)
         {
             if (!HasCard(cardId))
+                return;
+
+            if (this._player.TestRealm)
+                return;
+
+            lock(this._player.Lock)
+            {
+                this._cards.Remove(cardId);
+            }
+        }
+
+        public void DeleteCard(ulong cardId, bool notify = true)
+        {
+            if (!HasCard(cardId))
+                return;
+
+            if (this._player == null)
                 return;
 
             if (this._player.TestRealm)
@@ -101,9 +118,6 @@ namespace Qserver.GameServer.Qpang
 
             lock (this._player.Lock)
             {
-                if (this._player == null)
-                    return;
-
                 bool isEquiped = this._player.EquipmentManager.HasEquipped(cardId);
                 if (isEquiped)
                     return;
@@ -120,6 +134,9 @@ namespace Qserver.GameServer.Qpang
 
         public void SetCardActive(ulong cardId, bool status)
         {
+            if (this._player == null)
+                return;
+
             lock (this._lock)
             {
                 if (!this._cards.ContainsKey(cardId))
@@ -260,7 +277,7 @@ namespace Qserver.GameServer.Qpang
                 card.TimeCreated = Util.Util.Timestamp();
                 target.InventoryManager.ReceiveGift(card, this._player.Name);
 
-                Game.Instance.ItemsRepository.ChangeItemOwner(target.PlayerId, card).GetAwaiter().GetResult();
+                Game.Instance.ItemsRepository.ChangeItemOwner(target.PlayerId, card, false).GetAwaiter().GetResult();
 
                 this._player.SendLobby(LobbyManager.Instance.GiftCardSuccess(card.Id));
                 this._player.EquipmentManager.Save();
@@ -285,6 +302,24 @@ namespace Qserver.GameServer.Qpang
                     this._gifts[card.Id] = card;
 
                     this._player.SendLobby(LobbyManager.Instance.ReceiveGift(card, sender));
+                }
+            }
+        }
+
+        public void TradeItem(ulong cardId, uint targetId)
+        {
+            lock(this._lock)
+            {
+                if (this._player == null)
+                    return;
+
+                if (this._player.TestRealm)
+                    return;
+
+                lock(this._player.Lock)
+                {
+                    this._player.InventoryManager.RemoveCard(cardId);
+                    Game.Instance.ItemsRepository.ChangeItemOwner(targetId, cardId, true).GetAwaiter().GetResult();
                 }
             }
         }

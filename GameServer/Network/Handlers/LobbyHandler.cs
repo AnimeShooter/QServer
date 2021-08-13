@@ -196,6 +196,8 @@ namespace Qserver.GameServer.Network.Handlers
                 return;
 
             uint playerId = packet.ReadUInt32(); // target (875)
+            uint unk1 = packet.ReadUInt32();
+
             var target = Game.Instance.GetOnlinePlayer(playerId);
             if (target == null)
                 return;
@@ -234,7 +236,15 @@ namespace Qserver.GameServer.Network.Handlers
             // send request to target
             //target.SendLobby(LobbyManager.Instance.Send_880());
             //target.SendLobby(LobbyManager.Instance.Send_878(0x09950995));
-            //target.SendLobby(LobbyManager.Instance.Send_878(0x09950995));
+            //target.SendLobby(LobbyManager.Instance.TradeResponse(0x09950995));  // 876
+            //target.SendLobby(LobbyManager.Instance.Send_895());
+            //target.SendLobby(LobbyManager.Instance.Send_896(0x09950995));
+
+            // NOTE: send this to player when trade request is rejected
+            //target.SendLobby(LobbyManager.Instance.Send_882(playerId, 2)); // mixed results?
+            
+            //// testing:
+            //target.SendLobby(LobbyManager.Instance.Send_885(0x09950995, 0));
 
             // TODO remove
             //// emulate trade accept
@@ -344,7 +354,6 @@ namespace Qserver.GameServer.Network.Handlers
 
             uint unk38 = packet.ReadUInt32(); //
 
-
             var card = new InventoryCard()
             {
                 Id = cardId,
@@ -378,11 +387,11 @@ namespace Qserver.GameServer.Network.Handlers
 
             bool status = false;
 
-            if (cmd == 100)
+            if (cmd == 100) // add item
                 status = Game.Instance.TradeManager.AddItem(player, card);
-            else if (cmd == 101)
+            else if (cmd == 101) // rm item
                 status = Game.Instance.TradeManager.RemoveItem(player, card.Id);
-            //else if (cmd == 102)
+            //else if (cmd == 102) // add don?
             //    throw new NotImplementedException(); // NOTE do don?
             else
                 status = false;

@@ -176,7 +176,7 @@ namespace Qserver.GameServer.Network
 		// 852									// out
 		// 853									// out (msg?)
 
-		// 854 // bidyy pending
+		// 854 // bidyy pending ?
 
 		LOBBY_RECEIVE_GM_INVITE = 857,			// in
 		// 860 GM invite?
@@ -201,7 +201,7 @@ namespace Qserver.GameServer.Network
 		LOBBY_879 = 879,                        // in -- accept/reject?
 		LOBBY_880 = 880,                        // out -- request failed
 		LOBBY_TRADE_REQUEST_FAIL = 881, // OnLsTradeRespFail   // out
-		LOBBY_TRADE_REQUEST_REJECT = 882,       // out
+		LOBBY_TRADE_REQUEST_REJECT = 882,  // hmm does smthing?     // out
 		LOBBY_TRADE_REQUEST_ACCEPT = 883,		// out
 		LOBBY_TRADE_ACT = 884,					// in
 		LOBBY_TRADE_ACT_RSP = 885,              // out
@@ -211,8 +211,8 @@ namespace Qserver.GameServer.Network
 		LOBBY_TRADE_CMD_RSP = 889,				// out
 		LOBBY_TRADE_CMD_FAIL = 890,				// out
 		LOBBY_TRADE_CMD_TARGET = 891, // iten update target  // out
-		LOBBY_COMPLETE = 892, // Trade complete// out 
-		LOBBY_TRADE_FAIL = 893, //OnLsTradeFailInform// out
+		LOBBY_TRADE_COMPLETE = 892,				// out 
+		LOBBY_TRADE_FAIL = 893,					// out
 
 		// 895	0x50							// out
 		// 896	msg								// out

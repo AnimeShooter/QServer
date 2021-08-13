@@ -479,9 +479,9 @@ namespace Qserver.GameServer.Network.Managers
         public PacketWriter TradeResponse(uint playerId) // 876
         {
             PacketWriter pw = new PacketWriter(Opcode.LOBBY_TRADE_RSP); // ok
-            pw.WriteUInt32(0); // unk 1
-            pw.WriteUInt32(0); // unk 2
-            pw.WriteUInt32(0); // unk 3
+            pw.WriteUInt32(playerId); // unk 1
+            pw.WriteUInt32(playerId); // unk 2
+            pw.WriteUInt32(playerId); // unk 3
             return pw;
         }
         public PacketWriter Send_877() // OnLsTradeAskFail - trade ask failed
@@ -522,24 +522,24 @@ namespace Qserver.GameServer.Network.Managers
             pw.WriteUInt32(0); // unk1 (error msg?)
             return pw;
         }
-        public PacketWriter Send_882(uint unk1, byte unk2) // trade rejected
+        public PacketWriter Send_882(uint unk1, byte cmd) // 
         {
             PacketWriter pw = new PacketWriter((Opcode)882);
             pw.WriteUInt32(unk1); // possibel playerId?>
-            pw.WriteUInt8(unk2); // cmd??
+            pw.WriteUInt8(cmd); // cmd??
             return pw;
         }
-        public PacketWriter TradeAccepted(uint unk1) // TradeAccepted
+        public PacketWriter TradeAccepted(uint token) // 883 - TradeAccepted
         {
             PacketWriter pw = new PacketWriter((Opcode)883);
-            pw.WriteUInt32(unk1); // Possible token?
+            pw.WriteUInt32(token); // Possible token?
             return pw;
         }
-        public PacketWriter Send_885(uint unk1, byte unk2) // Trade User Action Response
+        public PacketWriter Send_885(uint token, byte cmd) // Trade User Action Response
         {
             PacketWriter pw = new PacketWriter((Opcode)885);
-            pw.WriteUInt32(unk1); // possibel playerId?>
-            pw.WriteUInt8(unk2); // cmd??
+            pw.WriteUInt32(token); // possibel playerId?>
+            pw.WriteUInt8(cmd); // cmd??
             return pw;
         }
         public PacketWriter Send_886() // OnLsTradeUserActFail - Trade User Action Failed

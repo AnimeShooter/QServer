@@ -90,7 +90,6 @@ namespace Qserver.GameServer.Qpang
 
         public override void Pack(EventConnection conn, BitStream bitStream)
         {
-            // NOTE: packing is fucked up (title incorrect)
             bitStream.Write(PlayerId);
             bitStream.Write(Cmd);
             bitStream.Write(Value);
@@ -99,10 +98,8 @@ namespace Qserver.GameServer.Qpang
             bitStream.Write(MemberCount);
             bitStream.Write(Goal);
 
-            //bitStream.Write((byte)0);  // NoPw
             bitStream.WriteString(Password, 255);
 
-            //bitStream.Write((ushort)0); // NoTitle
             WriteWString(bitStream, Title, 254);
 
             bitStream.Write(Time);

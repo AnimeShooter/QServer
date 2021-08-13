@@ -41,37 +41,16 @@ namespace Qserver.GameServer.Qpang
             if (maxLen == 0)
                 maxLen = (uint)str.Length;
 
-            //uint bitp = bitSteam.GetBitPosition();
-            //uint n = 8 - (bitp % 8);
-            //bitSteam.SetBitPosition(bitp + n);
-            for (int i = 0; i < maxLen/2; i++)
-            //for (int i = 0; i < maxLen && i < str.Length; i++)
-            {
-                if(i < str.Length)
-                    bitSteam.Write((char)str[i]);
-                else
-                    bitSteam.Write((char)0x00);
-                //bitSteam.Write((byte)0x00);
-            }
-            bitSteam.Write((ushort)0x0000);
-        }
-
-        public void WriteWStringMax(BitStream bitSteam, string str, uint maxLen = 0)
-        {
-            if (maxLen == 0)
-                maxLen = (uint)str.Length;
+            byte[] strBuffer = new byte[(uint)(maxLen * 2 + 2)];
+            ByteBuffer byteBuffer = new ByteBuffer((uint)strBuffer.Length);
 
             //for (int i = 0; i < maxLen; i++)
-            for (int i = 0; i < (maxLen/2) && i < str.Length; i++)
-            {
-                if (i < str.Length)
-                    bitSteam.Write((char)str[i]);
-                else
-                    bitSteam.Write((char)0x00);
-            }
-            bitSteam.Write((ushort)0x0000);
-        }
+            for (int i = 0; i < str.Length; i++)
+                strBuffer[i * 2] = (byte)str[i];
 
+            byteBuffer.SetBuffer(strBuffer, (uint)strBuffer.Length);
+            bitSteam.Write(byteBuffer);
+        }
 
         public string ByteBufferToString(ByteBuffer bb, bool wchar = true)
         {

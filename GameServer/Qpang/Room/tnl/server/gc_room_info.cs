@@ -80,9 +80,6 @@ namespace Qserver.GameServer.Qpang
             bitStream.Write(RespawnTime);
             bitStream.Write(P2PWaitTime);
 
-            //bitStream.Write((byte)0); // skip string?
-            //bitStream.Write((byte)0); // skip string?
-
             WriteWString(bitStream, Title, 254);
            
             bitStream.Write(IsTime); // limitTime

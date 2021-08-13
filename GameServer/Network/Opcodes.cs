@@ -203,14 +203,14 @@ namespace Qserver.GameServer.Network
 		// 881 OnLsTradeRespFail				// out
 		// 882 TRADE_REQUEST_REJECT_MESSAGE		// out
 		// 883 TradeAccepted					// out
-		LOBBY_TRADE_ACT = 884, // onTradeCancle // in
+		LOBBY_TRADE_ACT = 884, //   tradeAction // in
 		LOBBY_TRADE_ACT_RSP = 885,              // out
 		// 886	OnLsTradeUserActFail			// out
 		LOBBY_TRADE_ERROR_3 = 887, // dword, byte // out
-		LOBBY_TRADE_CMD = 888,					// in (cmds 100, 101, 102)
-		// 889 notfiy target					// out
+		LOBBY_TRADE_CMD = 888,                  // in (cmds 100, 101, 102)
+		// 889 itme update player				// out
 		// 890 OnLsTradeSetElementFail			// out
-		// 891 functional						// out
+		// 891 itme update player				// out
 		// 892 functional						// out 
 		// 893 OnLsTradeFailInform				// out
 

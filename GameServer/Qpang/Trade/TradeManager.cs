@@ -12,35 +12,130 @@ namespace Qserver.GameServer.Qpang
         // - keep track of trade status
         // - exchange items
 
-        private Dictionary<uint, uint> _traders;
+        private Dictionary<uint, uint> _accepted;
         private Dictionary<uint, uint> _pending;
+        private Dictionary<uint, uint> _traders;
+        private Dictionary<uint, uint> _request;
+        
         private Dictionary<uint, Dictionary<ulong, InventoryCard>> _items;
         private object _lock;
 
         public TradeManager()
         {
-            this._traders = new Dictionary<uint, uint>();
+            this._accepted = new Dictionary<uint, uint>();
             this._pending = new Dictionary<uint, uint>();
+            this._traders = new Dictionary<uint, uint>();
+            this._request = new Dictionary<uint, uint>();
             this._items = new Dictionary<uint, Dictionary<ulong, InventoryCard>>();
             this._lock = new object();
         }
 
-        public bool OnTradeAccept(Player player)
+        // Trade if possible
+        public bool CanTrade(Player player)
+        {
+            lock(this._lock)
+                return this._accepted.ContainsKey(player.PlayerId) &&
+                    this._accepted.ContainsKey(this._accepted[player.PlayerId]);
+        }
+
+        public bool CompleteTrade(Player player)
+        {
+            lock(this._lock)
+            {
+                // Both parties have agreed, do trade
+                if (!this._accepted.ContainsKey(player.PlayerId))
+                    return false;
+
+                var targetId = this._accepted[player.PlayerId];
+                var target = Game.Instance.GetPlayer(targetId);
+
+                // grab items from trade
+                Dictionary<ulong, InventoryCard> playerStash = null;
+                Dictionary<ulong, InventoryCard> targetStash = null;
+
+                // remove items data
+                if (this._items.ContainsKey(player.PlayerId))
+                {
+                    playerStash = this._items[player.PlayerId];
+                    this._items.Remove(player.PlayerId);
+                }
+                if (this._items.ContainsKey(targetId))
+                {
+                    targetStash = this._items[targetId];
+                    this._items.Remove(targetId);
+                }
+
+                // Make sure nothing got fucked up for some  reason
+                if (playerStash == null || targetStash == null)
+                    return false;
+
+                // Transfer player
+                foreach (var item in playerStash.Values)
+                    player.InventoryManager.TradeItem(item.Id, targetId);
+
+                // Transfer target
+                foreach (var item in targetStash.Values)
+                    target.InventoryManager.TradeItem(item.Id, player.PlayerId);
+
+                // remove trade data
+                this._accepted.Remove(player.PlayerId);
+                this._accepted.Remove(targetId);
+            }
+            return true;
+        }
+
+        // Propose accept
+        public bool OnProposalAccept(Player player)
+        {
+            lock(this._lock)
+            {
+                if(this._pending.ContainsKey(player.PlayerId))
+                {
+                    this._accepted.Add(player.PlayerId, this._pending[player.PlayerId]);
+                    this._pending.Remove(player.PlayerId);
+                }
+            }
+
+            // trade if possiblr
+            if(CanTrade(player))
+                return CompleteTrade(player);
+
+            return true;
+        }
+
+        // trade => Pending/waiting for approval
+        public bool OnTradePropose(Player player)
+        {
+            lock (this._lock)
+            {
+                if (this._traders.ContainsKey(player.PlayerId))
+                {
+                    this._pending.Add(player.PlayerId, this._traders[player.PlayerId]);
+                    this._traders.Remove(player.PlayerId);
+                }
+                else
+                    return false;
+            }
+            return true;
+        }
+
+        // Request => trade
+        public bool OnRequestAccept(Player player)
         {
             lock (this._lock)
             {
                 // copy from pending to trading
                 uint targetId = 0;
-                if(this._pending.ContainsKey(player.PlayerId))
+                if (this._request.ContainsKey(player.PlayerId))
                 {
-                    targetId = this._pending[player.PlayerId];
+                    targetId = this._request[player.PlayerId];
                     this._traders.Add(player.PlayerId, targetId);
-                    this._pending.Remove(player.PlayerId);
+                    this._request.Remove(player.PlayerId);
                 }
-                if(this._pending.ContainsKey(targetId))
+                if (this._request.ContainsKey(targetId))
                 {
-                    this._traders.Add(targetId, this._pending[targetId]);
-                    this._pending.Remove(targetId);
+                    this._traders.Add(targetId, this._request[targetId]);
+                    this._request.Remove(targetId);
                 }
 
                 // This should not yet be possible?
@@ -54,17 +149,18 @@ namespace Qserver.GameServer.Qpang
             return true;
         }
 
-        public bool OnRequest(Player player, uint targetId)
+        // add Request
+        public bool OnTradeRequest(Player player, uint targetId)
         {
             if (player == null)
                 return false;
 
             lock(this._lock)
             {
-                if (this._pending.ContainsKey(targetId))
+                if (this._request.ContainsKey(targetId))
                     return false; // do not alow trading while already requestion a trade?
-                this._pending.Add(player.PlayerId, targetId);
-                this._pending.Add(targetId, player.PlayerId);
+                this._request.Add(player.PlayerId, targetId);
+                this._request.Add(targetId, player.PlayerId);
 
                 this._items.Add(player.PlayerId, new Dictionary<ulong, InventoryCard>());
                 this._items.Add(targetId, new Dictionary<ulong, InventoryCard>());
@@ -84,20 +180,38 @@ namespace Qserver.GameServer.Qpang
                 if (this._items.ContainsKey(player.PlayerId))
                 {
                     // remove traders
-                    if (this._pending.ContainsKey(player.PlayerId))
+                    if (this._request.ContainsKey(player.PlayerId))
                     {
-                        targetId = this._pending[player.PlayerId];
-                        this._pending.Remove(player.PlayerId);
+                        targetId = this._request[player.PlayerId];
+                        this._request.Remove(player.PlayerId);
                     }
                     if (this._traders.ContainsKey(player.PlayerId))
                     {
                         targetId = this._traders[player.PlayerId];
                         this._traders.Remove(player.PlayerId);
                     }
-                    if (this._pending.ContainsKey(targetId))
-                        this._pending.Remove(targetId);
+                    if (this._pending.ContainsKey(player.PlayerId))
+                    {
+                        targetId = this._pending[player.PlayerId];
+                        this._pending.Remove(player.PlayerId);
+                    }
+                    if (this._accepted.ContainsKey(player.PlayerId))
+                    {
+                        targetId = this._accepted[player.PlayerId];
+                        this._accepted.Remove(player.PlayerId);
+                    }
+
+                    if (this._request.ContainsKey(targetId))
+                        this._request.Remove(targetId);
+
                     if (this._traders.ContainsKey(targetId))
                         this._traders.Remove(targetId);
+
+                    if (this._pending.ContainsKey(targetId))
+                        this._pending.Remove(targetId);
+
+                    if (this._accepted.ContainsKey(targetId))
+                        this._accepted.Remove(targetId);
 
                     // remove items
                     this._items.Remove(player.PlayerId);
@@ -106,59 +220,15 @@ namespace Qserver.GameServer.Qpang
             }
         }
 
-        public bool OnComplete(Player player)
-        {
-            lock (this._lock)
-            {
-                if (!this._traders.ContainsKey(player.PlayerId))
-                    return false;
-
-                var targetId = this._traders[player.PlayerId];
-                var target = Game.Instance.GetPlayer(targetId);
-
-                // grab items from trade
-                Dictionary<ulong, InventoryCard> playerStash = null;
-                Dictionary<ulong, InventoryCard> targetStash = null;
-
-                // remove items data
-                if (this._items.ContainsKey(player.PlayerId))
-                {
-                    playerStash = this._items[player.PlayerId];
-                    this._items.Remove(player.PlayerId);
-                }
-                if (this._items.ContainsKey(player.PlayerId))
-                {
-                    targetStash = this._items[targetId];
-                    this._items.Remove(targetId);
-                }
-
-                // Make sure nothing got fucked up for some  reason
-                if (playerStash == null || targetStash == null)
-                    return false;
-
-                // Transfer player
-                foreach(var item in playerStash.Values)
-                    player.InventoryManager.TradeItem(item.Id, targetId);
-
-                // Transfer target
-                foreach (var item in targetStash.Values)
-                    target.InventoryManager.TradeItem(item.Id, player.PlayerId);
-
-                // remove trade data
-                this._traders.Remove(player.PlayerId);
-                this._traders.Remove(targetId);
-            }
-            return true;
-        }
-
         public bool AddItem(Player player, InventoryCard card)
         {
             if (!player.InventoryManager.HasCard(card.Id))
-                return false; // TODO bugfix?
+                return false; // no cheating
 
+            // TODO: obtain server card pre-call?
             var realCard = player.InventoryManager.Get(card.Id);
             if (!realCard.IsGiftable)
-                return false; // server check for untradable
+                return false; // must be tradable
 
             lock (this._lock)
             {
@@ -192,11 +262,17 @@ namespace Qserver.GameServer.Qpang
             // NOTE: do different event based on, pending or already in trade?
             lock (this._lock)
             {
-                if (this._pending.ContainsKey(player.PlayerId))
-                    return Game.Instance.GetPlayer(this._pending[player.PlayerId]);
+                if (this._request.ContainsKey(player.PlayerId))
+                    return Game.Instance.GetPlayer(this._request[player.PlayerId]);
 
                 if (this._traders.ContainsKey(player.PlayerId))
                     return Game.Instance.GetPlayer(this._traders[player.PlayerId]);
+
+                if (this._pending.ContainsKey(player.PlayerId))
+                    return Game.Instance.GetPlayer(this._pending[player.PlayerId]);
+
+                if (this._accepted.ContainsKey(player.PlayerId))
+                    return Game.Instance.GetPlayer(this._accepted[player.PlayerId]);
             }
 
             return null;

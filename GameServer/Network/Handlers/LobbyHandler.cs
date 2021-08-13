@@ -201,7 +201,7 @@ namespace Qserver.GameServer.Network.Handlers
                 return;
 
             // update trade manager
-            bool status = Game.Instance.TradeManager.OnRequest(player, target.PlayerId);
+            bool status = Game.Instance.TradeManager.OnTradeRequest(player, target.PlayerId);
             if(!status)
             {
                 // Let player know request failed
@@ -212,8 +212,8 @@ namespace Qserver.GameServer.Network.Handlers
 
             // NOTE: Find packet for requested player
 
-            // respond client
-            manager.Send(LobbyManager.Instance.TradeResponse(playerId));
+            // respond client thats its pending
+            //manager.Send(LobbyManager.Instance.TradeResponse(0x09950995));
 
             // notify target
             /*
@@ -223,17 +223,17 @@ namespace Qserver.GameServer.Network.Handlers
              * 881
              * 882
              * 883
+             * 896
+             * 
+             * 
              */
 
-            target.SendLobby(LobbyManager.Instance.Send_880());
-            Thread.Sleep(5000);
-            target.SendLobby(LobbyManager.Instance.Send_881());
-            Thread.Sleep(5000);
-            target.SendLobby(LobbyManager.Instance.Send_896(playerId));
 
             //// emulate trade accept
-            //target.SendLobby(LobbyManager.Instance.TradeAccepted());
-            //manager.Send(LobbyManager.Instance.TradeAccepted());
+            Game.Instance.TradeManager.OnRequestAccept(player);
+            Game.Instance.TradeManager.OnRequestAccept(target);
+            target.SendLobby(LobbyManager.Instance.TradeAccepted(0x09950995));
+            manager.Send(LobbyManager.Instance.TradeAccepted(0x09950995));
         }
 
         public static void HandleTradeAct(PacketReader packet, ConnServer manager)
@@ -255,35 +255,27 @@ namespace Qserver.GameServer.Network.Handlers
             if (target == null)
                 return;
 
-            if(cmd == 50)
-            {
-                // player cancle
+            if (cmd == 50) // player cancle
                 Game.Instance.TradeManager.OnCancel(player);
-
-                // TODO: notify target
-                //target.SendLobby(LobbyManager.Instance.Send_???);
-            }
-            else if(cmd == 51)
+            else if (cmd == 51) // player accept pending 1
             {
-                // player accept trade
-                
+                Game.Instance.TradeManager.OnTradePropose(player);
             }
-            else if(cmd == 52)
+            else if(cmd == 52) // player accepts complete
             {
-                Console.WriteLine("52! asdasdasdasdas");
-                // unk?
+                Game.Instance.TradeManager.OnProposalAccept(player);
+            }else
+            {
+                // error unk cmd
+                manager.Send(LobbyManager.Instance.Send_886());
+                return;
             }
-            Console.WriteLine(cmd);
-            // erase trade from manager
-            //
 
-            // TODO: find out the reason
+            // update player
+            manager.Send(LobbyManager.Instance.Send_885(token, (byte)cmd));
 
-            // TODO: Update target
-            //target.SendLobby(LobbyManager.Instance.());
-
-            // Update player (TODO: or 866, fail)
-            manager.Send(LobbyManager.Instance.Send_885());
+            // update target
+            target.SendLobby(LobbyManager.Instance.Send_887(token, player.PlayerId, (byte)cmd));
         }
         public static void Handle_882(PacketReader packet, ConnServer manager)
         {

@@ -476,18 +476,152 @@ namespace Qserver.GameServer.Network.Managers
         #endregion
 
         #region Trade
-        public PacketWriter TradeResponse(uint playerId)
+        public PacketWriter TradeResponse(uint playerId) // 876
         {
-            PacketWriter pw = new PacketWriter(Opcode.LOBBY_TRADE_RSP);
+            PacketWriter pw = new PacketWriter(Opcode.LOBBY_TRADE_RSP); // ok
             pw.WriteUInt32(0); // unk 1
             pw.WriteUInt32(0); // unk 2
             pw.WriteUInt32(0); // unk 3
             return pw;
         }
-        public PacketWriter SendTradeRequest(uint playerId)
+        public PacketWriter Send_877() // trade ask failed
         {
-            PacketWriter pw = new PacketWriter(Opcode.LOBBY_TRADE_ACT);
-            pw.WriteUInt32(playerId); //test
+            PacketWriter pw = new PacketWriter((Opcode)877);
+            pw.WriteUInt32(0); // unk1 (error msg?)
+            return pw;
+        }
+        public PacketWriter Send_878() // trade error 2
+        {
+            PacketWriter pw = new PacketWriter((Opcode)878);
+            // 0x32 TODO
+            return pw;
+        }
+        public PacketWriter Send_879(uint cmd) // Possible Trade Response
+        {
+            PacketWriter pw = new PacketWriter((Opcode)879);
+            pw.WriteUInt32(0); // unk1
+            pw.WriteUInt32(0); // unk2
+            pw.WriteUInt8((byte)cmd); // cmd; TODO: 1, 2
+            return pw;
+        }
+        public PacketWriter Send_880() // trade request failed msg
+        {
+            PacketWriter pw = new PacketWriter((Opcode)880);
+            return pw;
+        }
+        public PacketWriter Send_881() // OnLsTradeRespFail
+        {
+            PacketWriter pw = new PacketWriter((Opcode)881);
+            pw.WriteUInt32(0); // unk1 (error msg?)
+            return pw;
+        }
+        public PacketWriter Send_882(uint unk1, byte unk2) // trade rejected
+        {
+            PacketWriter pw = new PacketWriter((Opcode)882);
+            pw.WriteUInt32(unk1); // possibel playerId?>
+            pw.WriteUInt8(unk2); // cmd??
+            return pw;
+        }
+        public PacketWriter TradeAccepted(uint unk1) // TradeAccepted
+        {
+            PacketWriter pw = new PacketWriter((Opcode)883);
+            pw.WriteUInt32(unk1); // Possible token?
+            return pw;
+        }
+        public PacketWriter Send_885(uint unk1, byte unk2) // trace act rsp
+        {
+            PacketWriter pw = new PacketWriter((Opcode)885);
+            pw.WriteUInt32(unk1); // possibel playerId?>
+            pw.WriteUInt8(unk2); // cmd??
+            return pw;
+        }
+        public PacketWriter Send_887(uint token) // unk
+        {
+            PacketWriter pw = new PacketWriter((Opcode)887);
+            pw.WriteUInt32(token); // token
+            pw.WriteUInt32(0); // unk2 playerId?
+            pw.WriteUInt8(0); // unk3 cmd?
+            return pw;
+        }
+        public PacketWriter Send_889(uint token) // TradeCmdRsp response
+        {
+            PacketWriter pw = new PacketWriter((Opcode)889);
+            pw.WriteUInt32(token); // 8 (token)?
+            pw.WriteUInt8(0); // c // unk
+
+            // 891, 892, inform
+            // fail inform 893?
+            return pw;
+        }
+        public PacketWriter Send_891(uint token, InventoryCard card, uint cmd) // Notify target with new Item?
+        {
+            PacketWriter pw = new PacketWriter((Opcode)891);
+
+            pw.WriteUInt32(token); // 0x08
+            pw.WriteUInt32(0); // unk // 0x0C
+            pw.WriteUInt8((byte)cmd); // cmd - 0x10
+            pw.WriteUInt32(0); // unk  // 0x11
+            // InventoryCard // 0x15
+            pw.WriteUInt64(card.Id); // 0
+            pw.WriteUInt32(card.ItemId); // 8
+            pw.WriteUInt8(10); // 12
+            pw.WriteUInt8(card.Type); // 13
+            pw.WriteUInt8(0); // 14
+            pw.WriteUInt8(card.IsGiftable ? (byte)1 : (byte)0); // 15
+            pw.WriteBytes(new byte[6]); // 16
+            pw.WriteUInt32(card.TimeCreated); // 22
+            pw.WriteUInt8(card.IsOpened ? (byte)1 : (byte)0); // 26
+            pw.WriteUInt16(card.IsActive ? (ushort)0 : (ushort)1); // 27
+            pw.WriteUInt8(0); // 28; hidden
+            pw.WriteUInt8(0); // 29
+            pw.WriteUInt16(card.Period); // 31
+            pw.WriteUInt8(card.PeriodeType); // 33
+            pw.WriteUInt8(0); // 34
+            pw.WriteUInt16(card.BoostLevel); // 35
+            pw.WriteUInt8(card.BoostLevel > 0 ? (byte)1 : (byte)0); // 37
+            pw.WriteUInt8(0); //  38
+            pw.WriteBytes(new byte[4]); // 39
+            return pw;
+        }
+        public PacketWriter Send_890() // fail adding item (888)
+        {
+            PacketWriter pw = new PacketWriter((Opcode)890);
+            return pw;
+        }
+        public PacketWriter Send_891() // unk
+        {
+            PacketWriter pw = new PacketWriter((Opcode)891);
+            pw.WriteUInt8(0); // targetId?
+
+            // _DWORD interpreted as _BYTE
+            pw.WriteUInt8(0); // unk2
+            pw.Write(new byte[3]); // gap?
+
+            pw.WriteUInt32(0); // unk3 qmemcpy src
+            return pw;
+        }
+        public PacketWriter Send_892()
+        {
+            PacketWriter pw = new PacketWriter((Opcode)892);
+
+            return pw;
+        }
+        public PacketWriter Send_893()
+        {
+            PacketWriter pw = new PacketWriter((Opcode)893);
+
+            return pw;
+        }
+        public PacketWriter Send_895() // unk
+        {
+            PacketWriter pw = new PacketWriter((Opcode)895);
+            // todo 0x50
+            return pw;
+        }
+        public PacketWriter Send_896(uint unk1) // unk
+        {
+            PacketWriter pw = new PacketWriter((Opcode)896);
+            pw.WriteUInt32(unk1); // unk1 (playerId??)
             return pw;
         }
         #endregion
@@ -1042,14 +1176,6 @@ namespace Qserver.GameServer.Network.Managers
         #endregion
 
         // testing
-        public PacketWriter Send_884()
-        {
-            PacketWriter pw = new PacketWriter((Opcode)884);
-            pw.WriteUInt32(0); // unk1
-            pw.WriteUInt32(0); // unk2
-            return pw;
-        }
-
         public PacketWriter Send_729() // Lobby Send Memo Rsp
         {
             PacketWriter pw = new PacketWriter((Opcode)729);
@@ -1068,170 +1194,6 @@ namespace Qserver.GameServer.Network.Managers
         {
             PacketWriter pw = new PacketWriter((Opcode)699);
             // empty
-            return pw;
-        }
-
-        public PacketWriter Send_879() // nothing
-        {
-            PacketWriter pw = new PacketWriter((Opcode)879);
-            // todo
-            return pw;
-        }
-
-        public PacketWriter Send_887() // nothing
-        {
-            PacketWriter pw = new PacketWriter((Opcode)887);
-            // todo
-            return pw;
-        }
-
-        public PacketWriter TradeFailed() // trade failed
-        {
-            PacketWriter pw = new PacketWriter((Opcode)877);
-            // todo
-            return pw;
-        }
-
-        public PacketWriter TradeCanceledBYOther() // trade cancle? TRADE_REQUEST_CANCEL
-        {
-            PacketWriter pw = new PacketWriter((Opcode)881);
-            // todo
-            return pw;
-        }
-
-        public PacketWriter TradeResp()
-        {
-            PacketWriter pw = new PacketWriter((Opcode)880);
-            // todo
-            return pw;
-        }
-
-        public PacketWriter TradeRespFailBYOther() // OnLsTradeRespFail
-        {
-            PacketWriter pw = new PacketWriter((Opcode)881);
-            // todo
-            return pw;
-        }
-
-        public PacketWriter Send_882() // trade rejected
-        {
-            PacketWriter pw = new PacketWriter((Opcode)882);
-            // todo
-            return pw;
-        }
-
-        
-
-        public PacketWriter TradeAccepted() // TradeAccepted
-        {
-            PacketWriter pw = new PacketWriter((Opcode)883);
-            // todo
-            return pw;
-        }
-
-        public PacketWriter Send_889(uint token) // TradeCmdRsp response
-        {
-            PacketWriter pw = new PacketWriter((Opcode)889);
-            pw.WriteUInt32(token); // 8 (token)?
-            pw.WriteUInt8(0); // c // unk
-
-            // 891, 892, inform
-            // fail inform 893?
-            return pw;
-        }
-
-        public PacketWriter Send_891(uint token, InventoryCard card, uint cmd) // Notify target with new Item?
-        {
-            PacketWriter pw = new PacketWriter((Opcode)891);
-            
-            pw.WriteUInt32(token); // 0x08
-            pw.WriteUInt32(0); // unk // 0x0C
-            pw.WriteUInt8((byte)cmd); // cmd - 0x10
-            pw.WriteUInt32(0); // unk  // 0x11
-            // InventoryCard // 0x15
-            pw.WriteUInt64(card.Id); // 0
-            pw.WriteUInt32(card.ItemId); // 8
-            pw.WriteUInt8(10); // 12
-            pw.WriteUInt8(card.Type); // 13
-            pw.WriteUInt8(0); // 14
-            pw.WriteUInt8(card.IsGiftable ? (byte)1 : (byte)0); // 15
-            pw.WriteBytes(new byte[6]); // 16
-            pw.WriteUInt32(card.TimeCreated); // 22
-            pw.WriteUInt8(card.IsOpened ? (byte)1 : (byte)0); // 26
-            pw.WriteUInt16(card.IsActive ? (ushort)0 : (ushort)1); // 27
-            pw.WriteUInt8(0); // 28; hidden
-            pw.WriteUInt8(0); // 29
-            pw.WriteUInt16(card.Period); // 31
-            pw.WriteUInt8(card.PeriodeType); // 33
-            pw.WriteUInt8(0); // 34
-            pw.WriteUInt16(card.BoostLevel); // 35
-            pw.WriteUInt8(card.BoostLevel > 0 ? (byte)1 : (byte)0); // 37
-            pw.WriteUInt8(0); //  38
-            pw.WriteBytes(new byte[4]); // 39
-            return pw;
-        }
-
-        public PacketWriter Send_890() // fail adding item (888)
-        {
-            PacketWriter pw = new PacketWriter((Opcode)890);
-            return pw;
-        }
-
-        public PacketWriter Send_891() // unk
-        {
-            PacketWriter pw = new PacketWriter((Opcode)891);
-            pw.WriteUInt8(0); // targetId?
-
-            // _DWORD interpreted as _BYTE
-            pw.WriteUInt8(0); // unk2
-            pw.Write(new byte[3]); // gap?
-
-            pw.WriteUInt32(0); // unk3 qmemcpy src
-            return pw;
-        }
-
-
-        public PacketWriter Send_892()
-        {
-            PacketWriter pw = new PacketWriter((Opcode)892);
-
-            return pw;
-        }
-
-        public PacketWriter Send_893()
-        {
-            PacketWriter pw = new PacketWriter((Opcode)893);
-
-            return pw;
-        }
-
-        public PacketWriter Send_895() // unk
-        {
-            PacketWriter pw = new PacketWriter((Opcode)895);
-            // todo
-            return pw;
-        }
-
-        public PacketWriter Send_896() // unk
-        {
-            PacketWriter pw = new PacketWriter((Opcode)896);
-            // todo
-            return pw;
-        }
-
-        
-        public PacketWriter Send_885()
-        {
-            PacketWriter pw = new PacketWriter((Opcode)885);
-            // TODO?
-            return pw;
-        }
-
-
-        public PacketWriter SendTradeCanceled() // unk
-        {
-            PacketWriter pw = new PacketWriter((Opcode)885);
-            // todo
             return pw;
         }
     }

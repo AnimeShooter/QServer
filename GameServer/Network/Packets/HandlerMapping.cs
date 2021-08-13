@@ -60,12 +60,12 @@ namespace Qserver.GameServer.Packets
                 PacketManager.DefineOpcodeHandler(Opcode.LEET_ANTI_CHEET, LobbyHandler.HandleAntiCheat);
 
                 // test
-                PacketManager.DefineOpcodeHandler(Opcode.LOBBY_TRADE, LobbyHandler.HandleTradeRequest);
-                //PacketManager.DefineOpcodeHandler((Opcode)844, LobbyHandler.Handle_884);
+                PacketManager.DefineOpcodeHandler((Opcode)728, LobbyHandler.Handle_728); // Lobby Send Memo
 
-                PacketManager.DefineOpcodeHandler((Opcode)728, LobbyHandler.Handle_728);
+                // trade
+                PacketManager.DefineOpcodeHandler(Opcode.LOBBY_TRADE, LobbyHandler.HandleTradeRequest);
                 PacketManager.DefineOpcodeHandler(Opcode.LOBBY_TRADE_ACT, LobbyHandler.HandleTradeAct);
-                PacketManager.DefineOpcodeHandler((Opcode)888, LobbyHandler.Handle_888);
+                PacketManager.DefineOpcodeHandler((Opcode)888, LobbyHandler.HandleTradeItem); // trade item
             }
 
             // Square

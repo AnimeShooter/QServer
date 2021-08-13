@@ -188,7 +188,7 @@ namespace Qserver.GameServer.Network.Handlers
         }
         #endregion
 
-        #region Inventory
+        #region Trade
         public static void HandleTradeRequest(PacketReader packet, ConnServer manager)
         {
             var player = manager.Player;
@@ -201,26 +201,39 @@ namespace Qserver.GameServer.Network.Handlers
                 return;
 
             // update trade manager
-            Game.Instance.TradeManager.OnRequest(player, target.PlayerId);
-
-            // Untested:
-            /* 883 -
-             * 889 nothing
-             * 891 unk func
-             * 892 - Trade Complete
-             * 895 nothing
-             * 896 nothing
-             */
+            bool status = Game.Instance.TradeManager.OnRequest(player, target.PlayerId);
+            if(!status)
+            {
+                // Let player know request failed
+                manager.Send(LobbyManager.Instance.Send_877()); // ?
+                // 877 reject trade?
+                return;
+            }
 
             // NOTE: Find packet for requested player
 
-            
             // respond client
             manager.Send(LobbyManager.Instance.TradeResponse(playerId));
 
-            // emulate trade accept
-            target.SendLobby(LobbyManager.Instance.TradeAccepted());
-            manager.Send(LobbyManager.Instance.TradeAccepted());
+            // notify target
+            /*
+             * 876
+             * 877 (no?)
+             * 880 - trade accept?
+             * 881
+             * 882
+             * 883
+             */
+
+            target.SendLobby(LobbyManager.Instance.Send_880());
+            Thread.Sleep(5000);
+            target.SendLobby(LobbyManager.Instance.Send_881());
+            Thread.Sleep(5000);
+            target.SendLobby(LobbyManager.Instance.Send_896(playerId));
+
+            //// emulate trade accept
+            //target.SendLobby(LobbyManager.Instance.TradeAccepted());
+            //manager.Send(LobbyManager.Instance.TradeAccepted());
         }
 
         public static void HandleTradeAct(PacketReader packet, ConnServer manager)
@@ -232,7 +245,7 @@ namespace Qserver.GameServer.Network.Handlers
              *  52
              */
             uint token = packet.ReadUInt32();
-            uint unk2 = packet.ReadUInt32();
+            uint cmd = packet.ReadUInt8();
 
             var player = manager.Player;
             if (player == null)
@@ -242,8 +255,27 @@ namespace Qserver.GameServer.Network.Handlers
             if (target == null)
                 return;
 
+            if(cmd == 50)
+            {
+                // player cancle
+                Game.Instance.TradeManager.OnCancel(player);
+
+                // TODO: notify target
+                //target.SendLobby(LobbyManager.Instance.Send_???);
+            }
+            else if(cmd == 51)
+            {
+                // player accept trade
+                
+            }
+            else if(cmd == 52)
+            {
+                Console.WriteLine("52! asdasdasdasdas");
+                // unk?
+            }
+            Console.WriteLine(cmd);
             // erase trade from manager
-            Game.Instance.TradeManager.OnCancel(player);
+            //
 
             // TODO: find out the reason
 
@@ -251,9 +283,105 @@ namespace Qserver.GameServer.Network.Handlers
             //target.SendLobby(LobbyManager.Instance.());
 
             // Update player (TODO: or 866, fail)
-            manager.Send(LobbyManager.Instance.SendTradeCanceled());
+            manager.Send(LobbyManager.Instance.Send_885());
+        }
+        public static void Handle_882(PacketReader packet, ConnServer manager)
+        {
+            uint unk1 = packet.ReadUInt32();
+            byte unk2 = packet.ReadUInt8();
+
+            // do smthing?
+
+            throw new NotImplementedException();
         }
 
+        public static void HandleTradeItem(PacketReader packet, ConnServer manager)
+        {
+            // TODO: trigger me
+
+            //uint CardOrItemId = packet.ReadUInt32();
+            //Console.WriteLine("Possible item/card: " + CardOrItemId);
+
+            // Size: 3C
+
+            uint unk1 = packet.ReadUInt32(); //  0x95099509   target/token?  // 0
+
+            // cmd:
+            // - 100: insert item
+            // - 101: ???
+            // - 102: ???
+            uint cmd = packet.ReadUInt32(); // 0x64 (cmd?)          // 4 (100: add, 101: remove, 102: unk)
+            byte unk3 = packet.ReadUInt8();                         // 8
+
+            // InventoryCard 2B
+            ulong cardId = packet.ReadUInt64(); // 0
+            uint itemId = packet.ReadUInt32(); // 8
+            packet.ReadUInt8(); // 0A must be 0x0A? // 12
+            uint type = packet.ReadUInt8(); // 57 // 13
+            packet.ReadUInt8(); // 00 // 14
+            uint isGiftable = packet.ReadUInt8(); // 01 // 15
+            packet.ReadBytes(6); // 000000000000 // 16
+            uint timeCreated = packet.ReadUInt32(); // DA 2A 14 16 // 22
+            byte isOpened = packet.ReadUInt8(); // 26
+            ushort isActive = packet.ReadUInt16(); // 27
+            packet.ReadUInt8(); // 29
+            packet.ReadUInt8(); // 30
+            uint period = packet.ReadUInt16(); // 00 64 Rounds? // 31
+            uint periodType = packet.ReadUInt16(); // 00 03 // 33
+            packet.ReadUInt8(); // 35
+            uint boostLevel = packet.ReadUInt8(); // 36
+            packet.ReadUInt8(); // 37
+            packet.ReadUInt8(); // 38
+            packet.ReadBytes(4); // unk // 39
+
+            uint unk38 = packet.ReadUInt32(); //
+
+
+            var card = new InventoryCard()
+            {
+                Id = cardId,
+                ItemId = itemId,
+                Type = (byte)type,
+                PeriodeType = (byte)periodType,
+                Period = (ushort)period,
+                IsActive = isActive == 1,
+                IsOpened = isOpened == 0,
+                IsGiftable = isGiftable == 1,
+                BoostLevel = (byte)boostLevel,
+                TimeCreated = timeCreated
+            };
+
+            var player = manager.Player;
+            if (player == null)
+                return;
+
+            var target = Game.Instance.TradeManager.FindTradingBuddy(player);
+            if (target == null)
+                return; // TODO: send trade error?
+
+            bool status = false;
+
+            if (cmd == 100)
+                status = Game.Instance.TradeManager.AddItem(player, card);
+            else if (cmd == 101)
+                status = Game.Instance.TradeManager.RemoveItem(player, card.Id);
+            //else if (cmd == 102)
+            //    throw new NotImplementedException(); // NOTE do don?
+            else
+                status = false;
+
+            // update clients
+            if (status)
+            {
+                manager.Send(LobbyManager.Instance.Send_889(unk1)); // unk magic value
+                target.SendLobby(LobbyManager.Instance.Send_891(unk1, card, cmd));
+            }
+            else
+                manager.Send(LobbyManager.Instance.Send_890());
+        }
+        #endregion Trade
+
+        #region Inventory
         public static void HandleDeleteCard(PacketReader packet, ConnServer manager)
         {
             var cardId = packet.ReadUInt64();
@@ -589,106 +717,5 @@ namespace Qserver.GameServer.Network.Handlers
             manager.Send(LobbyManager.Instance.Send_729());
         }
 
-        public static void Handle_882(PacketReader packet, ConnServer manager)
-        {
-            uint unk1 = packet.ReadUInt32();
-            byte unk2 = packet.ReadUInt8();
-
-            // do smthing?
-
-            throw new NotImplementedException();
-        }
-
-        public static void Handle_888(PacketReader packet, ConnServer manager)
-        {
-            // TODO: trigger me
-
-            //uint CardOrItemId = packet.ReadUInt32();
-            //Console.WriteLine("Possible item/card: " + CardOrItemId);
-
-
-            // Size: 3C
-
-            uint unk1 = packet.ReadUInt32(); //  0x95099509   target/token?  // 0
-
-            // cmd:
-            // - 100: insert item
-            // - 101: ???
-            // - 102: ???
-            uint cmd = packet.ReadUInt32(); // 0x64 (cmd?)          // 4 (100: add, 101: remove, 102: unk)
-            byte unk3 = packet.ReadUInt8();                         // 8
-
-            // 2B
-            ulong cardId = packet.ReadUInt64(); // 0
-            uint itemId = packet.ReadUInt32(); // 8
-
-            packet.ReadUInt8(); //  0A must be 0x0A? // 12
-            uint type = packet.ReadUInt8(); // 57 // 13
-            packet.ReadUInt8(); // 00 // 14
-            uint isGiftable = packet.ReadUInt8(); // 01 // 15
-
-            packet.ReadBytes(6); // 000000000000 // 16
-            uint timeCreated = packet.ReadUInt32(); // DA 2A 14 16 // 22
-
-            byte isOpened = packet.ReadUInt8(); // 26
-            ushort isActive = packet.ReadUInt16(); // 27
-            packet.ReadUInt8(); // 29
-            packet.ReadUInt8(); // 30
-            uint period = packet.ReadUInt16(); // 00 64 Rounds? // 31
-            uint periodType = packet.ReadUInt16(); // 00 03 // 33
-            packet.ReadUInt8(); // 35
-            uint boostLevel = packet.ReadUInt8(); // 36
-            packet.ReadUInt8(); // 37
-            packet.ReadUInt8(); // 38
-            packet.ReadBytes(4); // unk // 39
-
-            uint unk38 = packet.ReadUInt32(); //
-
-
-            var card = new InventoryCard()
-            {
-                Id = cardId,
-                ItemId = itemId,
-                Type = (byte)type,
-                PeriodeType = (byte)periodType,
-                Period = (ushort)period,
-                IsActive = isActive == 1,
-                IsOpened = isOpened == 0,
-                IsGiftable = isGiftable == 1,
-                BoostLevel = (byte)boostLevel,
-                TimeCreated = timeCreated
-            };
-
-            var player = manager.Player;
-            if (player == null)
-                return;
-
-            var target = Game.Instance.TradeManager.FindTradingBuddy(player);
-            if (target == null)
-                return; // TODO: send trade error?
-
-            bool status = false;
-
-            if (cmd == 100)
-                status = Game.Instance.TradeManager.AddItem(player, card);
-            else if (cmd == 101)
-                status = Game.Instance.TradeManager.RemoveItem(player, card.Id);
-            else if (cmd == 102)
-                throw new NotImplementedException(); // TODO don?
-            else
-                status = false;
-
-            // update clients
-            if (status)
-            {
-                manager.Send(LobbyManager.Instance.Send_889(unk1)); // unk magic value
-                target.SendLobby(LobbyManager.Instance.Send_891(unk1, card, cmd));
-            }
-            else
-                manager.Send(LobbyManager.Instance.Send_890());
-
-            // NOTE: find 891 and 892 (add trade info to target?)
-
-        }
     }
 }

@@ -89,10 +89,15 @@ namespace Qserver.GameServer.Qpang
                         targetId = this._pending[player.PlayerId];
                         this._pending.Remove(player.PlayerId);
                     }
-                    if (this._traders.ContainsKey(targetId))
+                    if (this._traders.ContainsKey(player.PlayerId))
                     {
-                        this._traders.Remove(targetId);
+                        targetId = this._traders[player.PlayerId];
+                        this._traders.Remove(player.PlayerId);
                     }
+                    if (this._pending.ContainsKey(targetId))
+                        this._pending.Remove(targetId);
+                    if (this._traders.ContainsKey(targetId))
+                        this._traders.Remove(targetId);
 
                     // remove items
                     this._items.Remove(player.PlayerId);
@@ -150,6 +155,10 @@ namespace Qserver.GameServer.Qpang
         {
             if (!player.InventoryManager.HasCard(card.Id))
                 return false; // TODO bugfix?
+
+            var realCard = player.InventoryManager.Get(card.Id);
+            if (!realCard.IsGiftable)
+                return false; // server check for untradable
 
             lock (this._lock)
             {

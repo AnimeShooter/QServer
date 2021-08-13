@@ -229,15 +229,16 @@ namespace Qserver.GameServer.Qpang
             if (!player.InventoryManager.HasCard(card.Id))
                 return false; // no cheating
 
-            // TODO: obtain server card pre-call?
-            var realCard = player.InventoryManager.Get(card.Id);
-            if (!realCard.IsGiftable)
+            if (!card.IsGiftable)
                 return false; // must be tradable
 
             lock (this._lock)
             {
                 if (!this._items.ContainsKey(player.PlayerId))
                     return false; // unk error
+
+                if (this._items.Count >= 10)
+                    return false; // full
 
                 var stash = this._items[player.PlayerId];
                 if (stash.ContainsKey(card.Id))

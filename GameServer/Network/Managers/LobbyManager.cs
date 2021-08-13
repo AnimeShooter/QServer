@@ -484,24 +484,31 @@ namespace Qserver.GameServer.Network.Managers
             pw.WriteUInt32(0); // unk 3
             return pw;
         }
-        public PacketWriter Send_877() // trade ask failed
+        public PacketWriter Send_877() // OnLsTradeAskFail - trade ask failed
         {
             PacketWriter pw = new PacketWriter((Opcode)877);
             pw.WriteUInt32(0); // unk1 (error msg?)
             return pw;
         }
-        public PacketWriter Send_878() // trade error 2
+        public PacketWriter Send_878(uint token) // unk
         {
             PacketWriter pw = new PacketWriter((Opcode)878);
-            // 0x32 TODO
-            return pw;
-        }
-        public PacketWriter Send_879(uint cmd) // Possible Trade Response
-        {
-            PacketWriter pw = new PacketWriter((Opcode)879);
-            pw.WriteUInt32(0); // unk1
-            pw.WriteUInt32(0); // unk2
-            pw.WriteUInt8((byte)cmd); // cmd; TODO: 1, 2
+
+            pw.WriteUInt32(token);
+            pw.WriteUInt32(token);
+            pw.WriteUInt32(token);
+            pw.WriteUInt32(token);
+            pw.WriteUInt32(token);
+            pw.WriteUInt32(token);
+            pw.WriteUInt32(token);
+            pw.WriteUInt32(token);
+            pw.WriteUInt32(token);
+            pw.WriteUInt32(token);
+            pw.WriteUInt32(token);
+            pw.WriteUInt32(token);
+            pw.WriteInt16(0);
+            //pw.WriteBytes(new byte[0x32]); // unk
+            
             return pw;
         }
         public PacketWriter Send_880() // trade request failed msg
@@ -509,7 +516,7 @@ namespace Qserver.GameServer.Network.Managers
             PacketWriter pw = new PacketWriter((Opcode)880);
             return pw;
         }
-        public PacketWriter Send_881() // OnLsTradeRespFail
+        public PacketWriter TradeCanceledByPlayer() // OnLsTradeRespFail
         {
             PacketWriter pw = new PacketWriter((Opcode)881);
             pw.WriteUInt32(0); // unk1 (error msg?)
@@ -535,13 +542,13 @@ namespace Qserver.GameServer.Network.Managers
             pw.WriteUInt8(unk2); // cmd??
             return pw;
         }
-        public PacketWriter Send_886() // Trade User Action Failed
+        public PacketWriter Send_886() // OnLsTradeUserActFail - Trade User Action Failed
         {
             PacketWriter pw = new PacketWriter((Opcode)886);
             pw.WriteUInt32(0); // unk1 (error msg?) - OnLsTradeUserActFail
             return pw;
         }
-        public PacketWriter Send_887(uint token, uint unk2, byte cmd) // unk
+        public PacketWriter Send_887(uint token, uint unk2, byte cmd) // update target Action
         {
             PacketWriter pw = new PacketWriter((Opcode)887);
             pw.WriteUInt32(token); // token
@@ -559,7 +566,7 @@ namespace Qserver.GameServer.Network.Managers
             // fail inform 893?
             return pw;
         }
-        public PacketWriter Send_890()
+        public PacketWriter Send_890() // OnLsTradeSetElementFail
         {
             PacketWriter pw = new PacketWriter((Opcode)890);
             pw.WriteUInt32(0); // unk1 (error msg?) - OnLsTradeSetElementFail
@@ -595,7 +602,7 @@ namespace Qserver.GameServer.Network.Managers
             pw.WriteBytes(new byte[4]); // 39
             return pw;
         }
-        public PacketWriter Send_892(uint token, uint don)
+        public PacketWriter Send_892(uint token, uint don) // complete trade
         {
             PacketWriter pw = new PacketWriter((Opcode)892);
             // 4
@@ -609,12 +616,11 @@ namespace Qserver.GameServer.Network.Managers
             pw.WriteUInt32(0); // unk2_2 counter // 0x6C
             return pw;
         }
-        public PacketWriter Send_893()
+        public PacketWriter Send_893() // OnLsTradeFailInform
         {
             PacketWriter pw = new PacketWriter((Opcode)893);
-
             return pw;
-        }
+        } 
         public PacketWriter Send_895() // unk
         {
             PacketWriter pw = new PacketWriter((Opcode)895);
@@ -624,7 +630,7 @@ namespace Qserver.GameServer.Network.Managers
         public PacketWriter Send_896(uint unk1) // unk
         {
             PacketWriter pw = new PacketWriter((Opcode)896);
-            pw.WriteUInt32(unk1); // unk1 (playerId??)
+            pw.WriteUInt32(unk1); // debuggin
             return pw;
         }
         #endregion

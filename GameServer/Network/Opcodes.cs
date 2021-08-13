@@ -188,36 +188,34 @@ namespace Qserver.GameServer.Network
 		// 867 unk func card
 		// 868 buddy no more 
 		// 869									// in
+		// 870									// out
+		// 871									// out 
 		// 872									// in
 		// 873 functional						// out
 		// 874,	OnLsQuestionnaireFail			// out
 		
-		
-		
 		LOBBY_TRADE = 875,						// in
-		LOBBY_TRADE_RSP = 876,					// out
-		// 877 trading now / not want trade		// out
-		LOBBY_TRADE_ERROR_2 = 878,              // out
-		// 879									// in
-		// 880									// out
-		// 881 OnLsTradeRespFail				// out
-		// 882 TRADE_REQUEST_REJECT_MESSAGE		// out
-		// 883 TradeAccepted					// out
-		LOBBY_TRADE_ACT = 884, //   tradeAction // in
+		LOBBY_TRADE_RSP = 876,                  // out
+		LOBBY_877 = 877, // trading now / not want trade // out
+		LOBBY_878 = 878,						// out -- notify?
+		LOBBY_879 = 879,                        // in -- accept/reject?
+		LOBBY_880 = 880,                        // out -- request failed
+		LOBBY_TRADE_REQUEST_FAIL = 881, // OnLsTradeRespFail   // out
+		LOBBY_TRADE_REQUEST_REJECT = 882,       // out
+		LOBBY_TRADE_REQUEST_ACCEPT = 883,		// out
+		LOBBY_TRADE_ACT = 884,					// in
 		LOBBY_TRADE_ACT_RSP = 885,              // out
-		// 886	OnLsTradeUserActFail			// out
-		LOBBY_TRADE_ERROR_3 = 887, // dword, byte // out
-		LOBBY_TRADE_CMD = 888,                  // in (cmds 100, 101, 102)
-		// 889 itme update player				// out
-		// 890 OnLsTradeSetElementFail			// out
-		// 891 iten update target				// out
-		// 892 Trade complete?					// out 
-		// 893 OnLsTradeFailInform				// out
+		LOBBY_TRADE_ACT_FAIL = 886,             // out
+		LOBBY_TRADE_ACT_TARGET = 887,			// out
+		LOBBY_TRADE_CMD = 888,                  // in
+		LOBBY_TRADE_CMD_RSP = 889,				// out
+		LOBBY_TRADE_CMD_FAIL = 890,				// out
+		LOBBY_TRADE_CMD_TARGET = 891, // iten update target  // out
+		LOBBY_COMPLETE = 892, // Trade complete// out 
+		LOBBY_TRADE_FAIL = 893, //OnLsTradeFailInform// out
 
-		// 895									// out
-		// 896									// out
-
-
+		// 895	0x50							// out
+		// 896	msg								// out
 
 		LOBBY_USE_CRANE = 897,					// in
 		LOBBY_USE_CRANE_RSP = 898,

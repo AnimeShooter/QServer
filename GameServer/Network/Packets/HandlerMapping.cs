@@ -56,14 +56,17 @@ namespace Qserver.GameServer.Packets
                 PacketManager.DefineOpcodeHandler((Opcode)861, LobbyHandler.HandleDisableFunctionCardEvent);
                 PacketManager.DefineOpcodeHandler((Opcode)897, LobbyHandler.HandleUseCraneEvent);
 
-                
+                // anti-cheat
                 PacketManager.DefineOpcodeHandler(Opcode.LEET_ANTI_CHEET, LobbyHandler.HandleAntiCheat);
 
-                // test
+                // test 
+
+                // memo
                 PacketManager.DefineOpcodeHandler((Opcode)728, LobbyHandler.Handle_728); // Lobby Send Memo
 
                 // trade
                 PacketManager.DefineOpcodeHandler(Opcode.LOBBY_TRADE, LobbyHandler.HandleTradeRequest);
+                PacketManager.DefineOpcodeHandler(Opcode.LOBBY_879, LobbyHandler.Handle_879);
                 PacketManager.DefineOpcodeHandler(Opcode.LOBBY_TRADE_ACT, LobbyHandler.HandleTradeAct);
                 PacketManager.DefineOpcodeHandler((Opcode)888, LobbyHandler.HandleTradeItem); // trade item
             }

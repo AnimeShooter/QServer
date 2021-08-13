@@ -189,7 +189,7 @@ namespace Qserver.GameServer.Network.Handlers
         #endregion
 
         #region Trade
-        public static void HandleTradeRequest(PacketReader packet, ConnServer manager)
+        public static void HandleTradeRequest(PacketReader packet, ConnServer manager) // 875
         {
             var player = manager.Player;
             if (player == null)
@@ -206,7 +206,6 @@ namespace Qserver.GameServer.Network.Handlers
             {
                 // Let player know request failed
                 manager.Send(LobbyManager.Instance.Send_877()); // ?
-                // 877 reject trade?
                 return;
             }
 
@@ -228,15 +227,31 @@ namespace Qserver.GameServer.Network.Handlers
              * 
              */
 
+            // let player know its in queue
+            //manager.Send(LobbyManager.Instance.TradeResponse(0x09950995));
+            
+            // TODO
+            // send request to target
+            //target.SendLobby(LobbyManager.Instance.Send_880());
+            //target.SendLobby(LobbyManager.Instance.Send_878(0x09950995));
+            //target.SendLobby(LobbyManager.Instance.Send_878(0x09950995));
 
+            // TODO remove
             //// emulate trade accept
             Game.Instance.TradeManager.OnRequestAccept(player);
             Game.Instance.TradeManager.OnRequestAccept(target);
             target.SendLobby(LobbyManager.Instance.TradeAccepted(0x09950995));
             manager.Send(LobbyManager.Instance.TradeAccepted(0x09950995));
         }
+        public static void Handle_879(PacketReader packet, ConnServer manager)
+        {
+            uint unk1 = packet.ReadUInt32();
+            uint unk2 = packet.ReadUInt32();
+            byte cmd = packet.ReadUInt8();
 
-        public static void HandleTradeAct(PacketReader packet, ConnServer manager)
+            Console.WriteLine(unk1 + " " + unk2 + " " + cmd);
+        }
+        public static void HandleTradeAct(PacketReader packet, ConnServer manager) // 884
         {
             // cmds:
             /*
@@ -256,7 +271,18 @@ namespace Qserver.GameServer.Network.Handlers
                 return;
 
             if (cmd == 50) // player cancle
+            {
+                
                 Game.Instance.TradeManager.OnCancel(player);
+                //target.SendLobby(LobbyManager.Instance.Send_877());
+
+                // update player
+                manager.Send(LobbyManager.Instance.Send_885(token, (byte)cmd));
+
+                // NOTE: not needed, is done trough by response
+                // let target know player canceled  
+                //target.SendLobby(LobbyManager.Instance.TradeCanceledByPlayer());
+            }     
             else if (cmd == 51) // player accept pending 1
             {
                 Game.Instance.TradeManager.OnTradePropose(player);
@@ -265,14 +291,18 @@ namespace Qserver.GameServer.Network.Handlers
             {
                 Game.Instance.TradeManager.OnProposalAccept(player);
 
-                // try to complete trade
-                if(Game.Instance.TradeManager.DoTrade(player))
-                {
-                    // todo?
-                    manager.Send(LobbyManager.Instance.Send_892(token, player.Don));
-                    target.SendLobby(LobbyManager.Instance.Send_892(token, target.Don));
-                }
-            }else
+                //// TODO: try to complete trade
+                //if(Game.Instance.TradeManager.DoTrade(player))
+                //{
+                //    // todo?
+                //    manager.Send(LobbyManager.Instance.Send_892(token, player.Don));
+                //    target.SendLobby(LobbyManager.Instance.Send_892(token, target.Don));
+                //}
+
+                // NOTE: temp block trade completion ;P
+                cmd = 50;
+            }
+            else
             {
                 // error unk cmd
                 manager.Send(LobbyManager.Instance.Send_886());
@@ -285,31 +315,9 @@ namespace Qserver.GameServer.Network.Handlers
             // update target
             target.SendLobby(LobbyManager.Instance.Send_887(token, player.PlayerId, (byte)cmd));
         }
-        public static void Handle_882(PacketReader packet, ConnServer manager)
+        public static void HandleTradeItem(PacketReader packet, ConnServer manager) // 888
         {
-            uint unk1 = packet.ReadUInt32();
-            byte unk2 = packet.ReadUInt8();
-
-            // do smthing?
-
-            throw new NotImplementedException();
-        }
-
-        public static void HandleTradeItem(PacketReader packet, ConnServer manager)
-        {
-            // TODO: trigger me
-
-            //uint CardOrItemId = packet.ReadUInt32();
-            //Console.WriteLine("Possible item/card: " + CardOrItemId);
-
-            // Size: 3C
-
-            uint unk1 = packet.ReadUInt32(); //  0x95099509   target/token?  // 0
-
-            // cmd:
-            // - 100: insert item
-            // - 101: ???
-            // - 102: ???
+            uint token = packet.ReadUInt32(); //   target/token?  // 0
             uint cmd = packet.ReadUInt32(); // 0x64 (cmd?)          // 4 (100: add, 101: remove, 102: unk)
             byte unk3 = packet.ReadUInt8();                         // 8
 
@@ -359,6 +367,15 @@ namespace Qserver.GameServer.Network.Handlers
             if (target == null)
                 return; // TODO: send trade error?
 
+            // Lookup cardId and overwrite client card info with server card info
+            card = player.InventoryManager.Get(card.Id);
+            if(card.Id == 0)
+            {
+                // not found serverside
+                manager.Send(LobbyManager.Instance.Send_890());
+                return;
+            }
+
             bool status = false;
 
             if (cmd == 100)
@@ -373,8 +390,8 @@ namespace Qserver.GameServer.Network.Handlers
             // update clients
             if (status)
             {
-                manager.Send(LobbyManager.Instance.Send_889(unk1)); // unk magic value
-                target.SendLobby(LobbyManager.Instance.Send_891(unk1, card, cmd));
+                manager.Send(LobbyManager.Instance.Send_889(token)); // unk magic value
+                target.SendLobby(LobbyManager.Instance.Send_891(token, card, cmd));
             }
             else
                 manager.Send(LobbyManager.Instance.Send_890());

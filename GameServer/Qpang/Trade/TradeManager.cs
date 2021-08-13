@@ -144,7 +144,6 @@ namespace Qserver.GameServer.Qpang
 
                 this._traders.Add(player.PlayerId, targetId);
                 this._traders.Add(targetId, player.PlayerId);
-
             }
             return true;
         }

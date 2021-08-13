@@ -210,8 +210,8 @@ namespace Qserver.GameServer.Network
 		LOBBY_TRADE_CMD = 888,                  // in (cmds 100, 101, 102)
 		// 889 itme update player				// out
 		// 890 OnLsTradeSetElementFail			// out
-		// 891 itme update player				// out
-		// 892 functional						// out 
+		// 891 iten update target				// out
+		// 892 Trade complete?					// out 
 		// 893 OnLsTradeFailInform				// out
 
 		// 895									// out

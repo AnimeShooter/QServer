@@ -30,7 +30,16 @@ namespace Qserver.GameServer.Qpang
             this._lock = new object();
         }
 
-        // Trade if possible
+        public bool DoTrade(Player player)
+        {
+            // trade if possiblr
+            if (CanTrade(player))
+                return CompleteTrade(player);
+
+            return false;
+        }
+
+        // check trade
         public bool CanTrade(Player player)
         {
             lock(this._lock)
@@ -38,6 +47,7 @@ namespace Qserver.GameServer.Qpang
                     this._accepted.ContainsKey(this._accepted[player.PlayerId]);
         }
 
+        // trade
         public bool CompleteTrade(Player player)
         {
             lock(this._lock)
@@ -95,11 +105,6 @@ namespace Qserver.GameServer.Qpang
                     this._pending.Remove(player.PlayerId);
                 }
             }
-
-            // trade if possiblr
-            if(CanTrade(player))
-                return CompleteTrade(player);
-
             return true;
         }
 

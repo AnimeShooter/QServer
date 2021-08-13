@@ -264,6 +264,14 @@ namespace Qserver.GameServer.Network.Handlers
             else if(cmd == 52) // player accepts complete
             {
                 Game.Instance.TradeManager.OnProposalAccept(player);
+
+                // try to complete trade
+                if(Game.Instance.TradeManager.DoTrade(player))
+                {
+                    // todo?
+                    manager.Send(LobbyManager.Instance.Send_892(token, player.Don));
+                    target.SendLobby(LobbyManager.Instance.Send_892(token, target.Don));
+                }
             }else
             {
                 // error unk cmd

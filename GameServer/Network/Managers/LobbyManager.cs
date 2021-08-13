@@ -595,10 +595,18 @@ namespace Qserver.GameServer.Network.Managers
             pw.WriteBytes(new byte[4]); // 39
             return pw;
         }
-        public PacketWriter Send_892()
+        public PacketWriter Send_892(uint token, uint don)
         {
             PacketWriter pw = new PacketWriter((Opcode)892);
-
+            // 4
+            pw.WriteUInt32(token); // 8
+            pw.WriteUInt32(0); // unused? // C
+            pw.WriteUInt32(0); // unused? // 10
+            pw.WriteUInt32(don); // don - // 14
+            pw.WriteUInt32(0); // unk count // 18
+            pw.WriteBytes(new byte[0x50]); // ???
+            pw.WriteUInt32(0); // unk2 counter // 0x68
+            pw.WriteUInt32(0); // unk2_2 counter // 0x6C
             return pw;
         }
         public PacketWriter Send_893()
@@ -610,7 +618,7 @@ namespace Qserver.GameServer.Network.Managers
         public PacketWriter Send_895() // unk
         {
             PacketWriter pw = new PacketWriter((Opcode)895);
-            // todo 0x50
+            pw.WriteBytes(new byte[0x50]); // TODO
             return pw;
         }
         public PacketWriter Send_896(uint unk1) // unk

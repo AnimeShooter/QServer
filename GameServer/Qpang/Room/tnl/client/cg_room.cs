@@ -86,22 +86,19 @@ namespace Qserver.GameServer.Qpang
             bitStream.Read(out Cmd);
             bitStream.Read(out Value);
             Map = Value; // union
-            bitStream.Read(out Mode);
-            //bitStream.Read(out RoomId);
-            RoomId = Mode;
-            bitStream.Read(out MemberCount);
-            //bitStream.Read(out RoomId2);
-            RoomId2 = MemberCount; // union
-            bitStream.Read(out Goal);
-            
-            //ByteBuffer passwordBuffer = new ByteBuffer(256);
-            bitStream.ReadString(out Password);
-            //Password = ByteBufferToString(passwordBuffer, false);
 
-            //bitStream.ReadString(out Password); // pw?
-            ByteBuffer titleBuffer = new ByteBuffer(256); // 20 wchar?
+            bitStream.Read(out Mode);
+            RoomId = Mode;
+
+            bitStream.Read(out MemberCount);
+            RoomId2 = MemberCount; // union
+
+            bitStream.Read(out Goal);
+            bitStream.ReadString(out Password);
+
+            ByteBuffer titleBuffer = new ByteBuffer(256);
             bitStream.Read(titleBuffer);
-            Title = ByteBufferToString(titleBuffer); // 30? (or 20?)
+            Title = ByteBufferToString(titleBuffer);
 
             bitStream.Read(out TimeAmount);
             PointsAmount = TimeAmount;
@@ -149,9 +146,9 @@ namespace Qserver.GameServer.Qpang
                     return;
                 }
 
-                //var newroom = Game.Instance.RoomManager.Create(Title, (byte)Map, (GameMode.Mode)Mode, Settings.SERVER_IP);
-                var newroom = Game.Instance.RoomManager.Create(Title, (byte)Map, (GameMode.Mode)Mode, (uint)conn.GetNetAddress().Address.Address); // P2P ?
-                Util.Log.Message(Util.LogType.MISC, "New room host at: " + conn.GetNetAddress().Address.Address.ToString("X8"));
+                var newroom = Game.Instance.RoomManager.Create(Title, (byte)Map, (GameMode.Mode)Mode, Settings.SERVER_IP);
+                //var newroom = Game.Instance.RoomManager.Create(Title, (byte)Map, (GameMode.Mode)Mode, (uint)conn.GetNetAddress().Address.Address); // P2P ?
+                //Util.Log.Message(Util.LogType.MISC, "New room host at: " + conn.GetNetAddress().Address.Address.ToString("X8"));
                 newroom.EventRoom = Cmd == (uint)Commands.CREATE_EVENT_ROOM;
                 newroom.AddPlayer(conn);
             }
@@ -196,16 +193,16 @@ namespace Qserver.GameServer.Qpang
                         room.SetMap((byte)Value);
                         return;
                     case Commands.MODE_ROOM:
-                        bool validMode = Mode == (uint)GameMode.Mode.DM ||
-                            Mode == (uint)GameMode.Mode.TDM ||
-                            Mode == (uint)GameMode.Mode.PTE ||
-                            Mode == (uint)GameMode.Mode.VIP;
-                        if(!validMode)
-                        {
-                            conn.PostNetEvent(new GCRoom(player.PlayerId, (uint)Commands.MODE_ROOM, room));
-                            player.Broadcast("Sorry, this game mode has not been implemented yet");
-                            return;
-                        }
+                        //bool validMode = Mode == (uint)GameMode.Mode.DM ||
+                        //    Mode == (uint)GameMode.Mode.TDM ||
+                        //    Mode == (uint)GameMode.Mode.PTE ||
+                        //    Mode == (uint)GameMode.Mode.VIP;
+                        //if(!validMode)
+                        //{
+                        //    conn.PostNetEvent(new GCRoom(player.PlayerId, (uint)Commands.MODE_ROOM, room));
+                        //    player.Broadcast("Sorry, this game mode has not been implemented yet");
+                        //    return;
+                        //}
                         room.SetMode((GameMode.Mode)Mode);
                         break;
                     case Commands.SET_POINTS:

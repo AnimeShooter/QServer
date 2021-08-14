@@ -36,10 +36,10 @@ namespace Qserver.GameServer.Qpang
         {
             bitStream.Read(out PlayerId);
             bitStream.Read(out Cmd);
-            var nickBuff = new ByteBuffer(16);
+            var nickBuff = new ByteBuffer(18);
             bitStream.Read(nickBuff);
             Nickname = ByteBufferToString(nickBuff);
-            var msgBuff = new ByteBuffer(255);
+            var msgBuff = new ByteBuffer(256);
             bitStream.Read(msgBuff);
             Message = ByteBufferToString(msgBuff); // TODO: debug?
         }

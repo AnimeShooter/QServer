@@ -56,7 +56,6 @@ namespace Qserver.GameServer.Qpang
 
         public GCRoom(uint playerId, uint cmd, Room room) : base(GameNetId.GC_ROOM, GuaranteeType.Guaranteed, EventDirection.DirAny)
         {
-            // NOTE: 150 error packet
             Zero = 0;
             PlayerId = playerId;
             Cmd = cmd;

@@ -60,7 +60,7 @@ namespace Qserver.GameServer.Qpang
 
             var spawn = Game.Instance.SpawnManager.GetRandomTeleportSpawn(roomPlayer.Room.Map);
             var roomSession = session.RoomSession;
-            roomSession.RelayPlaying<GCRespawn>(player.PlayerId, session.Character, 2, spawn.X, spawn.Y, spawn.Z);
+            roomSession.RelayPlaying<GCRespawn>(player.PlayerId, session.Character, (uint)2, spawn.X, spawn.Y, spawn.Z, false);
         }
     }
 }

@@ -30,10 +30,8 @@ namespace Qserver.GameServer.Qpang
         private GameItemManager _itemManager;
         private RoomSkillManager _skillManager;
 
-        private object _playerlock; // NOTE: multiple locks?
         private Dictionary<uint, RoomSessionPlayer> _players;
 
-        private object _leaverLock;
         private List<RoomSessionPlayer> _leavers;
 
         private RoomSessionPlayer _essenceHolder;
@@ -121,6 +119,8 @@ namespace Qserver.GameServer.Qpang
             this._leavers = new List<RoomSessionPlayer>();
             this._players = new Dictionary<uint, RoomSessionPlayer>();
 
+            this._itemManager = new GameItemManager();
+            this._skillManager = new RoomSkillManager(this);
 
             this._goal = this._room.PointsGame ? this._room.ScorePoints : this._room.ScoreTime;
             this._isPoints = this._room.PointsGame;
@@ -172,7 +172,7 @@ namespace Qserver.GameServer.Qpang
 
                 // TODO verify Hadnle Leaving
 
-                lock (this._leaverLock)
+                lock (this._lockLeavers)
                 {
                     RoomSessionPlayer found = null;
                     foreach (var p in this._leavers)
@@ -210,10 +210,10 @@ namespace Qserver.GameServer.Qpang
                     this._yellowVIP = null;
 
                 if (player.Playing)
-                    Relay<GCGameState>(id, 15);
+                    Relay<GCGameState>(id, (uint)15, (uint)0, (uint)0);
                 else
                 {
-                    RelayPlaying<GCGameState>(id, 15);
+                    RelayPlaying<GCGameState>(id, (uint)15, (uint)0, (uint)0);
                     player.Post(new GCGameState(id, 15));
                 }
 
@@ -269,7 +269,7 @@ namespace Qserver.GameServer.Qpang
 
         public List<RoomSessionPlayer> GetPlayers()
         {
-            lock(this._playerlock)
+            lock(this._lockPlayers)
             {
                 List<RoomSessionPlayer> players = new List<RoomSessionPlayer>();
                 foreach (var p in this._players)
@@ -375,7 +375,7 @@ namespace Qserver.GameServer.Qpang
             this._nexYellowVIP = null;
             this._yellowVIP = null;
 
-            lock(this._leaverLock)
+            lock(this._lockLeavers)
             {
                 foreach(var p in this._leavers)
                 {
@@ -451,10 +451,10 @@ namespace Qserver.GameServer.Qpang
 
         public void Clear()
         {
-            lock (this._playerlock)
+            lock (this._lockPlayers)
                 this._players.Clear();
 
-            lock (this._leaverLock)
+            lock (this._lockLeavers)
                 this._leavers.Clear();
         }
 
@@ -495,7 +495,7 @@ namespace Qserver.GameServer.Qpang
 
         public List<RoomSessionPlayer> GetPlayingPlayers()
         {
-            lock(this._playerlock)
+            lock(this._lockPlayers)
             {
                 var players = new List<RoomSessionPlayer>();
                 foreach (var p in this._players)
@@ -624,12 +624,12 @@ namespace Qserver.GameServer.Qpang
                     SetYellowVip(player);
             }
 
-            RelayPlaying<GCRespawn>(player.Player.PlayerId, player.Character, 0, spawn.X, spawn.Y, spawn.Z, IsVip(player));
+            RelayPlaying<GCRespawn>(player.Player.PlayerId, (uint)player.Character, (uint)0, spawn.X, spawn.Y, spawn.Z, IsVip(player));
         }
 
         public void SyncPlayer(RoomSessionPlayer player)
         {
-            lock(this._playerlock)
+            lock(this._lockPlayers)
             {
                 foreach(var p in this._players)
                 {
@@ -673,12 +673,12 @@ namespace Qserver.GameServer.Qpang
 
         public void KillPlayer(RoomSessionPlayer killer, RoomSessionPlayer target, uint weaponId, bool isHeadshot)
         {
-            RelayPlaying<GCGameState>(target.Player.PlayerId, isHeadshot ? 28 : 17, weaponId, killer.Player.PlayerId);
+            RelayPlaying<GCGameState>(target.Player.PlayerId, isHeadshot ? (uint)28 : (uint)17, weaponId, killer.Player.PlayerId);
         }
 
         public RoomSessionPlayer FindEligibleVip(byte team, bool noConditions)
         {
-            lock(this._playerlock)
+            lock(this._lockPlayers)
             {
                 List<RoomSessionPlayer> players = new List<RoomSessionPlayer>();
                 int playerCount = 0;

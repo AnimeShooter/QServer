@@ -46,7 +46,9 @@ namespace Qserver.GameServer.Qpang
             bitStream.Write(1);
             bitStream.Write((uint)222);
             bitStream.Write((ushort)TargetId);
-            bitStream.WriteString(key, (byte)key.Length);
+
+            WriteWString(bitStream, key, (uint)key.Length);
+            //bitStream.WriteString(key, (byte)key.Length);
         }
 
         public override void Unpack(EventConnection ps, BitStream bitStream) { }

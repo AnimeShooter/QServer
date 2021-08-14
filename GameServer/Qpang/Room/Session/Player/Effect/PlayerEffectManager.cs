@@ -128,7 +128,7 @@ namespace Qserver.GameServer.Qpang
                     if(this._player.Death)
                     {
                         owner.RoomSession.GameMode.OnPlayerKill(owner, this._player, effect.Weapon, 1);
-                        owner.RoomSession.RelayPlaying<GCGameState>(this._player.Player.PlayerId, 17, effect.Weapon.EffectId, owner.Player.PlayerId);
+                        owner.RoomSession.RelayPlaying<GCGameState>(this._player.Player.PlayerId, (uint)17, (uint)effect.Weapon.EffectId, owner.Player.PlayerId);
                     }
                 }
             }

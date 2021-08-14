@@ -202,7 +202,7 @@ namespace Qserver.GameServer.Qpang
 
             this._effectManager = new PlayerEffectManager(this);
             this._weaponManager = new PlayerWeaponManager();  // TODO
-            //this._skillManager = new PlayerSkillManager();
+            this._skillManager = new PlayerSkillManager(this); // TODO
             this._entityManager = new PlayerEntityManager(this);
 
             var player = conn.Player;
@@ -258,8 +258,8 @@ namespace Qserver.GameServer.Qpang
 
             this._conn.Player.AchievementContainer.ResetRecent();
 
-            this._roomSession.RelayExcept<GCGameState>(this._conn.Player.PlayerId, this._conn.Player.PlayerId, 3);
-            this._conn.PostNetEvent(new GCGameState(this._conn.Player.PlayerId, 4));
+            this._roomSession.RelayExcept<GCGameState>(this._conn.Player.PlayerId, this._conn.Player.PlayerId, (uint)3, (uint)0, (uint)0);
+            this._conn.PostNetEvent(new GCGameState(this._conn.Player.PlayerId, (uint)4));
 
             this._roomSession.SyncPlayer(this);
         }
@@ -296,7 +296,7 @@ namespace Qserver.GameServer.Qpang
         public void RemoveInvincibility()
         {
             this._isInvincible = false;
-            this._roomSession.RelayPlaying<GCGameState>(this._conn.Player.PlayerId, 8);
+            this._roomSession.RelayPlaying<GCGameState>(this._conn.Player.PlayerId, (uint)8, (uint)0, (uint)0);
         }
 
         public void AddPlayer(RoomSessionPlayer player)

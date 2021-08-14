@@ -30,9 +30,16 @@ namespace Qserver.GameServer.Network
                     _listener.Start();
                     while (true)
                     {
-                        Thread.Sleep(1);
-                        if(_listener.Pending())
-                            _listener.BeginAcceptSocket(AcceptCallback, null);
+                        try
+                        {
+                            Thread.Sleep(1);
+                            if (_listener.Pending())
+                                _listener.BeginAcceptSocket(AcceptCallback, null);
+                        }
+                        catch (Exception e)
+                        {
+                            Log.Message(LogType.ERROR, "{0}", e.Message);
+                        }
                     }        
                 }
                 return true;

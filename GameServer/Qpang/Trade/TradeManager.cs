@@ -163,6 +163,14 @@ namespace Qserver.GameServer.Qpang
             {
                 if (this._request.ContainsKey(targetId))
                     return false; // do not alow trading while already requestion a trade?
+
+                var target = Game.Instance.GetPlayer(targetId);
+                if (target == null)
+                    return false;
+
+                if (!target.Online)
+                    return false;
+
                 this._request.Add(player.PlayerId, targetId);
                 this._request.Add(targetId, player.PlayerId);
 
@@ -181,46 +189,46 @@ namespace Qserver.GameServer.Qpang
             lock (this._lock)
             {
                 uint targetId = 0;
-                if (this._items.ContainsKey(player.PlayerId))
+                if (!this._items.ContainsKey(player.PlayerId))
+                    return;
+
+                // remove traders
+                if (this._request.ContainsKey(player.PlayerId))
                 {
-                    // remove traders
-                    if (this._request.ContainsKey(player.PlayerId))
-                    {
-                        targetId = this._request[player.PlayerId];
-                        this._request.Remove(player.PlayerId);
-                    }
-                    if (this._traders.ContainsKey(player.PlayerId))
-                    {
-                        targetId = this._traders[player.PlayerId];
-                        this._traders.Remove(player.PlayerId);
-                    }
-                    if (this._pending.ContainsKey(player.PlayerId))
-                    {
-                        targetId = this._pending[player.PlayerId];
-                        this._pending.Remove(player.PlayerId);
-                    }
-                    if (this._accepted.ContainsKey(player.PlayerId))
-                    {
-                        targetId = this._accepted[player.PlayerId];
-                        this._accepted.Remove(player.PlayerId);
-                    }
-
-                    if (this._request.ContainsKey(targetId))
-                        this._request.Remove(targetId);
-
-                    if (this._traders.ContainsKey(targetId))
-                        this._traders.Remove(targetId);
-
-                    if (this._pending.ContainsKey(targetId))
-                        this._pending.Remove(targetId);
-
-                    if (this._accepted.ContainsKey(targetId))
-                        this._accepted.Remove(targetId);
-
-                    // remove items
-                    this._items.Remove(player.PlayerId);
-                    this._items.Remove(targetId);
+                    targetId = this._request[player.PlayerId];
+                    this._request.Remove(player.PlayerId);
                 }
+                if (this._traders.ContainsKey(player.PlayerId))
+                {
+                    targetId = this._traders[player.PlayerId];
+                    this._traders.Remove(player.PlayerId);
+                }
+                if (this._pending.ContainsKey(player.PlayerId))
+                {
+                    targetId = this._pending[player.PlayerId];
+                    this._pending.Remove(player.PlayerId);
+                }
+                if (this._accepted.ContainsKey(player.PlayerId))
+                {
+                    targetId = this._accepted[player.PlayerId];
+                    this._accepted.Remove(player.PlayerId);
+                }
+
+                if (this._request.ContainsKey(targetId))
+                    this._request.Remove(targetId);
+
+                if (this._traders.ContainsKey(targetId))
+                    this._traders.Remove(targetId);
+
+                if (this._pending.ContainsKey(targetId))
+                    this._pending.Remove(targetId);
+
+                if (this._accepted.ContainsKey(targetId))
+                    this._accepted.Remove(targetId);
+
+                // remove items
+                this._items.Remove(player.PlayerId);
+                this._items.Remove(targetId);
             }
         }
 

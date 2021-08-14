@@ -291,6 +291,9 @@ namespace Qserver.GameServer.Qpang
 
                 if (this._squareConnection != null)
                     this._squareConnection.CloseSocket();
+
+                // cancle if any
+                Game.Instance.TradeManager.OnCancel(this);
             }
 
             SetOnlineStatus(false);

@@ -94,9 +94,9 @@ namespace Qserver.GameServer.Qpang
             RoomId2 = MemberCount; // union
             bitStream.Read(out Goal);
             
-            ByteBuffer passwordBuffer = new ByteBuffer(256);
-            bitStream.Read(passwordBuffer);
-            Password = ByteBufferToString(passwordBuffer, false);
+            //ByteBuffer passwordBuffer = new ByteBuffer(256);
+            bitStream.ReadString(out Password);
+            //Password = ByteBufferToString(passwordBuffer, false);
 
             //bitStream.ReadString(out Password); // pw?
             ByteBuffer titleBuffer = new ByteBuffer(256); // 20 wchar?
@@ -149,8 +149,9 @@ namespace Qserver.GameServer.Qpang
                     return;
                 }
 
-                var newroom = Game.Instance.RoomManager.Create(Title, (byte)Map, (GameMode.Mode)Mode, Settings.SERVER_IP);
-                //var newroom = Game.Instance.RoomManager.Create(Title, (byte)Map, (GameMode.Mode)Mode, (uint)conn.GetNetAddress().Address.Address); // P2P ?
+                //var newroom = Game.Instance.RoomManager.Create(Title, (byte)Map, (GameMode.Mode)Mode, Settings.SERVER_IP);
+                var newroom = Game.Instance.RoomManager.Create(Title, (byte)Map, (GameMode.Mode)Mode, (uint)conn.GetNetAddress().Address.Address); // P2P ?
+                Util.Log.Message(Util.LogType.MISC, "New room host at: " + conn.GetNetAddress().Address.Address.ToString("X8"));
                 newroom.EventRoom = Cmd == (uint)Commands.CREATE_EVENT_ROOM;
                 newroom.AddPlayer(conn);
             }

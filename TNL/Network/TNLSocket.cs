@@ -42,48 +42,56 @@ namespace TNL.Network
 
         private void OnEndReceive(IAsyncResult result)
         {
-            try
+            try // mine
             {
-                var ep = new IPEndPoint(0, 0);
+                try
+                {
+                    var ep = new IPEndPoint(0, 0);
 
-                var buff = _socket.EndReceive(result, ref ep);
+                    var buff = _socket.EndReceive(result, ref ep);
 
-                //// debug
-                //lock(flock)
-                //{
-                //    string bytes = BitConverter.ToString(buff);
-                //    if (!File.Exists("debug.txt"))
-                //        File.Create("debug.txt").Close();
-                //    string old = File.ReadAllText("debug.txt");
-                //    File.WriteAllText("debug.txt", old + bytes + "\r\n");
-                //}
-               
+                    //// debug
+                    //lock(flock)
+                    //{
+                    //    string bytes = BitConverter.ToString(buff);
+                    //    if (!File.Exists("debug.txt"))
+                    //        File.Create("debug.txt").Close();
+                    //    string old = File.ReadAllText("debug.txt");
+                    //    File.WriteAllText("debug.txt", old + bytes + "\r\n");
+                    //}
 
-                if (buff != null && buff.Length > 0)
-                    PacketsToBeHandled.Enqueue(new(ep, buff));
-            }
-            catch (ObjectDisposedException)
-            {
-                Console.WriteLine("Socket closed, stop listening!");
 
-                Stop();
-            }
-            catch (SocketException se)
-            {
-                if (se.SocketErrorCode != SocketError.ConnectionReset)
+                    if (buff != null && buff.Length > 0)
+                        PacketsToBeHandled.Enqueue(new(ep, buff));
+                }
+                catch (ObjectDisposedException)
+                {
+                    Console.WriteLine("Socket closed, stop listening!");
+
+                    Stop();
+                }
+                catch (SocketException se)
+                {
+                    if (se.SocketErrorCode != SocketError.ConnectionReset)
+                    {
+                        Console.WriteLine("Unknown error (receive)!");
+                        Console.WriteLine(se);
+                    }
+                }
+                catch (Exception e)
                 {
                     Console.WriteLine("Unknown error (receive)!");
-                    Console.WriteLine(se);
+                    Console.WriteLine(e);
                 }
-            }
-            catch (Exception e)
+
+                if (_needRun && _socket != null)
+                    _socket.BeginReceive(OnEndReceive, null);
+
+            }catch(Exception e) // mine
             {
                 Console.WriteLine("Unknown error (receive)!");
                 Console.WriteLine(e);
             }
-
-            if (_needRun && _socket != null)
-                _socket.BeginReceive(OnEndReceive, null);
         }
 
         public void Stop()

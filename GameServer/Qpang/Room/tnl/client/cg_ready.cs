@@ -81,9 +81,10 @@ namespace Qserver.GameServer.Qpang
                     roomPlayer.OnStart();
 
                 }
+                else
+                    roomPlayer.SetReady(true);
             }
-            else
-                roomPlayer.SetReady(true);
+            
 
         }
     }

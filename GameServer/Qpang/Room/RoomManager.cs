@@ -54,7 +54,7 @@ namespace Qserver.GameServer.Qpang
             //host = 0;
 
             if (host != 0)
-                room = new Room(id, name, map, mode, host, (ushort)Settings.SERVER_PORT_ROOM);
+                room = new Room(id, name, map, mode, host, (ushort)Settings.SERVER_PORT_ROOM, true);
             else
                 room = new Room(id, name, map, mode, Settings.SERVER_IP, (ushort)Settings.SERVER_PORT_ROOM);
             lock(this._lock)

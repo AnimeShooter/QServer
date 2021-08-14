@@ -201,11 +201,14 @@ namespace Qserver.GameServer.Qpang
 
         public void EnterRoom(Room room)
         {
-            PostNetEvent(new GCRoom(this._player.PlayerId, 9, room)); // 150 invalid?
-            PostNetEvent(new GCRoomInfo(room));  // 150 invalid?
+            PostNetEvent(new GCRoom(this._player.PlayerId, 9, room)); 
+            PostNetEvent(new GCRoomInfo(room));
 
             UpdateRoom(room, room.PointsGame ? (uint)4 : (uint)20, room.PointsGame ? room.ScorePoints : room.ScoreTime);
             UpdateRoom(room, 26, 0); // t s
+
+            //UpdateRoom(room, 3, 2); // mode, 2
+            //UpdateRoom(room, 3, 1); // mode, 2
         }
 
         public void UpdateRoom(Room room, uint cmd, uint val)

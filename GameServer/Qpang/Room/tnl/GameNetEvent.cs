@@ -34,7 +34,6 @@ namespace Qserver.GameServer.Qpang
             Log.Message(LogType.ERROR, $"GameNetEvent Unhandeled {Id}!");
         }
 
-
         // helpers
         public void WriteWString(BitStream bitSteam, string str, uint maxLen = 0)
         {
@@ -44,7 +43,6 @@ namespace Qserver.GameServer.Qpang
             byte[] strBuffer = new byte[(uint)(maxLen * 2 + 2)];
             ByteBuffer byteBuffer = new ByteBuffer((uint)strBuffer.Length);
 
-            //for (int i = 0; i < maxLen; i++)
             for (int i = 0; i < str.Length; i++)
                 strBuffer[i * 2] = (byte)str[i];
 

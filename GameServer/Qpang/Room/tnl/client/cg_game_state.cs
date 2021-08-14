@@ -86,10 +86,12 @@ namespace Qserver.GameServer.Qpang
 				case State.LEAVE_GAME:
 					var roomSessionLg = roomPlayer.Room.RoomSession;
 					if (roomSessionLg != null)
+                    {
 						if (!roomSessionLg.RemovePlayer(player.PlayerId))
 							conn.PostNetEvent(new GCGameState(player.PlayerId, 15));
-						else
-							conn.PostNetEvent(new GCGameState(player.PlayerId, 15));
+					}
+					else
+						conn.PostNetEvent(new GCGameState(player.PlayerId, 15));
 
 					roomPlayer.Playing = false;
 					roomPlayer.Spectating = false;

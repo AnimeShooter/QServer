@@ -52,9 +52,47 @@ namespace Qserver.GameServer.Qpang
             }
         }
 
-        public PlayerWeaponManager(RoomSessionPlayer player)
+        public PlayerWeaponManager()
+        {
+            this._selectedWeaponIndex = 0;
+            
+        }
+
+        public void Initialize(RoomSessionPlayer player)
         {
             this._player = player;
+            this._weapons = new Weapon[4];
+            this._defaultAmmo = new Dictionary<uint, ushort[]>();
+
+            
+            //var equipmentManager = this._player.Player.EquipmentManager;
+            //var itemIds = equipmentManager.GetWeaponItemIdsByCharacter(this._player.Character);
+            //var hasPreSelectedWeapons = false;
+            //var isMeleeOnly = player.RoomSession.Room.MeleeOnly;
+
+            //for(int i = 0; i < itemIds.Length; i++)
+            //{
+            //    var weapon = Game.Instance.WeaponManager.Get(itemIds[i]);
+
+            //    if (isMeleeOnly)
+            //    {
+            //        if (i == 3)
+            //            this._weapons[3] = weapon;
+            //    }
+            //    else
+            //        this._weapons[i] = weapon;
+
+            //    var defaultAmmo = this._defaultAmmo[weapon.ItemId];
+
+            //    defaultAmmo[0] = (ushort)(weapon.ClipCount + equipmentManager.GetExtraAmmoForWeaponIndex((byte)i));
+            //    defaultAmmo[1] = (ushort)(weapon.ClipSize);
+
+            //    if(this._weapons[i].ItemId != 0 && !hasPreSelectedWeapons)
+            //    {
+            //        this._selectedWeaponIndex = (byte)i;
+            //        hasPreSelectedWeapons = true;
+            //    }
+            //}
         }
 
         public void Reset()
@@ -77,7 +115,7 @@ namespace Qserver.GameServer.Qpang
             }
         }
 
-        public void Reload(uint seqId = 0)
+        public void Reload(ulong seqId = 0)
         {
             this._weapons[this._selectedWeaponIndex].ClipCount--;
             this._weapons[this._selectedWeaponIndex].ClipSize = this._defaultAmmo[SelectedWeapon.ItemId][1];

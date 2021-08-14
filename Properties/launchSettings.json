@@ -2,7 +2,7 @@
   "profiles": {
     "QPangServer": {
       "commandName": "Project",
-      "commandLineArgs": "--WebAPI --WebSocket --Debug"
+      "commandLineArgs": "--WebAPI --WebSocket"
     }
   }
 }

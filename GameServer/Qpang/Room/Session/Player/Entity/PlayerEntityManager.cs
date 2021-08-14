@@ -10,7 +10,12 @@ namespace Qserver.GameServer.Qpang
         private uint _bulletIndex;
         private PlayerBulletEntity[] _validBullets;
 
-        public PlayerEntityManager(RoomSessionPlayer player)
+        public PlayerEntityManager()
+        {
+            
+        }
+
+        public void Initialize(RoomSessionPlayer player)
         {
             this._player = player;
             this._validBullets = new PlayerBulletEntity[20];

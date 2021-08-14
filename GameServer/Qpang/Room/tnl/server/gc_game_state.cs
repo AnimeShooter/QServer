@@ -55,7 +55,7 @@ namespace Qserver.GameServer.Qpang
             DataUid = dataUid;
         }
 
-        public GCGameState(RoomSessionPlayer player, uint cmd, uint value = 0, uint dataUid =  0) : base(GameNetId.GC_GAME_STATE, GuaranteeType.Guaranteed, EventDirection.DirServerToClient) 
+        public GCGameState(RoomSessionPlayer player, uint cmd, uint value = 0, uint dataUid = 0) : base(GameNetId.GC_GAME_STATE, GuaranteeType.Guaranteed, EventDirection.DirServerToClient) 
         {
             Uid = player.Player.PlayerId;
             Cmd = (byte)cmd;

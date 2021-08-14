@@ -10,11 +10,15 @@ namespace Qserver.GameServer.Qpang
         private List<Effect> _effects;
         private RoomSessionPlayer _player;
 
-        public PlayerEffectManager(RoomSessionPlayer player)
+        public PlayerEffectManager()
         {
             this._effects = new List<Effect>();
-            this._player = player;
+        }
+
+        public void Initialize(RoomSessionPlayer player)
+        {
             this._lastTick = Util.Util.Timestamp();
+            this._player = player;
         }
 
         public void Tick()
@@ -79,9 +83,8 @@ namespace Qserver.GameServer.Qpang
                     if (clearedEffects.Contains(effect.Weapon.EffectId))
                         continue;
 
-                    // TOD)
                     clearedEffects.Add(effect.Weapon.EffectId);
-                    //this._player.Post(new GCWeapon(this._player.Player.PlayerId, 6, effect.Weapon.EffectId));
+                    this._player.Post(new GCWeapon(this._player.Player.PlayerId, 6, effect.Weapon.EffectId));
 
                 }
             }
@@ -103,8 +106,8 @@ namespace Qserver.GameServer.Qpang
                     if (effect.Weapon.EffectId == effectId && effect.Weapon.EffectId > 0)
                         sharedEffectCount++;
                 // TODO
-                //if (sharedEffectCount == 0)
-                //    this._player.RoomSession.RelayPlaying<GCWeapon>(this._player.Player.PlayerId, 6, effectId);
+                if (sharedEffectCount == 0)
+                    this._player.RoomSession.RelayPlaying<GCWeapon>(this._player.Player.PlayerId, (uint)6, (ushort)effectId);
             }
         }
 
@@ -123,10 +126,10 @@ namespace Qserver.GameServer.Qpang
 
                 lock(owner.Lock)
                 {
-                    //this._player.RoomSession.RelayPlaying<GCHit>(owner.Player.PlayerId, this._player.Player.PlayerId, 1, 0, 0, 0, 0, 0, 0, effect.EntityId, 1, 1,
-                    //    this._player.Health, 5, effect.Weapon.ItemId, 1, 1, 1, owner.Streak + 1, 0, 0);
+                    this._player.RoomSession.RelayPlaying<GCHit>(owner.Player.PlayerId, this._player.Player.PlayerId, (uint)1, (float)0, (float)0, (float)0, (float)0, (float)0, (float)0, effect.EntityId, (byte)1, (byte)1,
+                        this._player.Health, (ushort)5, effect.Weapon.ItemId, (ulong)1, (uint)1, (byte)1, (byte)(owner.Streak + 1), (byte)0, (byte)0, (byte)0, (byte)0, (byte)0);
 
-                    if(this._player.Death)
+                    if (this._player.Death)
                     {
                         owner.RoomSession.GameMode.OnPlayerKill(owner, this._player, effect.Weapon, 1);
                         owner.RoomSession.RelayPlaying<GCGameState>(this._player.Player.PlayerId, (uint)17, (uint)effect.Weapon.EffectId, owner.Player.PlayerId);

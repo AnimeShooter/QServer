@@ -13,9 +13,13 @@ namespace Qserver.GameServer.Qpang
         private uint _skillPoints;
         private object _lock;
 
-        public PlayerSkillManager(RoomSessionPlayer player)
+        public PlayerSkillManager()
         {
             this._lock = new object();
+        }
+
+        public void Initialize(RoomSessionPlayer player)
+        {
             this._player = player;
             this._equippedCards = this._player.Player.EquipmentManager.GetSkillCards();
         }

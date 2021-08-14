@@ -200,10 +200,10 @@ namespace Qserver.GameServer.Qpang
             this._highestMultiKill = 0;
             this._eventItemPickUps = 0;
 
-            this._effectManager = new PlayerEffectManager(this);
-            this._weaponManager = new PlayerWeaponManager(this);  // TODO
-            this._skillManager = new PlayerSkillManager(this); // TODO
-            this._entityManager = new PlayerEntityManager(this);
+            this._effectManager = new PlayerEffectManager();
+            this._weaponManager = new PlayerWeaponManager();  // TODO
+            this._skillManager = new PlayerSkillManager(); // TODO
+            this._entityManager = new PlayerEntityManager();
 
             var player = conn.Player;
 
@@ -227,6 +227,8 @@ namespace Qserver.GameServer.Qpang
             this._donRate += equipMgr.HasFunctionCard((uint)Items.DON_MAKER_25) ? (ushort)25 : (ushort)0;
             this._donRate += equipMgr.HasFunctionCard((uint)Items.DON_MAKER_50) ? (ushort)50 : (ushort)0;
         }
+
+
 
         public void Tick()
         {
@@ -456,10 +458,10 @@ namespace Qserver.GameServer.Qpang
         public void Initialize()
         {
             this._isRespawning = false;
-            //this._effectManager.Initialize(); // TODO TODO TODO TODO
-            //this._weaponManager.Initialize();
-            //this._skillManager.Initialize();
-            //this._entityManager.Initialize();
+            this._effectManager.Initialize(this); // TODO TODO TODO TODO
+            this._weaponManager.Initialize(this);
+            this._skillManager.Initialize(this);
+            this._entityManager.Initialize(this);
         }
 
         public void AddKill()

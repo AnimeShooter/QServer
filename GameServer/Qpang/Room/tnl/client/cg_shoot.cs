@@ -75,19 +75,18 @@ namespace Qserver.GameServer.Qpang
                 return;
 
             var weaponManager = session.WeaponManager;
-            if (session.Death) // || !weaponManager.CanShoot())
+            if (session.Death || !weaponManager.CanShoot)
                 return;
 
             if (session.Invincible)
                 session.RemoveInvincibility();
 
             var playerId = player.PlayerId;
-            //weaponManager.Shoot(EntityId); // TODO
+            weaponManager.Shoot(EntityId); // TODO
 
             if (ItemId != 1095434246) //  Octo NOTE: add alll mines
                 session.EntityManager.Shoot(EntityId);
 
-            // TODO
             session.RoomSession.RelayPlayingExcept<GCShoot>(playerId, playerId, ItemId, SrcX, SrcY, SrcZ, DstX, DstY, DstZ, EntityId, (uint)0);
         }
 

@@ -61,23 +61,22 @@ namespace Qserver.GameServer.Qpang
             if (session == null)
                 return;
 
-            // TODO
             if(Cmd == (uint)Commands.SWAP)
             {
-                //if (!session.WeaponManager.HasWeapon(ItemId))
-                //    return;
+                if (!session.WeaponManager.HasWeapon(ItemId))
+                    return;
 
-                //session.WeaponManager.SwitchWeapon(ItemId);
+                session.WeaponManager.SwitchWeapon(ItemId);
             }
             else if(Cmd == (uint)Commands.RELOAD)
             {
-                //if (!session.WeaponManager.HasWeapon(ItemId))
-                //    return;
+                if (!session.WeaponManager.HasWeapon(ItemId))
+                    return;
 
-                //if (!session.WeaponManager.CanReload())
-                //    return;
+                if (!session.WeaponManager.CanReload)
+                    return;
 
-                //session.WeaponManager.Reload(CardId);
+                session.WeaponManager.Reload(CardId);
             }
         }
     }

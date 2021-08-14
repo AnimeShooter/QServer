@@ -63,7 +63,7 @@ namespace Qserver.GameServer.Qpang
             if (roomSession == null)
                 return;
 
-            roomSession.RelayPlaying<GCCard>(Uid, TargetUid, Cmd, CardType, ItemId, SeqId);
+            roomSession.RelayPlaying<GCCard>(Uid, TargetUid, (byte)Cmd, CardType, ItemId, SeqId);
         }
     }
 }

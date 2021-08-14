@@ -30,8 +30,9 @@ namespace Qserver.GameServer.Qpang
                 return;
 
             List<Effect> expired = new List<Effect>();
-            foreach(var effect in this._effects)
+            for(int i = 0; i < this._effects.Count; i++)
             {
+                var effect = this._effects[i];
                 effect.Weapon.EffectDuration--;
                 if (effect.Weapon.EffectId == 12 || effect.Weapon.EffectId == 13) // pois || fire
                     TakeDamageFromEffect(effect);

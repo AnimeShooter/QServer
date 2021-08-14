@@ -60,7 +60,7 @@ namespace Qserver.GameServer.Qpang
             {
 				if (this._weapons.ContainsKey(weaponId))
 					return this._weapons[weaponId];
-				return null;
+				return new Weapon();
             }
         }
 

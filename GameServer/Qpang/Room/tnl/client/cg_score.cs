@@ -61,7 +61,8 @@ namespace Qserver.GameServer.Qpang
 
                 var players = roomSession.GetPlayingPlayers();
                 // TODO: sort players?
-                session.Post(new GCScore(players, session.RoomSession, 1));
+                if(players != null) // ??
+                    session.Post(new GCScore(players, session.RoomSession, 1));
             }
             else if(Cmd == (uint)Commands.GAME)
             {

@@ -72,6 +72,12 @@ namespace Qserver.GameServer.Qpang
 
         public Spawn GetRandomTeleportSpawn(byte map)
         {
+            return new Spawn()
+            {
+                X = 0,
+                Y = 0,
+                Z = 30
+            };
             lock (this._lock)
             {
                 var spawns = this._spawns[map][98];

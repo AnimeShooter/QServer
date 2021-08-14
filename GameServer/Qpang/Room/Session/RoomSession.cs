@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 namespace Qserver.GameServer.Qpang
 {
@@ -35,7 +34,7 @@ namespace Qserver.GameServer.Qpang
         private List<RoomSessionPlayer> _leavers;
 
         private RoomSessionPlayer _essenceHolder;
-        private Spawn _essencePosition = new Spawn(){ X=0, Y=0, Z=0 };
+        private Spawn _essencePosition = new Spawn() { X = 0, Y = 0, Z = 0 };
 
         private RoomSessionPlayer _blueVIP;
         private RoomSessionPlayer _nexBlueVIP;
@@ -80,8 +79,8 @@ namespace Qserver.GameServer.Qpang
         public RoomSessionPlayer EssenceHolder
         {
             get { return this._essenceHolder; }
-            set 
-            { 
+            set
+            {
                 this._essenceHolder = value;
                 if (value != null)
                     this._essenceDropTime = uint.MaxValue;
@@ -147,9 +146,9 @@ namespace Qserver.GameServer.Qpang
             player.Initialize();
             player.Spectating = conn.Player.RoomPlayer.Spectating;
 
-            lock(this._lockPlayers)
+            lock (this._lockPlayers)
             {
-                foreach(var p in this._players)
+                foreach (var p in this._players)
                 {
                     if (!p.Value.Spectating)
                         player.AddPlayer(p.Value);
@@ -162,12 +161,12 @@ namespace Qserver.GameServer.Qpang
                 }
                 this._players[player.Player.PlayerId] = player; // add or set?
             }
-            
+
             var spawn = Game.Instance.SpawnManager.GetRandomSpawn(this._room.Map, team);
             player.Post(new GCGameState(player.Player.PlayerId, 11, 0)); // waiting for players
             player.Post(new GCRespawn(player.Player.PlayerId, player.Character, 1, spawn.X, spawn.Y, spawn.X));
-            
-            if(!player.Spectating)
+
+            if (!player.Spectating)
             {
 
                 // TODO verify Hadnle Leaving
@@ -188,15 +187,15 @@ namespace Qserver.GameServer.Qpang
         public bool RemovePlayer(uint id)
         {
             RoomSessionPlayer player = null;
-            lock(this._lockPlayers)
+            lock (this._lockPlayers)
             {
-                
+
                 if (!this._players.ContainsKey(id))
                     return false;
 
                 player = this._players[id];
 
-                if(player == this._essenceHolder)
+                if (player == this._essenceHolder)
                 {
                     SetEssenceHolder(null);
                     var pos = player.Position;
@@ -226,9 +225,9 @@ namespace Qserver.GameServer.Qpang
             lock (this._lockLeavers)
                 this._leavers.Add(player);
 
-            if(!this._isFinished)
+            if (!this._isFinished)
             {
-                if(this._gameMode.IsTeamMode())
+                if (this._gameMode.IsTeamMode())
                 {
                     if (this._players.Count == 0)
                         Finish();
@@ -237,19 +236,21 @@ namespace Qserver.GameServer.Qpang
                         var bluePlayers = GetPlayersForTeam(1);
                         var yellowPlayers = GetPlayersForTeam(2);
 
-                        if(bluePlayers.Count == 0)
+                        if (bluePlayers.Count == 0)
                         {
                             this._yellowPoints = 1;
                             this._bluePoints = 0;
                             Finish();
-                        }else if (yellowPlayers.Count == 0)
+                        }
+                        else if (yellowPlayers.Count == 0)
                         {
                             this._yellowPoints = 0;
                             this._bluePoints = 1;
                             Finish();
                         }
                     }
-                }else
+                }
+                else
                 {
                     if (this._players.Count <= 1)
                         Finish();
@@ -260,16 +261,16 @@ namespace Qserver.GameServer.Qpang
 
         public RoomSessionPlayer Find(uint playerId)
         {
-            lock(this._lockPlayers)
+            lock (this._lockPlayers)
                 if (this._players.ContainsKey(playerId))
                     return this._players[playerId];
-            
+
             return null;
         }
 
         public List<RoomSessionPlayer> GetPlayers()
         {
-            lock(this._lockPlayers)
+            lock (this._lockPlayers)
             {
                 List<RoomSessionPlayer> players = new List<RoomSessionPlayer>();
                 foreach (var p in this._players)
@@ -280,10 +281,10 @@ namespace Qserver.GameServer.Qpang
 
         public List<RoomSessionPlayer> GetPlayersForTeam(byte team)
         {
-            lock(this._lockPlayers)
+            lock (this._lockPlayers)
             {
                 List<RoomSessionPlayer> players = new List<RoomSessionPlayer>();
-                foreach(var p in this._players)
+                foreach (var p in this._players)
                 {
                     if (p.Value.Team == team && !p.Value.Spectating)
                         players.Add(p.Value);
@@ -302,23 +303,24 @@ namespace Qserver.GameServer.Qpang
 
             var statsMgr = player.Player.StatsManager;
 
-            if(isTeamMode)
+            if (isTeamMode)
             {
                 var yellowPoints = this._yellowPoints;
                 var bluePoints = this._bluePoints;
 
-                if(yellowPoints == bluePoints)
+                if (yellowPoints == bluePoints)
                 {
                     // draw
                     if (isMissionMode)
                         statsMgr.AddMissionDraw();
                     else
                         statsMgr.AddNormalDraw();
-                }else
+                }
+                else
                 {
                     var won = bluePoints > yellowPoints ? player.Team == 1 : player.Team == 2;
 
-                    if(won)
+                    if (won)
                     {
                         if (isMissionMode)
                             statsMgr.AddMissionWin();
@@ -338,19 +340,19 @@ namespace Qserver.GameServer.Qpang
             {
                 var players = GetPlayers();
                 var totalWinners = players.Count % 2 == 0 ? players.Count / 2 : (players.Count - 1) / 2;
-                
+
                 // TODO: sort players and pick the first totalWinners with highest score?
 
-                for(int i = 0; i < totalWinners % players.Count; i++)
+                for (int i = 0; i < totalWinners % players.Count; i++)
                 {
-                    if(player.Player.PlayerId == players[i].Player.PlayerId)
+                    if (player.Player.PlayerId == players[i].Player.PlayerId)
                     {
                         if (isMissionMode)
                             player.Player.StatsManager.AddMissionWin();
                         else
                             player.Player.StatsManager.AddNormalWin();
                     }
-                    else if(i == totalWinners - 1)
+                    else if (i == totalWinners - 1)
                     {
                         // Losers here
                         if (isMissionMode)
@@ -375,9 +377,9 @@ namespace Qserver.GameServer.Qpang
             this._nexYellowVIP = null;
             this._yellowVIP = null;
 
-            lock(this._lockLeavers)
+            lock (this._lockLeavers)
             {
-                foreach(var p in this._leavers)
+                foreach (var p in this._leavers)
                 {
                     if (this._gameMode.IsMissionMode())
                         p.Player.StatsManager.AddMissionLoss();
@@ -388,9 +390,9 @@ namespace Qserver.GameServer.Qpang
             }
 
             var players = GetPlayers();
-            foreach(var p in players)
+            foreach (var p in players)
             {
-                if(!p.Spectating)
+                if (!p.Spectating)
                 {
                     HandlePlayerFinished(p);
                     p.Stop();
@@ -403,9 +405,9 @@ namespace Qserver.GameServer.Qpang
             if (this._isFinished)
                 return false;
 
-            if(this._isPoints)
+            if (this._isPoints)
             {
-                if(this._gameMode.IsTeamMode())
+                if (this._gameMode.IsTeamMode())
                 {
                     var bluePoints = this._bluePoints;
                     var yellowPoints = this._yellowPoints;
@@ -433,9 +435,9 @@ namespace Qserver.GameServer.Qpang
 
         public void Tick()
         {
-            if(!this._isFinished)
+            if (!this._isFinished)
             {
-                lock(this._lockPlayers)
+                lock (this._lockPlayers)
                 {
                     this._itemManager.Tick();
                     this._gameMode.Tick(this);
@@ -495,7 +497,7 @@ namespace Qserver.GameServer.Qpang
 
         public List<RoomSessionPlayer> GetPlayingPlayers()
         {
-            lock(this._lockPlayers)
+            lock (this._lockPlayers)
             {
                 var players = new List<RoomSessionPlayer>();
                 foreach (var p in this._players)
@@ -615,7 +617,7 @@ namespace Qserver.GameServer.Qpang
 
             var spawn = Game.Instance.SpawnManager.GetRandomSpawn(this._room.Map, player.Team);
 
-            if(this._room.Mode == GameMode.Mode.VIP)
+            if (this._room.Mode == GameMode.Mode.VIP)
             {
                 // decide who s VIP at respawning
                 if ((this._blueVIP == null && player.Team == 1) || (player == this._nexBlueVIP && (GetElapsedBlueVipTime() > 100) || this._blueVIP.Death))
@@ -629,9 +631,9 @@ namespace Qserver.GameServer.Qpang
 
         public void SyncPlayer(RoomSessionPlayer player)
         {
-            lock(this._lockPlayers)
+            lock (this._lockPlayers)
             {
-                foreach(var p in this._players)
+                foreach (var p in this._players)
                 {
                     if (p.Value == player)
                         continue;
@@ -678,16 +680,16 @@ namespace Qserver.GameServer.Qpang
 
         public RoomSessionPlayer FindEligibleVip(byte team, bool noConditions)
         {
-            lock(this._lockPlayers)
+            lock (this._lockPlayers)
             {
                 List<RoomSessionPlayer> players = new List<RoomSessionPlayer>();
                 int playerCount = 0;
-                foreach(var p in this._players)
+                foreach (var p in this._players)
                 {
                     if (p.Value.Spectating || p.Value.Player.Rank == 3 && this._room.EventRoom) // NOTE: rank 3 is special event?
                         continue;
 
-                    if(p.Value.Team == team && (noConditions || (p.Value.Death && p.Value != this._blueVIP && p.Value != this._yellowVIP)))
+                    if (p.Value.Team == team && (noConditions || (p.Value.Death && p.Value != this._blueVIP && p.Value != this._yellowVIP)))
                     {
                         players.Add(p.Value);
                         playerCount++;
@@ -710,7 +712,7 @@ namespace Qserver.GameServer.Qpang
 
             lock (this._lockPlayers)
                 foreach (var p in this._players)
-                        p.Value.Post((GameNetEvent)ctor.Invoke(args));
+                    p.Value.Post((GameNetEvent)ctor.Invoke(args));
         }
 
         public void RelayExcept<T>(uint playerId, params object[] args)
@@ -731,8 +733,8 @@ namespace Qserver.GameServer.Qpang
 
             lock (this._lockPlayers)
                 foreach (var p in this._players)
-                        if (p.Value.Playing)
-                            p.Value.Post((GameNetEvent)ctor.Invoke(args));
+                    if (p.Value.Playing)
+                        p.Value.Post((GameNetEvent)ctor.Invoke(args));
         }
 
         public void RelayPlayingExcept<T>(uint playerId, params object[] args)
@@ -740,10 +742,10 @@ namespace Qserver.GameServer.Qpang
             Type[] types = args.Select(x => x.GetType()).ToArray();
             var ctor = typeof(T).GetConstructor(types);
 
-            lock(this._lockPlayers)
-                foreach(var p in this._players)
-                    if(p.Key != playerId)
-                        if(p.Value.Playing)
+            lock (this._lockPlayers)
+                foreach (var p in this._players)
+                    if (p.Key != playerId)
+                        if (p.Value.Playing)
                             p.Value.Post((GameNetEvent)ctor.Invoke(args));
         }
 

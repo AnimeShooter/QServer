@@ -201,7 +201,7 @@ namespace Qserver.GameServer.Qpang
             this._eventItemPickUps = 0;
 
             this._effectManager = new PlayerEffectManager(this);
-            this._weaponManager = new PlayerWeaponManager();  // TODO
+            this._weaponManager = new PlayerWeaponManager(this);  // TODO
             this._skillManager = new PlayerSkillManager(this); // TODO
             this._entityManager = new PlayerEntityManager(this);
 

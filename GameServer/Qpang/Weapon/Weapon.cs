@@ -12,16 +12,22 @@ namespace Qserver.GameServer.Qpang
         BOMB
     }
 
-    public class Weapon
+    public struct Weapon
     {
         public uint ItemId;
         public ushort Damage;
         public ushort ClipSize;
         public byte ClipCount;
-        public byte Weight = 99;
+        public byte Weight; // = 99;
         public byte EffectId;
         public byte EffectChance;
         public byte EffectDuration; // seconds
-        public WeaponType WeaponType = WeaponType.MELEE;
+        public WeaponType WeaponType; // WeaponType.MELEE;
+
+        //public Weapon()
+        //{
+        //    Weight = 99;
+        //    WeaponType = WeaponType.MELEE;
+        //}
     }
 }

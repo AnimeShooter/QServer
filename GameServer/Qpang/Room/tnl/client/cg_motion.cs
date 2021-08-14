@@ -66,7 +66,7 @@ namespace Qserver.GameServer.Qpang
             if (roomSession == null)
                 return;
 
-            roomSession.RelayPlaying<GCMotion>(Cmd, unk02, unk03, unk04, unk05, unk06, unk07, unk08, unk09, PlayerId);
+            roomSession.RelayPlaying<GCMotion>(Cmd, unk02, unk03, unk04, unk05, unk06, unk07, unk08, unk09, PlayerId, (byte)0);
         }
     }
 }

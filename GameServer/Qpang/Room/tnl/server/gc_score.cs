@@ -24,7 +24,7 @@ namespace Qserver.GameServer.Qpang
             ImplementNetEvent(out _dynClassRep, "GCScore", NetClassMask.NetClassGroupGameMask, 0);
         }
 
-        public List<RoomSessionPlayer> Players;
+        public List<RoomSessionPlayer> Players = new List<RoomSessionPlayer>();
         public byte Cmd = 0xC8;
         public ushort Unk02;
         public ushort BlueTotallKill;

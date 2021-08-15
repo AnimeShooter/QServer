@@ -240,6 +240,7 @@ namespace Qserver.GameServer.Qpang
             this._weaponManager = new WeaponManager();
             this._spawnManager = new SpawnManager();
             this._skillManager = new SkillManager(); // TODO
+            this._achievementManager = new AchievementManager(); // TODO
             this._levelManger = new LevelManager(); // TODO-ish
             this._craneManager = new CraneManager();
             this._couponManager = new CouponManager();

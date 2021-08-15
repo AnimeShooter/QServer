@@ -204,13 +204,20 @@ namespace Qserver.GameServer.Qpang
             roomSession.RelayPlaying<GCHit>((uint)SrcPlayerId, (uint)dstPlayer.Player.PlayerId, (uint)unk03, SrcPosX, SrcPosY, SrcPosZ, DstPosX, DstPosY, DstPosZ, (uint)EntityId,
                 (byte)HitType, (byte)HitLocation, (ushort)dstPlayer.Health, (ushort)dmg, (uint)WeaponId, (ulong)RTT, (uint)WeaponType, (byte)unk16, (byte)(srcPlayer.Streak + 1), 
                 (byte)unk18, (byte)effectId, (byte)0, (byte)0, (byte)0); // NOTE: Health as in abse health?
+
+            if(dstPlayer.Death)
+            {
+                srcPlayer.EntityManager.AddKill(EntityId);
+                roomSession.GameMode.OnPlayerKill(srcPlayer, dstPlayer, weapon, HitLocation);
+                roomSession.KillPlayer(srcPlayer, dstPlayer, weapon.ItemId, HitLocation == 0);
+            }
         }
 
         public void HitEmpty(uint weaponId, RoomSessionPlayer srcPlayer)
         {
             var roomSession = srcPlayer.RoomSession;
             roomSession.RelayPlaying<GCHit>(SrcPlayerId, (uint)0, unk03, SrcPosX, SrcPosY, SrcPosZ, DstPosX, DstPosY, DstPosZ, EntityId,
-                HitType, HitLocation, (uint)0, (uint)0, WeaponId, RTT, (uint)WeaponType, unk16, (byte)(srcPlayer.Streak + 1), (byte)unk18, (uint)0, (byte)0, (byte)0, (byte)0);
+                HitType, HitLocation, (ushort)0, (ushort)0, WeaponId, RTT, (uint)WeaponType, unk16, (byte)(srcPlayer.Streak + 1), (byte)unk18, (byte)0, (byte)0, (byte)0, (byte)0);
         }
 
         public bool IsTrap(uint weaponId)

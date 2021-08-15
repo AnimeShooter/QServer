@@ -109,7 +109,7 @@ namespace Qserver.GameServer.Qpang
                     this._weapons[i].ClipCount = (byte)ammo[0];
                     this._weapons[i].ClipSize = ammo[1];
 
-                    // create ammo clip item xD?
+                    // create ammo clip item xD
                     this._player.Post(new GCGameItem(14, new List<GCGameItem.Item>() { new GCGameItem.Item() { ItemId = 1191182337, ItemUid = 1 } }, this._weapons[i].ItemId));
                 }
             }

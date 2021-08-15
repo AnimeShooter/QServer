@@ -339,11 +339,11 @@ namespace Qserver.GameServer.Qpang
 
         public void Respawn()
         {
-            this._isRespawning = true;
+            this._isRespawning = false;
             this._roomSession.SpawnPlayer(this);
         }
 
-        public void StartRespawnCooldown()
+        public void StartPrespawn() // Pre respawn (countdown)
         {
             this._isRespawning = true;
             this._skillManager.ResetPoints();

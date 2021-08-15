@@ -12,13 +12,12 @@ namespace Qserver.GameServer.Qpang
 
         public PlayerEntityManager()
         {
-            
+            this._validBullets = new PlayerBulletEntity[20];
         }
 
         public void Initialize(RoomSessionPlayer player)
         {
             this._player = player;
-            this._validBullets = new PlayerBulletEntity[20];
         }
 
         public void Shoot(uint entityId)
@@ -43,11 +42,11 @@ namespace Qserver.GameServer.Qpang
 
         public void AddKill(uint entityId)
         {
-            lock(_player)
-            {
-                if (_player == null)
-                    return;
+            if (this._player == null)
+                return;
 
+            lock (this._player.Lock)
+            {
                 for(int i = 0; i < 20; i++)
                 {
                     var entity = _validBullets[i];
@@ -65,14 +64,16 @@ namespace Qserver.GameServer.Qpang
 
         public void Close()
         {
-            lock (_player)
-            {
-                if (_player == null)
-                    return;
+            if (this._player == null)
+                return;
 
+            lock (this._player.Lock)
+            {
                 for (int i = 0; i < 20; i++)
                 {
                     var entity = _validBullets[i];
+                    if (entity == null)
+                        return; // ?? TODO
                     var killCount = entity.KillCount;
                     if (killCount > _player.HighestMultiKill)
                         _player.HighestMultiKill = killCount;

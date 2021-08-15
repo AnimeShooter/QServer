@@ -69,8 +69,8 @@ namespace Qserver.GameServer.Qpang
             }
 
             target.ResetStreak();
-            //target.EffectManager.Clear(); // TODO
-            target.StartRespawnCooldown();
+            target.EffectManager.Clear(); // TODO
+            target.StartPrespawn();
 
             var killerStats = killer.Player.StatsManager;
             var targetStats = target.Player.StatsManager;
@@ -105,6 +105,7 @@ namespace Qserver.GameServer.Qpang
 
             if (roomSession.CanFinish())
                 roomSession.Finish();
+
         }
 
     }

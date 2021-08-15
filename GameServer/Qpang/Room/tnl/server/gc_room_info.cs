@@ -57,7 +57,7 @@ namespace Qserver.GameServer.Qpang
             RoomState = room.State;
             RespawnTime = 10 * 1000;
             //P2PWaitTime = 6000;
-            P2PWaitTime = 500;
+            P2PWaitTime = 6000;
             Title = room.Name;
             IsTime = room.PointsGame ? (byte)0 : (byte)1;
             Rounds = 0;

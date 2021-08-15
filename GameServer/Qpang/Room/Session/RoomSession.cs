@@ -123,7 +123,7 @@ namespace Qserver.GameServer.Qpang
 
             this._goal = this._room.PointsGame ? this._room.ScorePoints : this._room.ScoreTime;
             this._isPoints = this._room.PointsGame;
-            this._startTime = Util.Util.Timestamp() + 30 + 5; // waiting for players + countdown
+            this._startTime = Util.Util.Timestamp() + 30 + 5; // waiting for players + countdown TODO 30+5
             this._endTime = this._room.PointsGame ? uint.MaxValue : this._startTime + (this._room.ScoreTime * 60);
         }
 
@@ -613,7 +613,7 @@ namespace Qserver.GameServer.Qpang
         {
             player.MakeInvincible();
             player.SetHealth(player.GetDefaultHealth());
-            //player.WeaponManager.Reset();
+            player.WeaponManager.Reset();
 
             var spawn = Game.Instance.SpawnManager.GetRandomSpawn(this._room.Map, player.Team);
 
@@ -631,7 +631,7 @@ namespace Qserver.GameServer.Qpang
 
         public void SyncPlayer(RoomSessionPlayer player)
         {
-            lock (this._lockPlayers)
+            lock (player.Lock)
             {
                 foreach (var p in this._players)
                 {
@@ -640,8 +640,8 @@ namespace Qserver.GameServer.Qpang
 
                     player.Post(new GCRespawn(p.Key, p.Value.Character, 0, 255f, 255f, 255f, IsVip(player)));
                     player.Post(new GCGameState(p.Key, 8));
-                    //var weapon = p.Value.WeaponManager.GetSelectedWeapon();
-                    //player.Post(new GCWeapon(p.Key, 0, weapon.ItemId, 0));
+                    var weapon = p.Value.WeaponManager.SelectedWeapon;
+                    player.Post(new GCWeapon(p.Key, 0, weapon.ItemId, 0));
                 }
             }
 
@@ -686,7 +686,7 @@ namespace Qserver.GameServer.Qpang
                 int playerCount = 0;
                 foreach (var p in this._players)
                 {
-                    if (p.Value.Spectating || p.Value.Player.Rank == 3 && this._room.EventRoom) // NOTE: rank 3 is special event?
+                    if (p.Value.Spectating || p.Value.Player.Rank == 3 && this._room.EventRoom) // NOTE: rank 3 is GM
                         continue;
 
                     if (p.Value.Team == team && (noConditions || (p.Value.Death && p.Value != this._blueVIP && p.Value != this._yellowVIP)))

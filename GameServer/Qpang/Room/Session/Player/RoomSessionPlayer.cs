@@ -181,6 +181,8 @@ namespace Qserver.GameServer.Qpang
 
         public RoomSessionPlayer(GameConnection conn, RoomSession roomSession, byte team)
         {
+            this._playerLock = new object();
+
             this._conn = conn;
             this._roomSession = roomSession;
             this._team = team;

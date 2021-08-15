@@ -35,7 +35,7 @@ namespace Qserver.GameServer.Qpang
             for(int i = 0; i < 20; i++)
             {
                 var entity = _validBullets[i];
-                if (entity.Id == enitiyId)
+                if (entity != null && entity.Id == enitiyId)
                     return true;
             }
             return false;

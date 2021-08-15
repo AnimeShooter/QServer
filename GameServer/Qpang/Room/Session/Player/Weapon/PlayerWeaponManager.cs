@@ -54,8 +54,7 @@ namespace Qserver.GameServer.Qpang
 
         public PlayerWeaponManager()
         {
-            this._selectedWeaponIndex = 0;
-            
+            this._selectedWeaponIndex = 0; 
         }
 
         public void Initialize(RoomSessionPlayer player)
@@ -64,35 +63,36 @@ namespace Qserver.GameServer.Qpang
             this._weapons = new Weapon[4];
             this._defaultAmmo = new Dictionary<uint, ushort[]>();
 
-            
-            //var equipmentManager = this._player.Player.EquipmentManager;
-            //var itemIds = equipmentManager.GetWeaponItemIdsByCharacter(this._player.Character);
-            //var hasPreSelectedWeapons = false;
-            //var isMeleeOnly = player.RoomSession.Room.MeleeOnly;
+            var equipmentManager = this._player.Player.EquipmentManager;
+            var itemIds = equipmentManager.GetWeaponItemIdsByCharacter(this._player.Character);
+            var hasPreSelectedWeapons = false;
+            var isMeleeOnly = player.RoomSession.Room.MeleeOnly;
 
-            //for(int i = 0; i < itemIds.Length; i++)
-            //{
-            //    var weapon = Game.Instance.WeaponManager.Get(itemIds[i]);
+            for (int i = 0; i < itemIds.Length; i++)
+            {
+                var weapon = Game.Instance.WeaponManager.Get(itemIds[i]);
 
-            //    if (isMeleeOnly)
-            //    {
-            //        if (i == 3)
-            //            this._weapons[3] = weapon;
-            //    }
-            //    else
-            //        this._weapons[i] = weapon;
+                if (isMeleeOnly)
+                {
+                    if (i == 3)
+                        this._weapons[3] = weapon;
+                }
+                else
+                    this._weapons[i] = weapon;
 
-            //    var defaultAmmo = this._defaultAmmo[weapon.ItemId];
+                if(!this._defaultAmmo.ContainsKey(weapon.ItemId))
+                    this._defaultAmmo.Add(weapon.ItemId, new ushort[2]
+                    {
+                        (ushort)(weapon.ClipCount + equipmentManager.GetExtraAmmoForWeaponIndex((byte)i)),
+                        (ushort)(weapon.ClipSize)
+                    });
 
-            //    defaultAmmo[0] = (ushort)(weapon.ClipCount + equipmentManager.GetExtraAmmoForWeaponIndex((byte)i));
-            //    defaultAmmo[1] = (ushort)(weapon.ClipSize);
-
-            //    if(this._weapons[i].ItemId != 0 && !hasPreSelectedWeapons)
-            //    {
-            //        this._selectedWeaponIndex = (byte)i;
-            //        hasPreSelectedWeapons = true;
-            //    }
-            //}
+                if (this._weapons[i].ItemId != 0 && !hasPreSelectedWeapons)
+                {
+                    this._selectedWeaponIndex = (byte)i;
+                    hasPreSelectedWeapons = true;
+                }
+            }
         }
 
         public void Reset()
@@ -109,7 +109,7 @@ namespace Qserver.GameServer.Qpang
                     this._weapons[i].ClipCount = (byte)ammo[0];
                     this._weapons[i].ClipSize = ammo[1];
 
-                    // create ammo clip item xD
+                    // create ammo clip item xD?
                     this._player.Post(new GCGameItem(14, new List<GCGameItem.Item>() { new GCGameItem.Item() { ItemId = 1191182337, ItemUid = 1 } }, this._weapons[i].ItemId));
                 }
             }

@@ -143,8 +143,9 @@ namespace Qserver.GameServer.Qpang
 
         public void SwitchWeapon(uint weaponId)
         {
-            if (SelectedWeapon.ItemId == weaponId)
-                return; // already picked
+            // NOTE: allow reload glitch
+            //if (SelectedWeapon.ItemId == weaponId)
+            //    return; // already picked
 
             for(int i = 0; i < this._weapons.Length; i++)
             {

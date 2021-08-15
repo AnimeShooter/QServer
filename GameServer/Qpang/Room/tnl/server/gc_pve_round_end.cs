@@ -27,6 +27,9 @@ namespace Qserver.GameServer.Qpang
 
         public override void Pack(EventConnection ps, BitStream bitStream) { }
         public override void Unpack(EventConnection ps, BitStream bitStream) { }
-        public override void Process(EventConnection ps) { }
+        public override void Process(EventConnection ps)
+        {
+            Post(ps);
+        }
     }
 }

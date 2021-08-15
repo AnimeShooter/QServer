@@ -60,7 +60,7 @@ namespace Qserver.GameServer.Qpang
         public override void Unpack(EventConnection ps, BitStream bitStream)
 		{
 			bitStream.Read(out PlayerId);
-			bitStream.Read(out Cmd);
+			bitStream.Read(out Cmd); // 15
 			bitStream.Read(out Data);
 			bitStream.Read(out unk04);
 			bitStream.Read(out unk05);
@@ -68,7 +68,7 @@ namespace Qserver.GameServer.Qpang
 		}
         public override void Process(EventConnection ps)
 		{
-			Post(ps);
+			Post(ps); // NOTE: not processd in PvE?
 		}
 
         public override void Handle(GameConnection conn, Player player)

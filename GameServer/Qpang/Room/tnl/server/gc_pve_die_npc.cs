@@ -21,12 +21,24 @@ namespace Qserver.GameServer.Qpang
 
         public static void RegisterNetClassReps()
         {
-            ImplementNetEvent(out _dynClassRep, "GCPvEDestroyObject", NetClassMask.NetClassGroupGameMask, 0);
+            ImplementNetEvent(out _dynClassRep, "GCPvEDieNpc", NetClassMask.NetClassGroupGameMask, 0);
         }
+
+        public uint Unk1; // 88
+
         public GCPvEDieNpc() : base(GameNetId.GC_PVE_DIE_NPC, GuaranteeType.Guaranteed, EventDirection.DirAny) { }
 
-        public override void Pack(EventConnection ps, BitStream bitStream) { }
-        public override void Unpack(EventConnection ps, BitStream bitStream) { }
-        public override void Process(EventConnection ps) { }
+        public override void Pack(EventConnection ps, BitStream bitStream) 
+        {
+            bitStream.Write(Unk1);
+        }
+        public override void Unpack(EventConnection ps, BitStream bitStream) 
+        {
+            bitStream.Read(out Unk1);
+        }
+        public override void Process(EventConnection ps) 
+        {
+            Post(ps);
+        }
     }
 }

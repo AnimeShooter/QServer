@@ -23,10 +23,19 @@ namespace Qserver.GameServer.Qpang
         {
             ImplementNetEvent(out _dynClassRep, "GCPvEDoor", NetClassMask.NetClassGroupGameMask, 0);
         }
+
+        public uint Unk1; // 88
+
         public GCPvEDoor() : base(GameNetId.GC_PVE_DOOR, GuaranteeType.Guaranteed, EventDirection.DirAny) { }
 
-        public override void Pack(EventConnection ps, BitStream bitStream) { }
-        public override void Unpack(EventConnection ps, BitStream bitStream) { }
+        public override void Pack(EventConnection ps, BitStream bitStream)
+        {
+            bitStream.Write(Unk1);
+        }
+        public override void Unpack(EventConnection ps, BitStream bitStream)
+        {
+            bitStream.Read(out Unk1);
+        }
         public override void Process(EventConnection ps) { }
     }
 }

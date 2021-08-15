@@ -23,10 +23,27 @@ namespace Qserver.GameServer.Qpang
         {
             ImplementNetEvent(out _dynClassRep, "GCPvEMoveNodesNpc", NetClassMask.NetClassGroupGameMask, 0);
         }
+
+        public uint Unk1;
+        public uint Unk2;
+
         public GCPvEMoveNodesNpc() : base(GameNetId.GC_PVE_MOVE_NODES_NPC, GuaranteeType.Guaranteed, EventDirection.DirAny) { }
 
-        public override void Pack(EventConnection ps, BitStream bitStream) { }
-        public override void Unpack(EventConnection ps, BitStream bitStream) { }
-        public override void Process(EventConnection ps) { }
+        public override void Pack(EventConnection ps, BitStream bitStream)
+        {
+            bitStream.Write(Unk1);
+            bitStream.Write(Unk2);
+            // TOOD: loop?
+        }
+        public override void Unpack(EventConnection ps, BitStream bitStream)
+        {
+            bitStream.Read(out Unk1);
+            bitStream.Read(out Unk2);
+            // TODO loop 
+        }
+        public override void Process(EventConnection ps) 
+        {
+            Post(ps);
+        }
     }
 }

@@ -33,6 +33,14 @@ namespace Qserver.GameServer.Qpang
         {
             bitStream.Read(out Cmd);
         }
-        public override void Process(EventConnection ps) { }
+        public override void Process(EventConnection ps)
+        {
+            Post(ps);
+        }
+
+        public override void Handle(GameConnection conn, Player player)
+        {
+            base.Handle(conn, player);
+        }
     }
 }

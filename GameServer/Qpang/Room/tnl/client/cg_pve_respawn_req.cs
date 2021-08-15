@@ -33,6 +33,19 @@ namespace Qserver.GameServer.Qpang
         {
             bitStream.Read(out PlayerId);
         }
-        public override void Process(EventConnection ps) { }
+        public override void Process(EventConnection ps) 
+        {
+            Post(ps);
+        }
+
+        public override void Handle(GameConnection conn, Player player)
+        {
+            if (player == null)
+                return;
+
+            // TODO: ask for a respawn?
+
+            conn.PostNetEvent(new GCRespawn(player.PlayerId, player.Character, 1));
+        }
     }
 }

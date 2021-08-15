@@ -23,10 +23,14 @@ namespace Qserver.GameServer.Qpang
         {
             ImplementNetEvent(out _dynClassRep, "GCPvENewRound", NetClassMask.NetClassGroupGameMask, 0);
         }
+
         public GCPvENewRound() : base(GameNetId.GC_PVE_NEW_ROUND, GuaranteeType.Guaranteed, EventDirection.DirAny) { }
 
         public override void Pack(EventConnection ps, BitStream bitStream) { }
         public override void Unpack(EventConnection ps, BitStream bitStream) { }
-        public override void Process(EventConnection ps) { }
+        public override void Process(EventConnection ps) 
+        {
+            Post(ps);
+        }
     }
 }

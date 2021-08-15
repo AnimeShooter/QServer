@@ -147,8 +147,9 @@ namespace Qserver.GameServer.Qpang
                 //}
 
                 var newroom = Game.Instance.RoomManager.Create(Title, (byte)Map, (GameMode.Mode)Mode, Settings.SERVER_IP);
-                //var newroom = Game.Instance.RoomManager.Create(Title, (byte)Map, (GameMode.Mode)Mode, (uint)conn.GetNetAddress().Address.Address); // P2P ?
-                //Util.Log.Message(Util.LogType.MISC, "New room host at: " + conn.GetNetAddress().Address.Address.ToString("X8"));
+                //var newroom = Game.Instance.RoomManager.Create(Title, (byte)Map, (GameMode.Mode)Mode, conn.Ip, conn.Port); // P2P ?
+                Util.Log.Message(Util.LogType.MISC, "New room host at: " + conn.Ip.ToString("X8") + ":" + conn.Port);
+                
                 newroom.EventRoom = Cmd == (uint)Commands.CREATE_EVENT_ROOM;
                 newroom.AddPlayer(conn);
             }
@@ -193,16 +194,16 @@ namespace Qserver.GameServer.Qpang
                         room.SetMap((byte)Value);
                         return;
                     case Commands.MODE_ROOM:
-                        //bool validMode = Mode == (uint)GameMode.Mode.DM ||
-                        //    Mode == (uint)GameMode.Mode.TDM ||
-                        //    Mode == (uint)GameMode.Mode.PTE ||
-                        //    Mode == (uint)GameMode.Mode.VIP;
-                        //if(!validMode || Map > 12)
-                        //{
-                        //    conn.PostNetEvent(new GCRoom(player.PlayerId, (uint)Commands.MODE_ROOM, room));
-                        //    player.Broadcast("Sorry, this game mode has not been implemented yet");
-                        //    return;
-                        //}
+                        bool validMode = Mode == (uint)GameMode.Mode.DM ||
+                            Mode == (uint)GameMode.Mode.TDM ||
+                            Mode == (uint)GameMode.Mode.PTE ||
+                            Mode == (uint)GameMode.Mode.VIP;
+                        if ((!validMode || Map > 12) && player.Rank != 3) // NOTE: GMs are allowed
+                        {
+                            conn.PostNetEvent(new GCRoom(player.PlayerId, (uint)Commands.MODE_ROOM, room));
+                            player.Broadcast("Sorry, this game mode has not been implemented yet");
+                            return;
+                        }
                         room.SetMode((GameMode.Mode)Mode);
                         break;
                     case Commands.SET_POINTS:

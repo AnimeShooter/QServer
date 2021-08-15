@@ -94,7 +94,7 @@ namespace Qserver.GameServer.Qpang
             }
         }
 
-        public bool CreateConnection(uint playerId, GameConnection conn)
+        public bool CreateConnection(uint playerId, GameConnection conn, uint ip, ushort port)
         {
             lock(this._lockConn)
             {
@@ -102,6 +102,8 @@ namespace Qserver.GameServer.Qpang
                 if (player == null)
                     return false;
 
+                conn.Ip = ip;
+                conn.Port = port;
                 conn.Player = player;
                 if (this._connections.ContainsKey(playerId))
                     this._connections[playerId] = conn;

@@ -10,9 +10,23 @@ namespace Qserver.GameServer.Qpang
 {
     public class GameConnection : EventConnection
     {
+        private uint _ip;
+        private ushort _port;
         private Player _player;
         private static NetClassRepInstance<GameConnection> _dynClassRep;
         private static NetConnectionRep _connRep;
+
+        public uint Ip
+        {
+            get { return this._ip; }
+            set { this._ip = value; }
+        }
+
+        public ushort Port
+        {
+            get { return this._port; }
+            set { this._port = value; }
+        }
 
         public Player Player
         {

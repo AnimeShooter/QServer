@@ -94,7 +94,7 @@ namespace Qserver.GameServer.Qpang
             //    return;
             //}
 
-            if (Game.Instance.RoomServer.CreateConnection(PlayerId, base.GameConnection))
+            if (Game.Instance.RoomServer.CreateConnection(PlayerId, base.GameConnection, Ip, Port))
                 conn.PostNetEvent(new CGAuth(PlayerId, (uint)Commands.AUTHENTICATED));
             else
                 conn.PostNetEvent(new CGAuth(PlayerId, (uint)Commands.FAIL));

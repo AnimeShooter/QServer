@@ -16,44 +16,68 @@ namespace Qserver.GameServer.Qpang
             return true;
         }
 
-        //public override void OnApply(Room room)
-        //{
-        //    room.IsPointsGame = false;
-        //    room.ScoreTime = 10;
-        //}
+        public override void OnApply(Room room)
+        {
+            room.PointsGame = false;
+            room.ScoreTime = 10;
 
-        //public override void tick(RoomSession roomSession)
-        //{
-        //    // TODO
-        //    var essHolder = roomSession.EssemceHolder();
-        //    if (!essHolder)
-        //        essHolder.AddScore();
+            base.OnApply(room);
+        }
 
-        //    var EligiblePoints = roomSession.TimeLeft().TotalSeconds; // timespan
-        //    var TeamBluePoints = roomSession.TeamBluePoints;
-        //    var TeamYellowPoints = roomSession.TeamYellowPoints;
+        public override void Tick(RoomSession roomSession)
+        {
+            var essHolder = roomSession.EssenceHolder;
+            if (essHolder != null)
+                essHolder.AddScore();
 
-        //    // check early finish
-        //    if ((TeamBluePoints + EligiblePoints < TeamYellowPoints) || (TeamYellowPoints + EligiblePoints < TeamBluePoints))
-        //        roomSession.Finish();
+            var EligiblePoints = roomSession.GetTimeLeftInSeconds();
+            var TeamBluePoints = roomSession.BluePoints;
+            var TeamYellowPoints = roomSession.YellowPoints;
 
-        //    if (!roomSession.EssenceReset && roomSession.EssenceDropped)
-        //        if (roomSession.ElapsedEssenceDropTime > 20) // Essence Reset Timer
-        //            roomSession.ResetEssence(); // reset position
-        //}
+            // check early finish
+            if ((TeamBluePoints + EligiblePoints < TeamYellowPoints) || (TeamYellowPoints + EligiblePoints < TeamBluePoints))
+                roomSession.Finish();
 
-        //public override void OnPlayerSync(RoomSessionPlayer sessionPlayer)
-        //{
-        //    var roomSession = sessionPlayer.RoomSession;
-        //    var essHolder = roomSession.EssenceHolder;
+            if (!roomSession.IsEssenceReset && roomSession.IsEssenceDropped)
+                if (roomSession.GetElapsedEssenceDropTime() > 20) // Essence Reset Timer
+                    roomSession.ResetEssence(); // reset position
+        }
 
-        //    if(essHolder != null)
-        //    {
-        //        var coord = roomSession.EssenceCoord;
-        //        sessionPlayer.Post(new GCRespawm(0, 3, 5));
-        //        sessionPlayer.Post(new GCHitEssence(sessionPlayer.Player.Id, essHolder.Player.Id, 2, coord.x, coord.y, coord.z, 0, 5));
-        //    }
-        //}
-        // TODO
+        public override void OnPlayerSync(RoomSessionPlayer sessionPlayer)
+        {
+            var roomSession = sessionPlayer.RoomSession;
+            var essHolder = roomSession.EssenceHolder;
+
+            if (essHolder != null)
+            {
+                var coord = roomSession.EssencePosition;
+                sessionPlayer.Post(new GCRespawn(0, 3, 5));
+                sessionPlayer.Post(new GCHitEssence(sessionPlayer.Player.PlayerId, essHolder.Player.PlayerId, 2, coord.X, coord.Y, coord.Z, 0, 5));
+            }
+        }
+
+        public override void OnPlayerKill(RoomSessionPlayer killer, RoomSessionPlayer target, Weapon weapon, byte hitLocation)
+        {
+            var roomSession = killer.RoomSession;
+            var essenceHolder = roomSession.EssenceHolder;
+
+            // check if he died
+            if(essenceHolder != null)
+            {
+                var essenceTargetDied = target == essenceHolder;
+                if(essenceTargetDied)
+                {
+                    var players = roomSession.GetPlayingPlayers();
+                    var pos = essenceHolder.Position;
+
+                    roomSession.EssenceHolder = null;
+
+                    foreach (var p in players)
+                        p.Post(new GCHitEssence(p.Player.PlayerId, essenceHolder.Player.PlayerId, 3, pos.X, pos.Y, pos.Z, 0, 6));
+                }    
+            }
+
+            base.OnPlayerKill(killer, target, weapon, hitLocation);
+        }
     }
 }

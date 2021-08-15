@@ -51,7 +51,14 @@ namespace Qserver.GameServer.Qpang
         {
             get { return this._yellowPoints; }
         }
-
+        public bool IsEssenceReset
+        {
+            get { return this._isEssenceReset; }
+        }
+        public bool IsEssenceDropped
+        {
+            get { return this._essenceHolder == null; }
+        }
         public GameMode GameMode
         {
             get { return this._gameMode; }

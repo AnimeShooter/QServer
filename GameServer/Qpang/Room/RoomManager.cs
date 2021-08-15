@@ -42,19 +42,13 @@ namespace Qserver.GameServer.Qpang
             }
         }
 
-        public Room Create(string name, byte map, GameMode.Mode mode, uint host = 0)
+        public Room Create(string name, byte map, GameMode.Mode mode, uint host = 0, ushort port =  0)
         {
             var id = GetAvailableRoomId();
             Room room;
 
-            // TODO: remove to be server 
-            //host = BitConverter.ToUInt32(IPAddress.Parse(Util.Util.GetLocalIPAddress().ToString()).GetAddressBytes(), 0); // test local peer to peer?
-            //host = Settings.SERVER_IP;
-
-            //host = 0;
-
             if (host != 0)
-                room = new Room(id, name, map, mode, host, (ushort)Settings.SERVER_PORT_ROOM, true);
+                room = new Room(id, name, map, mode, host, port, true);
             else
                 room = new Room(id, name, map, mode, Settings.SERVER_IP, (ushort)Settings.SERVER_PORT_ROOM);
             lock(this._lock)

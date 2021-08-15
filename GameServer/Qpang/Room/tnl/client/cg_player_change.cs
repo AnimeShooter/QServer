@@ -57,8 +57,8 @@ namespace Qserver.GameServer.Qpang
                 player.Character = (ushort)Value;
 
                 var roomPlayer = player.RoomPlayer;
-                //if (roomPlayer != null)
-                //    roomPlayer.Room.BroadcastWaiting<GCPlayerChange>(player, Cmd, Value);
+                if (roomPlayer != null)
+                    roomPlayer.Room.BroadcastWaiting<GCPlayerChange>(player, Cmd, Value);
             }
             else if(Cmd == (byte)Commands.TEAM)
             {

@@ -35,6 +35,26 @@ namespace Qserver.GameServer.Qpang
             bitStream.Read(out MasterUid);
             bitStream.Read(out Unk02);
         }
-        public override void Process(EventConnection ps) { }
+        public override void Process(EventConnection ps)
+        {
+            Post(ps);
+        }
+
+        public override void Handle(GameConnection conn, Player player)
+        {
+            var roomPlayer = player.RoomPlayer;
+            if (roomPlayer == null)
+                return;
+
+            if (roomPlayer.Room.Playing)
+                return;
+
+            if (roomPlayer.Player.PlayerId != roomPlayer.Room.MasterId)
+                return;
+
+            roomPlayer.Room.Start();
+
+            // 122: stage2 simple
+        }
     }
 }

@@ -26,8 +26,8 @@ namespace Qserver.GameServer.Qpang
             { GameMode.Mode.VIP, new VIP() },
 
             { GameMode.Mode.PRACTICE, null }, // Practice
-            { GameMode.Mode.PREY, null }, // Public Enemy
-            { GameMode.Mode.PVE, null }, // PvE (STO)
+            { GameMode.Mode.PREY, new PublicEnemy() }, // Public Enemy
+            { GameMode.Mode.PVE, new PvE() }, // PvE (STO)
         };
 
         public GameMode Get(GameMode.Mode mode)

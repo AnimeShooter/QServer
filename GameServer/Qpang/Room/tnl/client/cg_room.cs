@@ -28,7 +28,7 @@ namespace Qserver.GameServer.Qpang
 
         public enum Commands : uint
         {
-            MAP_ROOM = 1,
+            MAP_ROOM = 1, // PvE difficulty
             PLAYERS_ROOM = 2,
             MODE_ROOM = 3,
             SET_POINTS = 4,
@@ -133,18 +133,18 @@ namespace Qserver.GameServer.Qpang
                 }
 
                 bool isValidMode = Mode == (uint)GameMode.Mode.DM || Mode == (uint)GameMode.Mode.TDM || Mode == (uint)GameMode.Mode.PTE || Mode == (uint)GameMode.Mode.VIP;
-                if (!isValidMode || Map > 12)
-                {
-                    conn.Disconnect("Invalid GameMode");
-                    player.Broadcast("GameMode has not been implemented yet");
-                    return;
-                }
+                //if (!isValidMode || Map > 12)
+                //{
+                //    conn.Disconnect("Invalid GameMode");
+                //    player.Broadcast("GameMode has not been implemented yet");
+                //    return;
+                //}
 
-                if (Game.Instance.RoomManager.List().Count >= 50) // NOTE: dont harcode?
-                {
-                    conn.Disconnect("Failed creating room");
-                    return;
-                }
+                //if (Game.Instance.RoomManager.List().Count >= 50) // NOTE: dont harcode?
+                //{
+                //    conn.Disconnect("Failed creating room");
+                //    return;
+                //}
 
                 var newroom = Game.Instance.RoomManager.Create(Title, (byte)Map, (GameMode.Mode)Mode, Settings.SERVER_IP);
                 //var newroom = Game.Instance.RoomManager.Create(Title, (byte)Map, (GameMode.Mode)Mode, (uint)conn.GetNetAddress().Address.Address); // P2P ?
@@ -197,7 +197,7 @@ namespace Qserver.GameServer.Qpang
                         //    Mode == (uint)GameMode.Mode.TDM ||
                         //    Mode == (uint)GameMode.Mode.PTE ||
                         //    Mode == (uint)GameMode.Mode.VIP;
-                        //if(!validMode)
+                        //if(!validMode || Map > 12)
                         //{
                         //    conn.PostNetEvent(new GCRoom(player.PlayerId, (uint)Commands.MODE_ROOM, room));
                         //    player.Broadcast("Sorry, this game mode has not been implemented yet");

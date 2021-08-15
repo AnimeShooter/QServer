@@ -50,6 +50,8 @@ namespace Qserver.GameServer.Qpang
                 for(int i = 0; i < 20; i++)
                 {
                     var entity = _validBullets[i];
+                    if (entity == null)
+                        continue; // TODO fiz??
                     if(entity.Id == entityId)
                     {
                         entity.AddKill();

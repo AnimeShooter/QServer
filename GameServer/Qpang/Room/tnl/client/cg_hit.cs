@@ -210,6 +210,7 @@ namespace Qserver.GameServer.Qpang
                 srcPlayer.EntityManager.AddKill(EntityId);
                 roomSession.GameMode.OnPlayerKill(srcPlayer, dstPlayer, weapon, HitLocation);
                 roomSession.KillPlayer(srcPlayer, dstPlayer, weapon.ItemId, HitLocation == 0);
+                dstPlayer.StartPrespawn(); // prespawn?
             }
         }
 

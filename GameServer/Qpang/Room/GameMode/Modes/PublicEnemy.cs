@@ -15,7 +15,7 @@ namespace Qserver.GameServer.Qpang
 
         public override bool IsTeamMode()
         {
-            return true;
+            return true; // idk actually
         }
 
         // TODO

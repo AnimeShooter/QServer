@@ -15,7 +15,5 @@ namespace Qserver.GameServer.Qpang
         {
             return false;
         }
-
-        // TODO
     }
 }

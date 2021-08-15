@@ -95,12 +95,10 @@ namespace Qserver.GameServer.Qpang
             get { return this._eventItemPickUps; }
             set { this._eventItemPickUps = value; }
         }
-
         public bool Invincible
         {
             get { return _isInvincible; }
         }
-
         public ushort Health
         {
             get { return this._health; }
@@ -109,12 +107,10 @@ namespace Qserver.GameServer.Qpang
         {
             get { return this._bonusHealth; }
         }
-
         public bool Death
         {
             get { return this._health <= 0; }
         }
-
         public bool Playing
         {
             get { return this._isPlaying; }
@@ -128,7 +124,6 @@ namespace Qserver.GameServer.Qpang
             get { return this._isSpectating; }
             set { this._isSpectating = value; }
         }
-
         public ushort ExpRate
         {
             get { return this._expRate; }
@@ -150,17 +145,14 @@ namespace Qserver.GameServer.Qpang
             get { return this._position; }
             set { this._position = value; }
         }
-
         public byte Team
         {
             get { return this._team; }
         }
-
         public PlayerEffectManager EffectManager
         {
             get { return this._effectManager; }
         }
-
         public PlayerWeaponManager WeaponManager
         {
             get { return this._weaponManager; }
@@ -173,7 +165,6 @@ namespace Qserver.GameServer.Qpang
         {
             get { return this._entityManager; }
         }
-
         public RoomSession RoomSession
         {
             get { return this._roomSession; }

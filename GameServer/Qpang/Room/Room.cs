@@ -155,11 +155,12 @@ namespace Qserver.GameServer.Qpang
         public uint ScorePoints
         {
             get { return this._scorePoints; }
+            set { SetScorePoints(value); }
         }
         public uint ScoreTime
         {
             get { return this._scoreTime; }
-            set { this._scoreTime = value; }
+            set { SetScoreTime(value); }
         }
 
         public uint MasterId

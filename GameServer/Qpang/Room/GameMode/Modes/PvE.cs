@@ -19,5 +19,13 @@ namespace Qserver.GameServer.Qpang
         }
 
         // TODO
+        /*
+         *  Not friendly fire
+         *  
+         *  charge (ask) coin on revive
+         *  
+         *  ...
+         * 
+         */
     }
 }

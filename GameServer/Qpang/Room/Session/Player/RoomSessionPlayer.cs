@@ -221,8 +221,6 @@ namespace Qserver.GameServer.Qpang
             this._donRate += equipMgr.HasFunctionCard((uint)Items.DON_MAKER_50) ? (ushort)50 : (ushort)0;
         }
 
-
-
         public void Tick()
         {
             if (CanStart())

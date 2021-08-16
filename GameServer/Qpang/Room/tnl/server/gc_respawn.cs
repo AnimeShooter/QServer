@@ -47,8 +47,8 @@ namespace Qserver.GameServer.Qpang
 
         public override void Pack(EventConnection ps, BitStream bitStream)
         {
-            bitStream.Write(PlayerId);
             bitStream.Write(Cmd);
+            bitStream.Write(PlayerId);
             bitStream.Write(CharacterId);
             bitStream.Write(X);
             bitStream.Write(Y);

@@ -22,8 +22,12 @@ namespace Qserver.GameServer.Qpang
             return false;
         }
 
-
         public virtual bool IsMissionMode()
+        {
+            return false;
+        }
+
+        public virtual bool IsPvE()
         {
             return false;
         }

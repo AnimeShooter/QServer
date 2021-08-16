@@ -245,10 +245,12 @@ namespace Qserver.GameServer.Qpang
             lock (this._lockLeavers)
                 this._leavers.Add(player);
 
+            // see if match should be ended due to leaving
             if (!this._isFinished)
             {
                 if (this._gameMode.IsTeamMode())
                 {
+                    // finish empty team PvP
                     if (this._players.Count == 0)
                         Finish();
                     else
@@ -256,6 +258,7 @@ namespace Qserver.GameServer.Qpang
                         var bluePlayers = GetPlayersForTeam(1);
                         var yellowPlayers = GetPlayersForTeam(2);
 
+                        // Finish solo team PvP
                         if (bluePlayers.Count == 0)
                         {
                             this._yellowPoints = 1;
@@ -270,8 +273,15 @@ namespace Qserver.GameServer.Qpang
                         }
                     }
                 }
+                else if(this._gameMode.IsPvE())
+                {
+                    // finish empty PvE room
+                    if (this._players.Count == 0)
+                        Finish();
+                }
                 else
                 {
+                    // finish solo deathmath PvP
                     if (this._players.Count <= 1)
                         Finish();
                 }

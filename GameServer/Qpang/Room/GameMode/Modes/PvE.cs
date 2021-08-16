@@ -8,21 +8,18 @@ namespace Qserver.GameServer.Qpang
 {
     public class PvE : GameMode
     {
-        public override bool IsMissionMode()
-        {
-            return true;
-        }
-
-        public override bool IsTeamMode()
+        public override bool IsPvE()
         {
             return true;
         }
 
         // TODO
         /*
-         *  Not friendly fire
+         *  No friendly fire
          *  
          *  charge (ask) coin on revive
+         *  
+         *  tick -> move enemy's
          *  
          *  ...
          * 

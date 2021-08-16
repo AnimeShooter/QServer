@@ -68,6 +68,13 @@ namespace Qserver.GameServer.Qpang
                         return;
                     }
 
+                    // reject from joining PvE
+                    if(room.RoomSession.GameMode.IsPvE())
+                    {
+                        player.Broadcast("Please wait for the match to finish!");
+                        return;
+                    }
+
                     var session = room.RoomSession;
                     if (session != null && session.IsAlmostFinished())
                     {

@@ -44,74 +44,66 @@ namespace Qserver.GameServer.Network
 
         public void Read()
         {
-            try
+            _socket.BeginReceive(HeaderBuffer, 0, HeaderSizeToRead, 0, ReceiveCallback, null);
+            void ReceiveCallback(IAsyncResult ar)
             {
-                _socket.BeginReceive(HeaderBuffer, 0, HeaderSizeToRead, 0, ReceiveCallback, null);
-                void ReceiveCallback(IAsyncResult ar)
+                try
                 {
-                    try
+                    var bytesRead = _socket.EndReceive(ar);
+                    if (bytesRead < 1)
                     {
-                        var bytesRead = _socket.EndReceive(ar);
-                        if (bytesRead < 1)
-                        {
-                            if (Settings.DEBUG)
-                                Log.Message(LogType.DUMP, $"[{_socket.LocalEndPoint}] Connection was lost during receiving!\n");
-                            CloseSocket();
-                            return;
-                        }
+                        if (Settings.DEBUG)
+                            Log.Message(LogType.DUMP, $"[{_socket.LocalEndPoint}] Connection was lost during receiving!\n");
+                        CloseSocket();
+                        return;
+                    }
 
-                        if (HeaderSizeToRead > 0) // reading more data
+                    if (HeaderSizeToRead > 0) // reading more data
+                    {
+                        HeaderSizeToRead -= bytesRead;
+                        if (HeaderSizeToRead == 0)
                         {
-                            HeaderSizeToRead -= bytesRead;
-                            if (HeaderSizeToRead == 0)
-                            {
-                                if (OnHeaderReceived())
-                                    _socket.BeginReceive(PayloadBuffer, 0, PayloadSizeToRead, 0, ReceiveCallback, null);
-                                else
-                                {
-                                    if (Settings.DEBUG)
-                                        Log.Message(LogType.DUMP, $"[{_socket.LocalEndPoint}] Invalid payload size!\n");
-                                    CloseSocket();
-                                }
-                            }
+                            if (OnHeaderReceived())
+                                _socket.BeginReceive(PayloadBuffer, 0, PayloadSizeToRead, 0, ReceiveCallback, null);
                             else
-                                _socket.BeginReceive(HeaderBuffer, HeaderBuffer.Length - HeaderSizeToRead, HeaderSizeToRead, 0, ReceiveCallback, null); // continue reading header
+                            {
+                                if (Settings.DEBUG)
+                                    Log.Message(LogType.DUMP, $"[{_socket.LocalEndPoint}] Invalid payload size!\n");
+                                CloseSocket();
+                            }
                         }
                         else
-                        {
-                            PayloadSizeToRead -= bytesRead;
-                            if (PayloadSizeToRead == 0) // fully body!
-                            {
-                                PacketReader pkt = new PacketReader(HeaderBuffer, PayloadBuffer, "test", KeyPart);
-                                if (Settings.DEBUG)
-                                    if (Enum.IsDefined(typeof(Opcode), pkt.Opcode))
-                                        Log.Message(LogType.DUMP, $"[{_socket.LocalEndPoint}] Recieved OpCode: {pkt.Opcode}, len: {pkt.Size}\n");
-                                    else
-                                        Log.Message(LogType.ERROR, $"[{_socket.LocalEndPoint}] Unregistered OpCode: {pkt.Opcode}\n");
-
-                                PacketManager.InvokeHandler(pkt, this, pkt.Opcode);
-
-                                // reset
-                                PayloadBuffer = new byte[0];
-                                HeaderBuffer = new byte[4];
-                                HeaderSizeToRead = 4;
-                                _socket.BeginReceive(HeaderBuffer, 0, HeaderSizeToRead, 0, ReceiveCallback, null); // start reading header
-                            }
-                            else
-                                _socket.BeginReceive(PayloadBuffer, PayloadBuffer.Length - PayloadSizeToRead, PayloadSizeToRead, 0, ReceiveCallback, null); // continue reading payload
-                        }
+                            _socket.BeginReceive(HeaderBuffer, HeaderBuffer.Length - HeaderSizeToRead, HeaderSizeToRead, 0, ReceiveCallback, null); // continue reading header
                     }
-                    catch (Exception e) 
+                    else
                     {
-                        Log.Message(LogType.ERROR, e.ToString());
+                        PayloadSizeToRead -= bytesRead;
+                        if (PayloadSizeToRead == 0) // fully body!
+                        {
+                            PacketReader pkt = new PacketReader(HeaderBuffer, PayloadBuffer, "test", KeyPart);
+                            if (Settings.DEBUG)
+                                if (Enum.IsDefined(typeof(Opcode), pkt.Opcode))
+                                    Log.Message(LogType.DUMP, $"[{_socket.LocalEndPoint}] Recieved OpCode: {pkt.Opcode}, len: {pkt.Size}\n");
+                                else
+                                    Log.Message(LogType.ERROR, $"[{_socket.LocalEndPoint}] Unregistered OpCode: {pkt.Opcode}\n");
+
+                            PacketManager.InvokeHandler(pkt, this, pkt.Opcode);
+
+                            // reset
+                            PayloadBuffer = new byte[0];
+                            HeaderBuffer = new byte[4];
+                            HeaderSizeToRead = 4;
+                            _socket.BeginReceive(HeaderBuffer, 0, HeaderSizeToRead, 0, ReceiveCallback, null); // start reading header
+                        }
+                        else
+                            _socket.BeginReceive(PayloadBuffer, PayloadBuffer.Length - PayloadSizeToRead, PayloadSizeToRead, 0, ReceiveCallback, null); // continue reading payload
                     }
                 }
-            }
-            catch (Exception e)
-            {
-                // Shutup & be gone!
-                Log.Message(LogType.ERROR, e.ToString());
-                CloseSocket();
+                catch (Exception e) 
+                {
+                    Log.Message(LogType.ERROR, e.ToString());
+                    CloseSocket();
+                }
             }
         }
 

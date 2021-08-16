@@ -132,23 +132,27 @@ namespace Qserver.GameServer.Qpang
                     return;
                 }
 
-                bool isValidMode = Mode == (uint)GameMode.Mode.DM || Mode == (uint)GameMode.Mode.TDM || Mode == (uint)GameMode.Mode.PTE || Mode == (uint)GameMode.Mode.VIP;
-                //if (!isValidMode || Map > 12)
-                //{
-                //    conn.Disconnect("Invalid GameMode");
-                //    player.Broadcast("GameMode has not been implemented yet");
-                //    return;
-                //}
+                bool validMode = Mode == (uint)GameMode.Mode.DM ||
+                                 Mode == (uint)GameMode.Mode.TDM ||
+                                 Mode == (uint)GameMode.Mode.PTE ||
+                                 Mode == (uint)GameMode.Mode.VIP;
 
-                //if (Game.Instance.RoomManager.List().Count >= 50) // NOTE: dont harcode?
-                //{
-                //    conn.Disconnect("Failed creating room");
-                //    return;
-                //}
+                if ((!validMode || Map > 12) && player.Rank < 3) // NOTE: GMs are allowed
+                {
+                    conn.Disconnect("Invalid GameMode");
+                    player.Broadcast("GameMode has not been implemented yet");
+                    return;
+                }
 
-                var newroom = Game.Instance.RoomManager.Create(Title, (byte)Map, (GameMode.Mode)Mode, Settings.SERVER_IP);
+                if (Game.Instance.RoomManager.List().Count >= 50) // NOTE: dont harcode?
+                {
+                    conn.Disconnect("Failed creating room");
+                    return;
+                }
+
+                var newroom = Game.Instance.RoomManager.Create(Title, (byte)Map, (GameMode.Mode)Mode, Settings.SERVER_IP, (ushort)Settings.SERVER_PORT_ROOM);
                 //var newroom = Game.Instance.RoomManager.Create(Title, (byte)Map, (GameMode.Mode)Mode, conn.Ip, conn.Port); // P2P ?
-                Util.Log.Message(Util.LogType.MISC, "New room host at: " + conn.Ip.ToString("X8") + ":" + conn.Port);
+                //Util.Log.Message(Util.LogType.MISC, "New room host at: " + conn.Ip.ToString("X8") + ":" + conn.Port);
                 
                 newroom.EventRoom = Cmd == (uint)Commands.CREATE_EVENT_ROOM;
                 newroom.AddPlayer(conn);
@@ -198,7 +202,7 @@ namespace Qserver.GameServer.Qpang
                             Mode == (uint)GameMode.Mode.TDM ||
                             Mode == (uint)GameMode.Mode.PTE ||
                             Mode == (uint)GameMode.Mode.VIP;
-                        if ((!validMode || Map > 12) && player.Rank != 3) // NOTE: GMs are allowed
+                        if ((!validMode || Map > 12) && player.Rank < 3) // NOTE: GMs are allowed
                         {
                             conn.PostNetEvent(new GCRoom(player.PlayerId, (uint)Commands.MODE_ROOM, room));
                             player.Broadcast("Sorry, this game mode has not been implemented yet");

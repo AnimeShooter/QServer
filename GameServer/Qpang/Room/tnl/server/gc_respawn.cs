@@ -24,8 +24,8 @@ namespace Qserver.GameServer.Qpang
             ImplementNetEvent(out _dynClassRep, "GCRespawn", NetClassMask.NetClassGroupGameMask, 0);
         }
 
-        public uint PlayerId;
         public uint Cmd;
+        public uint PlayerId;
         public uint CharacterId;
         public float X;
         public float Y;

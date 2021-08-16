@@ -184,7 +184,7 @@ namespace Qserver.GameServer.Qpang
 
             var spawn = Game.Instance.SpawnManager.GetRandomSpawn(this._room.Map, team);
             player.Post(new GCGameState(player.Player.PlayerId, 11, 0)); // waiting for players
-            player.Post(new GCRespawn(player.Player.PlayerId, player.Character, 1, spawn.X, spawn.Y, spawn.X));
+            player.Post(new GCRespawn(player.Player.PlayerId, player.Character, 1, spawn.X, spawn.Y, spawn.Z));
 
             if (!player.Spectating)
             {
@@ -400,7 +400,7 @@ namespace Qserver.GameServer.Qpang
                 return;
 
             this._isFinished = true;
-            this._itemManager = null;
+            this._itemManager = new GameItemManager();
             this._essenceHolder = null;
             this._nexBlueVIP = null;
             this._blueVIP = null;
@@ -428,6 +428,20 @@ namespace Qserver.GameServer.Qpang
                     p.Stop();
                 }
             }
+
+            var playingPlayers = GetPlayingPlayers();
+            // TODO: sort by score
+
+            foreach(var player in players)
+            {
+                var p = player.Player;
+
+                player.Post(new GCGameState(p.PlayerId, 1));
+                player.Post(new GCGameState(p.PlayerId, 23));
+                player.Post(new GCScoreResult(this, playingPlayers));
+            }
+
+            this._room.Finish();
         }
 
         public bool CanFinish()

@@ -72,16 +72,13 @@ namespace Qserver.GameServer.Qpang
 
         public Spawn GetRandomTeleportSpawn(byte map)
         {
-            return new Spawn()
-            {
-                X = 0,
-                Y = 0,
-                Z = 30
-            };
             lock (this._lock)
             {
-                var spawns = this._spawns[map][98];
-                if (spawns.Count == 0)
+                List<Spawn> spawns = null;
+                if (this._spawns[map].ContainsKey(98))
+                    spawns = this._spawns[map][98];
+
+                if (spawns == null || spawns.Count == 0)
                     return new Spawn()
                     {
                         X = 0xFF,
@@ -97,17 +94,18 @@ namespace Qserver.GameServer.Qpang
         public List<Spawn> GetItemSpawns(byte map)
         {
             lock (this._lock)
-            {
                 return this._itemSpawns[map];
-            }
         }
 
         public Spawn GetEssenceSpawn(byte map)
         {
             lock (this._lock)
             {
-                var spawns = this._spawns[map][99];
-                if (spawns.Count == 0)
+                List<Spawn> spawns = null;
+                if (this._spawns[map].ContainsKey(99))
+                    spawns = this._spawns[map][99];
+
+                if (spawns == null)
                     return new Spawn();
 
                 return spawns[0];

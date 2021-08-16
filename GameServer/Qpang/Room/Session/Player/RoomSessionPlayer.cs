@@ -476,6 +476,5 @@ namespace Qserver.GameServer.Qpang
             return (ushort)(this._baseHealth + this._bonusHealth);
         }
 
-
     }
 }

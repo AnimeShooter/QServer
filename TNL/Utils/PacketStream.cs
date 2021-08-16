@@ -41,13 +41,15 @@ namespace TNL.Utils
             {
                 dataSize = d.Item2.Length > TNLSocket.MaxPacketDataSize ? TNLSocket.MaxPacketDataSize : (uint)d.Item2.Length;
                 Array.Copy(d.Item2, _buffer, dataSize);
+
+                SetBuffer(_buffer, dataSize);
+                SetMaxSizes(dataSize, 0U);
+                Reset();
+
+                recvAddress = d.Item1;
             }
-
-            SetBuffer(_buffer, dataSize);
-            SetMaxSizes(dataSize, 0U);
-            Reset();
-
-            recvAddress = d.Item1;
+            else
+                recvAddress = null;
 
             return NetError.NoError;
         }

@@ -240,6 +240,9 @@ namespace Qserver.GameServer.Qpang
             if (!card.IsGiftable)
                 return false; // must be tradable
 
+            if (card.IsActive)
+                return false; // or we get into bbugged state
+
             lock (this._lock)
             {
                 if (!this._items.ContainsKey(player.PlayerId))

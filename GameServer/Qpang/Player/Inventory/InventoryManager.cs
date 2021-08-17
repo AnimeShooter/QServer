@@ -282,7 +282,7 @@ namespace Qserver.GameServer.Qpang
                 card.TimeCreated = Util.Util.Timestamp();
                 target.InventoryManager.ReceiveGift(card, this._player.Name);
 
-                Game.Instance.ItemsRepository.ChangeItemOwner(target.PlayerId, card, false).GetAwaiter().GetResult();
+                Game.Instance.ItemsRepository.ChangeItemOwner(target.PlayerId, card, false, Util.Util.Timestamp()).GetAwaiter().GetResult();
 
                 this._player.SendLobby(LobbyManager.Instance.GiftCardSuccess(card.Id));
                 this._player.EquipmentManager.Save();
@@ -324,7 +324,7 @@ namespace Qserver.GameServer.Qpang
                 lock(this._player.Lock)
                 {
                     this._player.InventoryManager.RemoveCard(cardId);
-                    Game.Instance.ItemsRepository.ChangeItemOwner(targetId, cardId, true).GetAwaiter().GetResult();
+                    Game.Instance.ItemsRepository.ChangeItemOwner(targetId, cardId, true, Util.Util.Timestamp()).GetAwaiter().GetResult();
                 }
             }
         }

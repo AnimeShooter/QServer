@@ -145,15 +145,15 @@ namespace Qserver.Database.Repositories
 			return;
 		}
 
-		public async Task ChangeItemOwner(ulong playerId, InventoryCard card, bool isOpened)
+		public async Task ChangeItemOwner(ulong playerId, InventoryCard card, bool isOpened, uint timestamp)
 		{
-			await ChangeItemOwner(playerId, card.Id, isOpened);
+			await ChangeItemOwner(playerId, card.Id, isOpened, timestamp);
 		}
 
-		public async Task ChangeItemOwner(ulong playerId, ulong cardId, bool isOpened)
+		public async Task ChangeItemOwner(ulong playerId, ulong cardId, bool isOpened, uint timestamp)
 		{
 			await _sqlObjectFactory.GetConnection().UsingAsync(connection =>
-				 connection.QueryAsync("UPDATE player_items SET player_id = @PlayerId, opened = @IsOpened WHERE id = @CardId", new { PlayerId = playerId, IsOpened = isOpened ? 1 : 0, CardId = cardId }));
+				 connection.QueryAsync("UPDATE player_items SET player_id = @PlayerId, opened = @IsOpened, time = @Timestamp WHERE id = @CardId", new { PlayerId = playerId, IsOpened = isOpened ? 1 : 0, CardId = cardId, Timestamp = timestamp }));
 			return;
 		}
 

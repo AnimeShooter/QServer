@@ -432,7 +432,6 @@ namespace Qserver.GameServer.Qpang
                     foreach (var e in expired)
                         this._player.EquipmentManager.RemoveFunctionCard(e);
                 }
-                
 
                 var cards = this._player.InventoryManager.List();
                 this._player.SendLobby(LobbyManager.Instance.Inventory(cards));

@@ -16,6 +16,8 @@ namespace Qserver.GameServer.Qpang
 
         public override void ProcessPacket(IPEndPoint sourceAddress, BitStream stream)
         {
+            if (sourceAddress == null)
+                return; // ??
             base.ProcessPacket(sourceAddress, stream);
         }
 

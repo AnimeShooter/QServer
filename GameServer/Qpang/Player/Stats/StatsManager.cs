@@ -137,7 +137,7 @@ namespace Qserver.GameServer.Qpang
             if (this._player.TestRealm)
                 return;
 
-            Game.Instance.PlayersRepository.UpdatePlayerStats(this._player).GetAwaiter();
+            Game.Instance.PlayersRepository.UpdatePlayerStats(this._player).GetAwaiter().GetResult();
         }
 
         public void Apply(RoomSessionPlayer player)

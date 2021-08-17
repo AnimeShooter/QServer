@@ -38,7 +38,7 @@ namespace Qserver.GameServer.Qpang
             Players = players;
 
             // TODO: fix, prevents crash?
-            Players = new List<RoomSessionPlayer>();
+            //Players = new List<RoomSessionPlayer>();
 
             if (roomSession.GameMode.IsTeamMode())
             {
@@ -85,7 +85,7 @@ namespace Qserver.GameServer.Qpang
                 bitStream.Write(player.Score); // doesnt mattter?
                 bitStream.Write(player.GetDon());
                 bitStream.Write(player.GetExperience());
-                bitStream.Write((uint)0); // weird B icon
+                bitStream.Write((uint)0); // weird B icon -> Bonusus?
                 bitStream.Write(player.Player.AchievementContainer.ListRecent.Count == 0 ? (byte)0 : (byte)1); // has echiev
                 bitStream.Write((byte)player.EventItemPickUps);
                 bitStream.Write((byte)0); // Unk14
@@ -97,7 +97,9 @@ namespace Qserver.GameServer.Qpang
                 bitStream.Write(hasDonBonus && hasXPBonus ? (byte)3 : hasDonBonus ? (byte)2 : hasXPBonus ? (byte)1 : (byte)0); // Unk16 = 1: exp only, 2: don only, 3: both
                 bitStream.Write(player.DonRate);
                 bitStream.Write(player.ExpRate);
-                bitStream.WriteString(player.Player.Name, 16);
+
+                // test
+                WriteWString(bitStream, player.Player.Name, 16); // TODO check
                 bitStream.Write((uint)0); // Unk19
 
                 playerIndex++;

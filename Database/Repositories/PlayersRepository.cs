@@ -114,7 +114,7 @@ namespace Qserver.Database.Repositories
                     SlackerPoints = player.StatsManager.SlackerPoints,
                     MeleeKills = player.StatsManager.MeleeKills,
                     GunKills = player.StatsManager.GunKills,
-                    LancherKills = player.StatsManager.LauncherKills,
+                    LauncherKills = player.StatsManager.LauncherKills,
                     BombKills = player.StatsManager.BombKills,
                     HeadshotKills = player.StatsManager.HeadshotKills,
                     HeadshotDeaths = player.StatsManager.HeadshotDeaths,

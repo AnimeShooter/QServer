@@ -39,7 +39,7 @@ namespace Qserver.GameServer.Qpang
         {
             Players = players;
             // TODO: fix, prevents crash?
-            Players = new List<RoomSessionPlayer>();
+            //Players = new List<RoomSessionPlayer>();
 
             Cmd = cmd;
             Unk04 = roomSession.GetElapsedTime();
@@ -104,7 +104,7 @@ namespace Qserver.GameServer.Qpang
                 bitStream.Write((ushort)player.Score);
                 bitStream.Write(player.Team);
 
-                bitStream.WriteString(actPlayer.Name, 16);
+                WriteWString(bitStream, actPlayer.Name, 16); // TODO: test
                 bitStream.Write((uint)3);
 
                 playerIndex++;

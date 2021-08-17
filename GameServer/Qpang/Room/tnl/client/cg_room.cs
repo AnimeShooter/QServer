@@ -96,7 +96,7 @@ namespace Qserver.GameServer.Qpang
             bitStream.Read(out Goal);
             bitStream.ReadString(out Password);
 
-            ByteBuffer titleBuffer = new ByteBuffer(256);
+            ByteBuffer titleBuffer = new ByteBuffer(22); // 256
             bitStream.Read(titleBuffer);
             Title = ByteBufferToString(titleBuffer);
 
@@ -116,6 +116,8 @@ namespace Qserver.GameServer.Qpang
             bitStream.Read(out unk20);
             bitStream.Read(out unk21);
             bitStream.Read(out unk22);
+
+            Console.WriteLine($"{(CGRoom.Commands)Cmd}, Value: {Value}, Mode: {Mode}, MemCount: {MemberCount}, Goal: {Goal}, pw:{Password}, Title: {Title}, TimeAmount: {TimeAmount}, IsRounds: {IsRounds}");
         }
         public override void Process(EventConnection ps)
         {
@@ -231,8 +233,11 @@ namespace Qserver.GameServer.Qpang
                     case Commands.TOGGLE_MELEE:
                         room.SetMeleeOnly(Value == 1 ? true : false);
                         break;
-                    case Commands.TEAM_ROOM:
+                    case Commands.TEAM_ROOM: // TODO: fix
                         room.SetTeamSorting(Value == 1 ? true : false);
+                        break;
+                    case Commands.TOGGLE_SKILL:
+                        room.SetSkillsEnabled(Value == 1 ? true : false);
                         break;
                     default:
                         break;

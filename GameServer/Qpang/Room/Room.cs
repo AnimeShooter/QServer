@@ -335,7 +335,7 @@ namespace Qserver.GameServer.Qpang
             {
                 foreach (var p in this._players)
                     if (!p.Value.Playing)
-                        p.Value.Conn.PostNetEvent(new GCRoom(p.Key, cmd, this));
+                        p.Value.Conn.PostNetEvent(new GCRoom(p.Key, cmd, val, this));
             }
         }
 

@@ -36,10 +36,6 @@ namespace Qserver.GameServer.Qpang
         public GCScoreResult(RoomSession roomSession, List<RoomSessionPlayer> players) : base(GameNetId.GC_SCORE_RESULT, GuaranteeType.Guaranteed, EventDirection.DirAny)
         {
             Players = players;
-
-            // TODO: fix, prevents crash?
-            //Players = new List<RoomSessionPlayer>();
-
             if (roomSession.GameMode.IsTeamMode())
             {
                 BlueScore = BlueKills = (ushort)roomSession.BluePoints;

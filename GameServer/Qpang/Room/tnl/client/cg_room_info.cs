@@ -24,7 +24,7 @@ namespace Qserver.GameServer.Qpang
             ImplementNetEvent(out _dynClassRep, "CGRoomInfo", NetClassMask.NetClassGroupGameMask, 0);
         }
 
-        public byte MasterUid; // 88
+        public uint MasterUid; // 88
 
         public CGRoomInfo() : base(GameNetId.CG_ROOM_INFO, GuaranteeType.GuaranteedOrdered, EventDirection.DirClientToServer) { }
 

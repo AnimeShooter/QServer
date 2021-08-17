@@ -96,7 +96,7 @@ namespace Qserver.GameServer.Qpang
             bitStream.Write(MemberCount);
             bitStream.Write(Goal);
             bitStream.WriteString(Password, 255);
-            WriteWString(bitStream, Title, 254);
+            WriteWString(bitStream, Title, 20); // 254
             bitStream.Write(Time);
             bitStream.Write(Rounds); // untion gameId
             bitStream.Write(Unk160);
@@ -104,6 +104,8 @@ namespace Qserver.GameServer.Qpang
             bitStream.Write(Unk161);
             bitStream.Write(SkillsEnabled);
             bitStream.Write(MeleeOnly);
+
+            Console.WriteLine($"Cmd: {((CGRoom.Commands)Cmd)}, Value: {Value}, Mode: {Mode}, MemCount: {MemberCount}, Goal: {Goal}");
         }
 
         public override void Unpack(EventConnection ps, BitStream bitStream) { }

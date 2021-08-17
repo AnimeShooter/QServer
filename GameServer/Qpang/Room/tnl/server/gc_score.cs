@@ -38,9 +38,6 @@ namespace Qserver.GameServer.Qpang
         public GCScore(List<RoomSessionPlayer> players, RoomSession roomSession, byte cmd) : base(GameNetId.GC_SCORE, GuaranteeType.GuaranteedOrdered, EventDirection.DirAny)
         {
             Players = players;
-            // TODO: fix, prevents crash?
-            //Players = new List<RoomSessionPlayer>();
-
             Cmd = cmd;
             Unk04 = roomSession.GetElapsedTime();
 

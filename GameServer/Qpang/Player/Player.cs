@@ -119,7 +119,13 @@ namespace Qserver.GameServer.Qpang
         public byte Level
         {
             get { return this._level; }
-            set { this._level = value; }
+            set
+            {
+                this._level = value;
+                if (this._squarePlayer != null)
+                    lock (this._squarePlayer.Lock)
+                        this._squarePlayer.Square.SendPacket(Network.SquareManager.Instance.UpdatePlayerLevel(this._playerId, this._level));
+            }
         }
         public byte Prestige
         {
@@ -287,10 +293,12 @@ namespace Qserver.GameServer.Qpang
                 this._isClosed = true;
 
                 if (this._lobbyConnection != null)
-                    this._lobbyConnection.CloseSocket();
+                    lock(this._lobbyLock)
+                        this._lobbyConnection.CloseSocket();
 
                 if (this._squareConnection != null)
-                    this._squareConnection.CloseSocket();
+                    lock(this._squareLock)
+                        this._squareConnection.CloseSocket();
 
                 // cancle if any
                 Game.Instance.TradeManager.OnCancel(this);
@@ -302,11 +310,9 @@ namespace Qserver.GameServer.Qpang
             this._equipmentManager.Close();
             this._friendManager.Close();
 
-            lock(this._squareLock)
-            {
-                if(this._squarePlayer != null)
+            if (this._squarePlayer != null)
+                lock (this._squareLock)
                     this._squarePlayer.Square.Remove(this._playerId);
-            }
 
             Game.Instance.RemoveClient(this);
 

@@ -8,6 +8,8 @@ namespace Qserver.GameServer.Qpang
 {
     public class SquarePlayer
     {
+        private object _lock;
+
         private Player _player;
         private Square _square;
 
@@ -16,6 +18,10 @@ namespace Qserver.GameServer.Qpang
         private byte _stateValue;
         private float[] _position;
 
+        public object Lock
+        {
+            get { return this._lock; }
+        }
         public Player Player
         {
             get { return this._player; }
@@ -43,6 +49,7 @@ namespace Qserver.GameServer.Qpang
 
         public SquarePlayer(Player player, Square square)
         {
+            this._lock = new object();
             this._square = square;
             this._player = player;
             this._position = new float[3];

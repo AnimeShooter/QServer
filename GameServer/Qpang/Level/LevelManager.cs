@@ -40,18 +40,29 @@ namespace Qserver.GameServer.Qpang
 
         public Level GetLevelRewards(byte level)
         {
-            // assert(level > 0 && level <= 45);
+            if(level > 0 && level <= 45);
+                return this._levels[level];
 
-            return this._levels[level];
+            return new Level();
         }
 
         public void OnPlayerFinish(RoomSessionPlayer session)
         {
             var player = session.Player;
 
-            //var currentLevel = player.Level
+            var currentLevel = player.Level;
+            var targetLevel = GetLevelForExperience(player.Experience, 0);
 
-            // TODO: levelup if needed
+            if (targetLevel.Lvl <= currentLevel)
+                return;
+
+            for(int i = currentLevel+1; i <= targetLevel.Lvl; i++)
+            {
+                var rewards = GetLevelRewards((byte)i);
+                player.AddDon(rewards.DonReward);
+            }
+
+            player.Level = targetLevel.Lvl;
         }
     }
 }

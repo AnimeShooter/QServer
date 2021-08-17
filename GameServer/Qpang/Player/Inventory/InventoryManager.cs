@@ -196,29 +196,30 @@ namespace Qserver.GameServer.Qpang
             }
         }
 
-        public void UseCard(ulong cardId, uint playtime)
+        public bool UseCard(ulong cardId, uint playtime)
         {
+            // return true if expired
             lock (this._lock)
             {
                 if (this._player == null)
-                    return;
+                    return false;
 
                 if (this._player.TestRealm)
-                    return; // no consuming cards on test realm
+                    return false; // no consuming cards on test realm
 
                 if (!this._cards.ContainsKey(cardId))
-                    return;
+                    return false;
 
                 lock(this._player.Lock)
                 {
                     var card = this._cards[cardId];
 
                     if (card.PeriodeType == 254)
-                        return; // Unlimited
+                        return false; // Unlimited
 
                     if (card.PeriodeType == 3) // rounds
                     {
-                        if (card.Period > 0)
+                        if (card.Period > 0) // dont underflow?
                             card.Period--;
                     }
                     else if (card.PeriodeType == 2) // time based?
@@ -232,16 +233,20 @@ namespace Qserver.GameServer.Qpang
                     if (card.Period == 0)
                     {
                         // expired?
+                        return true;
                         if (card.Type == 86 || card.Type == 87)
-                            this._player.EquipmentManager.UnequipItem(cardId);
+                        {
+                            //this._player.EquipmentManager.UnequipItem(cardId);
+                        }
                         else if (card.Type == 70)
                         {
                             card.IsActive = false;
-                            this._player.EquipmentManager.RemoveFunctionCard(cardId);
+                            //this._player.EquipmentManager.RemoveFunctionCard(cardId);
                         }
                     }
                 }
             }
+            return false;
         }
 
         public bool IsExpired(ulong cardId)

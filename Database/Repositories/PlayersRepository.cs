@@ -91,22 +91,25 @@ namespace Qserver.Database.Repositories
         {
             Task<DBPlayerStats> stats = null;
             await _sqlObjectFactory.GetConnection().UsingAsync(connection =>
-                stats = connection.QuerySingleAsync<DBPlayerStats>("SELECT kills, deaths, n_won, n_lost, n_drew, m_won, m_drew, playtime, slacker_points, melee_kills, gun_kills, launcher_kills, bomb_kills, headshot_kills, headshot_deaths, team_kills, team_deaths, event_item_pickups FROM player_stats WHERE player_id = @Id", new { Id = playerId }));
+                stats = connection.QuerySingleAsync<DBPlayerStats>("SELECT kills, deaths, n_won, n_lost, n_drew, m_won, m_lost, m_drew, playtime, slacker_points, melee_kills, gun_kills, launcher_kills, bomb_kills, headshot_kills, headshot_deaths, team_kills, team_deaths, event_item_pickups FROM player_stats WHERE player_id = @Id", new { Id = playerId }));
             return stats.Result;
         }
 
         public async Task UpdatePlayerStats(Player player)
         {
             await _sqlObjectFactory.GetConnection().UsingAsync(connection =>
-                connection.QuerySingleAsync("UPDATE player_stats SET kills = @Kills, deaths = @Deaths, n_won = @Nwon, n_lost = @Nlost, n_drew = @Ndrew, m_won = @Mwon, m_drew = @MDrew, playtime = @Playtime, slacker_points = @SlackerPoints, melee_kills = @MeleeKills, " +
-                "gun_kills = @GunKills, launcher_kills = @LauncherKills, bomb_kills = @BombKills, headshot_kills = @HeadshotKills, headshot_deaths = @HeadshotDeaths, team_kills = @TeamKills, team_deaths = @TeamDeaths, event_item_pickups = @EventItemPickups WHERE id = @Id",
+                connection.QueryAsync("UPDATE player_stats SET kills = @Kills, deaths = @Deaths, n_won = @Nwon, n_lost = @Nlost, n_drew = @Ndrew, m_won = @Mwon, m_lost = @Mlost, m_drew = @Mdrew, playtime = @Playtime, slacker_points = @SlackerPoints, melee_kills = @MeleeKills, " +
+                "gun_kills = @GunKills, launcher_kills = @LauncherKills, bomb_kills = @BombKills, headshot_kills = @HeadshotKills, headshot_deaths = @HeadshotDeaths, team_kills = @TeamKills, team_deaths = @TeamDeaths, event_item_pickups = @EventItemPickups WHERE player_id = @Id",
                 new
                 {
                     Kills = player.StatsManager.Kills,
                     Deaths = player.StatsManager.Deaths,
                     Nwon = player.StatsManager.NormalWins,
-                    NLost = player.StatsManager.NormalLosses,
-                    NDrew = player.StatsManager.NormalDrews,
+                    Nlost = player.StatsManager.NormalLosses,
+                    Ndrew = player.StatsManager.NormalDrews,
+                    Mwon = player.StatsManager.MissionWins,
+                    Mlost = player.StatsManager.MissionLosses,
+                    Mdrew = player.StatsManager.MissionDrews,
                     Playtime = player.StatsManager.PlayTime,
                     SlackerPoints = player.StatsManager.SlackerPoints,
                     MeleeKills = player.StatsManager.MeleeKills,

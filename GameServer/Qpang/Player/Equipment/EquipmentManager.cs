@@ -413,12 +413,26 @@ namespace Qserver.GameServer.Qpang
                     return;
                 
                 var equips = this._equips[character];
+                List<ulong> expired = new List<ulong>();
+                for(int i = 0; i < equips.Length; i++)
+                    if (this._player.InventoryManager.UseCard(equips[i], playtime))
+                        expired.Add(equips[i]);
 
-                lock(this._functionCardlock)
+                foreach(var e in expired)
+                    this._player.EquipmentManager.UnequipItem(e);
+
+
+                expired = new List<ulong>();
+                lock (this._functionCardlock)
                 {
-                    foreach (var func in this._functionCards)
-                        this._player.InventoryManager.UseCard(func, playtime);
+                    for (int i = 0; i < this._functionCards.Count; i++)
+                        if (this._player.InventoryManager.UseCard(this._functionCards[i], playtime))
+                            expired.Add(this._functionCards[i]);
+
+                    foreach (var e in expired)
+                        this._player.EquipmentManager.RemoveFunctionCard(e);
                 }
+                
 
                 var cards = this._player.InventoryManager.List();
                 this._player.SendLobby(LobbyManager.Instance.Inventory(cards));

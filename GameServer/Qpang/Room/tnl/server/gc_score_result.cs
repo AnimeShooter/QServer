@@ -37,6 +37,9 @@ namespace Qserver.GameServer.Qpang
         {
             Players = players;
 
+            // TODO: fix, prevents crash?
+            Players = new List<RoomSessionPlayer>();
+
             if (roomSession.GameMode.IsTeamMode())
             {
                 BlueScore = BlueKills = (ushort)roomSession.BluePoints;

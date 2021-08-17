@@ -49,7 +49,6 @@ namespace Qserver.GameServer.Qpang
         private ushort _kills;
         private ushort _deaths;
         private ushort _score;
-        private uint _playTime;
         private uint _highestMultiKill;
         private uint _eventItemPickUps;
 
@@ -82,8 +81,7 @@ namespace Qserver.GameServer.Qpang
         }
         public uint PlayTime
         {
-            get { return this._playTime; }
-            set { this._playTime = value; }
+            get { return GetPlaytime(); }
         }
         public uint HighestMultiKill
         {
@@ -188,7 +186,6 @@ namespace Qserver.GameServer.Qpang
             this._expRate = 0;
             this._don = 0;
             this._donRate = 0;
-            this._playTime = 0;
             this._highestStreak = 0;
             this._highestMultiKill = 0;
             this._eventItemPickUps = 0;

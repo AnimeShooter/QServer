@@ -144,7 +144,7 @@ namespace Qserver.GameServer.Qpang
         {
             AddKills(player.Kills);
             AddDeaths(player.Deaths);
-            AddPlaytime(player.PlayTime);
+            AddPlaytime(player.PlayTime); // TODO: give me value
             this._eventItemPickUps += player.EventItemPickUps;
 
             Save();

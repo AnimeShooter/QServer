@@ -54,6 +54,9 @@ namespace Qserver.GameServer.Qpang
 
         private GameConnection _conn;
         private RoomSession _roomSession;
+
+        private List<long> _weaponReloads;
+        private List<long> _weaponReswaps;
         
         public object Lock
         {
@@ -216,6 +219,9 @@ namespace Qserver.GameServer.Qpang
 
             this._donRate += equipMgr.HasFunctionCard((uint)Items.DON_MAKER_25) ? (ushort)25 : (ushort)0;
             this._donRate += equipMgr.HasFunctionCard((uint)Items.DON_MAKER_50) ? (ushort)50 : (ushort)0;
+
+            this._weaponReloads = new List<long>();
+            this._weaponReswaps = new List<long>();
         }
 
         public void Tick()
@@ -269,6 +275,18 @@ namespace Qserver.GameServer.Qpang
 
             player.Update();
             player.SendLobby(LobbyManager.Instance.UpdateAccount(player));
+
+            // TEST anti-cheating
+            for(int i = 0; i < this._weaponReloads.Count; i++)
+            {
+                long nearby = 0;
+                foreach(var x in this._weaponReswaps)
+                {
+                    if (x > this._weaponReloads[i] && x - this._weaponReloads[i] < 1000 && x < nearby)
+                        nearby = x;
+                }
+                Console.WriteLine($"Reload[{i}]: {this._weaponReswaps[i].ToString().PadLeft(8)} - {nearby.ToString().PadLeft(8)} = {(nearby-this._weaponReswaps[i]).ToString().PadLeft(8)}");
+            }
         }
 
         public bool CanStart()
@@ -473,5 +491,16 @@ namespace Qserver.GameServer.Qpang
             return (ushort)(this._baseHealth + this._bonusHealth);
         }
 
+
+        // TEST anti-cheating
+        public void OnReload()
+        {
+            this._weaponReloads.Add(Environment.TickCount64);
+        }
+
+        public void OnReswap()
+        {
+            this._weaponReswaps.Add(Environment.TickCount64);
+        }
     }
 }

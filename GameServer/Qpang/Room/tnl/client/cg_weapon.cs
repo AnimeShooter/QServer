@@ -76,6 +76,8 @@ namespace Qserver.GameServer.Qpang
                 if (!session.WeaponManager.CanReload)
                     return;
 
+                session.OnReload();
+
                 session.WeaponManager.Reload(CardId);
             }
         }

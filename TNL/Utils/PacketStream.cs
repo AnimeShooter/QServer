@@ -27,29 +27,23 @@ namespace TNL.Utils
 
         public NetError RecvFrom(TNLSocket incomingSocket, out IPEndPoint recvAddress)
         {
+            recvAddress = null;
+
             if (incomingSocket.PacketsToBeHandled.Count == 0)
-            {
-                recvAddress = null;
                 return NetError.WouldBlock;
-            }
 
             var d = incomingSocket.PacketsToBeHandled.Dequeue();
+            if (d == null)
+                return NetError.UnknownError;
 
-            // NOTE: prevent d from null
-            uint dataSize = 0;
-            if (d != null)
-            {
-                dataSize = d.Item2.Length > TNLSocket.MaxPacketDataSize ? TNLSocket.MaxPacketDataSize : (uint)d.Item2.Length;
-                Array.Copy(d.Item2, _buffer, dataSize);
+            uint dataSize = d.Item2.Length > TNLSocket.MaxPacketDataSize ? TNLSocket.MaxPacketDataSize : (uint)d.Item2.Length;
+            Array.Copy(d.Item2, _buffer, dataSize);
 
-                SetBuffer(_buffer, dataSize);
-                SetMaxSizes(dataSize, 0U);
-                Reset();
+            SetBuffer(_buffer, dataSize);
+            SetMaxSizes(dataSize, 0U);
+            Reset();
 
-                recvAddress = d.Item1;
-            }
-            else
-                recvAddress = null;
+            recvAddress = d.Item1;
 
             return NetError.NoError;
         }

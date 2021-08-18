@@ -33,7 +33,7 @@ namespace TNL.Utils
                 return NetError.WouldBlock;
 
             var d = incomingSocket.PacketsToBeHandled.Dequeue();
-            if (d == null)
+            if (d == null || d.Item1 == null || d.Item2 == null)
                 return NetError.UnknownError;
 
             uint dataSize = d.Item2.Length > TNLSocket.MaxPacketDataSize ? TNLSocket.MaxPacketDataSize : (uint)d.Item2.Length;

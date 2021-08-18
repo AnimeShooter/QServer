@@ -148,7 +148,7 @@ namespace Qserver.GameServer.Qpang
             //    return; // already picked
 
             if (SelectedWeapon.ItemId == weaponId)
-                this._player.OnReload();
+                this._player.OnReswap();
                 
             for (int i = 0; i < this._weapons.Length; i++)
             {

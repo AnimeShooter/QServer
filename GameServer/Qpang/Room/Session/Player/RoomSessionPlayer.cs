@@ -277,15 +277,16 @@ namespace Qserver.GameServer.Qpang
             player.SendLobby(LobbyManager.Instance.UpdateAccount(player));
 
             // TEST anti-cheating
+            Console.WriteLine("Reload history of " + this._conn.Player.Name);
             for(int i = 0; i < this._weaponReloads.Count; i++)
             {
-                long nearby = 0;
+                long nearby = long.MaxValue;
                 foreach(var x in this._weaponReswaps)
                 {
-                    if (x > this._weaponReloads[i] && x - this._weaponReloads[i] < 1000 && x < nearby)
+                    if (x > this._weaponReloads[i] && x - this._weaponReloads[i] < 5000 && x < nearby)
                         nearby = x;
                 }
-                Console.WriteLine($"Reload[{i}]: {this._weaponReswaps[i].ToString().PadLeft(8)} - {nearby.ToString().PadLeft(8)} = {(nearby-this._weaponReswaps[i]).ToString().PadLeft(8)}");
+                Console.WriteLine($"Reload[{i}]: {this._weaponReloads[i].ToString().PadLeft(8)} - {nearby.ToString().PadLeft(8)} = {(nearby-this._weaponReloads[i]).ToString().PadLeft(8)}ms");
             }
         }
 

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Qserver.GameServer.Qpang
 {
-    public class Assasin : Skill
+    public class Assassin : Skill
     {
     }
 }

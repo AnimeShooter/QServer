@@ -63,6 +63,7 @@ namespace Qserver.GameServer.Qpang
             ItemId = itemId;
             Uid = uid;
             SkillId = skillId;
+            this.Items = new List<Item>();
         }
 
         public override void Pack(EventConnection ps, BitStream bitStream) 

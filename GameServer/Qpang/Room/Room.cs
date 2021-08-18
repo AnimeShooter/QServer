@@ -494,7 +494,7 @@ namespace Qserver.GameServer.Qpang
         public void SetMeleeOnly(bool meleeOnly)
         {
             this._isMeleeOnly = meleeOnly;
-            Update((uint)CGRoom.Commands.TOGGLE_SKILL, meleeOnly ? (uint)1 : (uint)0);
+            Update((uint)CGRoom.Commands.TOGGLE_MELEE, meleeOnly ? (uint)1 : (uint)0);
         }
 
 

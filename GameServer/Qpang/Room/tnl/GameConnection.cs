@@ -219,7 +219,9 @@ namespace Qserver.GameServer.Qpang
             PostNetEvent(new GCRoomInfo(room));
 
             UpdateRoom(room, room.PointsGame ? (uint)4 : (uint)20, room.PointsGame ? room.ScorePoints : room.ScoreTime);
-            UpdateRoom(room, 26, 0); // t s
+
+            room.SetSkillsEnabled(true);
+            //UpdateRoom(room, 26, 0); // t s
 
             //UpdateRoom(room, 3, 2); // mode, 2
             //UpdateRoom(room, 3, 1); // mode, 2

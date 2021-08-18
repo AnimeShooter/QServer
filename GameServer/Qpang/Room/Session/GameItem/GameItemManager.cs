@@ -115,9 +115,9 @@ namespace Qserver.GameServer.Qpang
             var currTime = Util.Util.Timestamp();
             foreach(var item in this._items)
             {
-                if (item.Value.LastPickUpTime == 0)
-                    continue;
-                else if(item.Value.LastPickUpTime + RespawnInterval < currTime)
+                if (item.Value.LastPickUpTime == 0) // not looted
+                    continue; 
+                else if(item.Value.LastPickUpTime + RespawnInterval < currTime) // looted, need respawn
                 {
                     var spawnItem = new GameItemSpawn()
                     {
@@ -138,7 +138,7 @@ namespace Qserver.GameServer.Qpang
                             Z = item.Value.Spawn.Z
                         }
                     };
-                    this._roomSession.RelayPlaying<GCGameItem>((byte)6, items, (uint)0);
+                    this._roomSession.RelayPlaying<GCGameItem>((byte)6, items, (uint)0); // TODO: Fix respawns
                 }
             }
 

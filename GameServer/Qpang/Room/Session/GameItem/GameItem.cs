@@ -6,9 +6,9 @@ namespace Qserver.GameServer.Qpang
 {
     public class GameItem
     {
-        //public virtual uint OnPickUp(RoomSessionPlayer player)
-        //{
-        //    return 0;
-        //}
+        public virtual uint OnPickUp(RoomSessionPlayer player)
+        {
+            return 0;
+        }
     }
 }

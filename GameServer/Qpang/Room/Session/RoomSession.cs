@@ -133,8 +133,8 @@ namespace Qserver.GameServer.Qpang
             this._leavers = new List<RoomSessionPlayer>();
             this._players = new Dictionary<uint, RoomSessionPlayer>();
 
-            this._itemManager = new GameItemManager();
-            this._skillManager = new RoomSkillManager(this);
+            this._itemManager = new GameItemManager(); // TODO
+            this._skillManager = new RoomSkillManager(); // TODO 
 
             this._goal = this._room.PointsGame ? this._room.ScorePoints : this._room.ScoreTime;
             this._isPoints = this._room.PointsGame;
@@ -145,7 +145,7 @@ namespace Qserver.GameServer.Qpang
         public void Initialize()
         {
             this._itemManager.Initialize(this);
-            //this._skillManager.Initialize(this);
+            this._skillManager.Initialize(this);
 
             this._gameMode.OnStart(this);
             this._essencePosition = new Spawn()
@@ -400,6 +400,7 @@ namespace Qserver.GameServer.Qpang
                 return;
 
             this._isFinished = true;
+            this._itemManager.Reset();
             this._itemManager = new GameItemManager();
             this._essenceHolder = null;
             this._nexBlueVIP = null;

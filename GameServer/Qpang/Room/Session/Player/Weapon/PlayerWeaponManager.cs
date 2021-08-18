@@ -146,10 +146,7 @@ namespace Qserver.GameServer.Qpang
             // NOTE: allow reload glitch
             //if (SelectedWeapon.ItemId == weaponId)
             //    return; // already picked
-
-            if (SelectedWeapon.ItemId == weaponId)
-                this._player.OnReswap();
-                
+ 
             for (int i = 0; i < this._weapons.Length; i++)
             {
                 if(this._weapons[i].ItemId == weaponId)
@@ -158,6 +155,9 @@ namespace Qserver.GameServer.Qpang
                     break;
                 }   
             }
+
+            if (SelectedWeapon.ItemId == weaponId && this._selectedWeaponIndex == 1) // 1 == sniper?
+                this._player.OnReswap();
 
             if (this._player == null)
                 return;

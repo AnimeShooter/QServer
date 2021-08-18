@@ -11,7 +11,12 @@ namespace Qserver.GameServer.Qpang
         private RoomSession _room;
         private Dictionary<uint, Skill> _skills;
 
-        public RoomSkillManager(RoomSession room)
+        public RoomSkillManager()
+        {
+            
+        }
+
+        public void Initialize(RoomSession room)
         {
             this._room = room;
             //this._skills = Game.Instance.SkillManager.SkillsGotMode(room.Room.Mode); // TODO

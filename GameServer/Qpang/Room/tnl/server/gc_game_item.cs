@@ -87,7 +87,7 @@ namespace Qserver.GameServer.Qpang
                 bitStream.Write((uint)0);
                 bitStream.Write(item.X);
                 bitStream.Write(item.Y);
-                bitStream.Write(item.X);
+                bitStream.Write(item.Z);
                 bitStream.Write(WeaponId);
             }
         }

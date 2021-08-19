@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Qserver.GameServer.Qpang
+namespace Qserver.GameServer.Qpang.Skills
 {
     public class Undercover : Skill
     {

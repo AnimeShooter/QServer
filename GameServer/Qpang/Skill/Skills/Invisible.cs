@@ -8,7 +8,7 @@ namespace Qserver.GameServer.Qpang.Skills
     {
         public override uint GetId()
         {
-            return (uint)Items.SKILL_INVISIBLE;
+            return 0; // return (uint)Items.SKILL_INVISIBLE;
         }
     }
 }

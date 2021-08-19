@@ -54,6 +54,8 @@ namespace Qserver.GameServer.Qpang
             bitStream.Write(Y);
             bitStream.Write(Z);
             bitStream.Write(IsVip);
+
+            Console.WriteLine($"Respawn: {X}, {Y}, {Z}");
         }
 
         public override void Unpack(EventConnection ps, BitStream bitStream) { }

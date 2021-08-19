@@ -90,12 +90,31 @@ namespace Qserver.GameServer.Qpang
 
             var roomSession = roomPlayer.Room.RoomSession;
             
-            Console.WriteLine($"[{DateTime.UtcNow.ToString()}][{player.Name}] {Cmd.ToString("X8")} {PosX} {PosY} {PosY} | {unk04} {unk05} {unk06} {Pitch} {Yawn} --- {Tick} {Unk10.ToString("X8")}");
+            //Console.WriteLine($"[{DateTime.UtcNow.ToString()}][{player.Name}] {Cmd.ToString("X8")} {PosX} {PosY} {PosY} | {unk04} {unk05} {unk06} {Pitch} {Yawn} --- {Tick} {Unk10.ToString("X8")}");
+            
+            // update serverside player position
             roomPlayer.RoomSessionPlayer.X = PosX;
             roomPlayer.RoomSessionPlayer.Y = PosY;
             roomPlayer.RoomSessionPlayer.Z = PosZ;
+
+            
+            // TODO: fix timing issue and detect cheatingg
             if (roomSession != null)
+            {
+                //if (roomPlayer.RoomSessionPlayer.FirstSeen == 0)
+                //    roomPlayer.RoomSessionPlayer.FirstSeen = (Util.Util.Timestamp() - (roomSession.StartTime)) * 1000;
+                //else
+                //{
+                //    uint serverTick = ;
+                //}
+                
+                //Console.WriteLine($"{Tick} == {serverTick}"); // 45s
+                //if (serverTick + 2000 < Tick)
+                //    Console.WriteLine($"Speedhack detected on player {roomPlayer.Player.Name}!");
+
                 roomSession.RelayPlayingExcept<GCMove>(player.PlayerId, PlayerId, Cmd, PosX, PosY, PosZ, unk04, unk05, unk06, Pitch, Yawn, Tick, Unk10);
+            }
+            
                 
         }
     }

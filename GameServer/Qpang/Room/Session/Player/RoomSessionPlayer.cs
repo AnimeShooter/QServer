@@ -61,6 +61,9 @@ namespace Qserver.GameServer.Qpang
         private float _coordX;
         private float _coordY;
         private float _coordZ;
+
+        private uint _firstSeen;
+
         public object Lock
         {
             get { return this._playerLock; }
@@ -187,6 +190,11 @@ namespace Qserver.GameServer.Qpang
         {
             get { return this._coordZ; }
             set { this._coordZ = value; }
+        }
+        public uint FirstSeen
+        {
+            get { return this._firstSeen; }
+            set { this._firstSeen = value; }
         }
 
         public RoomSessionPlayer(GameConnection conn, RoomSession roomSession, byte team)
@@ -418,19 +426,19 @@ namespace Qserver.GameServer.Qpang
                 this._highestStreak = this._streak;
         }
 
-        public void HealTeam(uint healing) //  TODO
+        public void HealTeam(uint healing) 
         {
-            //var players = this._roomSession.GetPlayersFromTeam(this._team);
+            var players = this._roomSession.GetPlayersForTeam(this._team);
 
-            //foreach(var p in players)
-            //{
-            //    if (p.Dead)
-            //        continue;
+            foreach (var p in players)
+            {
+                if (p.Death)
+                    continue;
 
-            //    p.AddHealth(50, true);
-            //    if (p.Player.PlayerId != p.PlayerId)
-            //        p.Post(new GCGameItem(1, p.Player.PlayerId, 1191182350, null));
-            //}
+                p.AddHealth(50, true);
+                if (p.Player.PlayerId != this._conn.Player.PlayerId)
+                    p.Post(new GCGameItem(1, p.Player.PlayerId, 1191182350, 0));
+            }
         }
 
         public uint GetPlaytime()
@@ -439,7 +447,7 @@ namespace Qserver.GameServer.Qpang
             if (currTime < this._startTime)
                 return 0;
 
-            return currTime = this._startTime;
+            return currTime - this._startTime;
         }
 
         public void Post(GameNetEvent e)

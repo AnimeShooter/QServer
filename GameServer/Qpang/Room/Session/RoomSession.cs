@@ -229,7 +229,7 @@ namespace Qserver.GameServer.Qpang
                     SetEssenceHolder(null);
                     var pos = player.Position;
                     foreach (var p in this._players)
-                        p.Value.Post(new GCHitEssence(p.Value.Player.PlayerId, p.Value.Player.PlayerId, 3, pos.X, pos.Y, pos.X, 0, 6));
+                        p.Value.Post(new GCHitEssence(p.Value.Player.PlayerId, p.Value.Player.PlayerId, 3, pos.X, pos.Y, pos.Z, 0, 6));
                 }
 
                 if (player == this._blueVIP)

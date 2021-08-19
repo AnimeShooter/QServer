@@ -131,11 +131,11 @@ namespace Qserver.GameServer.Qpang
                     {
                         new GCGameItem.Item()
                         {
-                            ItemId = item.Value.ItemId,
-                            ItemUid = item.Value.SpawnId,
-                            X = item.Value.Spawn.X,
-                            Y = item.Value.Spawn.Y,
-                            Z = item.Value.Spawn.Z
+                            ItemId = spawnItem.ItemId,
+                            ItemUid = spawnItem.SpawnId,
+                            X = spawnItem.Spawn.X,
+                            Y = spawnItem.Spawn.Y,
+                            Z = spawnItem.Spawn.Z
                         }
                     };
                     this._roomSession.RelayPlaying<GCGameItem>((byte)6, items, (uint)0); // TODO: Fix respawns

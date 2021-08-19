@@ -146,7 +146,6 @@ namespace Qserver.GameServer.Qpang
 
             this._goal = this._room.PointsGame ? this._room.ScorePoints : this._room.ScoreTime;
             this._isPoints = this._room.PointsGame;
-            //this._startTime = Util.Util.Timestamp() + 30 + 5; // waiting for players + countdown TODO 30+5
             this._startTime = Util.Util.Timestamp() + 30 + 5; // waiting for players + countdown TODO 30+5
             this._endTime = this._room.PointsGame ? uint.MaxValue : this._startTime + (this._room.ScoreTime * 60);
         }
@@ -711,7 +710,7 @@ namespace Qserver.GameServer.Qpang
             if (currTime <= this._startTime)
                 return 0;
 
-            return (currTime = this._startTime) * 1000; // ms??
+            return (currTime - this._startTime) * 1000; // ms??
         }
 
         public uint GetTimeLeftInSeconds()

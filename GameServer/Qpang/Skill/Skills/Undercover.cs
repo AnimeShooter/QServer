@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Qserver.GameServer.Qpang.Skills
+namespace Qserver.GameServer.Qpang
 {
-    public class Camo : Skill
+    public class Undercover : Skill
     {
         public override uint GetId()
         {
-            return (uint)Items.SKILL_CAMO;
+            return (uint)Items.SKILL_UNDERCOVER;
         }
     }
 }

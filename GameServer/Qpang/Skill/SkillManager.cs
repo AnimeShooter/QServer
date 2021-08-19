@@ -14,11 +14,21 @@ namespace Qserver.GameServer.Qpang
 
             this._skills.Add((byte)GameMode.Mode.DM, new Dictionary<uint, Skill>()
             {
-                { (uint)Items.SKILL_CAMO, new Camo() },
-                { (uint)Items.SKILL_ASSASSIN, new Assassin() },
-                { (uint)Items.SKILL_ABSORB, new Absorb() },
-                { (uint)Items.SKILL_TEAM_CHEER, new TeamCheer() },
-                { (uint)Items.SKILL_ZILLA, new Zilla() }
+                { (uint)Items.SKILL_ABSORB, new Skills.Absorb() },
+                { (uint)Items.SKILL_ANGER, new Skills.Anger() },
+                { (uint)Items.SKILL_ASSASSIN, new Skills.Assassin() },
+                { (uint)Items.SKILL_CAMO, new Skills.Camo() },
+                { (uint)Items.SKILL_CHAOS, new Skills.Chaos() },
+                { (uint)Items.SKILL_ENERGY, new Skills.Energy() },
+                { (uint)Items.SKILL_INVISIBLE, new Skills.Invisible() },
+                { (uint)Items.SKILL_RAPIDFIRE, new Skills.RapidFire() },
+                { (uint)Items.SKILL_SKILLSTEAL, new Skills.SkillSteal() },
+                { (uint)Items.SKILL_TEAM_CHEER, new Skills.TeamCheer() },
+                { (uint)Items.SKILL_TRADE, new Skills.Trade() },
+                { (uint)Items.SKILL_TRAP, new Skills.Trap() },
+                { (uint)Items.SKILL_UNDERCOVER, new Skills.Undercover() },
+                { (uint)Items.SKILL_WEAPONSTEAL, new Skills.WeaponSteal() },
+                { (uint)Items.SKILL_ZILLA, new Skills.Zilla() }
             });
 
         }

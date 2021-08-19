@@ -35,7 +35,7 @@ namespace TNL.Network
         public TNLSocket(int port)
         {
             _socket = new UdpClient(port);
-            _socket.Client.IOControl(unchecked((int)(0x80000000 | 0x18000000 | 12)), new byte[1] { 0x01 }, null); // ICMP skip?
+            //_socket.Client.IOControl(unchecked((int)(0x80000000 | 0x18000000 | 12)), new byte[1] { 0x01 }, null); // ICMP skip?
             _socket.BeginReceive(OnEndReceive, null);
             _needRun = true;
         }

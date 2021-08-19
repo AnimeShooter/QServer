@@ -63,6 +63,8 @@ namespace Qserver.GameServer.Qpang
             if (roomSession == null)
                 return;
 
+            // TODO: handle skill usage (subtract points?)
+
             roomSession.RelayPlaying<GCCard>(Uid, TargetUid, (byte)Cmd, CardType, ItemId, SeqId);
         }
     }

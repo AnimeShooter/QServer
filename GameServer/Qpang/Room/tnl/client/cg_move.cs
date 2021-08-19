@@ -26,16 +26,26 @@ namespace Qserver.GameServer.Qpang
 
         public uint PlayerId;
         public uint Cmd;
+        /*
+         * 0x00000000 pitch/yawn/jump/roll/stop
+         * 0x00000100 forward
+         * 0x00001000 backwards
+         * 0x00010000 left
+         * 0x00100000 right
+         * 
+         */
+
+
         public float PosX;
         public float PosY;
         public float PosZ;
         public float unk04;
         public float unk05;
         public float unk06;
-        public float unk07;
-        public float unk08;
-        public float unk09;
-        public float unk10;
+        public float Pitch;
+        public float Yawn;
+        public uint Tick;
+        public uint Unk10;
         //public uint unk11;
 
         public CGMove() : base(GameNetId.CG_MOVE, GuaranteeType.Unguaranteed, EventDirection.DirClientToServer) { }
@@ -51,10 +61,10 @@ namespace Qserver.GameServer.Qpang
             bitStream.Read(out unk04);
             bitStream.Read(out unk05);
             bitStream.Read(out unk06);
-            bitStream.Read(out unk07);
-            bitStream.Read(out unk08);
-            bitStream.Read(out unk09);
-            bitStream.Read(out unk10);
+            bitStream.Read(out Pitch);
+            bitStream.Read(out Yawn);
+            bitStream.Read(out Tick);
+            bitStream.Read(out Unk10);
         }
         public override void Process(EventConnection ps) 
         {
@@ -79,8 +89,14 @@ namespace Qserver.GameServer.Qpang
             session.Position = new Position() { X = PosX, Y = PosY, Z = PosZ };
 
             var roomSession = roomPlayer.Room.RoomSession;
+            
+            Console.WriteLine($"[{DateTime.UtcNow.ToString()}][{player.Name}] {Cmd.ToString("X8")} {PosX} {PosY} {PosY} | {unk04} {unk05} {unk06} {Pitch} {Yawn} --- {Tick} {Unk10.ToString("X8")}");
+            roomPlayer.RoomSessionPlayer.X = PosX;
+            roomPlayer.RoomSessionPlayer.Y = PosY;
+            roomPlayer.RoomSessionPlayer.Z = PosZ;
             if (roomSession != null)
-                roomSession.RelayPlayingExcept<GCMove>(player.PlayerId, PlayerId, Cmd, PosX, PosY, PosZ, unk04, unk05, unk06, unk07, unk08, unk09, unk10);
+                roomSession.RelayPlayingExcept<GCMove>(player.PlayerId, PlayerId, Cmd, PosX, PosY, PosZ, unk04, unk05, unk06, Pitch, Yawn, Tick, Unk10);
+                
         }
     }
 }

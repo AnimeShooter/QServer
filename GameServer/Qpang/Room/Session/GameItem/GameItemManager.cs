@@ -224,12 +224,15 @@ namespace Qserver.GameServer.Qpang
                 return;
             }
 
-
+            // item ready check
             var item = this._items[spawnId];
             if (item.ItemId == 0)
                 return;
 
-            // NOTE: add skill?
+            // distance check
+            if (!player.IsInRange(item.Spawn, 1.75f, false))
+                return;
+
             if (item.ItemId == (uint)Item.RED_MEDKIT || item.ItemId == (uint)Item.GREEN_MEDKIT || item.ItemId == (uint)Item.AMMO_CLIP
                 || item.ItemId == (uint)Item.SKILL_CARD)
             {

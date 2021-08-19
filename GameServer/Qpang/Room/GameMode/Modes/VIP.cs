@@ -41,6 +41,7 @@ namespace Qserver.GameServer.Qpang
             if(blueVip != null)
             {
                 var pos = blueVip.Position;
+                sessionPlayer.UpdateCoords(pos);
                 sessionPlayer.Post(new GCRespawn(blueVip.Player.PlayerId, blueVip.Character, 0, pos.X, pos.Y, pos.Z, true));
                 sessionPlayer.Post(new GCGameState(blueVip.Player.PlayerId, 8));
             }
@@ -48,6 +49,7 @@ namespace Qserver.GameServer.Qpang
             if(yellowVip != null)
             {
                 var pos = yellowVip.Position;
+                sessionPlayer.UpdateCoords(pos);
                 sessionPlayer.Post(new GCRespawn(yellowVip.Player.PlayerId, yellowVip.Character, 0, pos.X, pos.Y, pos.Z, true));
                 sessionPlayer.Post(new GCGameState(yellowVip.Player.PlayerId, 8));
             }

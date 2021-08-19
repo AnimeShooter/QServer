@@ -57,7 +57,10 @@ namespace Qserver.GameServer.Qpang
 
         private List<long> _weaponReloads;
         private List<long> _weaponReswaps;
-        
+
+        private float _coordX;
+        private float _coordY;
+        private float _coordZ;
         public object Lock
         {
             get { return this._playerLock; }
@@ -169,6 +172,21 @@ namespace Qserver.GameServer.Qpang
         public RoomSession RoomSession
         {
             get { return this._roomSession; }
+        }
+        public float X
+        {
+            get { return this._coordX; }
+            set { this._coordX = value; }
+        }
+        public float Y
+        {
+            get { return this._coordY; }
+            set { this._coordY = value; }
+        }
+        public float Z
+        {
+            get { return this._coordZ; }
+            set { this._coordZ = value; }
         }
 
         public RoomSessionPlayer(GameConnection conn, RoomSession roomSession, byte team)
@@ -492,13 +510,34 @@ namespace Qserver.GameServer.Qpang
             return (ushort)(this._baseHealth + this._bonusHealth);
         }
 
-
         // TEST anti-cheating
+        public void UpdateCoords(Spawn coords)
+        {
+            this._coordX = coords.X;
+            this._coordY = coords.Y;
+            this._coordZ = coords.Z;
+        }
+        public void UpdateCoords(Position coords)
+        {
+            this._coordX = coords.X;
+            this._coordY = coords.Y;
+            this._coordZ = coords.Z;
+        }
+        public bool IsInRange(Spawn target, float maxDistance, bool is3D)
+        {
+            float dist = is3D ? ((target.X - this._coordX) * (target.X - this._coordX)) +
+                    ((target.Y - this._coordY) * (target.Y - this._coordY)) +
+                    ((target.Z - this._coordZ) * (target.Z - this._coordZ))
+                    : 
+                    ((target.X - this._coordX) * (target.X - this._coordX)) +
+                    ((target.Y - this._coordY) * (target.Y - this._coordY));
+
+            return dist < maxDistance;
+        }
         public void OnReload()
         {
             this._weaponReloads.Add(Environment.TickCount64);
         }
-
         public void OnReswap()
         {
             this._weaponReswaps.Add(Environment.TickCount64);

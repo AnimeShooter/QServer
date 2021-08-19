@@ -69,11 +69,10 @@ namespace Qserver.GameServer.Qpang
             lock(this._player.Lock)
             {
                 this._drawnSkillCard = this._player.RoomSession.SkillManager.GenerateRandomSkill();
-                // TODO
-                //this._drawnSkillCard.bind(this._player);
+                this._drawnSkillCard.Bind(this._player);
             }
 
-            return 0; // TODO // this._drawnSkillCard.Id;
+            return this._drawnSkillCard.Id;
         }
     }
 }

@@ -19,13 +19,14 @@ namespace Qserver.GameServer.Qpang
         public void Initialize(RoomSession room)
         {
             this._room = room;
-            //this._skills = Game.Instance.SkillManager.SkillsGotMode(room.Room.Mode); // TODO
+            this._skills = Game.Instance.SkillManager.GetSkillsForMode((byte)room.Room.Mode);
         }
+
 
         public Skill GenerateRandomSkill()
         {
             // idk
-            return null;
+            return new Absorb(); // test
         }
 
         public bool IsSkillValid(uint itemId)

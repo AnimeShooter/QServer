@@ -133,7 +133,7 @@ namespace Qserver.GameServer.Qpang
             this._leavers = new List<RoomSessionPlayer>();
             this._players = new Dictionary<uint, RoomSessionPlayer>();
 
-            this._itemManager = new GameItemManager(); // TODO
+            this._itemManager = new GameItemManager();
             this._skillManager = new RoomSkillManager(); // TODO 
 
             this._goal = this._room.PointsGame ? this._room.ScorePoints : this._room.ScoreTime;

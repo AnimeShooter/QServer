@@ -8,8 +8,7 @@ namespace Qserver.GameServer.Qpang
     {
         public override uint OnPickUp(RoomSessionPlayer session)
         {
-            session.SkillManager.DrawSkill();
-            return 0;
+            return session.SkillManager.DrawSkill();
         }
     }
 }

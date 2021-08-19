@@ -6,5 +6,9 @@ namespace Qserver.GameServer.Qpang
 {
     public class Assassin : Skill
     {
+        public override uint GetId()
+        {
+            return (uint)Items.SKILL_ASSASSIN;
+        }
     }
 }

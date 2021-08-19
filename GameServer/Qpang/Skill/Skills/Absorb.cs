@@ -6,9 +6,9 @@ namespace Qserver.GameServer.Qpang
 {
     public class Absorb : Skill
     {
-        //public override uint GetId()
-        //{
-        //    return Items.SKILL_ABSORB;
-        //}
+        public override uint GetId()
+        {
+            return (uint)Items.SKILL_ABSORB;
+        }
     }
 }

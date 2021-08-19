@@ -26,7 +26,8 @@ namespace Qserver.GameServer.Qpang
         public Skill GenerateRandomSkill()
         {
             // idk
-            return new Absorb(); // test
+            Random rnd = new Random();
+            return this._skills.ToList()[rnd.Next(0, this._skills.Count)].Value;
         }
 
         public bool IsSkillValid(uint itemId)

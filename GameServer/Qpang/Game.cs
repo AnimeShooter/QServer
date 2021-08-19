@@ -239,12 +239,12 @@ namespace Qserver.GameServer.Qpang
             this._roomManager = new RoomManager();
             this._weaponManager = new WeaponManager();
             this._spawnManager = new SpawnManager();
-            this._skillManager = new SkillManager(); // TODO
-            this._achievementManager = new AchievementManager(); // TODO
-            this._levelManger = new LevelManager(); // TODO-ish
+            this._skillManager = new SkillManager(); 
+            this._achievementManager = new AchievementManager();
+            this._levelManger = new LevelManager();
             this._craneManager = new CraneManager();
             this._couponManager = new CouponManager();
-            this._tradeManager = new TradeManager(); // TODO
+            this._tradeManager = new TradeManager();
             this._cacheManager = new CacheManager();
             this._leaderboard = new Leaderboard();
             this._leaderboard.Refresh(); // initial update (TODO: refresh  every 12/24h?)
@@ -268,7 +268,6 @@ namespace Qserver.GameServer.Qpang
                     }
 
                     // NOTE: Enabled/Disable Exp weekend, broadcast stuff, reset weekly leaderboard?
-
 
                     // take some rest? 
                     Thread.Sleep(250); 

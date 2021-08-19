@@ -82,7 +82,7 @@ namespace Qserver.GameServer.Qpang
         public void Initialize(RoomSession roomSession)
         {
             this._roomSession = roomSession;
-            if(MapBounts.ContainsKey(this._roomSession.Room.Map))
+            if (MapBounts.ContainsKey(this._roomSession.Room.Map))
                 this._mapBounds = MapBounts[this._roomSession.Room.Map];
             this._skillsEnabled = roomSession.Room.SkillsEnabled;
             this._isEventEligible = roomSession.Room.Password == "" && EventEnabled && MapBounts.ContainsKey(this._roomSession.Room.Map);
@@ -91,7 +91,7 @@ namespace Qserver.GameServer.Qpang
             this._eventItems = new Dictionary<uint, bool>();
 
             var spawns = Game.Instance.SpawnManager.GetItemSpawns(this._roomSession.Room.Map);
-            for(int i = 0; i < spawns.Count; i++)
+            for (int i = 0; i < spawns.Count; i++)
             {
                 this._items.Add((uint)i, new GameItemSpawn()
                 {
@@ -113,11 +113,11 @@ namespace Qserver.GameServer.Qpang
                 return;
 
             var currTime = Util.Util.Timestamp();
-            foreach(var item in this._items)
+            foreach (var item in this._items)
             {
                 if (item.Value.LastPickUpTime == 0) // not looted
-                    continue; 
-                else if(item.Value.LastPickUpTime + RespawnInterval < currTime) // looted, need respawn
+                    continue;
+                else if (item.Value.LastPickUpTime + RespawnInterval < currTime) // looted, need respawn
                 {
                     var spawnItem = new GameItemSpawn()
                     {
@@ -144,7 +144,7 @@ namespace Qserver.GameServer.Qpang
 
             // TODO: fix, experimental!
             // check for event batch spawn
-            if(((!this._eventItemsSpawed && this._initTime+60 < currTime) ||
+            if (((!this._eventItemsSpawed && this._initTime + 60 < currTime) ||
                 (this._eventItemsSpawed && this._timeSinceEventItemSpawn + EventItemBatchInterval < currTime)) && this._isEventEligible)
             {
                 this._eventItemsSpawed = true;
@@ -223,14 +223,15 @@ namespace Qserver.GameServer.Qpang
                 OnPickupEventItem(player, spawnId);
                 return;
             }
-                
+
 
             var item = this._items[spawnId];
             if (item.ItemId == 0)
                 return;
 
             // NOTE: add skill?
-            if(item.ItemId == (uint)Item.RED_MEDKIT || item.ItemId == (uint)Item.GREEN_MEDKIT || item.ItemId == (uint)Item.AMMO_CLIP)
+            if (item.ItemId == (uint)Item.RED_MEDKIT || item.ItemId == (uint)Item.GREEN_MEDKIT || item.ItemId == (uint)Item.AMMO_CLIP
+                || item.ItemId == (uint)Item.SKILL_CARD)
             {
                 var identifier = MappedItems[(Item)item.ItemId].OnPickUp(player);
                 this._roomSession.RelayPlaying<GCGameItem>((byte)1, player.Player.PlayerId, item.ItemId, item.SpawnId, identifier);

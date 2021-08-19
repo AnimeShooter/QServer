@@ -195,6 +195,10 @@ namespace Qserver.GameServer.Qpang
                     effectId = weapon.EffectId;
                     dstPlayer.EffectManager.AddEffect(srcPlayer, weapon, EntityId);
                 }
+
+                // NOTE: Skill points added
+                if (srcPlayer.RoomSession.Room.SkillsEnabled)
+                    srcPlayer.SkillManager.AddSkillPoints((uint)(dmg/5));
             }
 
             var srcId = srcPlayer.Player.PlayerId;
@@ -211,6 +215,10 @@ namespace Qserver.GameServer.Qpang
                 roomSession.GameMode.OnPlayerKill(srcPlayer, dstPlayer, weapon, HitLocation);
                 roomSession.KillPlayer(srcPlayer, dstPlayer, weapon.ItemId, HitLocation == 0);
                 dstPlayer.StartPrespawn(); // prespawn?
+
+                // NOTE: Skill points added
+                if(srcPlayer.RoomSession.Room.SkillsEnabled)
+                    srcPlayer.SkillManager.AddSkillPoints(33);
             }
         }
 

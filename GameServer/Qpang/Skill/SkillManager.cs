@@ -10,19 +10,17 @@ namespace Qserver.GameServer.Qpang
 
         public SkillManager()
         {
-
-        }
-
-        public void Initialize()
-        {
             this._skills = new Dictionary<byte, Dictionary<uint, Skill>>();
 
-            var dm = this._skills[(byte)GameMode.Mode.DM];
-            dm.Add((uint)Items.SKILL_CAMO, new Camo());
-            dm.Add((uint)Items.SKILL_ASSASSIN, new Assassin());
-            dm.Add((uint)Items.SKILL_ABSORB, new Absorb());
-            dm.Add((uint)Items.SKILL_TEAM_CHEER, new TeamCheer());
-            dm.Add((uint)Items.SKILL_ZILLA, new Zilla());
+            this._skills.Add((byte)GameMode.Mode.DM, new Dictionary<uint, Skill>()
+            {
+                { (uint)Items.SKILL_CAMO, new Camo() },
+                { (uint)Items.SKILL_ASSASSIN, new Assassin() },
+                { (uint)Items.SKILL_ABSORB, new Absorb() },
+                { (uint)Items.SKILL_TEAM_CHEER, new TeamCheer() },
+                { (uint)Items.SKILL_ZILLA, new Zilla() }
+            });
+
         }
 
         public Dictionary<uint, Skill> GetSkillsForMode(byte mode)

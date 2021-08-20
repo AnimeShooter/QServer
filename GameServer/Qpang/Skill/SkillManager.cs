@@ -23,7 +23,7 @@ namespace Qserver.GameServer.Qpang
                 //{ (uint)Items.SKILL_CALLWEAPON, new Skills.CallWeapon() },
                 { (uint)Items.SKILL_CAMO, new Skills.Camo() },      // untested
                 ////{ (uint)Items.SKILL_COUNTER, new Skills.Counter() },    // Unsupported
-                //{ (uint)Items.SKILL_DEAL, new Skills.Deal() },
+                { (uint)Items.SKILL_DEAL, new Skills.Deal() },      // OK
                 ////{ (uint)Items.SKILL_DETECT, new Skills.Detect() }, // Unsupported i guess?
                 //{ (uint)Items.SKILL_FLAGE, new Skills.Flage() },
                 { (uint)Items.SKILL_HAWKEYE, new Skills.HawkEye() },        // untested
@@ -31,7 +31,7 @@ namespace Qserver.GameServer.Qpang
                 //{ (uint)Items.SKILL_INTERDICTION, new Skills.Interdiction() },
                 ////{ (uint)Items.SKILL_INVINCIBLE, new Skills.Invincible() },      // Unsupported
                 //{ (uint)Items.SKILL_IRONARM, new Skills.IronArm() },
-                { (uint)Items.SKILL_IRONWALL, new Skills.IronWall() },
+                { (uint)Items.SKILL_IRONWALL, new Skills.IronWall() }, // OK
                 //// { (uint)Items.SKILL_IRONWALL2, new Skills.IronWall2() },
                 //{ (uint)Items.SKILL_JAMM, new Skills.Jamm() },
                 //{ (uint)Items.SKILL_KINESIS, new Skills.Kinesis() },
@@ -50,7 +50,7 @@ namespace Qserver.GameServer.Qpang
                 //{ (uint)Items.SKILL_SKILLTOUCH, new Skills.SkillTouch() },
                 //{ (uint)Items.SKILL_SMOG, new Skills.Smog() },
                 { (uint)Items.SKILL_STRONGSOUL, new Skills.StrongSoul() },      // Untested
-                { (uint)Items.SKILL_STUNT, new Skills.Stunt() },
+                { (uint)Items.SKILL_STUNT, new Skills.Stunt() },    // OK
                 //// { (uint)Items.SKILL_STUNT2, new Skills.Stunt2() },
                 //{ (uint)Items.SKILL_TRANSE, new Skills.Transe() },
                 { (uint)Items.SKILL_VITAL, new Skills.Vital() },        // OK

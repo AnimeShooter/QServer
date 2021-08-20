@@ -15,6 +15,7 @@ namespace Qserver.GameServer.Qpang
         private Player _player;
         private List<ulong> _functionCards;
         private object _functionCardlock;
+        private object _skillCardlock;
 
         public List<ushort> UnlockerCharacters
         {
@@ -28,6 +29,7 @@ namespace Qserver.GameServer.Qpang
             this._functionCards = new List<ulong>();
             this._lock = new object();
             this._functionCardlock = new object();
+            this._skillCardlock = new object();
             this._equips = new Dictionary<ushort, ulong[]>();
             this._skillCards = new ulong[3];
 
@@ -182,6 +184,17 @@ namespace Qserver.GameServer.Qpang
         {
             lock (this._functionCardlock)
                 this._functionCards = cards;
+        }
+
+        public void SetSkillCards(List<ulong> cards)
+        {
+            lock (this._skillCardlock)
+            {
+                this._skillCards = new ulong[3];
+                for (int i = 0; i < this._skillCards.Length && i < cards.Count; i++)
+                        this._skillCards[i] = cards[i];
+            }
+                
         }
 
         public void SetEquipmentForCharacter(ushort character, ulong[] equip)

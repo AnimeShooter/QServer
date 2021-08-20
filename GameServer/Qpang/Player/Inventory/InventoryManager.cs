@@ -22,6 +22,7 @@ namespace Qserver.GameServer.Qpang
             this._gifts = new Dictionary<ulong, InventoryCard>();
 
             var functionCards = new List<ulong>();
+            var skillCards = new List<ulong>();
 
             var dbitems = Game.Instance.ItemsRepository.GetInventoryCards(this._player.PlayerId).Result;
             foreach(var dbitem in dbitems)
@@ -48,9 +49,11 @@ namespace Qserver.GameServer.Qpang
                 if (card.Type == 70 && card.PeriodeType != 1 && card.IsActive) // equipable func card
                     functionCards.Add(card.Id);
 
-                // TODO skills
+                if (card.Type == 75 && card.PeriodeType != 1 && card.IsActive)
+                    skillCards.Add(card.Id);
             }
             player.EquipmentManager.SetFunctionCards(functionCards);
+            player.EquipmentManager.SetSkillCards(skillCards);
         }
 
         public List<InventoryCard> List()

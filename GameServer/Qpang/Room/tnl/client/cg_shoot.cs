@@ -78,6 +78,22 @@ namespace Qserver.GameServer.Qpang
             if (session.Death || !weaponManager.CanShoot)
                 return;
 
+            var activeSkill = roomPlayer.RoomSessionPlayer.SkillManager.ActiveSkillCard;
+            if (activeSkill != null)
+            {
+                switch((Items)activeSkill.Id)
+                {
+                    case Items.SKILL_IRONWALL:
+                    case Items.SKILL_IRONWALL2:
+                        return; // dont shoot
+                    case Items.SKILL_CAMO:
+                        // TODO: break camo
+                        break;
+                    default:
+                        break;
+                }
+            }
+
             if (session.Invincible)
                 session.RemoveInvincibility();
 

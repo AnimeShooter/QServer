@@ -11,5 +11,10 @@ namespace Qserver.GameServer.Qpang.Skills
         {
             return (uint)Items.SKILL_IRONWALL;
         }
+
+        public override uint GetDuration()
+        {
+            return 20;
+        }
     }
 }

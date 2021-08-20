@@ -11,5 +11,10 @@ namespace Qserver.GameServer.Qpang.Skills
         {
             return (uint)Items.SKILL_REVERS;
         }
+
+        public override uint GetDuration()
+        {
+            return 15;
+        }
     }
 }

@@ -11,5 +11,17 @@ namespace Qserver.GameServer.Qpang.Skills
         {
             return (uint)Items.SKILL_POCKETSIZE;
         }
+
+        public override uint GetDuration()
+        {
+            return 15;
+        }
+
+        public override void OnUse(RoomSessionPlayer target)
+        {
+            target.SetHealth((ushort)((target.Health + target.BonusHealth) * 1.5f), true);
+
+            base.OnUse(target);
+        }
     }
 }

@@ -12,5 +12,10 @@ namespace Qserver.GameServer.Qpang.Skills
         {
             return (uint)Items.SKILL_STRONGSOUL;
         }
+
+        public override uint GetDuration()
+        {
+            return 30;
+        }
     }
 }

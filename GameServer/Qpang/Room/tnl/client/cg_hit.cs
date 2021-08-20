@@ -153,7 +153,7 @@ namespace Qserver.GameServer.Qpang
             {
                 if(WeaponId != 1095434246) // octo TODO filter all mines
                     if (!srcPlayer.EntityManager.IsValidShot(EntityId))
-                        return;
+                        return; // cheat detected?
 
                 dmg = weapon.Damage;
 
@@ -185,19 +185,45 @@ namespace Qserver.GameServer.Qpang
                     if (srcPlayer == dstPlayer)
                         dmg = 0;
 
-                // eddit dmg when hit
-                if(srcPlayer != null)
+                // apply player skills
+                if(srcPlayer != null && srcPlayer.SkillManager.ActiveSkillCard != null && dmg != 0)
                 {
-                    if (dmg != 0 && srcPlayer.WeaponManager.HoldsMelee && srcPlayer.SkillManager.ActiveSkillCard.Id == (uint)Items.SKILL_ASSASSIN)
+                    switch((Items)srcPlayer.SkillManager.ActiveSkillCard.Id)
                     {
-                        dmg = dstPlayer.Health;
-                        srcPlayer.SkillManager.ActiveSkillCard = null;
+                        case Items.SKILL_ASSASSIN:
+                            if (!srcPlayer.WeaponManager.HoldsMelee)
+                                break;
+                            dmg = dstPlayer.Health;
+                            srcPlayer.SkillManager.DisableSkill();
+                            break;
+                        case Items.SKILL_STUNT2:
+                            dmg = (ushort)(dmg * 1.25f);
+                            break;
                     }
-
-                    if (dmg > dstPlayer.Health)
-                        dmg = dstPlayer.Health; // dmg is whatever health is left
                 }
-                
+
+                // apply target skills
+                if(dstPlayer != null && dstPlayer.SkillManager.ActiveSkillCard != null && dmg != 0)
+                {
+                    switch ((Items)dstPlayer.SkillManager.ActiveSkillCard.Id)
+                    {
+                        case Items.SKILL_STRONGSOUL:
+                            if (WeaponType == (byte)Qpang.WeaponType.BOMB)
+                                dmg = 0;
+                            break;
+                        case Items.SKILL_IRONWALL:
+                        case Items.SKILL_IRONWALL2:
+                            dmg = (ushort)(Math.Ceiling(dmg * 0.05f));
+                            break;
+                        case Items.SKILL_STUNT:
+                            dmg = (ushort)(dmg * 0.75f);
+                            break;
+                    }
+                }
+
+                // dont overdmg cuz qpang doesnt do either
+                if (dmg > dstPlayer.Health)
+                    dmg = dstPlayer.Health; 
 
                 dstPlayer.TakeHealth(dmg);
 

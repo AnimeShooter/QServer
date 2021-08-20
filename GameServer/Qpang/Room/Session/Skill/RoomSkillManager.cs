@@ -31,7 +31,10 @@ namespace Qserver.GameServer.Qpang
 
             var skills = this._skills.Values.ToList();
 
-            return skills[target];
+            Console.WriteLine("Someone looted: " + ((Items)skills[target].Id).ToString());
+
+            // Note: Creates a new instance of the object
+            return (Skill)Activator.CreateInstance(skills[target].GetType());
         }
 
         public bool IsSkillValid(uint itemId)

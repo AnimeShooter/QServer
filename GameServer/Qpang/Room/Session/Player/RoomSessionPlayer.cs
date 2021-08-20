@@ -322,10 +322,10 @@ namespace Qserver.GameServer.Qpang
             return this._startTime <= currTime && !this._isPlaying;
         }
 
-        public void MakeInvincible()
+        public void MakeInvincible(uint duration = 5)
         {
             this._isInvincible = true;
-            this._invincibleRemovalTime = Util.Util.Timestamp() + 5;
+            this._invincibleRemovalTime = Util.Util.Timestamp() + duration;
         }
 
         public void RemoveInvincibility()

@@ -12,5 +12,10 @@ namespace Qserver.GameServer.Qpang.Skills
         {
             return (uint)Items.SKILL_CAMO;
         }
+
+        public override uint GetDuration()
+        {
+            return 15;
+        }
     }
 }

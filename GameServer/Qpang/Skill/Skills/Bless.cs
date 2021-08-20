@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Qserver.GameServer.Qpang.Skills
 {
-    public class Blass : Skill
+    public class Bless : Skill
     {
         // Grants Energy shield to entire team. 
 

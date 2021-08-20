@@ -82,7 +82,7 @@ namespace Qserver.GameServer.Qpang
                 session.RemoveInvincibility();
 
             var playerId = player.PlayerId;
-            weaponManager.Shoot(EntityId); // TODO
+            weaponManager.Shoot(EntityId);
 
             if (ItemId != 1095434246) //  Octo NOTE: add alll mines
                 session.EntityManager.Shoot(EntityId);

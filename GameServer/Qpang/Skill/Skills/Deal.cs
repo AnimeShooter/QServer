@@ -12,5 +12,25 @@ namespace Qserver.GameServer.Qpang.Skills
         {
             return (uint)Items.SKILL_DEAL;
         }
+
+        public override uint GetDuration()
+        {
+            return 0;
+        }
+
+        public override void OnUse(RoomSessionPlayer target)
+        {
+            List<RoomSessionPlayer> enemies;
+            if (target.Team == 2)
+                enemies = target.RoomSession.GetPlayersForTeam(1);
+            else
+                enemies = target.RoomSession.GetPlayersForTeam(2);
+
+            foreach (var e in enemies)
+                e.SkillManager.RemoveSkillPoints(100);
+
+            // Dont do base?
+            //base.OnUse(target);
+        }
     }
 }

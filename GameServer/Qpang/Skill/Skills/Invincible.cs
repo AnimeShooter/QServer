@@ -11,5 +11,17 @@ namespace Qserver.GameServer.Qpang.Skills
         {
             return (uint)Items.SKILL_INVINCIBLE;
         }
+
+        public override uint GetDuration()
+        {
+            return 10;
+        }
+
+        public override void OnUse(RoomSessionPlayer target)
+        {
+            target.MakeInvincible(GetDuration());
+
+            base.OnUse(target);
+        }
     }
 }

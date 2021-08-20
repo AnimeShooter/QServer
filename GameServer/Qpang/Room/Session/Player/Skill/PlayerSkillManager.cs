@@ -8,7 +8,7 @@ namespace Qserver.GameServer.Qpang
     {
         private RoomSessionPlayer _player;
         private Skill _drawnSkillCard;
-        private InventoryCard[] _equippedCards;
+        private InventoryCard[] _equippedCards; // TODO: use!!
         private Skill _activeSkillCard;
         private uint _skillPoints;
         private uint _lastTick;
@@ -43,14 +43,28 @@ namespace Qserver.GameServer.Qpang
             if (this._activeSkillCard == null)
                 return;
 
-            if(this._activeSkillCard.StartTime + this._activeSkillCard.Duration < currTime)
+            // do skill action if needed
+            switch((Items)this._activeSkillCard.Id)
+            {
+                case Items.SKILL_VITAL:
+                    foreach (var p in this._player.RoomSession.GetPlayersForTeam(this._player.Team))
+                        if(this._player.Player.PlayerId != p.Player.PlayerId)
+                            p.AddHealth(5, true);
+                    break;
+            }
+
+            if(this._activeSkillCard.Duration != 99 && this._activeSkillCard.StartTime + this._activeSkillCard.Duration < currTime)
             {
                 // uint playerId, uint targetId, byte cmd, uint cardType, uint itemId, ulong seqId
-                // disable skill
-                lock (this._player.Lock)
-                    this._player.RoomSession.Relay<GCCard>(this._player.Player.PlayerId, (uint)0, (byte)9, (uint)9, this._activeSkillCard.Id, (ulong)0); // test
-                this._activeSkillCard = null;
+                DisableSkill();
             }
+        }
+
+        public void DisableSkill()
+        {
+            lock (this._player.Lock)
+                this._player.RoomSession.Relay<GCCard>(this._player.Player.PlayerId, (uint)0, (byte)9, (uint)9, this._activeSkillCard.Id, (ulong)0); // test
+            this._activeSkillCard = null;
         }
 
         public void RemoveSkillPoints(uint amount = 100)
@@ -125,9 +139,15 @@ namespace Qserver.GameServer.Qpang
             // assume it all costs 100
             RemoveSkillPoints(100);
 
+            var target = this._player;
+
+            // TODO: get target
+            //if (targetUid != 0)
+            //    Game.Instance.Get
+
             lock (this._player.Lock)
             {
-                skill.OnUse(this._player); // target self?
+                skill.OnUse(target);
                 this._player.RoomSession.RelayPlaying<GCCard>(uid, targetUid, (byte)cmd, cardType, itemId, seqId);
                 this._activeSkillCard = skill;
             }

@@ -20,7 +20,7 @@ namespace Qserver.GameServer.Qpang
         {
             get 
             { 
-                if(HoldsMelee) return false;
+                if (HoldsMelee) return true;
                 return SelectedWeapon.ClipSize > 0;
             }
         }

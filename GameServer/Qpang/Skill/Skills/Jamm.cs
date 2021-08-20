@@ -12,5 +12,10 @@ namespace Qserver.GameServer.Qpang.Skills
         {
             return (uint)Items.SKILL_JAMM;
         }
+
+        public override uint GetDuration()
+        {
+            return 15;
+        }
     }
 }

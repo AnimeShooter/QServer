@@ -47,6 +47,8 @@ namespace Qserver.GameServer.Qpang
 
                 if (card.Type == 70 && card.PeriodeType != 1 && card.IsActive) // equipable func card
                     functionCards.Add(card.Id);
+
+                // TODO skills
             }
             player.EquipmentManager.SetFunctionCards(functionCards);
         }

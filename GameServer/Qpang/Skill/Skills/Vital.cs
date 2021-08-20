@@ -12,5 +12,18 @@ namespace Qserver.GameServer.Qpang.Skills
         {
             return (uint)Items.SKILL_VITAL;
         }
+
+        public override uint GetDuration()
+        {
+            return 10;
+        }
+
+        public override void OnUse(RoomSessionPlayer target)
+        {
+            // target is self?
+            target.TakeHealth((ushort)(target.Health - 1), true);
+
+            base.OnUse(target);
+        }
     }
 }

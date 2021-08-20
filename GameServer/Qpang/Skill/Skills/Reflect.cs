@@ -4,13 +4,13 @@ using System.Text;
 
 namespace Qserver.GameServer.Qpang.Skills
 {
-    public class Absorb : Skill
+    public class Reflect : Skill
     {
-        // Blocks 100 damage for selected team member 
+        // Reflects skills from opponents back onto them.
 
         public override uint GetId()
         {
-            return (uint)Items.SKILL_ABSORB;
+            return (uint)Items.SKILL_REFLECT;
         }
     }
 }

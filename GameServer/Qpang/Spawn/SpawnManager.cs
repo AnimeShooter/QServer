@@ -49,6 +49,7 @@ namespace Qserver.GameServer.Qpang
 
                 if (!this._itemSpawns.ContainsKey(itemspawn.map_id))
                     this._itemSpawns.Add(itemspawn.map_id, new List<Spawn>());
+
                 this._itemSpawns[itemspawn.map_id].Add(s);
             }
             Log.Message(LogType.MISC, $"SpawnManager loaded {itemspawns.Count} Item Spawns from the database!");

@@ -6,11 +6,12 @@ namespace Qserver.GameServer.Qpang
 {
     public class SkillManager
     {
-        private Dictionary<byte, Dictionary<uint, Skill>> _skills;
+        private Dictionary<uint, Skill> _skills;
+        private Dictionary<byte, Dictionary<uint, Skill>> _skillsByMode;
 
         public SkillManager()
         {
-            this._skills = new Dictionary<byte, Dictionary<uint, Skill>>();
+            this._skillsByMode = new Dictionary<byte, Dictionary<uint, Skill>>();
 
             var allSkills = new Dictionary<uint, Skill>()
             {
@@ -28,21 +29,28 @@ namespace Qserver.GameServer.Qpang
                 { (uint)Items.SKILL_TRAP, new Skills.Trap() },
                 { (uint)Items.SKILL_UNDERCOVER, new Skills.Undercover() },
                 { (uint)Items.SKILL_WEAPONSTEAL, new Skills.WeaponSteal() },
-                { (uint)Items.SKILL_ZILLA, new Skills.Zilla() }
+                { (uint)Items.SKILL_CALLGOZILLA, new Skills.Zilla() }
             };
 
-            this._skills.Add((byte)GameMode.Mode.DM, allSkills);
-            this._skills.Add((byte)GameMode.Mode.TDM, allSkills);
+            this._skillsByMode.Add((byte)GameMode.Mode.DM, allSkills);
+            this._skillsByMode.Add((byte)GameMode.Mode.TDM, allSkills);
 
-            this._skills.Add((byte)GameMode.Mode.PTE, allSkills);
-            this._skills.Add((byte)GameMode.Mode.VIP, allSkills);
+            this._skillsByMode.Add((byte)GameMode.Mode.PTE, allSkills);
+            this._skillsByMode.Add((byte)GameMode.Mode.VIP, allSkills);
 
+        }
+
+        public Skill GetSkill(uint id)
+        {
+            if (this._skills.ContainsKey(id))
+                return this._skills[id];
+            return null;
         }
 
         public Dictionary<uint, Skill> GetSkillsForMode(byte mode)
         {
-            if(this._skills.ContainsKey(mode))
-                return this._skills[mode];
+            if(this._skillsByMode.ContainsKey(mode))
+                return this._skillsByMode[mode];
             return null;
         }
     }

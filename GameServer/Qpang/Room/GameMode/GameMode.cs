@@ -76,6 +76,9 @@ namespace Qserver.GameServer.Qpang
             target.EffectManager.Clear(); // TODO
             target.StartPrespawn();
 
+            // NOTE: balance?
+            killer.SkillManager.AddSkillPoints(40);
+
             var killerStats = killer.Player.StatsManager;
             var targetStats = target.Player.StatsManager;
 

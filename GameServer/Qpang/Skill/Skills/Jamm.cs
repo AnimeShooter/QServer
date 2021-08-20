@@ -4,11 +4,13 @@ using System.Text;
 
 namespace Qserver.GameServer.Qpang.Skills
 {
-    public class Invisible : Skill
+    public class Jamm : Skill
     {
+        // Make the opponents team member look like your team member .
+
         public override uint GetId()
         {
-            return 0; // return (uint)Items.SKILL_INVISIBLE;
+            return (uint)Items.SKILL_JAMM;
         }
     }
 }

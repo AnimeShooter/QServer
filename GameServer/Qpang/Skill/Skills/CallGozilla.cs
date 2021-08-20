@@ -4,11 +4,12 @@ using System.Text;
 
 namespace Qserver.GameServer.Qpang.Skills
 {
-    public class SkillSteal : Skill
+    public class CallGozilla : Skill
     {
+        // Character will transform into a Giant Beast.
         public override uint GetId()
         {
-            return (uint)Items.SKILL_SKILLSTEAL;
+            return (uint)Items.SKILL_CALLGOZILLA;
         }
     }
 }

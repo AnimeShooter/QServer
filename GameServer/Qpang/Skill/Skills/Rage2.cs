@@ -4,10 +4,9 @@ using System.Text;
 
 namespace Qserver.GameServer.Qpang.Skills
 {
-    public class Absorb : Skill
+    public class Rage2 : Skill
     {
-        // Blocks 100 damage for selected team member 
-
+        // Target must be in the Cross Hairs to use this skill; Cross Hairs 75% up for 15 sec. (Accuracy will Drop.)
         public override uint GetId()
         {
             return (uint)Items.SKILL_ABSORB;

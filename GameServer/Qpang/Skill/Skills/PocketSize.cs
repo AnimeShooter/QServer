@@ -4,13 +4,12 @@ using System.Text;
 
 namespace Qserver.GameServer.Qpang.Skills
 {
-    public class Absorb : Skill
+    public class PcketSize : Skill
     {
-        // Blocks 100 damage for selected team member 
-
+        // Reduce character size for 15 sec. HP 50% up. Speed 50% up
         public override uint GetId()
         {
-            return (uint)Items.SKILL_ABSORB;
+            return (uint)Items.SKILL_POCKETSIZE;
         }
     }
 }

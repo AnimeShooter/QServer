@@ -4,13 +4,13 @@ using System.Text;
 
 namespace Qserver.GameServer.Qpang.Skills
 {
-    public class Absorb : Skill
+    public class WeaponCrack : Skill
     {
-        // Blocks 100 damage for selected team member 
+        // Drop a weapon at a certain rate
 
         public override uint GetId()
         {
-            return (uint)Items.SKILL_ABSORB;
+            return (uint)Items.SKILL_WEAPONCRACK;
         }
     }
 }

@@ -4,13 +4,13 @@ using System.Text;
 
 namespace Qserver.GameServer.Qpang.Skills
 {
-    public class Absorb : Skill
+    public class Aid : Skill
     {
-        // Blocks 100 damage for selected team member 
+        // All allies gain unlimited stamina for 15 secs. Halves stamina after the duration.
 
         public override uint GetId()
         {
-            return (uint)Items.SKILL_ABSORB;
+            return (uint)Items.SKILL_AID;
         }
     }
 }

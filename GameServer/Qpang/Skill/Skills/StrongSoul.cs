@@ -4,11 +4,13 @@ using System.Text;
 
 namespace Qserver.GameServer.Qpang.Skills
 {
-    public class Anger : Skill
+    public class StrongSoul : Skill
     {
+        // Beschermt tegen explosieschade. / Block stun or speed down once
+
         public override uint GetId()
         {
-            return (uint)Items.SKILL_ANGER;
+            return (uint)Items.SKILL_STRONGSOUL;
         }
     }
 }

@@ -4,13 +4,12 @@ using System.Text;
 
 namespace Qserver.GameServer.Qpang.Skills
 {
-    public class Absorb : Skill
+    public class CallWeapon : Skill
     {
-        // Blocks 100 damage for selected team member 
-
+        // Character will transform into the Last Weapon
         public override uint GetId()
         {
-            return (uint)Items.SKILL_ABSORB;
+            return (uint)Items.SKILL_CALLWEAPON;
         }
     }
 }

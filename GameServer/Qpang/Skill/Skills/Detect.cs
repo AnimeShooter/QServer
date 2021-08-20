@@ -4,11 +4,11 @@ using System.Text;
 
 namespace Qserver.GameServer.Qpang.Skills
 {
-    public class Trade : Skill
+    public class Detect : Skill
     {
         public override uint GetId()
         {
-            return (uint)Items.SKILL_TRADE;
+            return (uint)Items.SKILL_DETECT;
         }
     }
 }

@@ -4,13 +4,12 @@ using System.Text;
 
 namespace Qserver.GameServer.Qpang.Skills
 {
-    public class Absorb : Skill
+    public class IronWall2 : Skill
     {
-        // Blocks 100 damage for selected team member 
-
+        //  Be a moving wall for 15 sec
         public override uint GetId()
         {
-            return (uint)Items.SKILL_ABSORB;
+            return (uint)Items.SKILL_IRONEALL2;
         }
     }
 }

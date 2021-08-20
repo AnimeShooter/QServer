@@ -4,13 +4,13 @@ using System.Text;
 
 namespace Qserver.GameServer.Qpang.Skills
 {
-    public class Absorb : Skill
+    public class ShotMove : Skill
     {
-        // Blocks 100 damage for selected team member 
+        // Rapid firing rate 25% increase for gun
 
         public override uint GetId()
         {
-            return (uint)Items.SKILL_ABSORB;
+            return (uint)Items.SKILL_SHOTMOVE;
         }
     }
 }

@@ -4,11 +4,12 @@ using System.Text;
 
 namespace Qserver.GameServer.Qpang.Skills
 {
-    public class Undercover : Skill
+    public class Interdiction : Skill
     {
+        // Block all players including self
         public override uint GetId()
         {
-            return (uint)Items.SKILL_UNDERCOVER;
+            return (uint)Items.SKILL_INTERDICTION;
         }
     }
 }

@@ -198,7 +198,7 @@ namespace Qserver.GameServer.Qpang
 
                 // NOTE: Skill points added
                 if (srcPlayer.RoomSession.Room.SkillsEnabled)
-                    srcPlayer.SkillManager.AddSkillPoints((uint)(dmg/5));
+                    srcPlayer.SkillManager.AddSkillPoints((uint)(dmg/4));
             }
 
             var srcId = srcPlayer.Player.PlayerId;
@@ -215,10 +215,6 @@ namespace Qserver.GameServer.Qpang
                 roomSession.GameMode.OnPlayerKill(srcPlayer, dstPlayer, weapon, HitLocation);
                 roomSession.KillPlayer(srcPlayer, dstPlayer, weapon.ItemId, HitLocation == 0);
                 dstPlayer.StartPrespawn(); // prespawn?
-
-                // NOTE: Skill points added
-                if(srcPlayer.RoomSession.Room.SkillsEnabled)
-                    srcPlayer.SkillManager.AddSkillPoints(33);
             }
         }
 

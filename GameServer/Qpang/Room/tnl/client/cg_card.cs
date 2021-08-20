@@ -65,6 +65,29 @@ namespace Qserver.GameServer.Qpang
 
             // TODO: handle skill usage (subtract points?)
 
+            // CMD
+            /*
+             * 4 - start
+             * 9 - stop
+             * 
+             * id:
+             * roll - 1409286147 (type 7)
+             * 54000001 ken special
+             * 54000002 death
+             * 54000003 roll
+             * 54000004 left roll
+             * 54000005 right roll
+             * 54000006 double jump 
+             * 54000007 kuma special
+             * 
+             * Assasin, targget self, type 9, id i:1258356765, seqId:1
+             */
+
+            Console.WriteLine($"ActionType: {Cmd}, t:{TargetUid} ct:{CardType}, i:{ItemId}, s:{SeqId}");
+
+            // check CMD?
+            //Game.Instance.SkillManager.GetSkill()
+
             roomSession.RelayPlaying<GCCard>(Uid, TargetUid, (byte)Cmd, CardType, ItemId, SeqId);
         }
     }

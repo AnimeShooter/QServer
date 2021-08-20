@@ -34,5 +34,10 @@ namespace Qserver.GameServer.Qpang
         {
             this._player = player;
         }
+
+        public virtual void OnUse(RoomSessionPlayer target)
+        {
+            this._target = target;
+        }
     }
 }

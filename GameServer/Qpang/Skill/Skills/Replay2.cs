@@ -4,13 +4,12 @@ using System.Text;
 
 namespace Qserver.GameServer.Qpang.Skills
 {
-    public class Absorb : Skill
+    public class Replay2 : Skill
     {
-        // Blocks 100 damage for selected team member 
-
+        // Revive at respawn location instantly after death
         public override uint GetId()
         {
-            return (uint)Items.SKILL_ABSORB;
+            return (uint)Items.SKILL_REPLAY2;
         }
     }
 }

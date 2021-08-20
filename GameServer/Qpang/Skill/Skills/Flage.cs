@@ -4,13 +4,13 @@ using System.Text;
 
 namespace Qserver.GameServer.Qpang.Skills
 {
-    public class Absorb : Skill
+    public class Flage : Skill
     {
-        // Blocks 100 damage for selected team member 
+        // Go undercover by making your team members look like the opposite team. 
 
         public override uint GetId()
         {
-            return (uint)Items.SKILL_ABSORB;
+            return (uint)Items.SKILL_FLAGE;
         }
     }
 }

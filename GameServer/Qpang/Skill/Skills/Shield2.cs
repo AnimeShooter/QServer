@@ -4,13 +4,13 @@ using System.Text;
 
 namespace Qserver.GameServer.Qpang.Skills
 {
-    public class Absorb : Skill
+    public class Shield2 : Skill
     {
-        // Blocks 100 damage for selected team member 
+        // Deploy an invisible shield for 20 sec.  Can not shield short range; back and splash damage
 
         public override uint GetId()
         {
-            return (uint)Items.SKILL_ABSORB;
+            return (uint)Items.SKILL_SHIELD2;
         }
     }
 }

@@ -4,13 +4,13 @@ using System.Text;
 
 namespace Qserver.GameServer.Qpang.Skills
 {
-    public class Absorb : Skill
+    public class SkillTouch : Skill
     {
-        // Blocks 100 damage for selected team member 
+        // Switch equiped weapons quickly
 
         public override uint GetId()
         {
-            return (uint)Items.SKILL_ABSORB;
+            return (uint)Items.SKILL_SKILLTOUCH;
         }
     }
 }

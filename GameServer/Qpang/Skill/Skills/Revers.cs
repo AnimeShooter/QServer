@@ -4,11 +4,12 @@ using System.Text;
 
 namespace Qserver.GameServer.Qpang.Skills
 {
-    public class WeaponSteal : Skill
+    public class Revers : Skill
     {
+        // Confuse the opponents by changing their keyboard controls for a short period of time. 
         public override uint GetId()
         {
-            return (uint)Items.SKILL_WEAPONSTEAL;
+            return (uint)Items.SKILL_REVERS;
         }
     }
 }

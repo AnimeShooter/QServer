@@ -217,7 +217,7 @@ namespace Qserver.GameServer.Qpang
 
         public void OnPickUp(RoomSessionPlayer player, uint spawnId)
         {
-            if (!this._items.ContainsKey(spawnId))
+            if (this._items != null && !this._items.ContainsKey(spawnId))
             {
                 // try event item
                 OnPickupEventItem(player, spawnId);

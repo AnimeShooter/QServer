@@ -4,13 +4,13 @@ using System.Text;
 
 namespace Qserver.GameServer.Qpang.Skills
 {
-    public class Absorb : Skill
+    public class Stunt2 : Skill
     {
-        // Blocks 100 damage for selected team member 
+        // Deal 25% damage during action
 
         public override uint GetId()
         {
-            return (uint)Items.SKILL_ABSORB;
+            return (uint)Items.SKILL_STUNT2;
         }
     }
 }

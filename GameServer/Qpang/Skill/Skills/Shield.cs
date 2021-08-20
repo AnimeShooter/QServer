@@ -4,11 +4,13 @@ using System.Text;
 
 namespace Qserver.GameServer.Qpang.Skills
 {
-    public class Trap : Skill
+    public class Shackles : Skill
     {
+        // Special actions are not available for opponent for15 seconds.
+
         public override uint GetId()
         {
-            return (uint)Items.SKILL_TRAP;
+            return (uint)Items.SKILL_SHACKLES;
         }
     }
 }

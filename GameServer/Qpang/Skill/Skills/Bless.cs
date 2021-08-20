@@ -4,13 +4,13 @@ using System.Text;
 
 namespace Qserver.GameServer.Qpang.Skills
 {
-    public class Absorb : Skill
+    public class Blass : Skill
     {
-        // Blocks 100 damage for selected team member 
+        // Grants Energy shield to entire team. 
 
         public override uint GetId()
         {
-            return (uint)Items.SKILL_ABSORB;
+            return (uint)Items.SKILL_BLESS;
         }
     }
 }

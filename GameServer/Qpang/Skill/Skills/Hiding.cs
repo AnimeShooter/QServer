@@ -4,13 +4,12 @@ using System.Text;
 
 namespace Qserver.GameServer.Qpang.Skills
 {
-    public class Absorb : Skill
+    public class Hiding : Skill
     {
-        // Blocks 100 damage for selected team member 
-
+        // Preventing a skill card of "Finding Opponent"
         public override uint GetId()
         {
-            return (uint)Items.SKILL_ABSORB;
+            return (uint)Items.SKILL_HIDING;
         }
     }
 }

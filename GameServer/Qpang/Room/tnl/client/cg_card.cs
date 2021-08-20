@@ -25,7 +25,7 @@ namespace Qserver.GameServer.Qpang
         }
         public CGCard() : base(GameNetId.CG_CARD, GuaranteeType.Guaranteed, EventDirection.DirClientToServer) { }
 
-        public enum Commands
+        public enum Commands // types
         {
             ABILITY = 0x07,
             USE_CARD = 0x09
@@ -55,6 +55,9 @@ namespace Qserver.GameServer.Qpang
 
         public override void Handle(GameConnection conn, Player player)
         {
+            if (player == null)
+                return;
+
             var roomPlayer = player.RoomPlayer;
             if (roomPlayer == null)
                 return;
@@ -68,10 +71,12 @@ namespace Qserver.GameServer.Qpang
             // CMD
             /*
              * 4 - start
+             * 8 - add skill points 
              * 9 - stop
+             * (TODO: set skillpoints?)
              * 
              * id:
-             * roll - 1409286147 (type 7)
+             * (type 7, character)
              * 54000001 ken special
              * 54000002 death
              * 54000003 roll
@@ -79,6 +84,8 @@ namespace Qserver.GameServer.Qpang
              * 54000005 right roll
              * 54000006 double jump 
              * 54000007 kuma special
+             * 
+             * (type 9, cards)
              * 
              * Assasin, targget self, type 9, id i:1258356765, seqId:1
              */
@@ -88,7 +95,7 @@ namespace Qserver.GameServer.Qpang
             // check CMD?
             //Game.Instance.SkillManager.GetSkill()
 
-            roomSession.RelayPlaying<GCCard>(Uid, TargetUid, (byte)Cmd, CardType, ItemId, SeqId);
+            roomPlayer.RoomSessionPlayer.SkillManager.UseSkill(Uid, TargetUid, (byte)Cmd, CardType, ItemId, SeqId);
         }
     }
 }

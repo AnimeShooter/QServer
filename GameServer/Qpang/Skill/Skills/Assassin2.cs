@@ -4,11 +4,13 @@ using System.Text;
 
 namespace Qserver.GameServer.Qpang.Skills
 {
-    public class Absorb : Skill
+    public class Assassin2 : Skill
     {
+        // Instant death with a back-stab attack
+
         public override uint GetId()
         {
-            return (uint)Items.SKILL_ABSORB;
+            return (uint)Items.SKILL_ASSASSIN2;
         }
     }
 }

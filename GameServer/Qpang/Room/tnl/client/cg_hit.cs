@@ -185,6 +185,20 @@ namespace Qserver.GameServer.Qpang
                     if (srcPlayer == dstPlayer)
                         dmg = 0;
 
+                // eddit dmg when hit
+                if(srcPlayer != null)
+                {
+                    if (dmg != 0 && srcPlayer.WeaponManager.HoldsMelee && srcPlayer.SkillManager.ActiveSkillCard.Id == (uint)Items.SKILL_ASSASSIN)
+                    {
+                        dmg = dstPlayer.Health;
+                        srcPlayer.SkillManager.ActiveSkillCard = null;
+                    }
+
+                    if (dmg > dstPlayer.Health)
+                        dmg = dstPlayer.Health; // dmg is whatever health is left
+                }
+                
+
                 dstPlayer.TakeHealth(dmg);
 
                 Random rnd = new Random();

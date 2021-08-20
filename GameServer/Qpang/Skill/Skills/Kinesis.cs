@@ -10,7 +10,7 @@ namespace Qserver.GameServer.Qpang.Skills
 
         public override uint GetId()
         {
-            return (uint)Items.SKILL_KENESIS;
+            return (uint)Items.SKILL_KINESIS;
         }
     }
 }

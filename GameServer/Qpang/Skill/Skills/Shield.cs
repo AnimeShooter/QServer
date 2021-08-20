@@ -4,13 +4,13 @@ using System.Text;
 
 namespace Qserver.GameServer.Qpang.Skills
 {
-    public class Shackles : Skill
+    public class Shield : Skill
     {
-        // Special actions are not available for opponent for15 seconds.
+        // Deploy an invisible shield for 8 sec.  Can not shield short range; back and splash damage
 
         public override uint GetId()
         {
-            return (uint)Items.SKILL_SHACKLES;
+            return (uint)Items.SKILL_SHIELD;
         }
     }
 }

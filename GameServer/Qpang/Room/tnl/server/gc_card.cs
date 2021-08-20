@@ -75,6 +75,7 @@ namespace Qserver.GameServer.Qpang
             bitStream.Write(unk01);
             bitStream.Write(count);
 
+            Console.WriteLine($"GCCard c:{cmd}, t:{targetUid}, {itemId}, {seqId} ");
         }
         public override void Unpack(EventConnection ps, BitStream bitStream) { }
         public override void Process(EventConnection ps) { }

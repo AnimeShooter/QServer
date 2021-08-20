@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Qserver.GameServer.Qpang.Skills
 {
-    public class PcketSize : Skill
+    public class PocketSize : Skill
     {
         // Reduce character size for 15 sec. HP 50% up. Speed 50% up
         public override uint GetId()

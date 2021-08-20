@@ -8,8 +8,8 @@ namespace Qserver.GameServer.Qpang
 {
     public class RoomSessionPlayer
     {
-        private PlayerEffectManager _effectManager; // TODO
-        private PlayerWeaponManager _weaponManager; // TODO
+        private PlayerEffectManager _effectManager; // TODO: buggfix effect expiring
+        private PlayerWeaponManager _weaponManager;
         private PlayerSkillManager _skillManager; // todo
         private PlayerEntityManager _entityManager;
 
@@ -377,7 +377,7 @@ namespace Qserver.GameServer.Qpang
         public void StartPrespawn() // Pre respawn (countdown)
         {
             this._isRespawning = true;
-            this._skillManager.ResetPoints();
+            //this._skillManager.ResetPoints(); // NOTE: dont reset after death?
 
             var cooldown = GetRespawnCooldown();
 

@@ -9,7 +9,7 @@ namespace Qserver.GameServer.Qpang.Skills
         //  Be a moving wall for 15 sec
         public override uint GetId()
         {
-            return (uint)Items.SKILL_IRONEALL2;
+            return (uint)Items.SKILL_IRONWALL2;
         }
     }
 }

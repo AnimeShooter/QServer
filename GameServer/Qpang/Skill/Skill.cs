@@ -8,6 +8,7 @@ namespace Qserver.GameServer.Qpang
     {
         private RoomSessionPlayer _player;
         private RoomSessionPlayer _target;
+        private uint _startTime;
 
         public RoomSessionPlayer Player
         {
@@ -20,6 +21,16 @@ namespace Qserver.GameServer.Qpang
             set { this._target = value; }
         }
 
+        public uint StartTime
+        {
+            get { return this._startTime; }
+        }
+
+        public uint Duration
+        {
+            get { return GetDuration(); }
+        }
+
         public uint Id
         {
             get { return GetId(); }
@@ -30,6 +41,11 @@ namespace Qserver.GameServer.Qpang
             return 0;
         }
 
+        public virtual uint GetDuration()
+        {
+            return 15; // default?
+        }
+
         public void Bind(RoomSessionPlayer player)
         {
             this._player = player;
@@ -38,6 +54,7 @@ namespace Qserver.GameServer.Qpang
         public virtual void OnUse(RoomSessionPlayer target)
         {
             this._target = target;
+            this._startTime = Util.Util.Timestamp();
         }
     }
 }

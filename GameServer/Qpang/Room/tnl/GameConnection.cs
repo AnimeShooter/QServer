@@ -220,8 +220,9 @@ namespace Qserver.GameServer.Qpang
 
             UpdateRoom(room, room.PointsGame ? (uint)4 : (uint)20, room.PointsGame ? room.ScorePoints : room.ScoreTime);
 
+            
+            //UpdateRoom(room, 26, 1); // enable skills by default
             room.SetSkillsEnabled(true);
-            //UpdateRoom(room, 26, 0); // t s
 
             //UpdateRoom(room, 3, 2); // mode, 2
             //UpdateRoom(room, 3, 1); // mode, 2

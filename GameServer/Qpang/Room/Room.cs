@@ -332,11 +332,9 @@ namespace Qserver.GameServer.Qpang
         public void Update(uint cmd, uint val)
         {
             lock (this._lock)
-            {
                 foreach (var p in this._players)
                     if (!p.Value.Playing)
                         p.Value.Conn.PostNetEvent(new GCRoom(p.Key, cmd, val, this));
-            }
         }
 
         public void Finish()
@@ -425,7 +423,6 @@ namespace Qserver.GameServer.Qpang
             }
             return 0;
         }
-
         public void SetMode(GameMode.Mode mode)
         {
             this._mode = mode;
@@ -441,9 +438,7 @@ namespace Qserver.GameServer.Qpang
                 Update((uint)CGRoom.Commands.SET_POINTS, this._scorePoints);
             else
                 Update((uint)CGRoom.Commands.SET_TIME, this._scoreTime);
-
         }
-
         public void SetMap(byte map)
         {
             if (map > 12)
@@ -452,7 +447,6 @@ namespace Qserver.GameServer.Qpang
             this._map = map;
             Update((uint)CGRoom.Commands.MAP_ROOM, map);
         }
-
         public void SetMaxPlayers(byte maxPlayers)
         {
             this._maxPlayers = maxPlayers;
@@ -478,23 +472,29 @@ namespace Qserver.GameServer.Qpang
         }
         public void SetLevelLimited(bool levelLimited)
         {
-            this._isLevelLimited = levelLimited;
-            Update((uint)CGRoom.Commands.LEVEL_ROOM, levelLimited ? (uint)1 : (uint)0);
+            //this._isLevelLimited = levelLimited;
+            //Update((uint)CGRoom.Commands.LEVEL_ROOM, levelLimited ? (uint)1 : (uint)0);
         }
         public void SetTeamSorting(bool teamSorting)
         {
-            this._isTeamSorting = teamSorting;
-            Update((uint)CGRoom.Commands.TEAM_ROOM, teamSorting ? (uint)1 : (uint)0);
+            //this._isTeamSorting = teamSorting;
+            //Update((uint)CGRoom.Commands.TEAM_ROOM, teamSorting ? (uint)1 : (uint)0);
         }
         public void SetSkillsEnabled(bool skillEnabled)
         {
             this._isSkillsEnabled = skillEnabled;
+
+            UnreadyAll(true);
             Update((uint)CGRoom.Commands.TOGGLE_SKILL, skillEnabled ? (uint)1 : (uint)0);
         }
         public void SetMeleeOnly(bool meleeOnly)
         {
             this._isMeleeOnly = meleeOnly;
-            Update((uint)CGRoom.Commands.TOGGLE_MELEE, meleeOnly ? (uint)1 : (uint)0);
+            if (this._isMeleeOnly)
+                this._isSkillsEnabled = false;
+
+            UnreadyAll(true);
+            Update((uint)CGRoom.Commands.TOGGLE_MELEE, meleeOnly ? (uint)1: (uint)0);
         }
 
 

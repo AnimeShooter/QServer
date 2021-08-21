@@ -105,7 +105,7 @@ namespace Qserver.GameServer.Qpang
             bitStream.Write(SkillsEnabled);
             bitStream.Write(MeleeOnly);
 
-            Console.WriteLine($"Cmd: {((CGRoom.Commands)Cmd)}, Value: {Value}, Mode: {Mode}, MemCount: {MemberCount}, Goal: {Goal}");
+            Console.WriteLine($"Cmd: {((CGRoom.Commands)Cmd)}, Value: {Value}, Skills: {SkillsEnabled}, Melee: {MeleeOnly}");
         }
 
         public override void Unpack(EventConnection ps, BitStream bitStream) { }

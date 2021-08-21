@@ -307,6 +307,48 @@ namespace Qserver.Webserver.HTTP.Nancy
                 return response;
             });
 
+            Get("/img/card/skill/{id}", async x =>
+            {
+                string id = x.id;
+                string filename = Directory.GetCurrentDirectory() + $"/Webserver/HTTP/Public/img/cards/skills/{id}.png";
+                if (!File.Exists(filename))
+                    return new Response().StatusCode = HttpStatusCode.NotFound;
+
+                var response = new Response()
+                {
+                    ContentType = "image/png",
+                    Contents = stream =>
+                    {
+                        using (var writer = new BinaryWriter(stream))
+                        {
+                            writer.Write(File.ReadAllBytes(filename));
+                        }
+                    }
+                };
+                return response;
+            });
+
+            Get("/img/card/weapon/{id}", async x =>
+            {
+                string id = x.id;
+                string filename = Directory.GetCurrentDirectory() + $"/Webserver/HTTP/Public/img/cards/weapons/{id}.png";
+                if (!File.Exists(filename))
+                    return new Response().StatusCode = HttpStatusCode.NotFound;
+
+                var response = new Response()
+                {
+                    ContentType = "image/png",
+                    Contents = stream =>
+                    {
+                        using (var writer = new BinaryWriter(stream))
+                        {
+                            writer.Write(File.ReadAllBytes(filename));
+                        }
+                    }
+                };
+                return response;
+            });
+
             Post("/pkg/unpack", async x =>
             {
 #if !DEBUG
@@ -384,6 +426,13 @@ namespace Qserver.Webserver.HTTP.Nancy
             });
             #endregion
 
+            // #====================#
+            // #        Wiki        #
+            // #====================#
+
+            #region Wiki
+            
+            #endregion
         }
     }
 }

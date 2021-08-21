@@ -233,10 +233,19 @@ namespace Qserver.GameServer.Qpang
             PostNetEvent(new GCRoom(this._player.PlayerId, cmd, val, room));
         }
 
-        public void StartLoading(Room room, RoomPlayer roomPlayer)
+        public void StartLoading(Room room, RoomPlayer roomPlayer, bool pve = false)
         {
-            PostNetEvent(new GCStart(room, this._player.PlayerId));
-            PostNetEvent(new GCJoin(roomPlayer));
+            if(pve)
+            {
+                PostNetEvent(new GCPvEStart(room, this._player.PlayerId));
+                PostNetEvent(new GCPvEUserInit(roomPlayer));
+            }      
+            else
+            {
+                PostNetEvent(new GCStart(room, this._player.PlayerId));
+                PostNetEvent(new GCJoin(roomPlayer));
+            }
+                
             PostNetEvent(new GCGameState(this._player.PlayerId, 12));
         }
 

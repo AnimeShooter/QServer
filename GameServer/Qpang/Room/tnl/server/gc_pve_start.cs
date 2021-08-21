@@ -24,29 +24,34 @@ namespace Qserver.GameServer.Qpang
             ImplementNetEvent(out _dynClassRep, "GCPvEStart", NetClassMask.NetClassGroupGameMask, 0);
         }
 
-        public uint Unk1; // 96
-        public uint Unk2; // 92
-        public uint Unk3; // 100
-        public ushort Unk4; // 104
-        public ushort Unk5; // 106
+        public uint PlayerId; // 96
+        public uint Unk01 = 2; // 92
+        public uint Unk02; // 100
+        public ushort Map; // 104
+        public ushort Mode; // 106
 
         public GCPvEStart() : base(GameNetId.GC_PVE_START, GuaranteeType.Guaranteed, EventDirection.DirAny) { }
-
+        public GCPvEStart(Room room, uint playerId) : base(GameNetId.GC_PVE_START, GuaranteeType.Guaranteed, EventDirection.DirAny)
+        {
+            PlayerId = playerId;
+            Map = room.Map;
+            Mode = (ushort)room.Mode;
+        }
         public override void Pack(EventConnection ps, BitStream bitStream)
         {
-            bitStream.Write(Unk1);
-            bitStream.Write(Unk2);
-            bitStream.Write(Unk3);
-            bitStream.Write(Unk4);
-            bitStream.Write(Unk5);
+            bitStream.Write(PlayerId);
+            bitStream.Write(Unk01);
+            bitStream.Write(Unk02);
+            bitStream.Write(Map);
+            bitStream.Write(Mode);
         }
         public override void Unpack(EventConnection ps, BitStream bitStream)
         {
-            bitStream.Read(out Unk1);
-            bitStream.Read(out Unk2);
-            bitStream.Read(out Unk3);
-            bitStream.Read(out Unk4);
-            bitStream.Read(out Unk5);
+        //    bitStream.Read(out PlayerId);
+        //    bitStream.Read(out Unk01);
+        //    bitStream.Read(out Unk02);
+        //    bitStream.Read(out Map);
+        //    bitStream.Read(out Mode);
         }
         public override void Process(EventConnection ps) 
         {

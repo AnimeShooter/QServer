@@ -48,7 +48,7 @@ namespace Qserver.GameServer.Qpang
             if (player.PlayerId != roomPlayer.Room.MasterId)
                 return;
 
-            roomPlayer.Room.Start();
+            roomPlayer.Room.Start(player);
         }
     }
 }

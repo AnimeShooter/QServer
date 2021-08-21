@@ -97,7 +97,7 @@ namespace Qserver.GameServer.Qpang
         {
             get { return this._modeManager; }
         }
-        public RoomSession RoomSession 
+        public RoomSession RoomSession
         {
             get { return this._roomSession; }
         }
@@ -232,7 +232,7 @@ namespace Qserver.GameServer.Qpang
             roomPlayer.SetTeam(GetAvailableTeam());
             lock (this._lock)
             {
-                if(!this._players.ContainsKey(conn.Player.PlayerId))
+                if (!this._players.ContainsKey(conn.Player.PlayerId))
                     this._players.Add(conn.Player.PlayerId, roomPlayer);
                 else
                     this._players[conn.Player.PlayerId] = roomPlayer;
@@ -257,7 +257,7 @@ namespace Qserver.GameServer.Qpang
 
                 BroadcastWaiting<GCExit>(id, CGExit.Commands.LEAVE, this._masterPlayerId);
 
-                if(this._masterPlayerId == 0)
+                if (this._masterPlayerId == 0)
                 {
                     if (this._players.Count != 0)
                         foreach (var p in this._players)
@@ -273,10 +273,23 @@ namespace Qserver.GameServer.Qpang
                 this._roomSession.Tick();
         }
 
-        public void Start()
+        public void Start(Player player)
         {
             if (this._isPlaying)
                 return;
+
+            bool pve = false; //  this._mode == GameMode.Mode.PVE;
+
+            // check if everyone is ready
+            if(pve)
+                lock (this._lock)
+                    foreach (var p in this._players)
+                        if (!p.Value.Ready && p.Key != player.PlayerId)
+                            if (player != null)
+                            {
+                                player.Broadcast("Failed to start, not everyone is ready yet.");
+                                return;
+                            }
 
             this._roomSession = new RoomSession(this, this._modeManager);
             this._roomSession.Initialize(); // TODO
@@ -292,7 +305,7 @@ namespace Qserver.GameServer.Qpang
                     {
                         p.Value.SetReady(true);
                         p.Value.Playing = true;
-                        p.Value.Conn.StartLoading(this, p.Value);
+                        p.Value.Conn.StartLoading(this, p.Value, pve);
                         p.Value.OnStart();
                     }
                     else
@@ -301,18 +314,30 @@ namespace Qserver.GameServer.Qpang
             }
         }
 
+
         public void SyncPlayers(RoomPlayer player)
         {
-            lock(this._lock)
+            bool pve = this._mode == GameMode.Mode.PVE;
+            lock (this._lock)
             {
+                //if(pve)
+                //    player.Conn.PostNetEvent(new GCPvEUserInit(player));
+                //else
                 player.Conn.PostNetEvent(new GCJoin(player));
                 foreach (var p in this._players)
                 {
                     if (player != p.Value)
                     {
                         if (!p.Value.Playing)
+                            //if(pve)
+                            //    p.Value.Conn.PostNetEvent(new GCPvEUserInit(player));
+                            //else
                             p.Value.Conn.PostNetEvent(new GCJoin(player));
-                        player.Conn.PostNetEvent(new GCJoin(p.Value));
+
+                        //if (pve)
+                        //    player.Conn.PostNetEvent(new GCPvEUserInit(p.Value));
+                        //else
+                            player.Conn.PostNetEvent(new GCJoin(p.Value));
                     }
                 }
             }
@@ -403,9 +428,9 @@ namespace Qserver.GameServer.Qpang
 
         public RoomPlayer GetPlayer(uint id)
         {
-            lock(this._lock)
+            lock (this._lock)
                 if (this._players.ContainsKey(id))
-                    return this._players[id];    
+                    return this._players[id];
 
             return null;
         }
@@ -494,7 +519,7 @@ namespace Qserver.GameServer.Qpang
                 this._isSkillsEnabled = false;
 
             UnreadyAll(true);
-            Update((uint)CGRoom.Commands.TOGGLE_MELEE, meleeOnly ? (uint)1: (uint)0);
+            Update((uint)CGRoom.Commands.TOGGLE_MELEE, meleeOnly ? (uint)1 : (uint)0);
         }
 
 
@@ -533,7 +558,7 @@ namespace Qserver.GameServer.Qpang
 
         public bool IsTeamAvailable(byte team)
         {
-            
+
             if (team != 1 && team != 2)
                 return false;
 
@@ -549,17 +574,17 @@ namespace Qserver.GameServer.Qpang
 
 
         //
-        public void Broadcast<T>(params object[] args) 
+        public void Broadcast<T>(params object[] args)
         {
             Type[] types = args.Select(x => x.GetType()).ToArray();
             var ctor = typeof(T).GetConstructor(types);
 
             lock (this._lock)
                 foreach (var p in this._players)
-                        p.Value.Conn.PostNetEvent((GameNetEvent)ctor.Invoke(args));
+                    p.Value.Conn.PostNetEvent((GameNetEvent)ctor.Invoke(args));
         }
 
-        public void BroadcastWaiting<T>(params object[] args) 
+        public void BroadcastWaiting<T>(params object[] args)
         {
             Type[] types = args.Select(x => x.GetType()).ToArray();
             var ctor = typeof(T).GetConstructor(types);
@@ -567,7 +592,7 @@ namespace Qserver.GameServer.Qpang
             lock (this._lock)
                 foreach (var p in this._players)
                     if (!p.Value.Playing)
-                            p.Value.Conn.PostNetEvent((GameNetEvent)ctor.Invoke(args));
+                        p.Value.Conn.PostNetEvent((GameNetEvent)ctor.Invoke(args));
         }
     }
 }

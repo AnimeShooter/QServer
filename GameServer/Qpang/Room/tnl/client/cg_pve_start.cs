@@ -27,6 +27,10 @@ namespace Qserver.GameServer.Qpang
         public uint MasterUid;
         public byte Unk02;
 
+        // 0x20
+        //public byte[] Unk20;
+        //public ulong Unk2;
+
         public CGPvEStart() : base(GameNetId.CG_PVE_START, GuaranteeType.GuaranteedOrdered, EventDirection.DirAny) { }
 
         public override void Pack(EventConnection ps, BitStream bitStream) { }
@@ -34,6 +38,10 @@ namespace Qserver.GameServer.Qpang
         {
             bitStream.Read(out MasterUid);
             bitStream.Read(out Unk02);
+
+            //Unk20 = new byte[0x20];
+            //bitStream.Read((uint)Unk20.Length, Unk20);
+            //bitStream.Read(out Unk2);
         }
         public override void Process(EventConnection ps)
         {
@@ -52,7 +60,7 @@ namespace Qserver.GameServer.Qpang
             if (roomPlayer.Player.PlayerId != roomPlayer.Room.MasterId)
                 return;
 
-            roomPlayer.Room.Start();
+            roomPlayer.Room.Start(player);
 
             // 122: stage2 simple
         }

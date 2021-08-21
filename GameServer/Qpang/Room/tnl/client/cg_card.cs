@@ -29,6 +29,7 @@ namespace Qserver.GameServer.Qpang
         {
             ABILITY = 0x07,
             USE_CARD = 0x09
+            // 8 octo?
         };
 
         public uint Uid;

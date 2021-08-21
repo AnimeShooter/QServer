@@ -24,14 +24,14 @@ namespace Qserver.GameServer.Qpang
             ImplementNetEvent(out _dynClassRep, "CGPvERespawnReq", NetClassMask.NetClassGroupGameMask, 0);
         }
 
-        public uint PlayerId;
+        //public uint PlayerId;
 
         public CGPvERespawnReq() : base(GameNetId.CG_PVE_RESPAWN_REQ, GuaranteeType.GuaranteedOrdered, EventDirection.DirAny) { }
 
         public override void Pack(EventConnection ps, BitStream bitStream) { }
         public override void Unpack(EventConnection ps, BitStream bitStream) 
         {
-            bitStream.Read(out PlayerId);
+            //bitStream.Read(out PlayerId);
         }
         public override void Process(EventConnection ps) 
         {
@@ -40,12 +40,13 @@ namespace Qserver.GameServer.Qpang
 
         public override void Handle(GameConnection conn, Player player)
         {
-            if (player == null)
+            if (player == null || player.RoomPlayer == null || player.RoomPlayer.RoomSessionPlayer == null)
                 return;
 
             // TODO: ask for a respawn?
+            //player.RoomPlayer.RoomSessionPlayer.Respawn();
 
-            conn.PostNetEvent(new GCRespawn(player.PlayerId, player.Character, 1));
+            player.RoomPlayer.Room.RoomSession.CompletePvERound();
         }
     }
 }

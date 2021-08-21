@@ -34,7 +34,10 @@ namespace Qserver.GameServer.Qpang
 
         public override void Handle(GameConnection conn, Player player)
         {
-            base.Handle(conn, player);
+            if (player == null || player.RoomPlayer == null || player.RoomPlayer.RoomSessionPlayer == null)
+                return;
+
+            conn.PostNetEvent(new GCPvEUserInit(player.RoomPlayer.RoomSessionPlayer));
         }
     }
 }

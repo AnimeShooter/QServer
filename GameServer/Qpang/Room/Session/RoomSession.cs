@@ -20,6 +20,7 @@ namespace Qserver.GameServer.Qpang
 
         private uint _startTime;
         private uint _endTime;
+        private uint _nextRound;
         private uint _lastTickTime;
 
         private uint _essenceDropTime;
@@ -403,6 +404,12 @@ namespace Qserver.GameServer.Qpang
             }
         }
 
+        public void CompletePvERound()
+        {
+            //this._nextRound = Util.Util.Timestamp() + 15;
+            RelayPlaying<GCPvERoundEnd>();
+        }
+
         public void Finish()
         {
             if (this._isFinished)
@@ -489,6 +496,7 @@ namespace Qserver.GameServer.Qpang
 
         public void Tick()
         {
+            var currTime = Util.Util.Timestamp();
             if (!this._isFinished)
             {
                 lock (this._lockPlayers)
@@ -498,6 +506,13 @@ namespace Qserver.GameServer.Qpang
 
                     foreach (var p in this._players)
                         p.Value.Tick();
+                }
+
+                if(this._nextRound != 0 && this._nextRound < currTime)
+                {
+                    foreach (var p in this._players)
+                        RelayPlayingExcept<GCPvEUserInit>(p.Key, p.Value, false);
+                    this._nextRound = 0;
                 }
             }
 

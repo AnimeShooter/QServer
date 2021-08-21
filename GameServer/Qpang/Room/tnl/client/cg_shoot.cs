@@ -103,6 +103,8 @@ namespace Qserver.GameServer.Qpang
             if (ItemId != 1095434246) //  Octo NOTE: add alll mines
                 session.EntityManager.Shoot(EntityId);
 
+            Console.WriteLine($"x:{SrcX} y:{SrcY} z:{SrcZ} | x:{DstX} y:{DstY} z:{DstZ}");
+
             session.RoomSession.RelayPlayingExcept<GCShoot>(playerId, playerId, ItemId, SrcX, SrcY, SrcZ, DstX, DstY, DstZ, EntityId, (uint)0);
         }
 

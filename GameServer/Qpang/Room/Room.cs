@@ -482,10 +482,10 @@ namespace Qserver.GameServer.Qpang
         }
         public void SetSkillsEnabled(bool skillEnabled)
         {
-            //this._isSkillsEnabled = skillEnabled;
+            this._isSkillsEnabled = skillEnabled;
 
-            //UnreadyAll(true);
-            //Update((uint)CGRoom.Commands.TOGGLE_SKILL, skillEnabled ? (uint)1 : (uint)0);
+            UnreadyAll(true);
+            Update((uint)CGRoom.Commands.TOGGLE_SKILL, skillEnabled ? (uint)1 : (uint)0);
         }
         public void SetMeleeOnly(bool meleeOnly)
         {

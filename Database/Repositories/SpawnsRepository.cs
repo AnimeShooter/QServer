@@ -62,7 +62,7 @@ namespace Qserver.Database.Repositories
 		{
 			Task<IEnumerable<DBSpawns>> spawns = null;
 			await _sqlObjectFactory.GetConnection().UsingAsync(connection =>
-				spawns = connection.QueryAsync<DBSpawns>("SELECT map_spawns.game_mode_id, map_spawns.position_id, map_spawns.team, positions.x, positions.y, positions.x, maps.map_id, game_modes.mode_id FROM map_spawns INNER JOIN positions ON positions.id = map_spawns.position_id INNER JOIN maps ON maps.id = map_spawns.map_id INNER JOIN game_modes ON game_modes.id = map_spawns.game_mode_id"));
+				spawns = connection.QueryAsync<DBSpawns>("SELECT map_spawns.game_mode_id, map_spawns.position_id, map_spawns.team, positions.x, positions.y, positions.z, maps.map_id, game_modes.mode_id FROM map_spawns INNER JOIN positions ON positions.id = map_spawns.position_id INNER JOIN maps ON maps.id = map_spawns.map_id INNER JOIN game_modes ON game_modes.id = map_spawns.game_mode_id"));
 				//spawns = connection.QueryAsync<DBSpawns>("SELECT map_spawns.map_id, map_spawns.game_mode_id, map_spawns.position_id, map_spawns.team, positions.x, positions.y, positions.x, game_modes.mode_id FROM map_spawns INNER JOIN positions ON positions.id = map_spawns.position_id INNER JOIN maps ON maps.id = map_spawns.map_id INNER JOIN game_modes ON game_modes.id = map_spawns.game_mode_id"));
 			return spawns.Result.ToList();
 		}

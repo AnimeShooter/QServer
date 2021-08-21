@@ -62,8 +62,17 @@ namespace Qserver.GameServer.Qpang
 
         public void DisableSkill()
         {
+            if (this._activeSkillCard == null)
+                return;
+
             lock (this._player.Lock)
-                this._player.RoomSession.Relay<GCCard>(this._player.Player.PlayerId, (uint)0, (byte)9, (uint)9, this._activeSkillCard.Id, (ulong)0); // test
+            {
+                // Send expireto others
+                //this._player.RoomSession.RelayPlayingExcept<GCCard>(this._player.Player.PlayerId, this._player.Player.PlayerId, (uint)0, (byte)9, (uint)9, this._activeSkillCard.Id, (ulong)0); 
+                this._player.RoomSession.RelayPlaying<GCCard>(this._player.Player.PlayerId, (uint)0, (byte)9, (uint)9, this._activeSkillCard.Id, (ulong)this._activeSkillCard.Id); 
+
+            }
+                
             this._activeSkillCard = null;
         }
 

@@ -24,7 +24,7 @@ namespace Qserver.GameServer.Qpang
             ImplementNetEvent(out _dynClassRep, "GCCard", NetClassMask.NetClassGroupGameMask, 0);
         }
 
-        public byte cmd;
+        public byte cmd; // 88
         public uint uid;
         public uint targetUid;
         public uint itemId;
@@ -38,6 +38,7 @@ namespace Qserver.GameServer.Qpang
         public uint dataTargetUid;
         public uint unk01;
         public byte count;
+        // unk 0x20 struct
 
         public GCCard() : base(GameNetId.GC_CARD, GuaranteeType.GuaranteedOrdered, EventDirection.DirAny) { }
         public GCCard(uint playerId, uint targetId, byte cmd, uint cardType, uint itemId, ulong seqId) : base(GameNetId.GC_CARD, GuaranteeType.GuaranteedOrdered, EventDirection.DirAny)
@@ -74,6 +75,11 @@ namespace Qserver.GameServer.Qpang
             bitStream.Write(dataTargetUid);
             bitStream.Write(unk01);
             bitStream.Write(count);
+
+            for(int i = 0; i < count; i++)
+            {
+                // TODO: write 0x20 bytes?
+            }
 
             Console.WriteLine($"GCCard c:{cmd}, t:{targetUid}, {itemId}, {seqId} ");
         }

@@ -95,7 +95,15 @@ namespace Qserver.GameServer.Qpang
         public List<Spawn> GetItemSpawns(byte map)
         {
             lock (this._lock)
+            {
+                if (!this._itemSpawns.ContainsKey(map))
+                    return new List<Spawn>();
+                    //{ 
+                    //    new Spawn(){ X = -200, Y = -100, Z = 10 } 
+                    //};
                 return this._itemSpawns[map];
+            }
+                
         }
 
         public Spawn GetEssenceSpawn(byte map)

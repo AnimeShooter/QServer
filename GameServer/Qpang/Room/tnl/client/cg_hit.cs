@@ -24,6 +24,21 @@ namespace Qserver.GameServer.Qpang
             ImplementNetEvent(out _dynClassRep, "CGHit", NetClassMask.NetClassGroupGameMask, 0);
         }
 
+        private static Dictionary<ushort, float[]> CharacterDefense = new Dictionary<ushort, float[]>()
+        {
+            //                 Head  Body  Arm
+            {333, new float[] {1.0f, 0.6f, 0.4f } }, // Ken
+            {343, new float[] {1.0f, 0.6f, 0.4f } }, // Hana
+            {578, new float[] {1.0f, 0.5f, 0.5f } }, // Kuma
+            {579, new float[] {1.0f, 0.8f, 0.4f } }, // MiuMiu
+            {850, new float[] {0.9f, 0.6f, 0.5f } }, // Sai
+            {851, new float[] {0.85f, 0.6f, 0.5f } }, // Dr.Uru
+            {328, new float[] {1.0f, 0.9f, 0.7f } }, // BatteryMan
+            {602, new float[] {1.0f, 0.9f, 0.7f } }, // Zilla
+            {836, new float[] {1.0f, 0.9f, 0.7f } }, // Turret
+            {329, new float[] {1.0f, 0.9f, 0.7f } }, // BatteryMan2
+        };
+
         public enum HitLocations : byte
         {
             HEAD = 0,
@@ -157,24 +172,26 @@ namespace Qserver.GameServer.Qpang
 
                 dmg = weapon.Damage;
 
+                // TODO: character
                 switch((HitLocations)HitLocation)
                 {
                     case HitLocations.HEAD:
+                        dmg = (ushort)(dmg * CharacterDefense[dstPlayer.Character][0]); // 1
                         break; // 1
                     case HitLocations.BODY:
-                        dmg = (ushort)(dmg * 0.9f);
+                        dmg = (ushort)(dmg * CharacterDefense[dstPlayer.Character][1]); // .9
                         break;
                     case HitLocations.L_LEG:
                     case HitLocations.R_LEG:
                     case HitLocations.L_ARM:
                     case HitLocations.R_ARM:
-                        dmg = (ushort)(dmg * 0.8f);
+                        dmg = (ushort)(dmg * CharacterDefense[dstPlayer.Character][2]); // .8
                         break;
                     case HitLocations.L_FEET:
                     case HitLocations.R_FEET:
                     case HitLocations.L_HAND:
                     case HitLocations.R_HAND:
-                        dmg = (ushort)(dmg * 0.6f);
+                        dmg = (ushort)(dmg * CharacterDefense[dstPlayer.Character][2] * 0.9f); // arm - 10%
                         break;
                 }
 

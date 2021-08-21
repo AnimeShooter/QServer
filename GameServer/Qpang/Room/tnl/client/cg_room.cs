@@ -227,7 +227,7 @@ namespace Qserver.GameServer.Qpang
                     case Commands.PASS_ROOM:
                         room.SetPassword(Password);
                         break;
-                    case Commands.LEVEL_ROOM:
+                    case Commands.LEVEL_ROOM: // TODO: fix
                         room.SetLevelLimited(Value == 1 ? true : false);
                         break;
                     case Commands.TOGGLE_MELEE:
@@ -236,8 +236,8 @@ namespace Qserver.GameServer.Qpang
                     case Commands.TEAM_ROOM: // TODO: fix
                         room.SetTeamSorting(Value == 1 ? true : false);
                         break;
-                    case Commands.TOGGLE_SKILL:
-                        room.SetSkillsEnabled(Value == 1 ? true : false);
+                    case Commands.TOGGLE_SKILL: // TODO fix
+                        //room.SetSkillsEnabled(Value == 1 ? true : false);
                         break;
                     default:
                         break;

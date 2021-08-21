@@ -66,6 +66,21 @@ namespace Qserver.GameServer.Qpang
             if (roomSession == null)
                 return;
 
+            var activeSkill = roomPlayer.RoomSessionPlayer.SkillManager.ActiveSkillCard;
+            if (activeSkill != null)
+            {
+                switch ((Items)activeSkill.Id)
+                {
+                    case Items.SKILL_CAMO:
+                        roomPlayer.RoomSessionPlayer.SkillManager.DisableSkill(); // consume but allow skill usage
+                        break;
+                    case Items.SKILL_IRONWALL:
+                    case Items.SKILL_IRONWALL2:
+                    default:
+                        return; // prevent skill usage
+                }
+            }
+
             // TODO: handle skill usage (subtract points?)
 
             // CMD

@@ -87,7 +87,7 @@ namespace Qserver.GameServer.Qpang
                     case Items.SKILL_IRONWALL2:
                         return; // dont shoot
                     case Items.SKILL_CAMO:
-                        // TODO: break camo
+                        roomPlayer.RoomSessionPlayer.SkillManager.DisableSkill(); // consume
                         break;
                     default:
                         break;

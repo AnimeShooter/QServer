@@ -236,6 +236,22 @@ namespace Qserver.GameServer.Qpang
             if (!player.IsInRange(item.Spawn, 1.75f, false))
                 return;
 
+            // break skills if needed
+            var activeSkill = player.SkillManager.ActiveSkillCard;
+            if (activeSkill != null)
+            {
+                switch ((Items)activeSkill.Id)
+                {
+                    case Items.SKILL_CAMO:
+                        player.SkillManager.DisableSkill(); // consume but allow skill usage
+                        break;
+                    case Items.SKILL_IRONWALL:
+                    case Items.SKILL_IRONWALL2:
+                    default:
+                        return; // prevent skill usage
+                }
+            }
+
             if (item.ItemId == (uint)Item.RED_MEDKIT || item.ItemId == (uint)Item.GREEN_MEDKIT || item.ItemId == (uint)Item.AMMO_CLIP
                 || item.ItemId == (uint)Item.SKILL_CARD)
             {

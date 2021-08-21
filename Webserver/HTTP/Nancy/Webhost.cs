@@ -307,7 +307,7 @@ namespace Qserver.Webserver.HTTP.Nancy
                 return response;
             });
 
-            Get("/img/card/skill/{id}", async x =>
+            Get("/img/cards/skill/{id}", async x =>
             {
                 string id = x.id;
                 string filename = Directory.GetCurrentDirectory() + $"/Webserver/HTTP/Public/img/cards/skills/{id}.png";
@@ -328,7 +328,7 @@ namespace Qserver.Webserver.HTTP.Nancy
                 return response;
             });
 
-            Get("/img/card/weapon/{id}", async x =>
+            Get("/img/cards/weapon/{id}", async x =>
             {
                 string id = x.id;
                 string filename = Directory.GetCurrentDirectory() + $"/Webserver/HTTP/Public/img/cards/weapons/{id}.png";
@@ -431,7 +431,25 @@ namespace Qserver.Webserver.HTTP.Nancy
             // #====================#
 
             #region Wiki
-            
+            Get("/wiki/cards/skill/{id}", async x =>
+            {
+                uint id = x.id;
+                string path = Directory.GetCurrentDirectory() + $"/Webserver/HTTP/Public/json/skills.json";
+                var contents = File.ReadAllText(path);
+                List<SkillCard> cards = JsonConvert.DeserializeObject<List<SkillCard>>(contents);
+
+                // grab whatever I like
+
+                return Response.AsJson(new APIResponse<List<SkillCard>>() { Result = null });
+            });
+
+            Get("/wiki/cards/skills/", async x =>
+            {
+                string path = Directory.GetCurrentDirectory() + $"/Webserver/HTTP/Public/json/skills.json";
+                var contents = File.ReadAllText(path);
+                List<SkillCard> cards = JsonConvert.DeserializeObject<List<SkillCard>>(contents);
+                return Response.AsJson(new APIResponse<List<SkillCard>>() { Result = cards });
+            });
             #endregion
         }
     }

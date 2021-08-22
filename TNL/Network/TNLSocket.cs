@@ -35,7 +35,9 @@ namespace TNL.Network
         public TNLSocket(int port)
         {
             _socket = new UdpClient(port);
-            //_socket.Client.IOControl(unchecked((int)(0x80000000 | 0x18000000 | 12)), new byte[1] { 0x01 }, null); // ICMP skip?
+#if DEBUG
+            _socket.Client.IOControl(unchecked((int)(0x80000000 | 0x18000000 | 12)), new byte[] { 0 }, new byte[] { 0 }); // ICMP skip?
+#endif
             _socket.BeginReceive(OnEndReceive, null);
             _needRun = true;
         }
@@ -45,19 +47,7 @@ namespace TNL.Network
             try
             {
                 var ep = new IPEndPoint(0, 0);
-
                 var buff = _socket.EndReceive(result, ref ep);
-
-                //// debug
-                //lock(flock)
-                //{
-                //    string bytes = BitConverter.ToString(buff);
-                //    if (!File.Exists("debug.txt"))
-                //        File.Create("debug.txt").Close();
-                //    string old = File.ReadAllText("debug.txt");
-                //    File.WriteAllText("debug.txt", old + bytes + "\r\n");
-                //}
-
 
                 if (buff != null && buff.Length > 0)
                     PacketsToBeHandled.Enqueue(new(ep, buff));
@@ -74,6 +64,9 @@ namespace TNL.Network
                 {
                     Console.WriteLine("Unknown error (receive)!");
                     Console.WriteLine(se);
+                }else
+                {
+                    Console.WriteLine("Connection Reset");
                 }
             }
             catch (Exception e)

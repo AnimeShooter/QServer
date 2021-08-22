@@ -304,6 +304,9 @@ namespace Qserver.GameServer.Qpang
                 Game.Instance.TradeManager.OnCancel(this);
             }
 
+            if (this._roomPlayer != null)
+                this._roomPlayer.Room.RemovePlayer(this._playerId); // remove from room
+
             SetOnlineStatus(false);
 
             this._inventoryManager.Close();

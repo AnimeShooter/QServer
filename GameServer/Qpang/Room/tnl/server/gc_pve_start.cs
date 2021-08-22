@@ -25,7 +25,7 @@ namespace Qserver.GameServer.Qpang
         }
 
         public uint PlayerId; // 96
-        public uint Unk01 = 2; // 92
+        public uint Unk01 = 3; // 92 - 3 for PvE?
         public uint Unk02; // 100
         public ushort Map; // 104
         public ushort Mode; // 106
@@ -47,15 +47,11 @@ namespace Qserver.GameServer.Qpang
         }
         public override void Unpack(EventConnection ps, BitStream bitStream)
         {
-        //    bitStream.Read(out PlayerId);
-        //    bitStream.Read(out Unk01);
-        //    bitStream.Read(out Unk02);
-        //    bitStream.Read(out Map);
-        //    bitStream.Read(out Mode);
+
         }
         public override void Process(EventConnection ps) 
         {
-            Post(ps);
+
         }
     }
 }

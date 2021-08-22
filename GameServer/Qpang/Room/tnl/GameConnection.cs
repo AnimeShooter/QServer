@@ -237,6 +237,7 @@ namespace Qserver.GameServer.Qpang
         {
             if(pve)
             {
+                // NOTE: throws exception?
                 PostNetEvent(new GCPvEStart(room, this._player.PlayerId));
                 PostNetEvent(new GCPvEUserInit(roomPlayer));
             }      

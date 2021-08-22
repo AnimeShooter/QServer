@@ -30,12 +30,13 @@ namespace Qserver.GameServer.Qpang
             ABILITY = 0x07,
             USE_CARD = 0x09
             // 8 octo?
+            // 4  ServerPlayer::applySkill target
         };
 
         public uint Uid;
         public uint TargetUid;
         public uint Cmd;
-        public uint CardType;
+        public uint CardType; // !1 && !4 = !inv_card; !9 = !game_card
         public uint ItemId;
         public ulong SeqId;
 

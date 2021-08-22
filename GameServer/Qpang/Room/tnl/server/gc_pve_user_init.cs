@@ -79,6 +79,10 @@ namespace Qserver.GameServer.Qpang
             Unk7 = player.Level;
             Unk8 = (ushort)(player.EquipmentManager.GetBaseHealth() + player.EquipmentManager.GetBonusHealth());
             //Experience = player.Experience;
+
+            Unk6 = 0;
+            Unk7 = 0;
+            Unk8 = 0;
         }
 
 

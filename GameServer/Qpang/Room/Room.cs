@@ -278,7 +278,8 @@ namespace Qserver.GameServer.Qpang
             if (this._isPlaying)
                 return;
 
-            bool pve = false; //  this._mode == GameMode.Mode.PVE;
+            bool pve = this._mode == GameMode.Mode.PVE;
+            //pve = false;
 
             // check if everyone is ready
             if(pve)

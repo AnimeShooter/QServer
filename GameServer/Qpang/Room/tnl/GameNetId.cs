@@ -29,13 +29,13 @@ namespace Qserver.GameServer.Qpang
 		CG_MOVE = 105,
 		CG_MOVE_REPORT = 181,
 		CG_PLAYER_CHANGE = 131,
-		CG_PVE_AREA_TRIGGER = 532,
+		CG_PVE_AREA_TRIGGER = 532, // ignored
 		CG_PVE_EVENT_OBJECT = 524,
 		CG_PVE_FLOOR = 531,
 		CG_PVE_GET_ITEM = 512,
 		CG_PVE_HIT_N2P = 517,
 		CG_PVE_HIT_NPC = 506,
-		CG_PVE_HIT_NPC_TO_OBJECT = 510,
+		CG_PVE_HIT_NPC_TO_OBJECT = 510, // ignored (519 also ignored)
 		CG_PVE_HIT_OBJECT = 508,
 		CG_PVE_RESPAWN_REQ = 536,
 		CG_PVE_ROUND_START = 527,
@@ -46,7 +46,7 @@ namespace Qserver.GameServer.Qpang
 		CG_ROOM_INFO = 117,
 		CG_SCORE = 123,
 		CG_SHOOT = 107,
-		CG_SHOOTREPORT = 182,
+		CG_SHOOTREPORT = 182, // ignored?
 		CG_START = 103,
 		CG_SYNC = 170,
 		CG_TARGET = 168,

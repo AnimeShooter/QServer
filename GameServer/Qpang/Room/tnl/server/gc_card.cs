@@ -24,12 +24,12 @@ namespace Qserver.GameServer.Qpang
             ImplementNetEvent(out _dynClassRep, "GCCard", NetClassMask.NetClassGroupGameMask, 0);
         }
 
-        public byte cmd; // 88
+        public byte cmd; // 1, 2 (fail?)  4, 10 (activate), 
         public uint uid;
         public uint targetUid;
         public uint itemId;
         public ulong seqId;
-        public uint cardType;
+        public uint cardType; // !1, !2, 7, !9, ...
         public uint actionType;
         public uint chargePoints;
         public uint skillCount;
@@ -53,7 +53,7 @@ namespace Qserver.GameServer.Qpang
         public GCCard(uint playerId, uint guagePercentage, uint guagePoints) : base(GameNetId.GC_CARD, GuaranteeType.Guaranteed, EventDirection.DirClientToServer)
         {
             this.uid = playerId;
-            this.cmd = 8;
+            this.cmd = 8; // 4 or 10 consuming?
             this.cardType = 9;
             this.chargePoints = guagePercentage;
             this.skillCount = guagePoints;

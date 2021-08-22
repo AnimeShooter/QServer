@@ -69,7 +69,12 @@ namespace Qserver.GameServer.Qpang
             {
                 // Send expireto others
                 //this._player.RoomSession.RelayPlayingExcept<GCCard>(this._player.Player.PlayerId, this._player.Player.PlayerId, (uint)0, (byte)9, (uint)9, this._activeSkillCard.Id, (ulong)0); 
-                this._player.RoomSession.RelayPlaying<GCCard>(this._player.Player.PlayerId, (uint)0, (byte)9, (uint)9, this._activeSkillCard.Id, (ulong)this._activeSkillCard.Id); 
+                
+                
+                //this._player.RoomSession.RelayPlaying<GCCard>(this._player.Player.PlayerId, (uint)0, (byte)9, (uint)9, this._activeSkillCard.Id, (ulong)this._activeSkillCard.Id); 
+                
+                // test 1, msgbox
+                this._player.RoomSession.RelayPlaying<GCCard>(this._player.Player.PlayerId, (uint)0, (byte)1, (uint)9, this._activeSkillCard.Id, (ulong)this._activeSkillCard.Id); 
 
             }
                 

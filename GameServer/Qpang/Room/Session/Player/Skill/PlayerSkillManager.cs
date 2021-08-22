@@ -67,11 +67,13 @@ namespace Qserver.GameServer.Qpang
 
             lock (this._player.Lock)
             {
-                // Send expireto others
-                //this._player.RoomSession.RelayPlayingExcept<GCCard>(this._player.Player.PlayerId, this._player.Player.PlayerId, (uint)0, (byte)9, (uint)9, this._activeSkillCard.Id, (ulong)0); 
+                // Send expire to others
+                this._player.RoomSession.RelayPlayingExcept<GCCard>(this._player.Player.PlayerId, this._player.Player.PlayerId, (uint)0, (byte)9, (uint)9, this._activeSkillCard.Id, (ulong)0);
                 
+                // expire self
+                this._player.Post(new GCCard(this._player.Player.PlayerId, (uint)0, (byte)1, (uint)9, this._activeSkillCard.Id, (ulong)0));
                 
-                this._player.RoomSession.RelayPlaying<GCCard>(this._player.Player.PlayerId, (uint)0, (byte)9, (uint)9, this._activeSkillCard.Id, (ulong)this._activeSkillCard.Id); 
+                //this._player.RoomSession.RelayPlaying<GCCard>(this._player.Player.PlayerId, (uint)0, (byte)9, (uint)9, this._activeSkillCard.Id, (ulong)this._activeSkillCard.Id); 
                 
                 // test 1, msgbox
                 //this._player.RoomSession.RelayPlaying<GCCard>(this._player.Player.PlayerId, (uint)0, (byte)1, (uint)9, this._activeSkillCard.Id, (ulong)this._activeSkillCard.Id); 
@@ -161,9 +163,7 @@ namespace Qserver.GameServer.Qpang
 
             lock (this._player.Lock)
             {
-                ////skill.OnUse(target);
-                // TEST block skill
-                cmd = 1;
+                skill.OnUse(target);
                 this._player.RoomSession.RelayPlaying<GCCard>(uid, targetUid, (byte)cmd, cardType, itemId, seqId);
                 this._activeSkillCard = skill;
             }

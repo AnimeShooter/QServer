@@ -67,12 +67,16 @@ namespace Qserver.GameServer.Qpang
 
             lock (this._player.Lock)
             {
+                // 4 : activate
+                // 9 : stop?
+                // 2 : remove?
+
                 // Send expire to others
-                this._player.RoomSession.RelayPlayingExcept<GCCard>(this._player.Player.PlayerId, this._player.Player.PlayerId, (uint)0, (byte)9, (uint)9, this._activeSkillCard.Id, (ulong)this._activeSkillCard.Id);
-                
-                // expire self
-                this._player.Post(new GCCard(this._player.Player.PlayerId, (uint)0, (byte)2, (uint)9, this._activeSkillCard.Id, (ulong)this._activeSkillCard.Id));
-                
+                this._player.RoomSession.RelayPlayingExcept<GCCard>(this._player.Player.PlayerId, this._player.Player.PlayerId, (uint)0, (byte)4, (uint)9, this._activeSkillCard.Id, (ulong)0);
+
+                // expire self (2 too?)
+                this._player.Post(new GCCard(this._player.Player.PlayerId, (uint)0, (byte)4, (uint)9, this._activeSkillCard.Id, (ulong)0));
+
                 //this._player.RoomSession.RelayPlaying<GCCard>(this._player.Player.PlayerId, (uint)0, (byte)9, (uint)9, this._activeSkillCard.Id, (ulong)this._activeSkillCard.Id); 
                 
                 // test 1, msgbox

@@ -43,8 +43,8 @@ namespace Qserver.GameServer.Qpang
         {
             bitStream.Write(PlayerId);
             bitStream.Write(Cmd);
-            bitStream.WriteString(Nickname, 16);
-            bitStream.WriteString(Message, (byte)(Message.Length % 254));
+            WriteWString(bitStream, Nickname, 16);
+            WriteWString(bitStream, Message, (byte)(Message.Length % 254));
         }
 
         public override void Unpack(EventConnection ps, BitStream bitStream) { }

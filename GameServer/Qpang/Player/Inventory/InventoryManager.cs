@@ -127,9 +127,18 @@ namespace Qserver.GameServer.Qpang
                 if (isEquiped)
                     return;
 
+                var card = this._cards[cardId];
                 this._cards.Remove(cardId);
 
                 Game.Instance.ItemsRepository.DeleteCard(this._player.PlayerId, cardId).GetAwaiter().GetResult();
+
+                if (card.ItemId == (uint)Items.NAME_CHANGER)
+                {
+                    // redeem for 950 cash
+                    this._player.Broadcast("Your NameChanger has been redeemed for 950 cash!");
+                    this._player.AddCash(950);
+                    this._player.SendLobby(LobbyManager.Instance.UpdateCashBalance(this._player.Cash));
+                }
 
                 this._player.SendLobby(LobbyManager.Instance.RemoveCard(cardId));
             }

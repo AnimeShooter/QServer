@@ -27,7 +27,7 @@ namespace Qserver.GameServer.Qpang
                 ////{ (uint)Items.SKILL_DETECT, new Skills.Detect() }, // Unsupported i guess?
                 //{ (uint)Items.SKILL_FLAGE, new Skills.Flage() },
                 { (uint)Items.SKILL_HAWKEYE, new Skills.HawkEye() },        // untested
-                //{ (uint)Items.SKILL_HIDING, new Skills.Hiding() },        // Counter Detect so probs unsuporrted too
+                ////{ (uint)Items.SKILL_HIDING, new Skills.Hiding() },        // Counter Detect so probs unsuporrted too
                 //{ (uint)Items.SKILL_INTERDICTION, new Skills.Interdiction() },
                 ////{ (uint)Items.SKILL_INVINCIBLE, new Skills.Invincible() },      // Unsupported
                 //{ (uint)Items.SKILL_IRONARM, new Skills.IronArm() },
@@ -55,7 +55,7 @@ namespace Qserver.GameServer.Qpang
                 //{ (uint)Items.SKILL_TRANSE, new Skills.Transe() },
                 { (uint)Items.SKILL_VITAL, new Skills.Vital() },        // OK
                 //{ (uint)Items.SKILL_WBLCK, new Skills.Wblck() },
-                //{ (uint)Items.SKILL_WEAPONCRACK, new Skills.WeaponCrack() },      // unsuported?
+                ////{ (uint)Items.SKILL_WEAPONCRACK, new Skills.WeaponCrack() },      // unsuported?
             };
 
             this._skillsByMode.Add((byte)GameMode.Mode.DM, this._skills);

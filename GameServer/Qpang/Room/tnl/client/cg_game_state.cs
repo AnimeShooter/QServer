@@ -54,7 +54,10 @@ namespace Qserver.GameServer.Qpang
              * 22 - ServerGame::playerStateHack
              * 24 - inventory in?
              * 25 - inventory out?
+             * 27 - 
+             * 29 - START_RESPAWN_TIMER
              * 35 - ServerGame::recv_PublicEnmeyPossible
+             * 32 - ?
              * 37 - transform end?
              * default: error?
              */

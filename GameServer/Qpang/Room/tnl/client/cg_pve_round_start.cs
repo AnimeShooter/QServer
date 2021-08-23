@@ -23,6 +23,7 @@ namespace Qserver.GameServer.Qpang
         {
             ImplementNetEvent(out _dynClassRep, "CGPvERoundStart", NetClassMask.NetClassGroupGameMask, 0);
         }
+
         public CGPvERoundStart() : base(GameNetId.CG_PVE_ROUND_START, GuaranteeType.GuaranteedOrdered, EventDirection.DirAny) { }
 
         public override void Pack(EventConnection ps, BitStream bitStream) { }

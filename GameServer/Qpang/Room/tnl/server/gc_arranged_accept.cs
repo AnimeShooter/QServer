@@ -24,7 +24,7 @@ namespace Qserver.GameServer.Qpang
             ImplementNetEvent(out _dynClassRep, "GCArrangedAccept", NetClassMask.NetClassGroupGameMask, 0);
         }
 
-        private const string key = "123456781234567892345672345672345672345672345678";
+        public const string Key = "123456781234567892345672345672345672345672345678";
 
         public uint SenderId;
         public uint TargetId;
@@ -47,7 +47,7 @@ namespace Qserver.GameServer.Qpang
             bitStream.Write((uint)222);
             bitStream.Write((ushort)TargetId);
 
-            WriteWString(bitStream, key, (uint)key.Length);
+            WriteWString(bitStream, Key, (uint)Key.Length);
             //bitStream.WriteString(key, (byte)key.Length);
         }
 

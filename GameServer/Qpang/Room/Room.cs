@@ -324,7 +324,7 @@ namespace Qserver.GameServer.Qpang
                 {
                     if (p.Value.Ready || this._masterPlayerId == p.Key)
                     {
-                        //p.Value.SetReady(true);
+                        p.Value.SetReady(true);
                         p.Value.Playing = true;
                         p.Value.Conn.StartLoading(this, p.Value, pve);
                         p.Value.OnStart();

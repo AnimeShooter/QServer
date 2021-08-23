@@ -32,6 +32,11 @@ namespace Qserver.GameServer.Qpang
             return false;
         }
 
+        public virtual bool IsPractice()
+        {
+            return false;
+        }
+
         public virtual void Tick(RoomSession roomSession) { }
 
         public virtual void OnApply(Room room)
@@ -72,13 +77,17 @@ namespace Qserver.GameServer.Qpang
                 killer.AddStreak();
             }
 
-            target.SkillManager.DisableSkill(); // if any?
+            
             target.ResetStreak();
             target.EffectManager.Clear(); // TODO
             target.StartPrespawn();
 
-            // NOTE: balance?
-            killer.SkillManager.AddSkillPoints(40);
+            // handle skillpoints
+            if(killer.RoomSession.Room.SkillsEnabled)
+            {
+                target.SkillManager.DisableSkill(); // if any?
+                killer.SkillManager.AddSkillPoints(40);
+            }
 
             var killerStats = killer.Player.StatsManager;
             var targetStats = target.Player.StatsManager;

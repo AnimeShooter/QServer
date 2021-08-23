@@ -63,20 +63,31 @@ namespace Qserver.GameServer.Qpang
             TRAP_SHIP_PROPELLER = 7
         };
 
-        public uint SrcPlayerId;
-        public uint DstPlayerId;
-        public uint unk03;
-        public float SrcPosX;
-        public float SrcPosY;
-        public float SrcPosZ;
-        public float DstPosX;
-        public float DstPosY;
-        public float DstPosZ;
-        public uint EntityId;
-        public byte HitType;
-        public byte HitLocation;
+        
 
-        public uint WeaponId;
+        public uint SrcPlayerId; // 
+        public uint DstPlayerId; // 
+        public uint unk03;  // 
+        public float SrcPosX; // 
+        public float SrcPosY; // 
+        public float SrcPosZ; // 
+        public float DstPosX; 
+        public float DstPosY; 
+        public float DstPosZ; 
+        public uint EntityId; 
+        public byte HitType;
+        /*
+         * 6  - none
+         * 7  - ServerGame::processNpcHit
+         * 8  - ServerGame::processNpcAttack
+         * 9  - ServerGame::processMoveHack
+         * 10 - ServerGame::processMoveGap (hack report, move gap)
+         * default - ServerGame::processPlayerHit
+         */
+
+        public byte HitLocation; 
+
+        public uint WeaponId; 
         public ulong RTT;
         public byte WeaponType;
         public byte unk16;
@@ -122,10 +133,12 @@ namespace Qserver.GameServer.Qpang
             //if (!session.WeaponManager.HasWeapon(WeaponId) && !IsTrap(WeaponId))
             //    return;
 
+            // TODO: HitType
+
             if (DstPlayerId == 0)
-                HitEmpty(WeaponId, session);
+                HitEmpty(session);
             else if (SrcPlayerId == DstPlayerId)
-                Hit(WeaponId, session, session, HitType);
+                Hit(session, session);
             else
             {
                 var targetSession = session.RoomSession.Find(DstPlayerId);
@@ -135,11 +148,11 @@ namespace Qserver.GameServer.Qpang
                 if (targetSession.Invincible || targetSession.Death)
                     return;
 
-                Hit(WeaponId, session, targetSession, HitType);
+                Hit(session, targetSession);
             }
         }
 
-        public void Hit(uint weaponId, RoomSessionPlayer srcPlayer, RoomSessionPlayer dstPlayer, byte bodyPart)
+        public void Hit(RoomSessionPlayer srcPlayer, RoomSessionPlayer dstPlayer)
         {
             if (dstPlayer.Death)
                 return;
@@ -275,7 +288,7 @@ namespace Qserver.GameServer.Qpang
             }
         }
 
-        public void HitEmpty(uint weaponId, RoomSessionPlayer srcPlayer)
+        public void HitEmpty(RoomSessionPlayer srcPlayer)
         {
             var roomSession = srcPlayer.RoomSession;
             roomSession.RelayPlaying<GCHit>(SrcPlayerId, (uint)0, unk03, SrcPosX, SrcPosY, SrcPosZ, DstPosX, DstPosY, DstPosZ, EntityId,

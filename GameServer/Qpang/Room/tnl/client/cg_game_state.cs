@@ -45,6 +45,19 @@ namespace Qserver.GameServer.Qpang
 			INV_OUT = 25,
 			KILLFEED_ADD_HEAD = 28,
 			START_RESPAWN_TIMER = 29,
+
+			/*
+             * 3  - Game Loading
+             * 9  - ServerGame::broadcastGCGameState
+             * 11 - ServerGame::sendGameStatePlay
+             * 15 - ServerGame::gotoWaitRoom
+             * 22 - ServerGame::playerStateHack
+             * 24 - inventory in?
+             * 25 - inventory out?
+             * 35 - ServerGame::recv_PublicEnmeyPossible
+             * 37 - transform end?
+             * default: error?
+             */
 		};
 
 		public uint PlayerId;

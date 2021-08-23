@@ -84,7 +84,7 @@ namespace Qserver.GameServer.Qpang
 
             bitStream.Write((byte)0);
 
-            for(int i =0; i < BonusCount; i++) // ???
+            for(int i = 0; i < BonusCount; i++) // ???
             {
                 bitStream.Write((ushort)1);
                 bitStream.Write((float)1234);

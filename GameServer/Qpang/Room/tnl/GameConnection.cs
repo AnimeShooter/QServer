@@ -248,6 +248,7 @@ namespace Qserver.GameServer.Qpang
             }
                 
             PostNetEvent(new GCGameState(this._player.PlayerId, 12));
+            //PostNetEvent(new GCGameState(this._player.PlayerId, 22)); // test hack state
         }
 
         public void StartSpectating(Room room, RoomPlayer roomPlayer)

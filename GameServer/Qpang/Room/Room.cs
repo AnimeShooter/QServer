@@ -246,8 +246,12 @@ namespace Qserver.GameServer.Qpang
         {
             lock (this._players)
             {
+                RoomPlayer player = null;
                 if (this._players.ContainsKey(id))
+                {
+                    player = this._players[id];
                     this._players.Remove(id);
+                }  
 
                 if (id == this._masterPlayerId)
                     this._masterPlayerId = FindNewMaster();
@@ -256,6 +260,22 @@ namespace Qserver.GameServer.Qpang
                     this._roomSession.RemovePlayer(id);
 
                 BroadcastWaiting<GCExit>(id, CGExit.Commands.LEAVE, this._masterPlayerId);
+
+                // disconnect UDP player too
+                if(player != null)
+                {
+                    //player.Conn.PostNetEvent(new GCExit(id, (uint)0, this._masterPlayerId));
+
+                    // --OR--
+                    new System.Threading.Thread(new System.Threading.ParameterizedThreadStart(DelayDC)).Start(player);
+                    void DelayDC(object o)
+                    {
+                        System.Threading.Thread.Sleep(500);
+                        ((RoomPlayer)o).Conn.Disconnect("Exited Gameroom");
+                    }
+                }
+
+
 
                 if (this._masterPlayerId == 0)
                 {

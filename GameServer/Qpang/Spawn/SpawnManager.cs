@@ -98,9 +98,7 @@ namespace Qserver.GameServer.Qpang
             {
                 if (!this._itemSpawns.ContainsKey(map))
                     return new List<Spawn>();
-                    //{ 
-                    //    new Spawn(){ X = -200, Y = -100, Z = 10 } 
-                    //};
+
                 return this._itemSpawns[map];
             }
                 

@@ -75,6 +75,13 @@ namespace Qserver.GameServer.Qpang
                     player.RoomPlayer.Room.RemovePlayer(target.Player.PlayerId);
             }
 
+            // close connection after X ms?
+            //new System.Threading.Thread(new System.Threading.ParameterizedThreadStart(DelayDC)).Start(conn);
+            //void DelayDC(object o)
+            //{
+            //    System.Threading.Thread.Sleep(100);
+            //    ((GameConnection)o).Disconnect("Exited Gameroom");
+            //}
         }
     }
 }

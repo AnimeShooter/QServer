@@ -157,12 +157,7 @@ namespace Qserver.GameServer.Qpang
             this._skillManager.Initialize(this);
 
             this._gameMode.OnStart(this);
-            this._essencePosition = new Spawn()
-            {
-                X = 0,
-                Y = 0,
-                Z = 0
-            };// TODO: Game.Instance.SpawnManager.GetEssenceSpawn(this._room.Map);
+            this._essencePosition = Game.Instance.SpawnManager.GetEssenceSpawn(this._room.Map);
         }
 
         public void AddPlayer(GameConnection conn, byte team)

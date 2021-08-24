@@ -34,6 +34,10 @@ namespace Qserver.GameServer.Qpang
             get { return this._isSpectating; }
             set { this._isSpectating = value; }
         }
+        public bool IsBot
+        {
+            get { return this._isBot; }
+        }
         public GameConnection Conn
         {
             get { return this._conn; }

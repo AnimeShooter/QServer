@@ -90,7 +90,7 @@ namespace Qserver.GameServer.Qpang
 
             var roomSession = roomPlayer.Room.RoomSession;
 
-            Console.WriteLine($"MOVE-[{DateTime.UtcNow.ToString()}][{player.Name}] {Cmd.ToString("X8")} {PosX} {PosY} {PosY} | {unk04} {unk05} {unk06} {Pitch} {Yawn} --- {Tick} {Unk10.ToString("X8")}");
+            ////Console.WriteLine($"MOVE-[{DateTime.UtcNow.ToString()}][{player.Name}] {Cmd.ToString("X8")} {PosX} {PosY} {PosY} | {unk04} {unk05} {unk06} {Pitch} {Yawn} --- {Tick} {Unk10.ToString("X8")}");
 
             // update serverside player position
             roomPlayer.RoomSessionPlayer.UpdateCoords(new Position()

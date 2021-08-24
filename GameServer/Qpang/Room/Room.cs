@@ -193,7 +193,6 @@ namespace Qserver.GameServer.Qpang
             this._modeManager = Game.Instance.RoomManager.GameModeManager.Get(mode);
 
             this._players = new Dictionary<uint, RoomPlayer>();
-
         }
 
         public RoomAPI ToAPI()
@@ -223,7 +222,7 @@ namespace Qserver.GameServer.Qpang
             if (conn == null || conn.Player == null)
                 return;
 
-            var roomPlayer = new RoomPlayer(conn, this);
+            var roomPlayer = new RoomPlayer(conn, this, conn.Player.IsBot);
             conn.Player.RoomPlayer = roomPlayer;
 
             if (this._players.Count == 0)
@@ -239,6 +238,39 @@ namespace Qserver.GameServer.Qpang
             }
 
             conn.EnterRoom(this);
+
+            // add bots TESTING
+            if(this._players.Count == 1)
+            {
+                Random rnd = new Random();
+                int max = rnd.Next(3, 8);
+
+                CGReady ready = new CGReady() { Cmd = 1 };
+                
+                for(int i = 0; i < max; i++)
+                {
+                    var botConn = new GameConnection();
+                    string possibleName = Util.Util.QFigtherRandomName();
+                    while(true)
+                    {
+                        bool isOkay = true;
+                        foreach (var p in this._players)
+                            if (p.Value.Player.Name == possibleName)
+                            {
+                                isOkay = false;
+                                break;
+                            }
+
+                        if (isOkay)
+                            break;
+                        possibleName = Util.Util.QFigtherRandomName();
+                    }
+                    botConn.Player = new Player(possibleName);
+                    AddPlayer(botConn);
+                    ready.Handle(botConn, botConn.Player);
+                }
+            }
+
             SyncPlayers(roomPlayer);
         }
 
@@ -324,10 +356,17 @@ namespace Qserver.GameServer.Qpang
                 {
                     if (p.Value.Ready || this._masterPlayerId == p.Key)
                     {
-                        p.Value.SetReady(true);
+                        if(p.Value.IsBot)
+                        {
+                            this._roomSession.AddPlayer(p.Value.Conn, p.Value.Team);
+                        }
+                        else
+                        {
+                            p.Value.SetReady(true);
+                            p.Value.Conn.StartLoading(this, p.Value, pve);
+                            p.Value.OnStart();
+                        }
                         p.Value.Playing = true;
-                        p.Value.Conn.StartLoading(this, p.Value, pve);
-                        p.Value.OnStart();
                     }
                     else
                         p.Value.Conn.StartGameButNotReady();
@@ -400,6 +439,9 @@ namespace Qserver.GameServer.Qpang
             {
                 foreach (var p in this._players)
                 {
+                    if (p.Value.IsBot)
+                        continue; // dont effect bots!
+
                     if (p.Value.Ready)
                     {
                         p.Value.SetReady(false);
@@ -465,7 +507,8 @@ namespace Qserver.GameServer.Qpang
 
                 // return first key xD
                 foreach (var p in this._players)
-                    return p.Key;
+                    if(!p.Value.IsBot)
+                        return p.Key;
             }
             return 0;
         }

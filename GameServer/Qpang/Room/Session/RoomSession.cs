@@ -149,6 +149,19 @@ namespace Qserver.GameServer.Qpang
             this._isPoints = this._room.PointsGame;
             this._startTime = Util.Util.Timestamp() + 30 + 5; // waiting for players + countdown TODO 30+5
             this._endTime = this._room.PointsGame ? uint.MaxValue : this._startTime + (this._room.ScoreTime * 60);
+
+            //// add bots TESTING
+            //var conn = new GameConnection();
+            //conn.Player = new Player("-Bot");
+            //AddPlayer(conn, 1);
+
+            //var conn2 = new GameConnection();
+            //conn.Player = new Player("-Bot");
+            //AddPlayer(conn2, 2);
+
+            //var conn3 = new GameConnection();
+            //conn.Player = new Player("-Bot");
+            //AddPlayer(conn3, 2);
         }
 
         public void Initialize()
@@ -686,9 +699,9 @@ namespace Qserver.GameServer.Qpang
             if (this._room.Mode == GameMode.Mode.VIP)
             {
                 // decide who s VIP at respawning
-                if ((this._blueVIP == null && player.Team == 1) || (player == this._nexBlueVIP && (GetElapsedBlueVipTime() > 100) || this._blueVIP.Death))
+                if ((this._blueVIP == null && player.Team == 1) || (player == this._nexBlueVIP && (GetElapsedBlueVipTime() > 100) || (this._blueVIP != null && this._blueVIP.Death)))
                     SetBlueVip(player);
-                else if ((this._yellowVIP == null && player.Team == 2) || (player == this._nexYellowVIP && (GetElapsedYellowVipTime() > 100) || this._yellowVIP.Death))
+                else if ((this._yellowVIP == null && player.Team == 2) || (player == this._nexYellowVIP && (GetElapsedYellowVipTime() > 100) || (this._yellowVIP != null &&  this._yellowVIP.Death)))
                     SetYellowVip(player);
             }
             

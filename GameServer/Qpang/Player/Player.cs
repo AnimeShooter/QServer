@@ -242,10 +242,17 @@ namespace Qserver.GameServer.Qpang
             Random rnd = new Random();
             uint id = (uint)rnd.Next(0x1FFFFF, 0xFFFFFF);
             this._playerId = id;
-            this._name = $"[{id.ToString("X6")}]{botName}";
             this._level = 1;
             this._rank = 0;
             this._prestige = 1;
+
+            if (botName == "")
+                this._name = $"[{id.ToString("X6")}]Bot";
+            else
+            {
+                this._name = botName;
+                this._level = (byte)rnd.Next(2, 23);
+            }
 
             ushort[] characters = new ushort[]
             {

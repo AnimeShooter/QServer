@@ -103,12 +103,12 @@ namespace Qserver.GameServer.Qpang
             if (ItemId != 1095434246) //  Octo NOTE: add alll mines
                 session.EntityManager.Shoot(EntityId);
 
-            Console.WriteLine($"{Cmd} u2:{Tick} u3:{unk03} u11:{unk11} x:{SrcX} y:{SrcY} z:{SrcZ} | x:{DstX} y:{DstY} z:{DstZ}");
+            //Console.WriteLine($"{Cmd} u2:{Tick} u3:{unk03} u11:{unk11} x:{SrcX} y:{SrcY} z:{SrcZ} | x:{DstX} y:{DstY} z:{DstZ}");
 
-            Console.WriteLine($"x:{SrcX} y:{SrcY} z:{SrcZ}");
-            Console.WriteLine($"x:{session.Position.X} y:{session.Position.Y} z:{session.Position.Z}");
-            Console.WriteLine($"x:{session.Position.X- SrcX} y:{session.Position.Y- SrcY} z:{session.Position.Z- SrcZ}");
-            Console.WriteLine($"x:{session.Position.X- DstX} y:{session.Position.Y- DstY} z:{session.Position.Z- DstZ}");
+            //Console.WriteLine($"x:{SrcX} y:{SrcY} z:{SrcZ}");
+            //Console.WriteLine($"x:{session.Position.X} y:{session.Position.Y} z:{session.Position.Z}");
+            //Console.WriteLine($"x:{session.Position.X- SrcX} y:{session.Position.Y- SrcY} z:{session.Position.Z- SrcZ}");
+            //Console.WriteLine($"x:{session.Position.X- DstX} y:{session.Position.Y- DstY} z:{session.Position.Z- DstZ}");
 
             session.RoomSession.RelayPlayingExcept<GCShoot>(playerId, playerId, ItemId, SrcX, SrcY, SrcZ, DstX, DstY, DstZ, EntityId, (uint)0);
         }

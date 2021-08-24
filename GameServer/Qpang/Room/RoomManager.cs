@@ -51,6 +51,7 @@ namespace Qserver.GameServer.Qpang
                 room = new Room(id, name, map, mode, host, port, true);
             else
                 room = new Room(id, name, map, mode, Settings.SERVER_IP, (ushort)Settings.SERVER_PORT_ROOM);
+
             lock(this._lock)
                 _rooms.Add(id, room);
 

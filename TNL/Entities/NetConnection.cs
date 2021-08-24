@@ -734,7 +734,8 @@ namespace TNL.Entities
 
         public void Disconnect(string reason)
         {
-            Interface.Disconnect(this, TerminationReason.ReasonSelfDisconnect, reason);
+            if(Interface != null)
+                Interface.Disconnect(this, TerminationReason.ReasonSelfDisconnect, reason);
         }
 
         public bool WindowFull()

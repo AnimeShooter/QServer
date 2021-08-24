@@ -21,6 +21,7 @@ namespace Qserver.GameServer.Packets
                 PacketManager.DefineOpcodeHandler(Opcode.LOBBY_EQUIP_ARMOUR, LobbyHandler.HandleEquipArmor);
                 PacketManager.DefineOpcodeHandler(Opcode.LOBBY_EQUIP_WEAPON, LobbyHandler.HandleEquipWeapon);
                 PacketManager.DefineOpcodeHandler(Opcode.LOBBY_EQUIPPED_SKILLS, LobbyHandler.HandleRequestEquippedSkillCards);
+                PacketManager.DefineOpcodeHandler(Opcode.LOBBY_EQUIP_SKILL, LobbyHandler.HandleEquipSkillCard);
                 PacketManager.DefineOpcodeHandler(Opcode.LOBBY_DROP_CARD, LobbyHandler.HandleDeleteCard);
                 PacketManager.DefineOpcodeHandler(Opcode.LOBBY_SWAP_CHARACTER, LobbyHandler.HandleChangeCharacterEvent);
                 PacketManager.DefineOpcodeHandler(Opcode.LOBBY_PLAYERINFO, LobbyHandler.HandleRequestPlayerInfo);

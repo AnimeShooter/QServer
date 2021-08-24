@@ -61,6 +61,33 @@ namespace Qserver.GameServer.Network.Handlers
 
             manager.Player.EquipmentManager.SetWeapons(characterIndex, weapons);
         }
+        public static void HandleEquipSkillCard(PacketReader packet, ConnServer manager)
+        {
+            ushort characterIndex = packet.ReadUInt16();
+
+            List<byte[]> cards = new List<byte[]>();
+            for (int i = 0; i < 25; i++) // 5 all
+            {
+                byte[] card = packet.ReadBytes(0x2B);
+                cards.Add(card);
+            }
+
+            foreach(var c in cards)
+            {
+                Console.WriteLine("------: " + BitConverter.ToUInt32(c, 0x00).ToString("X8"));
+                Console.WriteLine("  1   : " + BitConverter.ToUInt32(c, 0x04).ToString("X8"));
+                Console.WriteLine("  2   : " + BitConverter.ToUInt32(c, 0x08).ToString("X8"));
+                Console.WriteLine("  3   : " + BitConverter.ToUInt32(c, 0x0c).ToString("X8"));
+                Console.WriteLine("  4   : " + BitConverter.ToUInt32(c, 0x10).ToString("X8"));
+                Console.WriteLine("  5   : " + BitConverter.ToUInt32(c, 0x14).ToString("X8"));
+                Console.WriteLine("  6   : " + BitConverter.ToUInt32(c, 0x18).ToString("X8"));
+                Console.WriteLine("  7   : " + BitConverter.ToUInt32(c, 0x1C).ToString("X8"));
+                Console.WriteLine("  8   : " + BitConverter.ToUInt32(c, 0x20).ToString("X8"));
+                Console.WriteLine("  9   : " + BitConverter.ToUInt32(c, 0x24).ToString("X8"));
+            }
+
+            manager.Player.SendLobby(LobbyManager.Instance.SetCardset());
+        }
         public static void HandleRequestEquippedSkillCards(PacketReader packet, ConnServer manager)
         {
             var skills = manager.Player.EquipmentManager.GetSkillCards();

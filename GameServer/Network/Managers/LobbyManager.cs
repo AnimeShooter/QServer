@@ -829,6 +829,29 @@ namespace Qserver.GameServer.Network.Managers
             pw.WriteUInt64(cardId);
             return pw;
         }
+        public PacketWriter SetCardset()
+        {
+            PacketWriter pw = new PacketWriter((Opcode)650);
+            for(int j = 0; j < 5; j++)
+            {
+                for (int i = 0; i < 5; i++)
+                {
+                    pw.WriteUInt32(9925000); // 4
+                    pw.WriteUInt32(9925000); // 8
+                    pw.WriteUInt32(9925000); // c
+                    pw.WriteUInt32(9925000); // 10
+                    pw.WriteUInt32(9925000); // 14
+                    pw.WriteUInt32(9925000); // 18
+                    pw.WriteUInt32(9925000); // 1c
+                    pw.WriteUInt32(9925000); // 20
+                    pw.WriteUInt32(9925000); // 24
+                    pw.WriteUInt32(9925000); // 28
+                    //pw.WriteBytes(new byte[0x2B]);
+                }
+            }
+                
+            return pw;
+        }
         #endregion
 
         #region Memo

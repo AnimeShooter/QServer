@@ -35,14 +35,21 @@ namespace Qserver.GameServer.Network
 		
 		LOBBY_EQUIPPED_SKILLS = 646,			// in
 		LOBBY_EQUIPPED_SKILS_RSP = 647,			// out
-		// 649									// in
+		//  648									// out
+		LOBBY_EQUIP_SKILL = 649,                // in
+		// 650									// out
+		// 651									// out
+		// 653									// out
 		LOBBY_DROP_CARD = 652,					// in
-		LOBBY_DROP_CARD_RSP = 653,				// out 
+		LOBBY_DROP_CARD_RSP = 653,              // out 
+		// 654 - DropCardFail					// out
 		LOBBY_OPEN_GM_CARD = 655,				// in
-		LOBBY_OPEN_GM_CARD_RSP = 656,			// out
-		
-		LOBBY_UPDATE_ACCOUNT = 662,
+		LOBBY_OPEN_GM_CARD_RSP = 656,           // out
+		// 657									// out
+		// 659									// out
 
+		LOBBY_UPDATE_ACCOUNT = 662,				// in
+		// 663									// out
 		LOBBY_REGISTER_NAME = 667,				// in
 		LOBBY_REGISTER_NAME_RSP = 668,			// out
 
@@ -50,15 +57,19 @@ namespace Qserver.GameServer.Network
 
 		LOBBY_REGISTER_CHARACTERS = 670,		// in
 		LOBBY_REGISTER_CHARACTERS_RSP = 671,
+		// 672									// out
 		// 676									// in
+		// 677									// out
+		// 678									// out
 		LOBBY_SWAP_CHARACTER = 679,				// in
-		LOBBY_SWAP_CHARACTER_RSP = 680,			// out
-
+		LOBBY_SWAP_CHARACTER_RSP = 680,         // out
+		// 681									// out
 		LOBBY_PLAYERINFO = 691,					// in
-		LOBBY_PLAYERINFO_RSP = 692,				// out
-
+		LOBBY_PLAYERINFO_RSP = 692,             // out
+		// 693									// out
 		LOBBY_BUDDIES = 694,					// in
 		LOBBY_BUDDIES_RSP = 695,				// out	
+		// 696									// out
 		LOBBY_FRIEND_INVITE = 697,				// in
 		LOBBY_FRIEND_INVITE_RSP = 698,			// out
 		LOBBY_FRIEND_INVITE_FAIL = 699,			// out	

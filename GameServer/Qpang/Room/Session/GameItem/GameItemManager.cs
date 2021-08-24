@@ -71,6 +71,7 @@ namespace Qserver.GameServer.Qpang
         private Spawn _mapBounds;
 
         public static bool EventEnabled = false;
+        //public static uint RespawnInterval = 15;
         public static uint RespawnInterval = 2; // TODO: 15
         public static uint EventItemBatchInterval = 200;
 
@@ -201,7 +202,7 @@ namespace Qserver.GameServer.Qpang
         public uint GetRandomItem()
         {
             // TODO: remove
-            return (uint)Item.SKILL_CARD;
+            //return (uint)Item.SKILL_CARD;
 
             Random rnd = new Random();
             var index = rnd.Next(0, PossibleItems.Count);

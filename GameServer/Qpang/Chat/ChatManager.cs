@@ -27,10 +27,11 @@ namespace Qserver.GameServer.Qpang
             if(message[0] == '!')
             {
                 string cmd = message.Split(' ')[0];
+                string msg = message.Replace(cmd, "");
                 cmd = cmd.Substring(1);
                 if (this._commandManager.IsCommand(cmd))
                 {
-                    this._commandManager.Handle(player, cmd, message);
+                    this._commandManager.Handle(player, cmd, msg);
                     return "";
                 }
             }

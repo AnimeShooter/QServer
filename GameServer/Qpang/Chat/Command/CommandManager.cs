@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Qserver.GameServer.Qpang
@@ -32,7 +33,8 @@ namespace Qserver.GameServer.Qpang
             if (!handler.CanHandle(player))
                 return;
 
-            handler.Handle(player, null);
+            List<string> args = message.Split(' ').ToList();
+            handler.Handle(player, args);
         }
     }
 }

@@ -24,12 +24,19 @@ namespace Qserver.GameServer.Qpang
             else if (player.RoomPlayer.Team == 2)
                 team = 1;
 
-            Random rnd = new Random();
-            var conn = new GameConnection();
+            int count = 1;
+            if(args != null && args.Count != 0)
+                if(!int.TryParse(args[1], out count))
+                    count = 1;
 
-            conn.Player = new Player("-BOT");
-            conn.Player.RoomPlayer = new RoomPlayer(conn, player.RoomPlayer.Room);
-            player.RoomPlayer.Room.RoomSession.AddPlayer(conn, team);
+            for(int i = 0; i < count; i++)
+            {
+                var conn = new GameConnection();
+                conn.Player = new Player("-BOT");
+                conn.Player.RoomPlayer = new RoomPlayer(conn, player.RoomPlayer.Room);
+                player.RoomPlayer.Room.RoomSession.AddPlayer(conn, team);
+            }
+            
         }
     }
 }

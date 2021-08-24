@@ -38,7 +38,8 @@ namespace Qserver.GameServer.Qpang
             {
                 if (bot)
                 {
-                    foreach(var ce in this._unlockedCharacters)
+                    ushort[] allChars = { 1, 329, 836, 602, 328, 851, 850, 579, 578, 343, 333 };
+                    foreach(var ce in allChars)
                     {
                         // TODO
                         ulong[] equips = new ulong[13];

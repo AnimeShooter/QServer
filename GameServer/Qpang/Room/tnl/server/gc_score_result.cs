@@ -61,7 +61,7 @@ namespace Qserver.GameServer.Qpang
             bitStream.Write((ushort)0);
 
             byte playerCount = (byte)Players.Count;
-            if (playerCount > 16)
+            if (playerCount > 16) // NOTE: also crash on team count?
                 playerCount = 16;
 
             bitStream.Write(playerCount);

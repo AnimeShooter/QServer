@@ -242,7 +242,15 @@ namespace Qserver.GameServer.Qpang
             this._level = 1;
             this._rank = 0;
             this._prestige = 1;
-            this._character = 333; // TODO randomize
+
+            ushort[] characters = new ushort[]
+            {
+                //1, 329, 836, 602, 328, 851, 850, 579, 578, 343, 333
+                //1, 329, 836, 602, 328, 
+                851, 850, 579, 578, 343, 333
+            };
+
+            this._character = characters[rnd.Next(0, characters.Length)];
             this._userId = id;
             this._experience = 0;
             this._isMuted = false;

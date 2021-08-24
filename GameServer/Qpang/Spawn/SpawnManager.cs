@@ -71,6 +71,26 @@ namespace Qserver.GameServer.Qpang
             }
         }
 
+        public List<Spawn> GetSpawns(byte map, byte team)
+        {
+            lock (this._lock)
+            {
+                List<Spawn> sps = new List<Spawn>();
+
+                if (team != 0 && team != 1 && team != 2)
+                    return sps;
+
+                var spawns = this._spawns[map][team];
+                if (spawns.Count == 0)
+                    return sps;
+
+                foreach (var s in spawns)
+                    sps.Add(s);
+
+                return sps;
+            }
+        }
+
         public Spawn GetRandomTeleportSpawn(byte map)
         {
             lock (this._lock)

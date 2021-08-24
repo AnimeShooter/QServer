@@ -679,7 +679,7 @@ namespace Qserver.GameServer.Qpang
             player.SetHealth(player.GetDefaultHealth());
             player.WeaponManager.Reset();
 
-            var spawn = Game.Instance.SpawnManager.GetRandomSpawn(this._room.Map, player.Team);
+            Spawn spawn = new Spawn();
 
             if (this._room.Mode == GameMode.Mode.VIP)
             {
@@ -689,6 +689,29 @@ namespace Qserver.GameServer.Qpang
                 else if ((this._yellowVIP == null && player.Team == 2) || (player == this._nexYellowVIP && (GetElapsedYellowVipTime() > 100) || this._yellowVIP.Death))
                     SetYellowVip(player);
             }
+            
+            if(this._room.Mode == GameMode.Mode.DM)
+            {
+                // find least busy spots
+                var spawns = Game.Instance.SpawnManager.GetSpawns(this._room.Map, player.Team);
+                byte[] counts = new byte[spawns.Count];
+                byte nearby = 0xFF;
+                for(int i = 0; i < spawns.Count; i++)
+                {
+                    byte players = 0;
+                    lock (this._players)
+                        foreach (var p in this._players)
+                            if (p.Value.IsInRange(spawns[i], 10f, false))
+                                players++;
+
+                    if(players < nearby)
+                    {
+                        nearby = players;
+                        spawn = spawns[i];
+                    }
+                }
+            }else
+                spawn = Game.Instance.SpawnManager.GetRandomSpawn(this._room.Map, player.Team);
 
             RelayPlaying<GCRespawn>(player.Player.PlayerId, (uint)player.Character, (uint)0, spawn.X, spawn.Y, spawn.Z, IsVip(player));
         }

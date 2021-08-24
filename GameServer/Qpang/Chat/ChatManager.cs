@@ -6,17 +6,17 @@ namespace Qserver.GameServer.Qpang
 {
     public class ChatManager
     {
-        private CommandManager commandManager;
+        private CommandManager _commandManager;
 
         public CommandManager CommandManager
         {
-            get { return this.commandManager; }
+            get { return this._commandManager; }
         }
 
         public ChatManager()
         {
 
-            this.commandManager = new CommandManager();
+            this._commandManager = new CommandManager();
         }
 
         public string Chat(Player player, string message)
@@ -24,17 +24,18 @@ namespace Qserver.GameServer.Qpang
             if (message == "")
                 return message;
 
-
-
-            // TODO: check for commands?
             if(message[0] == '!')
             {
-                //this.commandManager.
-                return "";
+                string cmd = message.Split(' ')[0];
+                cmd = cmd.Substring(1);
+                if (this._commandManager.IsCommand(cmd))
+                {
+                    this._commandManager.Handle(player, cmd, message);
+                    return "";
+                }
             }
 
             return message;
-
         }
     }
 }

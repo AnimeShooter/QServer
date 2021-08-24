@@ -144,7 +144,16 @@ namespace Qserver.GameServer.Qpang
             {
                 return new InventoryCard[3]
                 {
-                    this._player.InventoryManager.Get(this._skillCards[0]),
+                    //this._player.InventoryManager.Get(this._skillCards[0]),
+
+                    new InventoryCard()
+                    {
+                        Id = 1258356758,
+                        ItemId = 1258356758,
+                        Period = 100,
+                        PeriodeType = 3
+                    },
+
                     this._player.InventoryManager.Get(this._skillCards[1]),
                     this._player.InventoryManager.Get(this._skillCards[2])
                 };

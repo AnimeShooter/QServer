@@ -76,6 +76,11 @@ namespace Qserver.GameServer.Qpang
 
                 // expire self (2 too?)
                 this._player.Post(new GCCard(this._player.Player.PlayerId, (uint)0, (byte)4, (uint)9, this._activeSkillCard.Id, (ulong)0));
+                this._player.Post(new GCCard(this._player.Player.PlayerId, (uint)0, (byte)4, (uint)9, this._activeSkillCard.Id, (ulong)this._activeSkillCard.Id));
+                this._player.Post(new GCCard(this._player.Player.PlayerId, (uint)0, (byte)2, (uint)9, this._activeSkillCard.Id, (ulong)0));
+                this._player.Post(new GCCard(this._player.Player.PlayerId, (uint)0, (byte)2, (uint)9, this._activeSkillCard.Id, (ulong)this._activeSkillCard.Id));
+                this._player.Post(new GCCard(this._player.Player.PlayerId, (uint)0, (byte)1, (uint)9, this._activeSkillCard.Id, (ulong)0));
+                this._player.Post(new GCCard(this._player.Player.PlayerId, (uint)0, (byte)1, (uint)9, this._activeSkillCard.Id, (ulong)this._activeSkillCard.Id));
 
                 //this._player.RoomSession.RelayPlaying<GCCard>(this._player.Player.PlayerId, (uint)0, (byte)9, (uint)9, this._activeSkillCard.Id, (ulong)this._activeSkillCard.Id); 
                 

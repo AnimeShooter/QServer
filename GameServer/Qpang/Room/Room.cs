@@ -307,8 +307,6 @@ namespace Qserver.GameServer.Qpang
                     }
                 }
 
-
-
                 if (this._masterPlayerId == 0)
                 {
                     if (this._players.Count != 0)

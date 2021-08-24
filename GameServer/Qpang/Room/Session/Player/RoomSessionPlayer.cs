@@ -216,7 +216,8 @@ namespace Qserver.GameServer.Qpang
             var player = conn.Player;
 
             this._joinTime = Util.Util.Timestamp();
-            this._startTime = this._joinTime + 30;
+            this._startTime = this._joinTime + 5;
+            //this._startTime = this._joinTime + 30;
             this._character = player.Character;
 
             var equipMgr = player.EquipmentManager;
@@ -308,7 +309,8 @@ namespace Qserver.GameServer.Qpang
         public bool CanStart()
         {
             var currTime = Util.Util.Timestamp();
-            return this._startTime <= currTime && !this._isPlaying;
+            //return this._startTime <= currTime && !this._isPlaying;
+            return this._startTime < currTime && !this._isPlaying;
         }
 
         public void MakeInvincible(uint duration = 5)

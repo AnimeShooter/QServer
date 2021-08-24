@@ -24,6 +24,7 @@ namespace Qserver.GameServer.Qpang
             ImplementNetEvent(out _dynClassRep, "GCArrangedAccept", NetClassMask.NetClassGroupGameMask, 0);
         }
 
+        //public const string Key = "123456";
         public const string Key = "123456781234567892345672345672345672345672345678";
 
         public uint SenderId;

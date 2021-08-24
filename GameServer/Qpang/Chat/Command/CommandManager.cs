@@ -8,7 +8,8 @@ namespace Qserver.GameServer.Qpang
     {
         private Dictionary<string, ChatCommand> _commands = new Dictionary<string, ChatCommand>()
         {
-            {"start", new StartCommand() }
+            {"start", new StartCommand() },
+            {"dummy", new DummyCommand() }
         };
 
         public CommandManager()

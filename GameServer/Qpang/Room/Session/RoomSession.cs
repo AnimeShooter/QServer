@@ -694,6 +694,7 @@ namespace Qserver.GameServer.Qpang
             {
                 // find least busy spots
                 var spawns = Game.Instance.SpawnManager.GetSpawns(this._room.Map, player.Team);
+                byte[] nearbies = new byte[spawns.Count];
                 byte[] counts = new byte[spawns.Count];
                 byte nearby = 0xFF;
                 for(int i = 0; i < spawns.Count; i++)

@@ -1,6 +1,5 @@
 ﻿using Qserver.GameServer.Network.Managers;
 using System.Collections.Generic;
-using Qserver.GameServer.Network.Managers;
 
 namespace Qserver.GameServer.Qpang
 {
@@ -16,13 +15,14 @@ namespace Qserver.GameServer.Qpang
         private List<ulong> _functionCards;
         private object _functionCardlock;
         private object _skillCardlock;
+        private bool _isBot;
 
         public List<ushort> UnlockerCharacters
         {
             get { return _unlockedCharacters; }
         }
 
-        public EquipmentManager(Player player)
+        public EquipmentManager(Player player, bool bot = false)
         {
             this._player = player;
             this._unlockedCharacters = new List<ushort>() { 333, 343, 578, 579, 850, 851 }; // Hardcode all unlocked
@@ -32,29 +32,47 @@ namespace Qserver.GameServer.Qpang
             this._skillCardlock = new object();
             this._equips = new Dictionary<ushort, ulong[]>();
             this._skillCards = new ulong[3];
+            this._isBot = bot;
 
             lock (this._lock)
             {
-                var characterEquipments = Game.Instance.ItemsRepository.GetCharactersEquips(player.PlayerId).Result;
-                foreach (var ce in characterEquipments)
+                if (bot)
                 {
-                    ulong[] equips = new ulong[13];
-                    ushort characterId = ce.character_id;
-                    equips[0] = ce.head;
-                    equips[1] = ce.face;
-                    equips[2] = ce.body;
-                    equips[3] = ce.hands;
-                    equips[4] = ce.legs;
-                    equips[5] = ce.shoes;
-                    equips[6] = ce.back;
-                    equips[7] = ce.side;
-                    equips[8] = 0; // unk
-                    equips[9] = ce.primary;
-                    equips[10] = ce.secondary;
-                    equips[11] = ce.Throw;
-                    equips[12] = ce.melee;
-                    this._equips.Add(characterId, equips);
+                    foreach(var ce in this._unlockedCharacters)
+                    {
+                        // TODO
+                        ulong[] equips = new ulong[13];
+                        equips[9] = 0; // primary wep
+                        equips[10] = 0; // secondary wep
+                        equips[11] = 0; // Throw wep
+                        equips[12] = 0; // melee wep
+                        this._equips.Add(ce, equips);
+                    }
                 }
+                else
+                {
+                    var characterEquipments = Game.Instance.ItemsRepository.GetCharactersEquips(player.PlayerId).Result;
+                    foreach (var ce in characterEquipments)
+                    {
+                        ulong[] equips = new ulong[13];
+                        ushort characterId = ce.character_id;
+                        equips[0] = ce.head;
+                        equips[1] = ce.face;
+                        equips[2] = ce.body;
+                        equips[3] = ce.hands;
+                        equips[4] = ce.legs;
+                        equips[5] = ce.shoes;
+                        equips[6] = ce.back;
+                        equips[7] = ce.side;
+                        equips[8] = 0; // unk
+                        equips[9] = ce.primary;
+                        equips[10] = ce.secondary;
+                        equips[11] = ce.Throw;
+                        equips[12] = ce.melee;
+                        this._equips.Add(characterId, equips);
+                    }
+                }
+               
             }
         }
 
@@ -464,6 +482,9 @@ namespace Qserver.GameServer.Qpang
 
         public void Save()
         {
+            if (this._isBot)
+                return;
+
             if (this._player == null)
                 return;
 

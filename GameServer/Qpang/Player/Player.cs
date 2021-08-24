@@ -53,6 +53,7 @@ namespace Qserver.GameServer.Qpang
         private bool _isOnline;
         private bool _testRealm;
         private uint _lastAntiCheatBeat;
+        private bool _isBot;
 
         private uint _currentSquareId;
 
@@ -107,6 +108,7 @@ namespace Qserver.GameServer.Qpang
         public string Name
         {
             get { return this._name; }
+            set { this._name = value; }
         }
         public byte Rank
         {
@@ -224,6 +226,35 @@ namespace Qserver.GameServer.Qpang
             this._statsManager = new StatsManager(this); // ok
             this._achievementContainer = new AchievementContainer(playerId);  // TODO DB!
             this._isOnline = true;        
+        }
+
+        public Player(string botName)
+        {
+            this._isBot = true;
+            this._lock = new object();
+            this._lobbyLock = new object();
+            this._squareLock = new object();
+
+            Random rnd = new Random();
+            uint id = (uint)rnd.Next(0x1FFFFF, 0xFFFFFF);
+            this._playerId = id;
+            this._name = $"[{id.ToString("X6")}]{botName}";
+            this._level = 1;
+            this._rank = 0;
+            this._prestige = 1;
+            this._character = 333; // TODO randomize
+            this._userId = id;
+            this._experience = 0;
+            this._isMuted = false;
+
+            // TODO: randomize all?
+            this._equipmentManager = new EquipmentManager(this, true); // tok
+            this._inventoryManager = new InventoryManager(this, true);
+            //this._friendManager = new FriendManager(this);
+            //this._memoManager = new MemoManager(this);
+            this._statsManager = new StatsManager(this, true); // ok
+            this._achievementContainer = new AchievementContainer(id);  // TODO DB!
+            //this._isOnline = true;
         }
 
         public PlayerAPI ToAPI()

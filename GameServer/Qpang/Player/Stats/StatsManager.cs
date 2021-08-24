@@ -25,6 +25,7 @@ namespace Qserver.GameServer.Qpang
         private uint _teamKills;
         private uint _teamDeaths;
         private uint _eventItemPickUps;
+        private bool _isBot;
 
         // TODO: add PvE stats for achievement manager!
 
@@ -106,9 +107,13 @@ namespace Qserver.GameServer.Qpang
         {
             get { return this._teamDeaths; }
         }
-        public StatsManager(Player player)
+        public StatsManager(Player player, bool bot = false)
         {
             this._player = player;
+            this._isBot = bot;
+            if (bot)
+                return;
+
             var stats = Game.Instance.PlayersRepository.GetPlayerStats(this._player.PlayerId).Result;
 
             this._kills = stats.kills;
@@ -135,6 +140,9 @@ namespace Qserver.GameServer.Qpang
         public void Save()
         {
             if (this._player.TestRealm)
+                return;
+
+            if (this._isBot)
                 return;
 
             Game.Instance.PlayersRepository.UpdatePlayerStats(this._player).GetAwaiter().GetResult();

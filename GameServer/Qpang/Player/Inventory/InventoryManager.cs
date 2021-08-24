@@ -9,20 +9,25 @@ namespace Qserver.GameServer.Qpang
     {
         private Player _player;
         private object _lock;
+        private bool _isBot;
 
         private Dictionary<ulong, InventoryCard> _cards;
         private Dictionary<ulong, InventoryCard> _gifts;
 
-        public InventoryManager(Player player)
+        public InventoryManager(Player player, bool bot = false)
         {
             this._player = player;
             this._lock = new object();
+            this._isBot = bot;
 
             this._cards = new Dictionary<ulong, InventoryCard>();
             this._gifts = new Dictionary<ulong, InventoryCard>();
 
             var functionCards = new List<ulong>();
             var skillCards = new List<ulong>();
+
+            if (bot)
+                return; // do not parse
 
             var dbitems = Game.Instance.ItemsRepository.GetInventoryCards(this._player.PlayerId).Result;
             foreach(var dbitem in dbitems)

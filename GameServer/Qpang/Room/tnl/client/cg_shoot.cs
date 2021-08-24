@@ -25,8 +25,8 @@ namespace Qserver.GameServer.Qpang
         }
 
         public uint PlayerId;
-        public uint unk02;
-        public uint unk03;
+        public uint Tick;
+        public uint unk03; // tick2?
         public float SrcX;
         public float SrcY;
         public float SrcZ;
@@ -36,7 +36,7 @@ namespace Qserver.GameServer.Qpang
         public uint EntityId;
         public uint ItemId;
         public ulong CardId;
-        public ushort Cmd;
+        public ushort Cmd; // 0 or 75?
         public uint unk11;
 
         public CGShoot() : base(GameNetId.CG_SHOOT, GuaranteeType.Guaranteed, EventDirection.DirClientToServer) { }
@@ -45,19 +45,19 @@ namespace Qserver.GameServer.Qpang
         public override void Unpack(EventConnection ps, BitStream bitStream)
         {
             bitStream.Read(out PlayerId);
-            bitStream.Read(out unk02);
+            bitStream.Read(out Tick);
             bitStream.Read(out unk03);
             bitStream.Read(out SrcX);
             bitStream.Read(out SrcY);
             bitStream.Read(out SrcZ);
             bitStream.Read(out DstX);
             bitStream.Read(out DstY);
-            bitStream.Read(out DstY);
+            bitStream.Read(out DstZ);
             bitStream.Read(out EntityId);
             bitStream.Read(out ItemId);
             bitStream.Read(out CardId);
-            bitStream.Read(out Cmd);
-            bitStream.Read(out unk11);
+            bitStream.Read(out Cmd); // 0 or 75?
+            bitStream.Read(out unk11); // unk status
         }
         public override void Process(EventConnection ps)
         {
@@ -75,7 +75,7 @@ namespace Qserver.GameServer.Qpang
                 return;
 
             var weaponManager = session.WeaponManager;
-            if (session.Death || !weaponManager.CanShoot)
+            if (session.Death) // || !weaponManager.CanShoot)
                 return;
 
             var activeSkill = roomPlayer.RoomSessionPlayer.SkillManager.ActiveSkillCard;
@@ -103,7 +103,12 @@ namespace Qserver.GameServer.Qpang
             if (ItemId != 1095434246) //  Octo NOTE: add alll mines
                 session.EntityManager.Shoot(EntityId);
 
-            Console.WriteLine($"x:{SrcX} y:{SrcY} z:{SrcZ} | x:{DstX} y:{DstY} z:{DstZ}");
+            Console.WriteLine($"{Cmd} u2:{Tick} u3:{unk03} u11:{unk11} x:{SrcX} y:{SrcY} z:{SrcZ} | x:{DstX} y:{DstY} z:{DstZ}");
+
+            Console.WriteLine($"x:{SrcX} y:{SrcY} z:{SrcZ}");
+            Console.WriteLine($"x:{session.Position.X} y:{session.Position.Y} z:{session.Position.Z}");
+            Console.WriteLine($"x:{session.Position.X- SrcX} y:{session.Position.Y- SrcY} z:{session.Position.Z- SrcZ}");
+            Console.WriteLine($"x:{session.Position.X- DstX} y:{session.Position.Y- DstY} z:{session.Position.Z- DstZ}");
 
             session.RoomSession.RelayPlayingExcept<GCShoot>(playerId, playerId, ItemId, SrcX, SrcY, SrcZ, DstX, DstY, DstZ, EntityId, (uint)0);
         }

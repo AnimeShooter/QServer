@@ -162,7 +162,11 @@ namespace Qserver.GameServer.Qpang
 
         public void AddPlayer(GameConnection conn, byte team)
         {
-            var player = new RoomSessionPlayer(conn, this, team);
+            RoomSessionPlayer player;
+            if (conn.Player.IsBot)
+                player = new RoomSessionAgent(conn, this, team);
+            else
+                player = new RoomSessionPlayer(conn, this, team);
 
             if (conn.Player.RoomPlayer != null)
                 conn.Player.RoomPlayer.RoomSessionPlayer = player;
@@ -193,9 +197,7 @@ namespace Qserver.GameServer.Qpang
 
             if (!player.Spectating)
             {
-
                 // TODO verify Hadnle Leaving
-
                 lock (this._lockLeavers)
                 {
                     RoomSessionPlayer found = null;
@@ -694,8 +696,8 @@ namespace Qserver.GameServer.Qpang
             {
                 // find least busy spots
                 var spawns = Game.Instance.SpawnManager.GetSpawns(this._room.Map, player.Team);
-                byte[] nearbies = new byte[spawns.Count];
-                byte[] counts = new byte[spawns.Count];
+                //byte[] nearbies = new byte[spawns.Count];
+                //byte[] counts = new byte[spawns.Count];
                 byte nearby = 0xFF;
                 for(int i = 0; i < spawns.Count; i++)
                 {
@@ -714,6 +716,7 @@ namespace Qserver.GameServer.Qpang
             }else
                 spawn = Game.Instance.SpawnManager.GetRandomSpawn(this._room.Map, player.Team);
 
+            player.UpdateCoords(spawn);
             RelayPlaying<GCRespawn>(player.Player.PlayerId, (uint)player.Character, (uint)0, spawn.X, spawn.Y, spawn.Z, IsVip(player));
         }
 
@@ -800,7 +803,8 @@ namespace Qserver.GameServer.Qpang
 
             lock (this._lockPlayers)
                 foreach (var p in this._players)
-                    p.Value.Post((GameNetEvent)ctor.Invoke(args));
+                    if(!p.Value.IsBot) // NOTE: dont relay bots?
+                        p.Value.Post((GameNetEvent)ctor.Invoke(args));
         }
 
         public void RelayExcept<T>(uint playerId, params object[] args)
@@ -810,7 +814,7 @@ namespace Qserver.GameServer.Qpang
 
             lock (this._lockPlayers)
                 foreach (var p in this._players)
-                    if (p.Key != playerId)
+                    if (p.Key != playerId && !p.Value.IsBot) // NOTE: dont relay bots?
                         p.Value.Post((GameNetEvent)ctor.Invoke(args));
         }
 
@@ -821,7 +825,7 @@ namespace Qserver.GameServer.Qpang
 
             lock (this._lockPlayers)
                 foreach (var p in this._players)
-                    if (p.Value.Playing)
+                    if (p.Value.Playing && !p.Value.IsBot) // NOTE: dont relay bots?
                         p.Value.Post((GameNetEvent)ctor.Invoke(args));
         }
 
@@ -832,7 +836,7 @@ namespace Qserver.GameServer.Qpang
 
             lock (this._lockPlayers)
                 foreach (var p in this._players)
-                    if (p.Key != playerId)
+                    if (p.Key != playerId && !p.Value.IsBot) // NOTE: dont relay bots?
                         if (p.Value.Playing)
                             p.Value.Post((GameNetEvent)ctor.Invoke(args));
         }
@@ -844,7 +848,8 @@ namespace Qserver.GameServer.Qpang
 
             lock (this._lockPlayers)
                 foreach (var p in this._players)
-                    p.Value.Post((GCGameState)ctor.Invoke(args));
+                    if(!p.Value.IsBot) // NOTE: dont relay bots?
+                        p.Value.Post((GCGameState)ctor.Invoke(args));
         }
     }
 }

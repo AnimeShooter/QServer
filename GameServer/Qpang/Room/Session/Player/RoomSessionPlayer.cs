@@ -156,6 +156,10 @@ namespace Qserver.GameServer.Qpang
         {
             get { return this._team; }
         }
+        public bool IsBot
+        {
+            get { return IsRobot(); }
+        }
         public PlayerEffectManager EffectManager
         {
             get { return this._effectManager; }
@@ -175,21 +179,6 @@ namespace Qserver.GameServer.Qpang
         public RoomSession RoomSession
         {
             get { return this._roomSession; }
-        }
-        public float X
-        {
-            get { return this._coordX; }
-            set { this._coordX = value; }
-        }
-        public float Y
-        {
-            get { return this._coordY; }
-            set { this._coordY = value; }
-        }
-        public float Z
-        {
-            get { return this._coordZ; }
-            set { this._coordZ = value; }
         }
         public uint FirstSeen
         {
@@ -250,7 +239,7 @@ namespace Qserver.GameServer.Qpang
             this._weaponReswaps = new List<long>();
         }
 
-        public void Tick()
+        public virtual void Tick()
         {
             if (CanStart())
             {
@@ -372,6 +361,7 @@ namespace Qserver.GameServer.Qpang
         {
             this._isRespawning = false;
             this._roomSession.SpawnPlayer(this);
+
         }
 
         public void StartPrespawn() // Pre respawn (countdown)
@@ -518,27 +508,44 @@ namespace Qserver.GameServer.Qpang
             return (ushort)(this._baseHealth + this._bonusHealth);
         }
 
+        public virtual bool IsRobot()
+        {
+            return false;
+        }
+
         // TEST anti-cheating
         public void UpdateCoords(Spawn coords)
         {
-            this._coordX = coords.X;
-            this._coordY = coords.Y;
-            this._coordZ = coords.Z;
+            UpdateCoords(new Position()
+            {
+                X = coords.X,
+                Y = coords.Y,
+                Z = coords.Z
+            });
         }
         public void UpdateCoords(Position coords)
         {
-            this._coordX = coords.X;
-            this._coordY = coords.Y;
-            this._coordZ = coords.Z;
+            this._position = coords;
         }
+
+        public bool IsInRange(Position target, float maxDistance, bool is3D)
+        {
+            return IsInRange(new Spawn()
+            {
+                X = target.X,
+                Y = target.Y,
+                Z = target.Z
+            }, maxDistance, is3D);
+        }
+
         public bool IsInRange(Spawn target, float maxDistance, bool is3D)
         {
-            float dist = is3D ? ((target.X - this._coordX) * (target.X - this._coordX)) +
-                    ((target.Y - this._coordY) * (target.Y - this._coordY)) +
-                    ((target.Z - this._coordZ) * (target.Z - this._coordZ))
+            float dist = is3D ? ((target.X - this._position.X) * (target.X - this._position.X)) +
+                    ((target.Y - this._position.Y) * (target.Y - this._position.Y)) +
+                    ((target.Z - this._position.Z) * (target.Z - this._position.Z))
                     : 
-                    ((target.X - this._coordX) * (target.X - this._coordX)) +
-                    ((target.Y - this._coordY) * (target.Y - this._coordY));
+                    ((target.X - this._position.X) * (target.X - this._position.X)) +
+                    ((target.Y - this._position.Y) * (target.Y - this._position.Y));
 
             return dist < maxDistance;
         }

@@ -70,6 +70,8 @@ namespace Qserver.GameServer.Qpang
             bitStream.Write(Tick);
             bitStream.Write(Unk10);
             bitStream.Write(IsP2P);
+
+            Console.WriteLine($"S_MOVE-[{DateTime.UtcNow.ToString()}][{PlayerId}] {Cmd.ToString("X8")} {Unk01} {Unk02} {Unk03} | {Unk04} {Unk05} {Unk06} {Pitch} {Yawn} --- {Tick} {Unk10.ToString("X8")}");
         }
 
         public override void Unpack(EventConnection ps, BitStream bitStream) { }

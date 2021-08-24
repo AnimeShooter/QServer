@@ -10,6 +10,7 @@ namespace Qserver.GameServer.Qpang
         private bool _isReady;
         private bool _isPlaying;
         private bool _isSpectating;
+        private bool _isBot;
         private GameConnection _conn;
         private Room _room;
         private RoomSessionPlayer _roomSessionPlayer;
@@ -51,8 +52,9 @@ namespace Qserver.GameServer.Qpang
             get { return this._conn.Player; }
         }
 
-        public RoomPlayer(GameConnection conn, Room room)
+        public RoomPlayer(GameConnection conn, Room room, bool bot = false)
         {
+            this._isBot = bot;
             this._conn = conn;
             this._room = room;
             this._team = 0;

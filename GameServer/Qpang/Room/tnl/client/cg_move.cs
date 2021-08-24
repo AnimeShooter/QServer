@@ -89,15 +89,17 @@ namespace Qserver.GameServer.Qpang
             session.Position = new Position() { X = PosX, Y = PosY, Z = PosZ };
 
             var roomSession = roomPlayer.Room.RoomSession;
-            
-            //Console.WriteLine($"[{DateTime.UtcNow.ToString()}][{player.Name}] {Cmd.ToString("X8")} {PosX} {PosY} {PosY} | {unk04} {unk05} {unk06} {Pitch} {Yawn} --- {Tick} {Unk10.ToString("X8")}");
-            
-            // update serverside player position
-            roomPlayer.RoomSessionPlayer.X = PosX;
-            roomPlayer.RoomSessionPlayer.Y = PosY;
-            roomPlayer.RoomSessionPlayer.Z = PosZ;
 
-            
+            Console.WriteLine($"MOVE-[{DateTime.UtcNow.ToString()}][{player.Name}] {Cmd.ToString("X8")} {PosX} {PosY} {PosY} | {unk04} {unk05} {unk06} {Pitch} {Yawn} --- {Tick} {Unk10.ToString("X8")}");
+
+            // update serverside player position
+            roomPlayer.RoomSessionPlayer.UpdateCoords(new Position()
+            {
+                X = PosX,
+                Y = PosY,
+                Z = PosZ
+            });
+
             // TODO: fix timing issue and detect cheatingg
             if (roomSession != null)
             {

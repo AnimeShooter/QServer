@@ -53,7 +53,7 @@ namespace Qserver.GameServer.Qpang
             L_FEET = 9
         };
 
-        enum MapObjects : byte
+        public enum MapObjects : byte
         {
             TRAP_FLAME = 1,
             TRAP_PRESS = 2,

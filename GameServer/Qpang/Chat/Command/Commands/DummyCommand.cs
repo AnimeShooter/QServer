@@ -25,7 +25,7 @@ namespace Qserver.GameServer.Qpang
                 team = 1;
 
             int count = 1;
-            if(args != null && args.Count != 0)
+            if(args != null && args.Count > 1)
                 if(!int.TryParse(args[1], out count))
                     count = 1;
 

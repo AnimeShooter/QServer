@@ -110,6 +110,10 @@ namespace Qserver.GameServer.Qpang
             get { return this._name; }
             set { this._name = value; }
         }
+        public bool IsBot
+        {
+            get { return this._isBot; }
+        }
         public byte Rank
         {
             get { return this._rank; }

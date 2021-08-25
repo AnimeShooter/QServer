@@ -309,8 +309,7 @@ namespace Qserver.GameServer.Qpang
         public bool CanStart()
         {
             var currTime = Util.Util.Timestamp();
-            //return this._startTime <= currTime && !this._isPlaying;
-            return this._startTime < currTime && !this._isPlaying;
+            return this._startTime + (IsBot ? 5 : 0) <= currTime && !this._isPlaying;
         }
 
         public void MakeInvincible(uint duration = 5)

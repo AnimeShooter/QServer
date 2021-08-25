@@ -96,7 +96,7 @@ namespace Qserver.GameServer.Qpang
             {
                 this._items.Add((uint)i, new GameItemSpawn()
                 {
-                    SpawnId = (uint)i,
+                    SpawnId = (uint)(i+1), // NOTE: id 0 is not accepted by gane?
                     ItemId = GetRandomItem(),
                     LastPickUpTime = 0,
                     Spawn = spawns[i]

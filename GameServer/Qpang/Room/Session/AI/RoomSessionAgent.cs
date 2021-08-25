@@ -64,7 +64,8 @@ namespace Qserver.GameServer.Qpang
                     shoot.DstY = p.Position.Y; // rnd.Next(0, 100) / 100f; //p.Position.Y;
                     shoot.DstZ = p.Position.Z; // rnd.Next(0, 100) / 100f;  //p.Position.Z;
                     shoot.EntityId = p.Player.PlayerId; // idk?
-                    shoot.Handle(null, base.Player);
+                    //shoot.Handle(null, base.Player);
+                    
                     //var hit = new CGHit();
                     //hit.WeaponId = (uint)1095434246;
                     //hit.HitLocation = 1; // not headshot

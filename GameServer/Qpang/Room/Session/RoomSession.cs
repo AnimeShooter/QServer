@@ -150,19 +150,6 @@ namespace Qserver.GameServer.Qpang
             //this._startTime = Util.Util.Timestamp() + 30 + 5; // waiting for players + countdown TODO 30+5
             this._startTime = Util.Util.Timestamp() + 5 + 5; // waiting for players + countdown TODO 30+5
             this._endTime = this._room.PointsGame ? uint.MaxValue : this._startTime + (this._room.ScoreTime * 60);
-
-            //// add bots TESTING
-            //var conn = new GameConnection();
-            //conn.Player = new Player("-Bot");
-            //AddPlayer(conn, 1);
-
-            //var conn2 = new GameConnection();
-            //conn.Player = new Player("-Bot");
-            //AddPlayer(conn2, 2);
-
-            //var conn3 = new GameConnection();
-            //conn.Player = new Player("-Bot");
-            //AddPlayer(conn3, 2);
         }
 
         public void Initialize()
@@ -241,6 +228,7 @@ namespace Qserver.GameServer.Qpang
                     SetEssenceHolder(null);
                     var pos = player.Position;
                     foreach (var p in this._players)
+                        if(!p.Value.IsBot)
                         p.Value.Post(new GCHitEssence(p.Value.Player.PlayerId, p.Value.Player.PlayerId, 3, pos.X, pos.Y, pos.Z, 0, 6));
                 }
 

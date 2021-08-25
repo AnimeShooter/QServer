@@ -309,7 +309,7 @@ namespace Qserver.GameServer.Qpang
         public bool CanStart()
         {
             var currTime = Util.Util.Timestamp();
-            return this._startTime + (IsBot ? 5 : 0) <= currTime && !this._isPlaying;
+            return this._startTime + (IsBot ? 2 : 0) <= currTime && !this._isPlaying; // TODO: find out why sync didnt work
         }
 
         public void MakeInvincible(uint duration = 5)

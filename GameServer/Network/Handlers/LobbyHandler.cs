@@ -328,17 +328,17 @@ namespace Qserver.GameServer.Network.Handlers
             {
                 Game.Instance.TradeManager.OnProposalAccept(player);
 
-                //// TODO: try to complete trade
-                //if (Game.Instance.TradeManager.DoTrade(player))
-                //{
-                //    // todo?
-                //    manager.Send(LobbyManager.Instance.Send_892(token, player.Don));
-                //    target.SendLobby(LobbyManager.Instance.Send_892(token, target.Don));
-                //}
+                // TODO: try to complete trade
+                if (Game.Instance.TradeManager.DoTrade(player))
+                {
+                    // todo?
+                    manager.Send(LobbyManager.Instance.Send_892(token, player.Don));
+                    target.SendLobby(LobbyManager.Instance.Send_892(token, target.Don));
+                }
 
-                // NOTE: temp block trade completion ;P (uncomment above TODO to fix)
-                cmd = 50;
-            }
+                //// NOTE: temp block trade completion ;P (uncomment above TODO to fix)
+                //cmd = 50;
+                }
             else
             {
                 // error unk cmd

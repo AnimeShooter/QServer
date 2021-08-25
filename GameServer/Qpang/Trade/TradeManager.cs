@@ -161,8 +161,8 @@ namespace Qserver.GameServer.Qpang
 
             lock(this._lock)
             {
-                if (this._request.ContainsKey(targetId))
-                    return false; // do not alow trading while already requestion a trade?
+                if (IsTrading(targetId) || IsTrading(player.PlayerId))
+                    return false; // do not alow trading while already trading;
 
                 var target = Game.Instance.GetPlayer(targetId);
                 if (target == null)
@@ -189,7 +189,7 @@ namespace Qserver.GameServer.Qpang
             lock (this._lock)
             {
                 uint targetId = 0;
-                if (!this._items.ContainsKey(player.PlayerId))
+                if (!IsTrading(player.PlayerId))
                     return;
 
                 // remove traders
@@ -227,8 +227,11 @@ namespace Qserver.GameServer.Qpang
                     this._accepted.Remove(targetId);
 
                 // remove items
-                this._items.Remove(player.PlayerId);
-                this._items.Remove(targetId);
+                if(this._items.ContainsKey(player.PlayerId))
+                    this._items.Remove(player.PlayerId);
+
+                if(this._items.ContainsKey(targetId))
+                    this._items.Remove(targetId);
             }
         }
 
@@ -294,5 +297,9 @@ namespace Qserver.GameServer.Qpang
             return null;
         }
 
+        private bool IsTrading(uint id)
+        {
+            return this._request.ContainsKey(id) || this._traders.ContainsKey(id) || this._pending.ContainsKey(id) || this._accepted.ContainsKey(id);
+        }
     }
 }

@@ -61,6 +61,7 @@ namespace Qserver.GameServer.Packets
                 PacketManager.DefineOpcodeHandler(Opcode.LEET_ANTI_CHEET, LobbyHandler.HandleAntiCheat);
 
                 // test 
+                PacketManager.DefineOpcodeHandler((Opcode)906, LobbyHandler.Handle_906);
 
                 // memo
                 PacketManager.DefineOpcodeHandler((Opcode)728, LobbyHandler.Handle_728); // Lobby Send Memo

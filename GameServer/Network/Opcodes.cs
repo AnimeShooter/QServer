@@ -237,7 +237,7 @@ namespace Qserver.GameServer.Network
 		// 903									// in
 
 		LOBBY_CHEST_OPEN = 906, // TODO?		// in
-
+		// 907 out
 		LEET_ANTI_CHEET = 1337, // CUSTON		// in
 
 		SQUARE_LOGIN = 6500,					// in

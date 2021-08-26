@@ -471,7 +471,17 @@ namespace Qserver.GameServer.Qpang
                             expired.Add(this._functionCards[i]);
 
                     foreach (var e in expired)
-                        this._player.EquipmentManager.RemoveFunctionCard(e);
+                    {
+                        var card = this._player.InventoryManager.Get(e);
+                        if(card.Type == 86 || card.Type == 87)
+                        {
+                            this._player.EquipmentManager.UnequipItem(e);
+                        }else if (card.Type == 70)
+                        {
+                            card.IsActive = false;
+                            this._player.EquipmentManager.RemoveFunctionCard(e);
+                        }
+                    }
                 }
 
                 var cards = this._player.InventoryManager.List();

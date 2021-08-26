@@ -852,6 +852,37 @@ namespace Qserver.GameServer.Network.Managers
                 
             return pw;
         }
+        public PacketWriter Send_907(ulong keyId, ulong chestId, InventoryCard card) // SendChestLoot
+        {
+            PacketWriter pw = new PacketWriter((Opcode)907);
+
+            pw.WriteUInt64(keyId); // 8 consumed key id?
+            pw.WriteUInt64(chestId); // 10 consumed key id?
+            // InventoryCard  // 18
+            pw.WriteUInt64(card.Id); // 0
+            pw.WriteUInt32(card.ItemId); // 8
+            pw.WriteUInt8(10); // 12
+            pw.WriteUInt8(card.Type); // 13
+            pw.WriteUInt8(0); // 14
+            pw.WriteUInt8(card.IsGiftable ? (byte)1 : (byte)0); // 15
+            pw.WriteBytes(new byte[6]); // 16
+            pw.WriteUInt32(card.TimeCreated);
+            pw.WriteUInt8(card.IsOpened ? (byte)1 : (byte)0); // 26
+            pw.WriteUInt16(card.IsActive ? (ushort)0 : (ushort)1); // 27
+            pw.WriteUInt8(0); // 28; hidden
+            pw.WriteUInt8(0); // 29
+            pw.WriteUInt16(card.Period); // 31
+            pw.WriteUInt8(card.PeriodeType); // 33
+            pw.WriteUInt8(0); // 34
+            pw.WriteUInt16(card.BoostLevel); // 35
+            pw.WriteUInt8(card.BoostLevel > 0 ? (byte)1 : (byte)0); // 37
+            pw.WriteUInt8(0); //  38
+            pw.WriteBytes(new byte[4]); // 39
+                                        // 43
+
+            // 0x43?
+            return pw;
+        }
         #endregion
 
         #region Memo

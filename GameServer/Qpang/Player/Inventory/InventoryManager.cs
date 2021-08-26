@@ -205,10 +205,10 @@ namespace Qserver.GameServer.Qpang
                 lock(this._player.Lock)
                 {
                     // db register purchase
-                    card.Id = Game.Instance.ItemsRepository.CreateItem(card, this._player).Result;
-
                     card.TimeCreated = Util.Util.Timestamp();
                     card.PlayerOwnedId = this._player.PlayerId;
+
+                    card.Id = Game.Instance.ItemsRepository.CreateItem(card, this._player).Result;
 
                     AddCard(card);
                 }
@@ -250,19 +250,7 @@ namespace Qserver.GameServer.Qpang
                     }
 
                     if (card.Period == 0)
-                    {
-                        // expired?
                         return true;
-                        if (card.Type == 86 || card.Type == 87)
-                        {
-                            //this._player.EquipmentManager.UnequipItem(cardId);
-                        }
-                        else if (card.Type == 70)
-                        {
-                            card.IsActive = false;
-                            //this._player.EquipmentManager.RemoveFunctionCard(cardId);
-                        }
-                    }
                 }
             }
             return false;

@@ -527,6 +527,36 @@ namespace Qserver.GameServer.Network.Handlers
             List<InventoryCard> cards = manager.Player.InventoryManager.List();
             manager.Send(LobbyManager.Instance.Inventory(cards));
         }
+        public static void Handle_906(PacketReader packet, ConnServer manager)
+        {
+            ulong itemAId = packet.ReadUInt64(); // a2
+            uint itemA = packet.ReadUInt32(); // a3
+            ulong itemBId = packet.ReadUInt64(); // a4
+            uint itemB = packet.ReadUInt32(); // a5
+            Console.WriteLine("E");
+
+            ulong keyId = itemAId;
+            ulong chestId = itemBId;
+            if (itemB == 1174405165) // pangaea_key
+            {
+                keyId = itemBId;
+                chestId = itemAId;
+            }
+            // unk
+
+            var card = new InventoryCard()
+            {
+                ItemId = 1124213505,
+                Type = 86,
+                IsOpened = true,
+                IsActive = false,
+                IsGiftable = true,
+                PeriodeType = 3,
+                Period = 275,
+            };
+            manager.Player.InventoryManager.StoreCard(card);
+            manager.Send(LobbyManager.Instance.Send_907(keyId, chestId, card));
+        }
         #endregion
 
         #region Memo

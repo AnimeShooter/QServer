@@ -557,6 +557,39 @@ namespace Qserver.GameServer.Network.Handlers
             manager.Player.InventoryManager.StoreCard(card);
             manager.Send(LobbyManager.Instance.Send_907(keyId, chestId, card));
         }
+        public static void Handle_903(PacketReader packet, ConnServer manager)
+        {
+            // Doel: equipItem
+            // Material: essemce
+            // Functie: bonus
+            // Functie2: bonus2
+
+            // NOTE: 1 DWORD, 1 LONG 4x
+
+            // Equipment card
+            ulong equipCard = packet.ReadUInt64(); // a2 cardId
+            uint equipItem = packet.ReadUInt32(); // a3 itemId
+
+            uint unk04 = packet.ReadUInt32(); // a4
+            uint unk05 = packet.ReadUInt32(); // a12 Price?
+
+            // Essence card
+            ulong essenceCard = packet.ReadUInt64(); // a5 + a6 // cardId
+            uint essenceItem = packet.ReadUInt32(); // a7 ItemId
+
+            // boost card
+            ulong boostCard = packet.ReadUInt64(); // a8, a9 0
+            uint boostItem = packet.ReadUInt32(); // a10 0
+            uint unk12 = packet.ReadUInt32(); // a11
+
+            var newCard = manager.Player.InventoryManager.Get(equipCard);
+
+            newCard.BoostLevel = 2;
+            manager.Send(LobbyManager.Instance.Send_904(1, equipCard, essenceCard, boostCard, newCard, unk12));
+
+            var cards = manager.Player.InventoryManager.List();
+            manager.Send(LobbyManager.Instance.Inventory(cards));
+        }
         #endregion
 
         #region Memo

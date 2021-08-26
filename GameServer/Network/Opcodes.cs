@@ -234,10 +234,12 @@ namespace Qserver.GameServer.Network
 
 		// 901									// in
 		LOBBY_ENCHANT_FAIL = 902,
-		// 903									// in
+		LOBBY_BOOST = 903,						// in
+		LOBBY_BOOST_RSP = 904,					// out
+		LOBBY_BOOST_FAIL = 905,					// out
+		LOBBY_CHEST_OPEN = 906,                 // in
+		LOBBY_CHEST_OPEN_RSP = 907,				// out
 
-		LOBBY_CHEST_OPEN = 906, // TODO?		// in
-		// 907 out
 		LEET_ANTI_CHEET = 1337, // CUSTON		// in
 
 		SQUARE_LOGIN = 6500,					// in

@@ -45,6 +45,7 @@ namespace Qserver.GameServer.Qpang
         private byte _playerCount;
         private byte _maxPlayers;
         private uint _masterPlayerId;
+        private uint _lastMasterAction;
         private bool _isLevelLimited;
         private bool _isTeamSorting;
         private bool _isSkillsEnabled;
@@ -226,7 +227,8 @@ namespace Qserver.GameServer.Qpang
             conn.Player.RoomPlayer = roomPlayer;
 
             if (this._players.Count == 0)
-                this._masterPlayerId = roomPlayer.Player.PlayerId;
+                _masterPlayerId = roomPlayer.Player.PlayerId;
+
 
             roomPlayer.SetTeam(GetAvailableTeam());
             lock (this._lock)
@@ -240,7 +242,7 @@ namespace Qserver.GameServer.Qpang
             conn.EnterRoom(this);
 
             // add bots TESTING
-            if(this._players.Count == 1)
+            if(this._players.Count == 1 && this._mode != GameMode.Mode.PVE)
             {
                 Random rnd = new Random();
                 int max = rnd.Next(3, 8);
@@ -266,6 +268,7 @@ namespace Qserver.GameServer.Qpang
                         possibleName = Util.Util.QFigtherRandomName();
                     }
                     botConn.Player = new Player(possibleName);
+                    botConn.Player.Rank = 2;
                     AddPlayer(botConn);
                     ready.Handle(botConn, botConn.Player);
                 }
@@ -286,7 +289,7 @@ namespace Qserver.GameServer.Qpang
                 }  
 
                 if (id == this._masterPlayerId)
-                    this._masterPlayerId = FindNewMaster();
+                    _masterPlayerId = FindNewMaster();
 
                 if (this._roomSession != null)
                     this._roomSession.RemovePlayer(id);
@@ -302,7 +305,7 @@ namespace Qserver.GameServer.Qpang
                     new System.Threading.Thread(new System.Threading.ParameterizedThreadStart(DelayDC)).Start(player);
                     void DelayDC(object o)
                     {
-                        System.Threading.Thread.Sleep(500);
+                        System.Threading.Thread.Sleep(750);
                         ((RoomPlayer)o).Conn.Disconnect("Exited Gameroom");
                     }
                 }
@@ -319,6 +322,51 @@ namespace Qserver.GameServer.Qpang
 
         public void Tick()
         {
+            var currTick = Util.Util.Timestamp();
+            if(!this._isPlaying && this._players.Count > 1)
+            {
+                bool allReady = true;
+                lock(this._players)
+                    foreach (var p in this._players)
+                        if (!(p.Value.Ready || p.Value.IsBot || p.Key == this._masterPlayerId))
+                            allReady = false;
+
+                // kick master for AFK
+                if (!allReady)
+                    this._lastMasterAction = currTick;
+                else
+                {
+                    var timeLeft = this._lastMasterAction + 20 - currTick;
+
+                    string message = string.Empty;
+                    if (timeLeft <= 0)
+                    {
+                        message = "The room master has been removed.";
+                        RemovePlayer(this._masterPlayerId);
+                    }
+                    else
+                        switch (timeLeft)
+                        {
+                            case 10:
+                            case 5:
+                            case 3:
+                            case 2:
+                            case 1:
+                                message = $"The room master will be kicked in {timeLeft} seconds.";
+                                break;
+                            default:
+                                message = string.Empty;
+                                break;
+                        }
+
+                    //if (!message.Equals(string.Empty))
+                    //    lock (this._players)
+                    //        foreach (var p in this._players)
+                    //            if (!p.Value.IsBot)
+                    //                p.Value.Player.Broadcast(message);
+                }
+            }
+            
             if (this._isPlaying && this._roomSession != null)
                 this._roomSession.Tick();
         }
@@ -387,15 +435,16 @@ namespace Qserver.GameServer.Qpang
                     if (player != p.Value)
                     {
                         if (!p.Value.Playing)
-                            //if(pve)
-                            //    p.Value.Conn.PostNetEvent(new GCPvEUserInit(player));
-                            //else
                             p.Value.Conn.PostNetEvent(new GCJoin(player));
+                        //if(pve)
+                        //    p.Value.Conn.PostNetEvent(new GCPvEUserInit(player));
+                        //else
+
 
                         //if (pve)
                         //    player.Conn.PostNetEvent(new GCPvEUserInit(p.Value));
                         //else
-                            player.Conn.PostNetEvent(new GCJoin(p.Value));
+                        player.Conn.PostNetEvent(new GCJoin(p.Value));
                     }
                 }
             }

@@ -125,7 +125,6 @@ namespace Qserver.GameServer.Qpang
         }
         public override void Handle(GameConnection conn, Player player)
         {
-
             if (Cmd == (uint)Commands.CREATE_ROOM || Cmd == (uint)Commands.CREATE_EVENT_ROOM)
             {
                 if (Cmd == (uint)Commands.CREATE_EVENT_ROOM && player.Rank != 3)

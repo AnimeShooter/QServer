@@ -240,15 +240,13 @@ namespace Qserver.GameServer.Qpang
                 // NOTE: throws exception?
                 PostNetEvent(new GCPvEStart(room, this._player.PlayerId));
                 PostNetEvent(new GCPvENewRound());
-                PostNetEvent(new GCJoin(roomPlayer));
-
             }      
             else
             {
                 PostNetEvent(new GCStart(room, this._player.PlayerId));
-                PostNetEvent(new GCJoin(roomPlayer));
             }
-                
+
+            PostNetEvent(new GCJoin(roomPlayer));
             PostNetEvent(new GCGameState(this._player.PlayerId, 12));
             //PostNetEvent(new GCGameState(this._player.PlayerId, 22)); // test hack state
         }

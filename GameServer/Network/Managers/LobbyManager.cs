@@ -605,7 +605,6 @@ namespace Qserver.GameServer.Network.Managers
         public PacketWriter Send_892(uint token, uint don) // complete trade
         {
             PacketWriter pw = new PacketWriter((Opcode)892);
-            // 4
             pw.WriteUInt32(token); // 8
             pw.WriteUInt32(0); // unused? // C
             pw.WriteUInt32(0); // unused? // 10

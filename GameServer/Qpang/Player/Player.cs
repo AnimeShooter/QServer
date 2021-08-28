@@ -117,6 +117,7 @@ namespace Qserver.GameServer.Qpang
         public byte Rank
         {
             get { return this._rank; }
+            set { this._rank = value; }
         }
         public uint Experience
         {

@@ -677,6 +677,12 @@ namespace Qserver.GameServer.Network.Handlers
             else
                 manager.Send(LobbyManager.Instance.CouponSuccess(manager.Player.Don, manager.Player.Cash));
         } 
+        public static void Handle_721(PacketReader packet, ConnServer manager)
+        {
+            byte[] data = packet.ReadBytes(0x66);
+
+            // do smthing
+        }
         #endregion
 
         #region Player

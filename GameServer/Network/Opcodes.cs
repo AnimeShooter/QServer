@@ -94,8 +94,10 @@ namespace Qserver.GameServer.Network
 		// 717									// in
 
 		LOBBY_RECEIVE_INVITE = 717,
-		LOBBY_RANDOM_INVITE = 721,				// in
 
+
+		LOBBY_RANDOM_INVITE = 721,				// in AND out???
+		// 723									// out
 
 		LOBBY_MEMOS = 725,						// in
 		LOBBY_MEMOS_RSP = 726,					// out

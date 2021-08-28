@@ -208,15 +208,22 @@ namespace Qserver.GameServer.Qpang
             var index = rnd.Next(0, PossibleItems.Count);
 
             var item = PossibleItems[index];
+            if(rnd.Next(0,100) <= 15)
+            {
+                if(this._roomSession.GameMode.IsTeamMode() && rnd.Next(0,100) < 33)
+                        return (uint)Item.GREEN_MEDKIT;
+                return (uint)Item.RED_MEDKIT;
+            }
+            
+            // TODO: check for skillpoints and increase droprate based on skillpoint count
 
-            if (item == Item.GREEN_MEDKIT && !this._roomSession.GameMode.IsTeamMode())
-                item = Item.RED_MEDKIT;
-            else if (item == Item.SKILL_CARD && !this._roomSession.Room.SkillsEnabled)
-                item = Item.AMMO_CLIP;
-            else if (item == Item.AMMO_CLIP && this._roomSession.Room.MeleeOnly)
-                item = Item.RED_MEDKIT;
+            if(this._roomSession.Room.SkillsEnabled && rnd.Next(0,100) < 50)
+                return (uint)Item.SKILL_CARD;
 
-            return (uint)item;
+            if (!this._roomSession.Room.MeleeOnly && rnd.Next(0, 100) < 90)
+                return (uint)Item.RED_MEDKIT;
+
+            return (uint)Item.RED_MEDKIT; // worst case secanrio
         }
 
         public void OnPickUp(RoomSessionPlayer player, uint spawnId)

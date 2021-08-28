@@ -75,15 +75,15 @@ namespace Qserver.GameServer.Qpang
                 this._player.RoomSession.RelayPlayingExcept<GCCard>(this._player.Player.PlayerId, this._player.Player.PlayerId, (uint)0, (byte)4, (uint)9, this._activeSkillCard.Id, (ulong)0);
 
                 // expire self (2 too?)
-                this._player.Post(new GCCard(this._player.Player.PlayerId, (uint)0, (byte)4, (uint)9, this._activeSkillCard.Id, (ulong)0));
+                //this._player.Post(new GCCard(this._player.Player.PlayerId, (uint)0, (byte)4, (uint)9, this._activeSkillCard.Id, (ulong)0));
                 this._player.Post(new GCCard(this._player.Player.PlayerId, (uint)0, (byte)4, (uint)9, this._activeSkillCard.Id, (ulong)this._activeSkillCard.Id));
-                this._player.Post(new GCCard(this._player.Player.PlayerId, (uint)0, (byte)2, (uint)9, this._activeSkillCard.Id, (ulong)0));
-                this._player.Post(new GCCard(this._player.Player.PlayerId, (uint)0, (byte)2, (uint)9, this._activeSkillCard.Id, (ulong)this._activeSkillCard.Id));
-                this._player.Post(new GCCard(this._player.Player.PlayerId, (uint)0, (byte)1, (uint)9, this._activeSkillCard.Id, (ulong)0));
-                this._player.Post(new GCCard(this._player.Player.PlayerId, (uint)0, (byte)1, (uint)9, this._activeSkillCard.Id, (ulong)this._activeSkillCard.Id));
+                //this._player.Post(new GCCard(this._player.Player.PlayerId, (uint)0, (byte)2, (uint)9, this._activeSkillCard.Id, (ulong)0));
+                //this._player.Post(new GCCard(this._player.Player.PlayerId, (uint)0, (byte)2, (uint)9, this._activeSkillCard.Id, (ulong)this._activeSkillCard.Id));
+                //this._player.Post(new GCCard(this._player.Player.PlayerId, (uint)0, (byte)1, (uint)9, this._activeSkillCard.Id, (ulong)0));
+                //this._player.Post(new GCCard(this._player.Player.PlayerId, (uint)0, (byte)1, (uint)9, this._activeSkillCard.Id, (ulong)this._activeSkillCard.Id));
 
                 //this._player.RoomSession.RelayPlaying<GCCard>(this._player.Player.PlayerId, (uint)0, (byte)9, (uint)9, this._activeSkillCard.Id, (ulong)this._activeSkillCard.Id); 
-                
+
                 // test 1, msgbox
                 //this._player.RoomSession.RelayPlaying<GCCard>(this._player.Player.PlayerId, (uint)0, (byte)1, (uint)9, this._activeSkillCard.Id, (ulong)this._activeSkillCard.Id); 
 
@@ -146,6 +146,7 @@ namespace Qserver.GameServer.Qpang
             // Character ability
             if(cardType == 0x07)
             {
+                // TODO check character
                 lock (this._player.Lock)
                     this._player.RoomSession.RelayPlaying<GCCard>(uid, targetUid, (byte)cmd, cardType, itemId, seqId);
 

@@ -15,6 +15,7 @@ namespace Qserver.GameServer.Qpang
         private Room _room;
         private RoomSessionPlayer _roomSessionPlayer;
 
+
         public byte Team
         {
             get { return this._team; }

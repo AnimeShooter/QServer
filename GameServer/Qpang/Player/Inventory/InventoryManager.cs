@@ -238,7 +238,7 @@ namespace Qserver.GameServer.Qpang
 
                     if (card.PeriodeType == 3) // rounds
                     {
-                        if (card.Period > 0) // dont underflow?
+                            if (card.Period > 0) // dont underflow?
                             card.Period--;
                     }
                     else if (card.PeriodeType == 2) // time based?

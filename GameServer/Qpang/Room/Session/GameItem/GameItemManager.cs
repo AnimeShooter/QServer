@@ -221,7 +221,7 @@ namespace Qserver.GameServer.Qpang
                 return (uint)Item.SKILL_CARD;
 
             if (!this._roomSession.Room.MeleeOnly && rnd.Next(0, 100) < 90)
-                return (uint)Item.RED_MEDKIT;
+                return (uint)Item.AMMO_CLIP;
 
             return (uint)Item.RED_MEDKIT; // worst case secanrio
         }

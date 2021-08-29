@@ -58,11 +58,18 @@ namespace Qserver.GameServer.Qpang
         private List<long> _weaponReloads;
         private List<long> _weaponReswaps;
 
-        private float _coordX;
-        private float _coordY;
-        private float _coordZ;
-
         private uint _firstSeen;
+
+
+        private List<float[]> samples = new List<float[]>();
+        private DateTime start;
+        private float[] lastTick;
+
+        private DateTime _lastMoveStart;
+        private uint _lastCmd;
+        private float _startX;
+        private float _startY;
+        private float _startZ;
 
         public object Lock
         {
@@ -557,6 +564,74 @@ namespace Qserver.GameServer.Qpang
         public void OnReswap()
         {
             this._weaponReswaps.Add(Environment.TickCount64);
+        }
+
+        public void SpeedTest(uint cmd, float x, float y, float z)
+        {
+            // NOTE: max speed 1.05 @ 500ms (2.1/s)
+            if (cmd == 0 && this._lastMoveStart != DateTime.MinValue)
+            {
+                var currTime = DateTime.UtcNow;
+                // calc speed
+
+                // TODO set speed variable based on last CMD
+
+                float distance = ((this._startX - x) * (this._startX - x)) +
+                                 ((this._startY - y) * (this._startY - y)) +
+                                 ((this._startZ - z) * (this._startZ - z));
+
+                TimeSpan timeframe = (currTime - this._lastMoveStart);
+
+                double vPerSec = (distance / 1000f / timeframe.TotalMilliseconds) * 1000f;
+
+                Console.WriteLine($"{vPerSec}/s");
+
+                this._lastMoveStart = DateTime.MinValue;
+                this._lastCmd = 0;
+            }else if(this._lastCmd == 0 && cmd != 0 && this._lastMoveStart == DateTime.MinValue)
+            {
+                this._startX = x;
+                this._startY = y;
+                this._startZ = z;
+                this._lastMoveStart = DateTime.UtcNow;
+            }
+        }
+
+        public void Test(uint cmd, float x, float y, float z)
+        {
+            if (cmd == 0)
+            {
+                var now = DateTime.UtcNow;
+                float distance = 0;
+                for (int i = 0; i < this.samples.Count - 1; i++)
+                {
+                    distance += (
+                        ((samples[i][0] - samples[i + 1][0]) * (samples[i][0] - samples[i + 1][0])) +
+                        ((samples[i][1] - samples[i + 1][1]) * (samples[i][1] - samples[i + 1][1])) +
+                        ((samples[i][2] - samples[i + 1][2]) * (samples[i][2] - samples[i + 1][2]))
+                    );
+                }
+                var duration = now - start;
+                Console.WriteLine($"Distance walked: {distance} over {(duration).TotalMilliseconds} time ({(distance / duration.TotalMilliseconds) / 1000f}/s)");
+                this.samples.Clear();
+                start = DateTime.MinValue;
+            }
+            else if (start == DateTime.MinValue)
+                start = DateTime.UtcNow;
+
+            float nowDistance = lastTick == null ? 0 : ((lastTick[0] - x) * (lastTick[0] - x)) +
+                                ((lastTick[1] - y) * (lastTick[1] - y)) +
+                                ((lastTick[2] - z) * (lastTick[2] - z));
+
+            Console.WriteLine("Last tick distance: " + nowDistance);
+
+            lastTick = new float[]
+            {
+                x, y, z
+            };
+
+            this.samples.Add(lastTick);
+
         }
     }
 }

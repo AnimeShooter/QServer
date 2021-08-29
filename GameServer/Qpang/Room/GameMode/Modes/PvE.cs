@@ -24,5 +24,16 @@ namespace Qserver.GameServer.Qpang
          *  ...
          * 
          */
+        public override void Tick(RoomSession roomSession)
+        {
+
+            // GCPvEEndRound
+            // GCPvEStarRound
+
+            // Reset timers? (Stage 2 goes by time)
+
+
+            base.Tick(roomSession);
+        }
     }
 }

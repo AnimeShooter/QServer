@@ -273,7 +273,6 @@ namespace Qserver.GameServer.Qpang
                     ready.Handle(botConn, botConn.Player);
                 }
             }
-
             SyncPlayers(roomPlayer);
         }
 
@@ -692,7 +691,8 @@ namespace Qserver.GameServer.Qpang
 
             lock (this._lock)
                 foreach (var p in this._players)
-                    p.Value.Conn.PostNetEvent((GameNetEvent)ctor.Invoke(args));
+                    if(!p.Value.IsBot)
+                        p.Value.Conn.PostNetEvent((GameNetEvent)ctor.Invoke(args));
         }
 
         public void BroadcastWaiting<T>(params object[] args)
@@ -702,7 +702,7 @@ namespace Qserver.GameServer.Qpang
 
             lock (this._lock)
                 foreach (var p in this._players)
-                    if (!p.Value.Playing)
+                    if (!p.Value.Playing && !p.Value.IsBot)
                         p.Value.Conn.PostNetEvent((GameNetEvent)ctor.Invoke(args));
         }
     }

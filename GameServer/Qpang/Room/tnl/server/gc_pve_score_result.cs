@@ -38,11 +38,16 @@ namespace Qserver.GameServer.Qpang
         public uint Unk12; // 132
         public uint Unk13; // 136
         public uint Unk14; // 140
-        public uint Unk15; // 144
-        public byte Unk16; // 146
+        public byte Unk15; // 144
+        public ushort Unk16; // 146
         public ushort Unk17; // 148
         
         public GCPvEScoreResult() : base(GameNetId.GC_PVE_SCORE_RESULT, GuaranteeType.Guaranteed, EventDirection.DirAny) { }
+        
+        public GCPvEScoreResult(RoomSession roomSession, List<RoomSessionPlayer> players) : base(GameNetId.GC_PVE_SCORE_RESULT, GuaranteeType.Guaranteed, EventDirection.DirAny)
+        {
+
+        }
 
         public override void Pack(EventConnection ps, BitStream bitStream) 
         {
@@ -84,9 +89,6 @@ namespace Qserver.GameServer.Qpang
             bitStream.Read(out Unk16);
             bitStream.Read(out Unk17);
         }
-        public override void Process(EventConnection ps) 
-        {
-            Post(ps);
-        }
+        public override void Process(EventConnection ps) { }
     }
 }

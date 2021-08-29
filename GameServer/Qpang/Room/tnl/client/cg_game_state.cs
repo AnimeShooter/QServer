@@ -26,6 +26,7 @@ namespace Qserver.GameServer.Qpang
 
 		public enum State : uint
 		{
+			DATA = 0,
 			GAME_WAITING_PLAYERS_SPECTATE_UNK = 1,
 			GAME_FORCE_LEAVE_STO = 2,
 			GAME_WAITING_PLAYERS = 3,
@@ -34,7 +35,7 @@ namespace Qserver.GameServer.Qpang
 			REMOVE_INVINCIBILITY = 8,
 			SYNC_TIME = 11,
 			GAME_START = 12,
-			GAME_START_PVE = GAME_START,
+			GAME_START_PVE = 13, //GAME_START,
 			GAME_STATE_P2P_FAIL = 14,
 			LEAVE_GAME = 15,
 			UPDATE_HEALTH = 16,
@@ -43,6 +44,7 @@ namespace Qserver.GameServer.Qpang
 			GAME_OVER = 23,
 			INV_IN = 24,
 			INV_OUT = 25,
+			// 27 idk
 			KILLFEED_ADD_HEAD = 28,
 			START_RESPAWN_TIMER = 29,
 

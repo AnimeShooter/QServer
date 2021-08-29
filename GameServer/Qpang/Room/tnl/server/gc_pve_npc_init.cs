@@ -26,11 +26,11 @@ namespace Qserver.GameServer.Qpang
 
         public uint Unk1; // 88
         public uint Unk2; // 92
-        public uint Unk3; // 96
-        public uint Unk4; // 100
-        public uint Unk5; // 104
+        public float Unk3; // 96
+        public float Unk4; // 100
+        public float Unk5; // 104
         public ushort Unk6; // 108
-        public ushort Unk7; // 110
+        public byte Unk7; // byte? 110
         public uint Unk8; // 112
 
         public GCPvENpcInit() : base(GameNetId.GC_PVE_NPC_INIT, GuaranteeType.Guaranteed, EventDirection.DirAny) { }
@@ -57,9 +57,6 @@ namespace Qserver.GameServer.Qpang
             bitStream.Read(out Unk7);
             bitStream.Read(out Unk8);
         }
-        public override void Process(EventConnection ps) 
-        {
-            Post(ps);
-        }
+        public override void Process(EventConnection ps) { }
     }
 }

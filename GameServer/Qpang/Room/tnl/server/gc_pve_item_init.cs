@@ -24,10 +24,11 @@ namespace Qserver.GameServer.Qpang
             ImplementNetEvent(out _dynClassRep, "GCPvEItemInit", NetClassMask.NetClassGroupGameMask, 0);
         }
 
-        public uint Unk1; // 92;
-        public uint Unk2; // 96;
-        public uint Unk3; // 100;
-        public uint Unk4; // 104;
+        public uint Unk1; // 88;
+        public uint Unk2; // 92;
+        public float Unk3; // x? 96;
+        public float Unk4; // y? 100;
+        public float Unk5; // z? 104;
 
         public GCPvEItemInit() : base(GameNetId.GC_PVE_ITEM_INIT, GuaranteeType.Guaranteed, EventDirection.DirAny) { }
 
@@ -37,6 +38,7 @@ namespace Qserver.GameServer.Qpang
             bitStream.Write(Unk2);
             bitStream.Write(Unk3);
             bitStream.Write(Unk4);
+            bitStream.Write(Unk5);
         }
         public override void Unpack(EventConnection ps, BitStream bitStream)
         {
@@ -44,6 +46,7 @@ namespace Qserver.GameServer.Qpang
             bitStream.Read(out Unk2);
             bitStream.Read(out Unk3);
             bitStream.Read(out Unk4);
+            bitStream.Read(out Unk5);
         }
         public override void Process(EventConnection ps) { }
     }

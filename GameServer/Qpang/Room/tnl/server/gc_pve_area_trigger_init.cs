@@ -26,10 +26,10 @@ namespace Qserver.GameServer.Qpang
 
         public uint Unk1; // 88
         public uint Unk2; // 92
-        public uint Unk3; // 96
-        public uint Unk4; // 100
-        public uint Unk5; // 104
-        public uint Unk6; // 108
+        public float Unk3; // 96
+        public float Unk4; // 100
+        public float Unk5; // 104
+        public byte Unk6; // 108
 
         public GCPvEAreaTriggerInit() : base(GameNetId.GC_PVE_AREA_TRIGGER_INIT, GuaranteeType.Guaranteed, EventDirection.DirAny) { }
 

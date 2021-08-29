@@ -25,7 +25,7 @@ namespace Qserver.GameServer.Qpang
         }
 
         public uint PlayerId; // 96
-        public uint Unk01 = 3; // 92 - 2, 3, 5
+        public uint Unk01 = 2; // 92 - 2, 3, 5
         public uint Unk02; // 100
         public ushort Map; // 104
         public ushort Mode; // 106
@@ -34,8 +34,8 @@ namespace Qserver.GameServer.Qpang
         public GCPvEStart(Room room, uint playerId) : base(GameNetId.GC_PVE_START, GuaranteeType.Guaranteed, EventDirection.DirAny)
         {
             PlayerId = playerId;
-            Map = room.Map;
-            Mode = (ushort)room.Mode;
+            Map = room.Map; // 12?
+            Mode = (ushort)room.Mode; // 9?
         }
         public override void Pack(EventConnection ps, BitStream bitStream)
         {

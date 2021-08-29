@@ -268,7 +268,7 @@ namespace Qserver.GameServer.Qpang
                         possibleName = Util.Util.QFigtherRandomName();
                     }
                     botConn.Player = new Player(possibleName);
-                    botConn.Player.Rank = 2;
+                    botConn.Player.Rank = 1;
                     AddPlayer(botConn);
                     ready.Handle(botConn, botConn.Player);
                 }

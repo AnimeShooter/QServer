@@ -26,7 +26,7 @@ namespace Qserver.GameServer.Qpang
 
         public uint Unk1; // 88
         public ushort Unk2; // 92
-        public ushort Unk3; // 84
+        public ushort Unk3; // 94
 
         public GCPvEMoveNpc() : base(GameNetId.GC_PVE_MOVE_NPC, GuaranteeType.Guaranteed, EventDirection.DirAny) { }
 

@@ -138,7 +138,7 @@ namespace Qserver.GameServer.Qpang
                                  Mode == (uint)GameMode.Mode.PTE ||
                                  Mode == (uint)GameMode.Mode.VIP;
 
-                if ((!validMode || Map > 12) && player.Rank < 3) // NOTE: GMs are allowed
+                if ((!validMode || Map > 12) && player.Rank < 2) // NOTE: GMs are and helpers are allowed for BETA access
                 {
                     conn.Disconnect("Invalid GameMode");
                     player.Broadcast("GameMode has not been implemented yet");

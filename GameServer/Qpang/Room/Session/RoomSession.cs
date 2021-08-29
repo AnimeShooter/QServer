@@ -454,7 +454,10 @@ namespace Qserver.GameServer.Qpang
 
                 player.Post(new GCGameState(p.PlayerId, 1));
                 player.Post(new GCGameState(p.PlayerId, 23));
-                player.Post(new GCScoreResult(this, playingPlayers));
+                if(this._room.Mode == GameMode.Mode.PVE)
+                    player.Post(new GCPvEScoreResult(this, playingPlayers));
+                else
+                    player.Post(new GCScoreResult(this, playingPlayers));
             }
 
             this._room.Finish();

@@ -71,7 +71,7 @@ namespace Qserver.GameServer.Qpang
             CharacterId = player.Character;
             SelectedWeapon = player.EquipmentManager.GetDefaultWeapon();
 
-            WeaponCount = (ushort)player.EquipmentManager.GetWeaponsByCharacter(CharacterId).Length;
+            WeaponCount = (ushort)player.EquipmentManager.GetWeaponsByCharacter(CharacterId).Length; // always 4?
             Weapons = player.EquipmentManager.GetWeaponItemIdsByCharacter(CharacterId);
             Armor = player.EquipmentManager.GetArmorItemIdsByCharacter(CharacterId);
             //PlayerRank = spectatorMode ? (byte)3 : player.Rank;
@@ -80,9 +80,11 @@ namespace Qserver.GameServer.Qpang
             Unk8 = (ushort)(player.EquipmentManager.GetBaseHealth() + player.EquipmentManager.GetBonusHealth());
             //Experience = player.Experience;
 
-            Unk6 = 0;
-            Unk7 = 0;
-            Unk8 = 0;
+            Unk6 = 0; // 0
+            Unk7 = 0; // actionId?
+            Unk8 = 5; // Refers?
+
+            // rank, exp, key?
         }
 
 

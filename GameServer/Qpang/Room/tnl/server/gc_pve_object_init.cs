@@ -26,9 +26,9 @@ namespace Qserver.GameServer.Qpang
 
         public uint Unk1; // 88
         public uint Unk2; // 92
-        public uint Unk3; // 96
-        public uint Unk4; // 100
-        public uint Unk5; // 104
+        public float Unk3; // x? 96
+        public float Unk4; // y? 100
+        public float Unk5; // z? 104
         public ushort Unk6; // 108
 
         public GCPvEObjectInit() : base(GameNetId.GC_PVE_OBJECT_INIT, GuaranteeType.Guaranteed, EventDirection.DirAny) { }
@@ -51,9 +51,6 @@ namespace Qserver.GameServer.Qpang
             bitStream.Read(out Unk5);
             bitStream.Read(out Unk6);
         }
-        public override void Process(EventConnection ps)
-        {
-            Post(ps);
-        }
+        public override void Process(EventConnection ps) { }
     }
 }

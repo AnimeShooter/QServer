@@ -10,7 +10,10 @@ namespace Qserver.GameServer.Qpang
         private Dictionary<string, ChatCommand> _commands = new Dictionary<string, ChatCommand>()
         {
             {"start", new StartCommand() },
-            {"dummy", new DummyCommand() }
+            {"dummy", new DummyCommand() },
+            {"EndRound", new EndRoundCommand() },
+            {"NewRound", new NewRoundCommand() },
+            {"EndGame", new EndGameCommand() }
         };
 
         public CommandManager()

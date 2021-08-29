@@ -8,7 +8,7 @@ namespace Qserver.GameServer.Qpang
 {
     public class DummyCommand : ChatCommand
     {
-        public DummyCommand() : base(3)
+        public DummyCommand() : base(2)
         {
 
         }
@@ -32,7 +32,7 @@ namespace Qserver.GameServer.Qpang
             for(int i = 0; i < count; i++)
             {
                 var conn = new GameConnection();
-                conn.Player = new Player("-BOT");
+                conn.Player = new Player("");
                 conn.Player.RoomPlayer = new RoomPlayer(conn, player.RoomPlayer.Room);
                 player.RoomPlayer.Room.RoomSession.AddPlayer(conn, team);
             }

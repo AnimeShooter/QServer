@@ -24,8 +24,8 @@ namespace Qserver.GameServer.Qpang
             ImplementNetEvent(out _dynClassRep, "GCPvEDestroyParts", NetClassMask.NetClassGroupGameMask, 0);
         }
 
-        public uint Unk1; // 88
-        public uint Unk2; // 92
+        public uint Unk1; // 88 Uid?
+        public uint Unk2; // 92 Part?
 
         public GCPvEDestroyParts() : base(GameNetId.GC_PVE_DESTROY_PARTS, GuaranteeType.Guaranteed, EventDirection.DirAny) { }
 

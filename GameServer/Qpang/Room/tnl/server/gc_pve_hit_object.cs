@@ -51,9 +51,9 @@ namespace Qserver.GameServer.Qpang
             bitStream.Read(out Unk5);
             bitStream.Read(out Unk6);
         }
-        public override void Process(EventConnection ps) 
+        public override void Process(EventConnection ps)
         {
-            Post(ps);
+
         }
     }
 }

@@ -92,6 +92,10 @@ namespace Qserver.GameServer.Qpang
 
             session.RoomSession.RelayPlaying<GCPvEHitNpc>(SrcId, DstId, Unk03, SrcX, SrcY, SrcZ, DstX, DstY, DstZ,
                 Unk10, HitType, HitLocation, WeaponId, RTT, Unk15, (byte)0, (byte)99, (uint)Unk18, (ushort)Unk19, (byte)0, (uint)0);
+
+            // make it death
+
+            session.RoomSession.RelayPlaying<GCPvEDieNpc>((uint)DstId);
         }
     }
 }

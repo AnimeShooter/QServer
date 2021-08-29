@@ -24,14 +24,16 @@ namespace Qserver.GameServer.Qpang
             ImplementNetEvent(out _dynClassRep, "CGPvEEventObject", NetClassMask.NetClassGroupGameMask, 0);
         }
 
-        public uint Cmd;
+        public uint Uid;
+        public bool Triggered;
 
         public CGPvEEventObject() : base(GameNetId.CG_PVE_EVENT_OBJECT, GuaranteeType.GuaranteedOrdered, EventDirection.DirAny) { }
 
         public override void Pack(EventConnection ps, BitStream bitStream) { }
         public override void Unpack(EventConnection ps, BitStream bitStream)
         {
-            bitStream.Read(out Cmd);
+            bitStream.Read(out Uid);
+            bitStream.Read(out Triggered);
         }
         public override void Process(EventConnection ps)
         {
@@ -40,7 +42,7 @@ namespace Qserver.GameServer.Qpang
 
         public override void Handle(GameConnection conn, Player player)
         {
-            base.Handle(conn, player);
+            base.Handle(conn, player); // called on trigger
         }
     }
 }

@@ -23,6 +23,16 @@ namespace Qserver.GameServer.Qpang
          *  
          *  ...
          * 
+         * Objects:
+         * stag1:
+         * - 1 small fence
+         * - 2 big fence
+         * - 3 Red plafroem
+         * - 4 Red platform 2
+         * - 5 button
+         * 
+         * Stage2:
+         * - 6 Essence (0, 0, 0)
          */
 
         public override void OnStart(RoomSession roomSession)
@@ -37,13 +47,18 @@ namespace Qserver.GameServer.Qpang
         public override void Tick(RoomSession roomSession)
         {
 
-            // GCPvEEndRound
-            // GCPvEStarRound
+            
 
             // Reset timers? (Stage 2 goes by time)
 
 
             base.Tick(roomSession);
+        }
+
+        private void NextRound()
+        {
+            // GCPvEEndRound
+            // GCPvEStarRound
         }
     }
 }

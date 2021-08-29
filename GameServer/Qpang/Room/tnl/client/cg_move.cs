@@ -103,16 +103,8 @@ namespace Qserver.GameServer.Qpang
             0.088209 Forwads
             */
 
-            player.RoomPlayer.RoomSessionPlayer.SpeedTest(Cmd, PosX, PosY, PosZ);
+            session.SpeedTest(Cmd, PosX, PosY, PosZ);
             //player.RoomPlayer.RoomSessionPlayer.Test(Cmd, PosX, PosY, PosZ);
-
-            // update serverside player position
-            roomPlayer.RoomSessionPlayer.UpdateCoords(new Position()
-            {
-                X = PosX,
-                Y = PosY,
-                Z = PosZ
-            });
 
             // TODO: fix timing issue and detect cheatingg
             if (roomSession != null)

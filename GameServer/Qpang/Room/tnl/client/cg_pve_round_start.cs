@@ -38,7 +38,8 @@ namespace Qserver.GameServer.Qpang
             if (player == null || player.RoomPlayer == null || player.RoomPlayer.RoomSessionPlayer == null)
                 return;
 
-            conn.PostNetEvent(new GCJoin(player.RoomPlayer.RoomSessionPlayer));
+            conn.PostNetEvent(new GCPvENewRound());
+            //conn.PostNetEvent(new GCJoin(player.RoomPlayer.RoomSessionPlayer));
             //conn.PostNetEvent(new GCPvEUserInit(player.RoomPlayer.RoomSessionPlayer));
         }
     }

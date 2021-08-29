@@ -24,29 +24,37 @@ namespace Qserver.GameServer.Qpang
             ImplementNetEvent(out _dynClassRep, "GCPvEItemInit", NetClassMask.NetClassGroupGameMask, 0);
         }
 
-        public uint Unk1; // 88;
-        public uint Unk2; // 92;
-        public float Unk3; // x? 96;
-        public float Unk4; // y? 100;
-        public float Unk5; // z? 104;
+        public uint ItemId; // 88; // uid
+        public uint Uid; // 92; // itemId
+        public float X; // x? 96;
+        public float Y; // y? 100;
+        public float Z; // z? 104;
 
         public GCPvEItemInit() : base(GameNetId.GC_PVE_ITEM_INIT, GuaranteeType.Guaranteed, EventDirection.DirAny) { }
+        public GCPvEItemInit(uint itemId, uint uid, Spawn spawn) : base(GameNetId.GC_PVE_ITEM_INIT, GuaranteeType.Guaranteed, EventDirection.DirAny)
+        {
+            ItemId = itemId;
+            Uid = uid;
+            X = spawn.X;
+            Y = spawn.Y;
+            Z = spawn.Z;
+        }
 
         public override void Pack(EventConnection ps, BitStream bitStream) 
         {
-            bitStream.Write(Unk1);
-            bitStream.Write(Unk2);
-            bitStream.Write(Unk3);
-            bitStream.Write(Unk4);
-            bitStream.Write(Unk5);
+            bitStream.Write(ItemId);
+            bitStream.Write(Uid);
+            bitStream.Write(X);
+            bitStream.Write(Y);
+            bitStream.Write(Z);
         }
         public override void Unpack(EventConnection ps, BitStream bitStream)
         {
-            bitStream.Read(out Unk1);
-            bitStream.Read(out Unk2);
-            bitStream.Read(out Unk3);
-            bitStream.Read(out Unk4);
-            bitStream.Read(out Unk5);
+            bitStream.Read(out ItemId);
+            bitStream.Read(out Uid);
+            bitStream.Read(out X);
+            bitStream.Read(out Y);
+            bitStream.Read(out Z);
         }
         public override void Process(EventConnection ps) { }
     }

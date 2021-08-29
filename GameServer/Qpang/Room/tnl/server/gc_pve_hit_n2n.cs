@@ -65,7 +65,7 @@ namespace Qserver.GameServer.Qpang
         }
         public override void Process(EventConnection ps) 
         {
-            Post(ps);
+
         }
     }
 }

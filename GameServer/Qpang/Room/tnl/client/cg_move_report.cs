@@ -44,6 +44,37 @@ namespace Qserver.GameServer.Qpang
             bitStream.Read(out unk05);
             bitStream.Read(out unk06);
         }
-        public override void Process(EventConnection ps) { }
+        public override void Process(EventConnection ps)
+        {
+            Post(ps);
+        }
+
+        public override void Handle(GameConnection conn, Player player)
+        {
+            var roomPlayer = player.RoomPlayer;
+            if (roomPlayer == null)
+                return;
+
+            if (roomPlayer.Spectating)
+                return;
+
+            var session = roomPlayer.RoomSessionPlayer;
+            if (session == null)
+                return;
+
+            if (session.Death)
+                return;
+
+            session.Position = new Position() { X = PosX, Y = PosY, Z = PosZ };
+
+            var roomSession = roomPlayer.Room.RoomSession;
+
+            // TODO: fix timing issue and detect cheatingg
+            if (roomSession != null)
+            {
+                // TODO
+                //roomSession.RelayPlayingExcept<GCMove>(player.PlayerId, PlayerId, 0, PosX, PosY, PosZ, unk04, unk05, unk06, Pitch, Yawn, Tick, Unk10);
+            }
+        }
     }
 }

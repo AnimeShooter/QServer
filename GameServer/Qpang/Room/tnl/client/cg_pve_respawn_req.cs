@@ -24,14 +24,14 @@ namespace Qserver.GameServer.Qpang
             ImplementNetEvent(out _dynClassRep, "CGPvERespawnReq", NetClassMask.NetClassGroupGameMask, 0);
         }
 
-        //public uint PlayerId;
+        public bool Accepted; // 88
 
         public CGPvERespawnReq() : base(GameNetId.CG_PVE_RESPAWN_REQ, GuaranteeType.GuaranteedOrdered, EventDirection.DirAny) { }
 
         public override void Pack(EventConnection ps, BitStream bitStream) { }
         public override void Unpack(EventConnection ps, BitStream bitStream) 
         {
-            //bitStream.Read(out PlayerId);
+            bitStream.Read(out Accepted);
         }
         public override void Process(EventConnection ps) 
         {

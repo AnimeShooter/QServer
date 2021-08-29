@@ -13,7 +13,8 @@ namespace Qserver.GameServer.Qpang
             {"dummy", new DummyCommand() },
             {"EndRound", new EndRoundCommand() },
             {"NewRound", new NewRoundCommand() },
-            {"EndGame", new EndGameCommand() }
+            {"EndGame", new EndGameCommand() },
+            {"spawn", new SpawnCommand() }
         };
 
         public CommandManager()

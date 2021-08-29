@@ -24,6 +24,16 @@ namespace Qserver.GameServer.Qpang
          *  ...
          * 
          */
+
+        public override void OnStart(RoomSession roomSession)
+        {
+            //var newNpc = new GCPvENpcInit(0,);
+
+            roomSession.RelayPlaying<GCPvENpcInit>((uint)0, (uint)1, (ushort)1, (byte)1, new Spawn() { X = 0, Y = 0, Z = 0 });
+
+            base.OnStart(roomSession);
+        }
+
         public override void Tick(RoomSession roomSession)
         {
 

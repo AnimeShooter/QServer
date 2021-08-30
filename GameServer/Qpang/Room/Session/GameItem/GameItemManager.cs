@@ -226,6 +226,13 @@ namespace Qserver.GameServer.Qpang
             return (uint)Item.RED_MEDKIT; // worst case secanrio
         }
 
+        public void OnPickUp(RoomSessionPlayer player, PvEItem item)
+        {
+            // TODO handle loot?
+
+            this._roomSession.RelayPlaying<GCGameItem>((byte)1, player.Player.PlayerId, item.ItemId, item.Uid, (uint)0);
+        }
+
         public void OnPickUp(RoomSessionPlayer player, uint spawnId)
         {
             if (this._items == null)

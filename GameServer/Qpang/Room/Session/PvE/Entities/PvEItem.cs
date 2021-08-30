@@ -21,6 +21,17 @@ namespace Qserver.GameServer.Qpang
             this._itemId = itemId;
         }
 
+        public override uint OnTrigger(RoomSessionPlayer player)
+        {
+            // TODO do some more checks
+            if (player == null || player.RoomSession == null)
+                return 0;
+
+            player.RoomSession.ItemManager.OnPickUp(player, this);
+
+            return 0;
+        }
+
 
     }
 }

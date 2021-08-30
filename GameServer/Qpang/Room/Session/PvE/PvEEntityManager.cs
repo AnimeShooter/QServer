@@ -169,6 +169,20 @@ namespace Qserver.GameServer.Qpang
             }
         }
 
+        public void ItemPickup(RoomSessionPlayer player, uint uid)
+        {
+            lock(this._entities)
+                foreach(var e in this._entities)
+                {
+                    if (e.Key != uid)
+                        continue;
+
+                    var item = (PvEItem)e.Value;
+                    item.OnTrigger(player);
+                    return;
+                }
+        }
+
         private void InvokeObj(RoomSessionPlayer player, PvEEntity e)
         {
             if (player == null || player.RoomSession == null)

@@ -32,7 +32,7 @@ namespace Qserver.GameServer.Qpang
         public byte Unk6; // 108
 
         public GCPvEAreaTriggerInit() : base(GameNetId.GC_PVE_AREA_TRIGGER_INIT, GuaranteeType.Guaranteed, EventDirection.DirAny) { }
-        public GCPvEAreaTriggerInit(uint id, uint uid, Spawn spawn, byte unk6) : base(GameNetId.GC_PVE_AREA_TRIGGER_INIT, GuaranteeType.Guaranteed, EventDirection.DirAny) 
+        public GCPvEAreaTriggerInit(uint id, uint uid, Position spawn, byte unk6) : base(GameNetId.GC_PVE_AREA_TRIGGER_INIT, GuaranteeType.Guaranteed, EventDirection.DirAny) 
         {
             TriggerId = id;
             Uid = uid;

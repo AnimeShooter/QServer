@@ -24,7 +24,7 @@ namespace Qserver.GameServer.Qpang
                 uint.TryParse(args[1], out type);
 
             player.RoomPlayer.Room.RoomSession.RelayPlaying<GCPvENpcInit>((uint)type, (uint)42069, (ushort)1, (byte)1, 
-                new Spawn() { 
+                new Position() { 
                     X = player.RoomPlayer.RoomSessionPlayer.Position.X, 
                     Y = player.RoomPlayer.RoomSessionPlayer.Position.Y,
                     Z = player.RoomPlayer.RoomSessionPlayer.Position.Z,

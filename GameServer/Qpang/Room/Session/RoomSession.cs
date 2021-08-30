@@ -29,6 +29,7 @@ namespace Qserver.GameServer.Qpang
         private GameMode _gameMode;
         private GameItemManager _itemManager;
         private RoomSkillManager _skillManager;
+        private PvEEntityManager _PvEEntityManager;
 
         private Dictionary<uint, RoomSessionPlayer> _players;
 
@@ -89,6 +90,10 @@ namespace Qserver.GameServer.Qpang
         public RoomSkillManager SkillManager
         {
             get { return this._skillManager; }
+        } 
+        public PvEEntityManager PvEEntityManager
+        {
+            get { return this._PvEEntityManager; }
         }
 
         public bool Finished
@@ -144,6 +149,7 @@ namespace Qserver.GameServer.Qpang
 
             this._itemManager = new GameItemManager();
             this._skillManager = new RoomSkillManager(); // TODO 
+            this._PvEEntityManager = new PvEEntityManager(); // TODO 
 
             this._goal = this._room.PointsGame ? this._room.ScorePoints : this._room.ScoreTime;
             this._isPoints = this._room.PointsGame;
@@ -156,6 +162,7 @@ namespace Qserver.GameServer.Qpang
         {
             this._itemManager.Initialize(this);
             this._skillManager.Initialize(this);
+            this._PvEEntityManager.Initialize(this);
 
             this._gameMode.OnStart(this);
             this._essencePosition = Game.Instance.SpawnManager.GetEssenceSpawn(this._room.Map);
@@ -742,6 +749,7 @@ namespace Qserver.GameServer.Qpang
             }
 
             this._itemManager.SyncPlayer(player);
+            this._PvEEntityManager.SyncPlayer(player);
             this._gameMode.OnPlayerSync(player);
         }
 

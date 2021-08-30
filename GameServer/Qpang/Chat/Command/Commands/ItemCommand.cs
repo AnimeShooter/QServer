@@ -25,7 +25,7 @@ namespace Qserver.GameServer.Qpang
 
 
             player.RoomPlayer.Room.RoomSession.RelayPlaying<GCPvEItemInit>((uint)type, (uint)42269,
-                new Spawn() { 
+                new Position() { 
                     X = player.RoomPlayer.RoomSessionPlayer.Position.X, 
                     Y = player.RoomPlayer.RoomSessionPlayer.Position.Y,
                     Z = player.RoomPlayer.RoomSessionPlayer.Position.Z,

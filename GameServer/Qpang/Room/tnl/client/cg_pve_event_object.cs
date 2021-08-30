@@ -42,7 +42,21 @@ namespace Qserver.GameServer.Qpang
 
         public override void Handle(GameConnection conn, Player player)
         {
-            base.Handle(conn, player); // called on trigger
+            if (player == null || player.RoomPlayer == null || player.RoomPlayer.RoomSessionPlayer == null)
+                return;
+
+            var roomPlayer = player.RoomPlayer;
+            if (roomPlayer == null)
+                return;
+
+            var roomSessionPlayer = roomPlayer.RoomSessionPlayer;
+            if (roomSessionPlayer == null)
+                return;
+
+            if (roomSessionPlayer.Death)
+                return;
+
+            roomSessionPlayer.RoomSession.PvEEntityManager.InvokeObject(roomSessionPlayer, Uid, Triggered);
         }
     }
 }

@@ -24,17 +24,21 @@ namespace Qserver.GameServer.Qpang
             ImplementNetEvent(out _dynClassRep, "GCPvEDestroyObject", NetClassMask.NetClassGroupGameMask, 0);
         }
 
-        public uint Unk1; // 88
+        public uint Uid; // 88
 
         public GCPvEDestroyObject() : base(GameNetId.GC_PVE_DESTROY_OBJECT, GuaranteeType.Guaranteed, EventDirection.DirAny) { }
+        public GCPvEDestroyObject(uint uid) : base(GameNetId.GC_PVE_DESTROY_OBJECT, GuaranteeType.Guaranteed, EventDirection.DirAny) 
+        {
+            Uid = uid;
+        }
 
         public override void Pack(EventConnection ps, BitStream bitStream) 
         {
-            bitStream.Write(Unk1);
+            bitStream.Write(Uid);
         }
         public override void Unpack(EventConnection ps, BitStream bitStream)
         {
-            bitStream.Read(out Unk1);
+            bitStream.Read(out Uid);
         }
         public override void Process(EventConnection ps)
         {

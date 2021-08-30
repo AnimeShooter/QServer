@@ -8,6 +8,7 @@ namespace Qserver.GameServer.Qpang
 {
     public class PvE : GameMode
     {
+
         public override bool IsPvE()
         {
             return true;
@@ -37,28 +38,27 @@ namespace Qserver.GameServer.Qpang
 
         public override void OnStart(RoomSession roomSession)
         {
-            //var newNpc = new GCPvENpcInit(0,);
-
-            roomSession.RelayPlaying<GCPvENpcInit>((uint)0, (uint)1, (ushort)1, (byte)1, new Spawn() { X = 0, Y = 0, Z = 0 });
-
+            roomSession.PvEEntityManager.SetupStage(1);
+            
             base.OnStart(roomSession);
+        }
+
+        public override void OnPlayerSync(RoomSessionPlayer session)
+        {
+            base.OnPlayerSync(session);
         }
 
         public override void Tick(RoomSession roomSession)
         {
 
-            
-
             // Reset timers? (Stage 2 goes by time)
-
 
             base.Tick(roomSession);
         }
 
-        private void NextRound()
+        private void NextRound(RoomSession roomSession, byte round)
         {
-            // GCPvEEndRound
-            // GCPvEStarRound
+            roomSession.PvEEntityManager.SetupStage(round); 
         }
     }
 }

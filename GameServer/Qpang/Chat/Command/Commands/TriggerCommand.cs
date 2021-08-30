@@ -19,13 +19,13 @@ namespace Qserver.GameServer.Qpang
                 return;
 
             uint type = 0;
-            ushort state = 0;
+            byte state = 0;
 
             if (args.Count > 1)
                 uint.TryParse(args[1], out type);
 
             if (args.Count > 2)
-                ushort.TryParse(args[2], out state);
+                byte.TryParse(args[2], out state);
 
             player.RoomPlayer.Room.RoomSession.RelayPlaying<GCPvEAreaTriggerInit>((uint)type, (uint)42369,
                 new Spawn()

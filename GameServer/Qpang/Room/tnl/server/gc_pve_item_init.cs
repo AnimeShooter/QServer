@@ -31,7 +31,7 @@ namespace Qserver.GameServer.Qpang
         public float Z; // z? 104;
 
         public GCPvEItemInit() : base(GameNetId.GC_PVE_ITEM_INIT, GuaranteeType.Guaranteed, EventDirection.DirAny) { }
-        public GCPvEItemInit(uint itemId, uint uid, Spawn spawn) : base(GameNetId.GC_PVE_ITEM_INIT, GuaranteeType.Guaranteed, EventDirection.DirAny)
+        public GCPvEItemInit(uint itemId, uint uid, Position spawn) : base(GameNetId.GC_PVE_ITEM_INIT, GuaranteeType.Guaranteed, EventDirection.DirAny)
         {
             ItemId = itemId;
             Uid = uid;

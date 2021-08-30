@@ -24,7 +24,7 @@ namespace Qserver.GameServer.Qpang
             ImplementNetEvent(out _dynClassRep, "GCPvENpcInit", NetClassMask.NetClassGroupGameMask, 0);
         }
 
-        public uint Type; // 88
+        public uint Id; // 88
         public uint Uid; // 92
         public float X; // 96
         public float Y; // 100
@@ -34,7 +34,7 @@ namespace Qserver.GameServer.Qpang
         public uint Unk8; // 112
 
         public GCPvENpcInit() : base(GameNetId.GC_PVE_NPC_INIT, GuaranteeType.Guaranteed, EventDirection.DirAny) { }
-        public GCPvENpcInit(uint unk1, uint uid, ushort type, byte subType, Spawn spawn) : base(GameNetId.GC_PVE_NPC_INIT, GuaranteeType.Guaranteed, EventDirection.DirAny)
+        public GCPvENpcInit(uint id, uint uid, ushort type, byte subType, Position spawn) : base(GameNetId.GC_PVE_NPC_INIT, GuaranteeType.Guaranteed, EventDirection.DirAny)
         {
             /*
                 1: normal
@@ -64,18 +64,18 @@ namespace Qserver.GameServer.Qpang
                 25: gun white
                 26: big Melee rat
             */
-            Type = unk1; // type? // 1
+            Id = id; // type? // 1
             Uid = uid; // subtype? // 1, 2, 3, 6 (training rabbits?)
             X = spawn.X;
             Y = spawn.Y;
             Z = spawn.Z;
-            Unk6 = type; 
-            Unk7 = subType; 
+            Unk6 = type; // unk
+            Unk7 = subType;  // unk
         }
 
         public override void Pack(EventConnection ps, BitStream bitStream) 
         {
-            bitStream.Write(Type);
+            bitStream.Write(Id);
             bitStream.Write(Uid);
             bitStream.Write(X);
             bitStream.Write(Y);
@@ -86,7 +86,7 @@ namespace Qserver.GameServer.Qpang
         }
         public override void Unpack(EventConnection ps, BitStream bitStream) 
         {
-            bitStream.Read(out Type);
+            bitStream.Read(out Id);
             bitStream.Read(out Uid);
             bitStream.Read(out X);
             bitStream.Read(out Y);

@@ -32,7 +32,7 @@ namespace Qserver.GameServer.Qpang
         public ushort Unk6; // 108 State?
 
         public GCPvEObjectInit() : base(GameNetId.GC_PVE_OBJECT_INIT, GuaranteeType.Guaranteed, EventDirection.DirAny) { }
-        public GCPvEObjectInit(uint objId, uint uid, Spawn spawn, ushort unk6) : base(GameNetId.GC_PVE_OBJECT_INIT, GuaranteeType.Guaranteed, EventDirection.DirAny) 
+        public GCPvEObjectInit(uint objId, uint uid, Position spawn, ushort unk6) : base(GameNetId.GC_PVE_OBJECT_INIT, GuaranteeType.Guaranteed, EventDirection.DirAny) 
         {
             Unk1 = objId;
             Unk2 = uid;

@@ -28,6 +28,11 @@ namespace Qserver.GameServer.Qpang
         public bool Triggerd; //
 
         public GCPvEDoor() : base(GameNetId.GC_PVE_DOOR, GuaranteeType.Guaranteed, EventDirection.DirAny) { }
+        public GCPvEDoor(uint uid, bool triggerd) : base(GameNetId.GC_PVE_DOOR, GuaranteeType.Guaranteed, EventDirection.DirAny) 
+        {
+            Uid = uid;
+            Triggerd = triggerd;
+        }
 
         public override void Pack(EventConnection ps, BitStream bitStream)
         {

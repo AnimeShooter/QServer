@@ -103,7 +103,7 @@ namespace Qserver.GameServer.Qpang
             0.088209 Forwads
             */
 
-            session.SpeedTest(Cmd, PosX, PosY, PosZ);
+            //session.SpeedTest(Cmd, PosX, PosY, PosZ);
             //player.RoomPlayer.RoomSessionPlayer.Test(Cmd, PosX, PosY, PosZ);
 
             // TODO: fix timing issue and detect cheatingg

@@ -236,7 +236,7 @@ namespace Qserver.GameServer.Qpang
                         room.SetTeamSorting(Value == 1 ? true : false);
                         break;
                     case Commands.TOGGLE_SKILL: // TODO fix
-                        //room.SetSkillsEnabled(Value == 1 ? true : false);
+                        room.SetSkillsEnabled(Value == 1 ? true : false);
                         break;
                     default:
                         break;

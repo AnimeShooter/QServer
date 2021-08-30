@@ -91,12 +91,14 @@ namespace Qserver.GameServer.Qpang
             this._items = new Dictionary<uint, GameItemSpawn>();
             this._eventItems = new Dictionary<uint, bool>();
 
+            this._items.Add(0, new GameItemSpawn() { ItemId = 0, LastPickUpTime = 0 }); // empty 0 id
+
             var spawns = Game.Instance.SpawnManager.GetItemSpawns(this._roomSession.Room.Map);
             for (int i = 0; i < spawns.Count; i++)
             {
-                this._items.Add((uint)i, new GameItemSpawn()
+                this._items.Add((uint)(i+1), new GameItemSpawn()
                 {
-                    SpawnId = (uint)(i), // NOTE: id 0 is not accepted by gane?
+                    SpawnId = (uint)(i+1), // NOTE: id 0 is not accepted by gane?
                     ItemId = GetRandomItem(),
                     LastPickUpTime = 0,
                     Spawn = spawns[i]

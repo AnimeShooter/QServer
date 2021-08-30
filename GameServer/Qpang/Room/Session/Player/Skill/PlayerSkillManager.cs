@@ -71,12 +71,16 @@ namespace Qserver.GameServer.Qpang
                 // 9 : stop?
                 // 2 : remove?
 
-                // Send expire to others
-                this._player.RoomSession.RelayPlayingExcept<GCCard>(this._player.Player.PlayerId, this._player.Player.PlayerId, (uint)0, (byte)4, (uint)9, this._activeSkillCard.Id, (ulong)0);
+                // activate empty?
+                this._player.Post(new GCCard(this._player.Player.PlayerId, (uint)0, (byte)4, (uint)9, (uint)0, (ulong)0));
+
+                // Send info to others
+                //this._player.RoomSession.RelayPlaying<GCCard>(this._player.Player.PlayerId, (uint)0, (byte)4, (uint)9, this._activeSkillCard.Id, (ulong)0);
+                this._player.RoomSession.RelayPlaying<GCCard>(this._player.Player.PlayerId, (uint)0, (byte)3, (uint)9, this._activeSkillCard.Id, (ulong)0);
+                //this._player.RoomSession.RelayPlayingExcept<GCCard>(this._player.Player.PlayerId, this._player.Player.PlayerId, (uint)0, (byte)4, (uint)9, this._activeSkillCard.Id, (ulong)this._activeSkillCard.Id);
 
                 // expire self (2 too?)
                 //this._player.Post(new GCCard(this._player.Player.PlayerId, (uint)0, (byte)4, (uint)9, this._activeSkillCard.Id, (ulong)0));
-                this._player.Post(new GCCard(this._player.Player.PlayerId, (uint)0, (byte)4, (uint)9, this._activeSkillCard.Id, (ulong)this._activeSkillCard.Id));
                 //this._player.Post(new GCCard(this._player.Player.PlayerId, (uint)0, (byte)2, (uint)9, this._activeSkillCard.Id, (ulong)0));
                 //this._player.Post(new GCCard(this._player.Player.PlayerId, (uint)0, (byte)2, (uint)9, this._activeSkillCard.Id, (ulong)this._activeSkillCard.Id));
                 //this._player.Post(new GCCard(this._player.Player.PlayerId, (uint)0, (byte)1, (uint)9, this._activeSkillCard.Id, (ulong)0));

@@ -38,10 +38,12 @@ namespace Qserver.GameServer.Qpang
             {
                 var effect = this._effects[i];
                 effect.Weapon.EffectDuration--;
-                if (effect.Weapon.EffectId == 12 || effect.Weapon.EffectId == 13) // pois || fire
-                    TakeDamageFromEffect(effect);
-                if (effect.Weapon.EffectDuration <= 0)
-                    expired.Add(effect);
+                this._effects[i] = effect; // idk?
+
+                if (this._effects[i].Weapon.EffectId == 12 || this._effects[i].Weapon.EffectId == 13) // pois || fire
+                    TakeDamageFromEffect(this._effects[i]);
+                if (this._effects[i].Weapon.EffectDuration <= 0)
+                    expired.Add(this._effects[i]);
             }
 
             foreach(var effect in expired)
@@ -105,8 +107,8 @@ namespace Qserver.GameServer.Qpang
                 foreach (var effect in this._effects)
                     if (effect.Weapon.EffectId == effectId && effect.Weapon.EffectId > 0)
                         sharedEffectCount++;
-                // TODO
-                if (sharedEffectCount == 0)
+
+                if (sharedEffectCount <= 1) // current/last effect
                     this._player.RoomSession.RelayPlaying<GCWeapon>(this._player.Player.PlayerId, (uint)6, (ushort)effectId);
             }
         }

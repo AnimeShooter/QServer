@@ -182,11 +182,20 @@ namespace Qserver.GameServer.Network.Packets
         public new string ReadWString(int len)
         {
             byte[] str = ReadBytes(len*2+2);
-            string result = "";
-            for(int i = 0; i < len * 2 + 2; i+=2)
-                if(str[i] != 0x00)
-                    result += (char)str[i];
-            return result;
+            //string result = "";
+            //for (int i = 0; i < len * 2; i += 2)
+            //    if (str[i] != 0x00 && str[i] != 0x00)
+            //    {
+            //        result += (char)str[i];
+            //    }
+
+            //return result;
+
+            byte[] result = new byte[len * 2 + 2];
+            for (int i = 0; i < len * 2; i++)
+                if (str[i] != 0x00)
+                    result[i] = str[i];
+            return Encoding.Unicode.GetString(result).Split('\0')[0];
         }
 
         public new byte[] ReadBytes(int count)

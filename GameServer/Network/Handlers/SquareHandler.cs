@@ -16,7 +16,7 @@ namespace Qserver.GameServer.Network.Handlers
         {
             packet.ReadBytes(34);
             ushort len = packet.ReadUInt16();
-            string msg = packet.ReadWString(len & 254); // prevent over 255
+            string msg = packet.ReadWString(len % 254); // prevent over 254+2
 
             Player player = manager.Player;
             if (player == null)

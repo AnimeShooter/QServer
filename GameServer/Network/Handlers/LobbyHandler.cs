@@ -759,7 +759,7 @@ namespace Qserver.GameServer.Network.Handlers
 
             var len = packet.ReadUInt16() % 254;
             string nickname = packet.ReadWString(16);
-            string messagge = packet.ReadWString(len-1); // not always?
+            string messagge = packet.ReadWString(len); // not always?
 
             var player = Game.Instance.GetOnlinePlayer(nickname);
             if (player == null)

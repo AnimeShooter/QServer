@@ -180,7 +180,10 @@ namespace Qserver.GameServer.Network.Packets
             for(int i = 0; i < max; i++)
             {
                 if(i < data.Length)
-                    this.WriteUInt16((char)data[i]);
+                {
+                    byte[] wchar = BitConverter.GetBytes((char)data[i]);
+                    this.WriteBytes(wchar);
+                }
                 else
                     this.WriteUInt16(0);
             }

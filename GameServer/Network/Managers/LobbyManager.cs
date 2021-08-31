@@ -1197,7 +1197,7 @@ namespace Qserver.GameServer.Network.Managers
         {
             PacketWriter pw = new PacketWriter((Opcode)739);
             pw.WriteUInt32(0);
-            ushort len = (ushort)(sender.Length % 254);
+            ushort len = (ushort)(message.Length % 254);
             pw.WriteUInt16(len);
             pw.WriteWString(sender, 16);
             pw.WriteWString(message, len);

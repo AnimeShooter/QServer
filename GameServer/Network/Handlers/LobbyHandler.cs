@@ -560,6 +560,9 @@ namespace Qserver.GameServer.Network.Handlers
             };
             manager.Player.InventoryManager.StoreCard(card);
             manager.Send(LobbyManager.Instance.Send_907(keyId, chestId, card));
+
+            // TOOD: rm, hacky fix
+            manager.Send(LobbyManager.Instance.Inventory(manager.Player.InventoryManager.List()));
         }
         public static void Handle_903(PacketReader packet, ConnServer manager)
         {
@@ -656,16 +659,63 @@ namespace Qserver.GameServer.Network.Handlers
 
             player.RemoveCoins(coinsRequired);
 
+            Random rnd = new Random();
+
             List<InventoryCard> cards = new List<InventoryCard>();
 
             for(int i = 0; i < times; i++)
             {
-                var invCard = craneManager.GetRandomItem();
-                player.InventoryManager.StoreCard(invCard);
-                cards.Add(invCard);
+                bool essence = false;
+                switch(times)
+                {
+                    case 1:
+                        essence = rnd.Next(0, 100) <= 40; // 40% chance;
+                        break;
+                    case 3:
+                        essence = rnd.Next(0, 100) <= 30; // 30%
+                        break;
+                    case 5:
+                        essence = rnd.Next(0, 100) <= 25; // 25%
+                        break;
+                }
+                InventoryCard loot;
+                if(essence)
+                {
+                    // Green, set
+                    // yellow, major cloth
+                    // Blue, minor cloth
+
+                    uint essenceId = 1174405154; // green - 20%
+
+                    if(rnd.Next(0,100) <= 45) 
+                        essenceId = 1174405153; // blue - 45%
+                    else if(rnd.Next(0, 100) >= 30) 
+                        essenceId = 1174405154; // yellow - 45% (= 2 yellow, 2 blue)
+
+                    loot = new InventoryCard()
+                    {
+                        ItemId = essenceId,
+                        Type = 70,
+                        IsGiftable = true,
+                        IsOpened = true,
+                        IsActive = false,
+                        BoostLevel = 0,
+                        TimeCreated = Util.Util.Timestamp(),
+                        Period = 1,
+                        PeriodeType = 3
+                    };
+                }
+                else
+                    loot = craneManager.GetRandomItem();
+
+                player.InventoryManager.StoreCard(loot);
+                cards.Add(loot);
             }
 
-            player.SendLobby(LobbyManager.Instance.UseCrainSuccess(player, cards)); // TODO: fix active bug? (temp fix: relog)
+            manager.Send(LobbyManager.Instance.UseCrainSuccess(player, cards));
+
+            // TOOD: rm, hacky fix
+            manager.Send(LobbyManager.Instance.Inventory(player.InventoryManager.List()));
 
         }
         public static void HandleRedeemCode(PacketReader packet, ConnServer manager)

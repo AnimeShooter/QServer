@@ -42,7 +42,8 @@ namespace Qserver.GameServer.Qpang
                 card.BoostLevel = 0;
                 card.TimeCreated = Util.Util.Timestamp();
 
-                bool IsUnlimited = (rnd.Next(0, 1000) % 100 == 0); // 1% 
+                bool IsUnlimited = (rnd.Next(0, 1000) % 999 == 0) 
+                    || (rnd.Next(0, 1000) % 420 == 0); // 0.2% 
 
                 if(IsUnlimited)
                 {

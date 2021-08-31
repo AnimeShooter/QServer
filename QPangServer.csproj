@@ -387,7 +387,6 @@
 
   <ItemGroup>
     <Folder Include="GameServer\Qpang\Chat\Command\Arguments\" />
-    <Folder Include="GameServer\Qpang\Boost\" />
   </ItemGroup>
 
 </Project>

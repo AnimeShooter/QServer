@@ -398,7 +398,8 @@ namespace Qserver.GameServer.Qpang
                     case 1429412097: // yellow helper
                         return 20;
                     case 1429415424: // novice back
-                        return 30;
+                        //return 30;
+                        return 20;
                     default:
                         return 0;
                 }
@@ -474,13 +475,9 @@ namespace Qserver.GameServer.Qpang
                     {
                         var card = this._player.InventoryManager.Get(e);
                         if(card.Type == 86 || card.Type == 87)
-                        {
                             this._player.EquipmentManager.UnequipItem(e);
-                        }else if (card.Type == 70)
-                        {
-                            card.IsActive = false;
+                        else if (card.Type == 70)
                             this._player.EquipmentManager.RemoveFunctionCard(e);
-                        }
                     }
                 }
 

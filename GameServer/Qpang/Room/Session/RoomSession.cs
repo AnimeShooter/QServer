@@ -614,8 +614,8 @@ namespace Qserver.GameServer.Qpang
 
         public uint GetElapsedEssenceDropTime()
         {
-            if (this._essenceDropTime == uint.MaxValue)
-                return 0;
+            //if (this._essenceDropTime == uint.MaxValue)
+            //    return 0;
 
             return Util.Util.Timestamp() - this._essenceDropTime;
         }

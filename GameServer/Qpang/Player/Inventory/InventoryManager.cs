@@ -236,18 +236,21 @@ namespace Qserver.GameServer.Qpang
                     if (card.PeriodeType == 254)
                         return false; // Unlimited
 
-                    if (card.PeriodeType == 3) // rounds
+                    if (card.PeriodeType == 3 && card.Period > 0) // rounds
                     {
-                            if (card.Period > 0) // dont underflow?
-                            card.Period--;
+                        card.Period = (ushort)(card.Period - 1);
                     }
                     else if (card.PeriodeType == 2) // time based?
                         card.Period = card.Period <= playtime ? (ushort)0 : (ushort)(card.Period - playtime);
 
                     if (card.PeriodeType != 254)
                     {
-                        Game.Instance.ItemsRepository.UserCard(playtime, cardId).GetAwaiter().GetResult();
+                        if (card.Period == 0)
+                            card.IsActive = false; // save unequiped!
+                        Game.Instance.ItemsRepository.UseCard(playtime, cardId).GetAwaiter().GetResult();
                     }
+
+                    this._cards[cardId] = card; // idk??
 
                     if (card.Period == 0)
                         return true;

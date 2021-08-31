@@ -170,7 +170,7 @@ namespace Qserver.Database.Repositories
 				 connection.QueryAsync("DELETE FROM player_items WHERE id = @ItemId and player_id = @PlayerId", new { PlayerId = playerId, ItemId = itemId }));
 			return;
 		}
-		public async Task UserCard(uint playtime, ulong cardId)
+		public async Task UseCard(uint playtime, ulong cardId)
 		{
 			await _sqlObjectFactory.GetConnection().UsingAsync(connection =>
 				 connection.QueryAsync("UPDATE player_items SET period = IF(period_type = 3, period - 1, period - @Playtime) WHERE id = @CardId", new { Playtime = playtime, CardId = cardId }));

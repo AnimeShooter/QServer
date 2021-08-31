@@ -244,7 +244,7 @@ namespace Qserver.GameServer.Qpang
             uint id = (uint)rnd.Next(0x1FFFFF, 0xFFFFFF);
             this._playerId = id;
             this._level = 1;
-            this._rank = 0;
+            this._rank = 5;
             this._prestige = 1;
 
             if (botName == "")

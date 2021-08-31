@@ -56,6 +56,7 @@ namespace Qserver.GameServer.Qpang
         private CraneManager _craneManager;
         private CouponManager _couponManager;
         private TradeManager _tradeManager;
+        private LootboxManager _lootboxManager;
 
         private Leaderboard _leaderboard;
 
@@ -139,6 +140,10 @@ namespace Qserver.GameServer.Qpang
         public TradeManager TradeManager
         {
             get { return this._tradeManager; }
+        }
+        public LootboxManager LootboxManager
+        {
+            get { return this._lootboxManager; }
         }
         public Leaderboard Leaderboard
         {

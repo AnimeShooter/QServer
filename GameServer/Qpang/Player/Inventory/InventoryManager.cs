@@ -321,7 +321,7 @@ namespace Qserver.GameServer.Qpang
             }
         }
 
-        public void TradeItem(ulong cardId, uint targetId)
+        public void TradeItem(ulong cardId, Player target)
         {
             lock(this._lock)
             {
@@ -333,8 +333,14 @@ namespace Qserver.GameServer.Qpang
 
                 lock(this._player.Lock)
                 {
+                    var card = this._player.InventoryManager.Get(cardId);
+
+                    // 'client side' save
                     this._player.InventoryManager.RemoveCard(cardId);
-                    Game.Instance.ItemsRepository.ChangeItemOwner(targetId, cardId, true, Util.Util.Timestamp()).GetAwaiter().GetResult();
+                    target.InventoryManager.AddCard(card);
+
+                    // server side save
+                    Game.Instance.ItemsRepository.ChangeItemOwner(target.PlayerId, cardId, true, Util.Util.Timestamp()).GetAwaiter().GetResult();
                 }
             }
         }

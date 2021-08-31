@@ -81,11 +81,11 @@ namespace Qserver.GameServer.Qpang
 
                 // Transfer player
                 foreach (var item in playerStash.Values)
-                    player.InventoryManager.TradeItem(item.Id, targetId);
+                    player.InventoryManager.TradeItem(item.Id, target);
 
                 // Transfer target
                 foreach (var item in targetStash.Values)
-                    target.InventoryManager.TradeItem(item.Id, player.PlayerId);
+                    target.InventoryManager.TradeItem(item.Id, player);
 
                 // remove trade data
                 this._accepted.Remove(player.PlayerId);

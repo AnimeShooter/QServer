@@ -43,9 +43,21 @@ namespace Qserver.GameServer.Qpang
             byte[] strBuffer = new byte[(uint)(maxLen * 2 + 2)];
             ByteBuffer byteBuffer = new ByteBuffer((uint)strBuffer.Length);
 
-            for (int i = 0; i < str.Length; i++)
-                strBuffer[i * 2] = (byte)str[i];
+            //byte[] data = Encoding.Unicode.GetBytes(str);
+            //for (int i = 0; i < str.Length; i++)
+            //{
+            //    strBuffer[i] = data[i];
+            //    strBuffer[i + 1] = data[i + 1];
+            //}
 
+            // NOTE: proper support?
+            for (int i = 0; i < str.Length; i++)
+            {
+                byte[] wchar = BitConverter.GetBytes(str[i]);
+                strBuffer[i * 2] = wchar[0];
+                strBuffer[i * 2 + 1] = wchar[1];
+            }
+            
             byteBuffer.SetBuffer(strBuffer, (uint)strBuffer.Length);
             bitSteam.Write(byteBuffer);
         }
@@ -64,3 +76,4 @@ namespace Qserver.GameServer.Qpang
     }
 
 }
+

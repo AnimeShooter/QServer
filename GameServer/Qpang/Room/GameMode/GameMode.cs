@@ -79,7 +79,7 @@ namespace Qserver.GameServer.Qpang
 
             
             target.ResetStreak();
-            target.EffectManager.Clear(); // TODO
+            target.EffectManager.Clear(); 
             target.StartPrespawn();
 
             // handle skillpoints

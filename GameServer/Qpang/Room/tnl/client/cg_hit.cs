@@ -185,7 +185,6 @@ namespace Qserver.GameServer.Qpang
 
                 dmg = weapon.Damage;
 
-                // TODO: character
                 switch((HitLocations)HitLocation)
                 {
                     case HitLocations.HEAD:
@@ -283,8 +282,7 @@ namespace Qserver.GameServer.Qpang
             {
                 srcPlayer.EntityManager.AddKill(EntityId);
                 roomSession.GameMode.OnPlayerKill(srcPlayer, dstPlayer, weapon, HitLocation);
-                roomSession.KillPlayer(srcPlayer, dstPlayer, weapon.ItemId, HitLocation == 0);
-                dstPlayer.StartPrespawn(); // prespawn?
+                roomSession.BroadcastPlayerKill(srcPlayer, dstPlayer, weapon.ItemId, HitLocation == 0);
             }
         }
 

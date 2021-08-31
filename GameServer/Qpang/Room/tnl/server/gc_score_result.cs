@@ -94,8 +94,7 @@ namespace Qserver.GameServer.Qpang
                 bitStream.Write(player.DonRate);
                 bitStream.Write(player.ExpRate);
 
-                // test
-                WriteWString(bitStream, player.Player.Name, 16); // TODO check
+                WriteWString(bitStream, player.Player.Name, 16);
                 bitStream.Write((uint)0); // Unk19
 
                 playerIndex++;

@@ -453,8 +453,8 @@ namespace Qserver.GameServer.Qpang
             }
 
             var playingPlayers = GetPlayingPlayers();
-            // TODO: sort by score
 
+            var sortedPlatingPlayers = playingPlayers.OrderBy(x => x.Kills).ToList();
             foreach(var player in players)
             {
                 var p = player.Player;
@@ -462,9 +462,9 @@ namespace Qserver.GameServer.Qpang
                 player.Post(new GCGameState(p.PlayerId, 1));
                 player.Post(new GCGameState(p.PlayerId, 23));
                 if(this._room.Mode == GameMode.Mode.PVE)
-                    player.Post(new GCPvEScoreResult(this, playingPlayers));
+                    player.Post(new GCPvEScoreResult(this, sortedPlatingPlayers));
                 else
-                    player.Post(new GCScoreResult(this, playingPlayers));
+                    player.Post(new GCScoreResult(this, sortedPlatingPlayers));
             }
 
             this._room.Finish();
@@ -777,7 +777,7 @@ namespace Qserver.GameServer.Qpang
         }
 
 
-        public void KillPlayer(RoomSessionPlayer killer, RoomSessionPlayer target, uint weaponId, bool isHeadshot)
+        public void BroadcastPlayerKill(RoomSessionPlayer killer, RoomSessionPlayer target, uint weaponId, bool isHeadshot)
         {
             RelayPlaying<GCGameState>(target.Player.PlayerId, isHeadshot ? (uint)28 : (uint)17, weaponId, killer.Player.PlayerId);
         }

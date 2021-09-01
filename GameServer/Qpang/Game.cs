@@ -57,6 +57,7 @@ namespace Qserver.GameServer.Qpang
         private CouponManager _couponManager;
         private TradeManager _tradeManager;
         private LootboxManager _lootboxManager;
+        private BoostManager _boostManager;
 
         private Leaderboard _leaderboard;
 
@@ -144,6 +145,10 @@ namespace Qserver.GameServer.Qpang
         public LootboxManager LootboxManager
         {
             get { return this._lootboxManager; }
+        }
+        public BoostManager BoostManager
+        {
+            get { return this._boostManager; }
         }
         public Leaderboard Leaderboard
         {
@@ -250,6 +255,8 @@ namespace Qserver.GameServer.Qpang
             this._craneManager = new CraneManager();
             this._couponManager = new CouponManager();
             this._tradeManager = new TradeManager();
+            this._lootboxManager = new LootboxManager();
+            this._boostManager = new BoostManager();
             this._cacheManager = new CacheManager();
             this._leaderboard = new Leaderboard();
             this._leaderboard.Refresh(); // initial update (TODO: refresh  every 12/24h?)

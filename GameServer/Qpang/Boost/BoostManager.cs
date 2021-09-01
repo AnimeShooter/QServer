@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Qserver.GameServer.Qpang.Boost
+namespace Qserver.GameServer.Qpang
 {
     public class BoostManager
     {

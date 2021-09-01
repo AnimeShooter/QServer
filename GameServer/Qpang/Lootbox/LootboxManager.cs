@@ -15,7 +15,7 @@ namespace Qserver.GameServer.Qpang
         {
             this._lootTable = new List<LootboxLoot>();
             // TODO db
-            Log.Message(LogType.MISC, $"LootboxManager loaded {this._lootTable.Count} Items from the database!");
+            Log.Message(LogType.MISC, $"LootboxManager loaded {this._lootTable.Count} Lootbox Loot Tables from the database!");
         }
 
         public InventoryCard LootLootbox()

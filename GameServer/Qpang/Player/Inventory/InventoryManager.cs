@@ -247,7 +247,7 @@ namespace Qserver.GameServer.Qpang
                     {
                         if (card.Period == 0)
                             card.IsActive = false; // save unequiped!
-                        Game.Instance.ItemsRepository.UseCard(playtime, cardId).GetAwaiter().GetResult();
+                        Game.Instance.ItemsRepository.UseCard(playtime, cardId, card.Period == 0).GetAwaiter().GetResult();
                     }
 
                     this._cards[cardId] = card; // idk??

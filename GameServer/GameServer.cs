@@ -104,9 +104,9 @@ namespace Qserver.GameServer
             }
 
             // Init game server (Square + Lobby)
-            if(startSquareServer || startLobbyServer) // Square always on?
+            Game game = new Game(startLobbyServer);
+            if (startSquareServer || startLobbyServer) // Square always on?
             {
-                Game game = new Game(startLobbyServer);
                 if (startLobbyServer)
                     Log.Message(LogType.NORMAL, $"LobbyServer   listening on {Settings.SERVER_IP}:{Settings.SERVER_PORT_LOBBY}");
                 if (startSquareServer)

@@ -46,7 +46,8 @@ namespace Qserver.GameServer.Network.Handlers
             Game.Instance.UsersRepository.UpdateUUID(wUsername, uuid).GetAwaiter();
 
             Log.Message(LogType.NORMAL, $"Succesful login attempt for {wUsername}");
-            manager.Send(AuthManager.Instance.LoginSuccess(Encoding.ASCII.GetBytes(uuid), Settings.SERVER_IP)); // game host local
+            //manager.Send(AuthManager.Instance.LoginSuccess(Encoding.ASCII.GetBytes(uuid), Settings.SERVER_IP)); // game host local
+            manager.Send(AuthManager.Instance.LoginSuccess(Encoding.ASCII.GetBytes(uuid), Settings.ROOM_SERVER_IP)); // game host local
         }
     }
 }

@@ -70,8 +70,8 @@ namespace Qserver.Util
 
         public static string QFigtherRandomName()
         {
-            string[] names = { "rmrd", "Yestin", "neRo_Kanoh", "n.weak", "4K|SPC", "Fuzzpapa", "[HxC]cizay", "4K|Muteki", "[MM]4k|psych0",
-                "neRo_rjx", "[EM]Shanepapa", "pietvdstreet", "[HxC]Vera", "[HxC]Thryple", "Q_Rain", "[MM]4K|CyZs", "n.breadje", "n.qbe", "n.syber",
+            string[] names = { "rmrd", "Yestin", "neRo_Kanoh", "weak", "4K|SPC", "Fuzzpapa", "[HxC]cizay", "4K|Muteki", "[MM]4k|psych0",
+                "neRo_rjx", "[EM]Shanepapa", "pietvdstreet", "[HxC]Vera", "[HxC]Thryple", "Q_Rain", "[MM]4K|CyZs", "breadje", "qbe", "syber",
                 "Kampertje", "Dragonflew", "Jarno", "iFrost", "Gnome", "Muteki"};
 
             Random rnd = new Random();

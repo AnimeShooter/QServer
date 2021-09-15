@@ -9,10 +9,11 @@ namespace Qserver.GameServer
     {
 #if DEBUG
         public static uint SERVER_IP = BitConverter.ToUInt32(IPAddress.Parse("127.0.0.1").GetAddressBytes(), 0); // "127.0.0.1";
-        public static uint SERVER_IP2 = BitConverter.ToUInt32(IPAddress.Parse("144.91.79.114").GetAddressBytes(), 0); // "127.0.0.1";
 #else
         public static uint SERVER_IP = BitConverter.ToUInt32(IPAddress.Parse(Util.Util.GetLocalIPAddress().ToString()).GetAddressBytes(), 0);
 #endif
+        public static uint ROOM_SERVER_IP = BitConverter.ToUInt32(IPAddress.Parse("144.91.79.114").GetAddressBytes(), 0); // "144.91.79.114";
+
         public static int SERVER_PORT_AUTH = 8003; // Auth
         public static int SERVER_PORT_LOBBY = 8005; // Park/Lobby
         public static int SERVER_PORT_SQUARE = 8012; // Square

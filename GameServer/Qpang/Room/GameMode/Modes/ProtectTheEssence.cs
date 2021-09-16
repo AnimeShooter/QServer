@@ -52,7 +52,12 @@ namespace Qserver.GameServer.Qpang
             {
                 var coord = roomSession.EssencePosition;
                 sessionPlayer.Post(new GCRespawn(0, 3, 5));
-                sessionPlayer.Post(new GCHitEssence(sessionPlayer.Player.PlayerId, essHolder.Player.PlayerId, 2, coord.X, coord.Y, coord.Z, 0, 5));
+                sessionPlayer.Post(new GCHitEssence(sessionPlayer.Player.PlayerId, essHolder.Player.PlayerId, 2, coord.X, coord.Y, coord.Z, 0, 6));
+            }else
+            {
+                var coord = sessionPlayer.RoomSession.EssencePosition;
+                sessionPlayer.Post(new GCRespawn(0, 3, 5, coord.X, coord.Y, coord.Z));
+                sessionPlayer.Post(new GCHitEssence(sessionPlayer.Player.PlayerId, sessionPlayer.Player.PlayerId, 3, coord.X, coord.Y, coord.Z, 0, 6));
             }
         }
 

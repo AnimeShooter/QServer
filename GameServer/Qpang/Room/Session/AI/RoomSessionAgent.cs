@@ -23,6 +23,8 @@ namespace Qserver.GameServer.Qpang
 
         public override void Tick()
         {
+            return;
+
             // handle movement
             //if(!base.IsInRange(this._targetLocation, 1f, false))
             //{
@@ -37,6 +39,8 @@ namespace Qserver.GameServer.Qpang
             //    Z = base.Position.Z
             //};
 
+
+            // TODO add motion
             // basic idle?
             base.RoomSession.RelayPlayingExcept<GCMove>(base.Player.PlayerId, base.Player.PlayerId, (uint)0x00000000, base.Position.X, base.Position.Y, base.Position.Z, 0f, 0f, 0f,
                 -7f, 1.4f, (uint)0, (uint)0);

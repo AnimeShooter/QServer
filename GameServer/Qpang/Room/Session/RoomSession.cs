@@ -112,7 +112,10 @@ namespace Qserver.GameServer.Qpang
             {
                 this._essenceHolder = value;
                 if (value != null)
-                    this._essenceDropTime = uint.MaxValue;
+                {
+                    this._essenceDropTime = 0;
+                    this._isEssenceReset = false;
+                }   
                 else
                     this._essenceDropTime = Util.Util.Timestamp();
             }
@@ -136,7 +139,7 @@ namespace Qserver.GameServer.Qpang
             this._bluePoints = 0;
             this._yellowPoints = 0;
             this._lastTickTime = uint.MaxValue;
-            this._essenceDropTime = uint.MaxValue;
+            this._essenceDropTime = 0;// uint.MaxValue;
             this._blueVIP = null;
             this._nexBlueVIP = null;
             this._blueVIPSetTime = uint.MaxValue;
@@ -605,7 +608,7 @@ namespace Qserver.GameServer.Qpang
 
             if (player != null)
             {
-                this._essenceDropTime = uint.MaxValue;
+                this._essenceDropTime = 0;// uint.MaxValue;
                 this._isEssenceReset = false;
             }
             else

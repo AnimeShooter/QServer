@@ -85,14 +85,14 @@ namespace Qserver.GameServer.Qpang
                     roomSession.EssenceHolder = session;
                     var players = roomSession.GetPlayingPlayers();
                     foreach (var p in players) 
-                        session.Post(new GCHitEssence(session.Player.PlayerId, player.PlayerId, (uint)Commands.ESSENCE_PICK_UP, X, Y, Z, unk03, unk07));
+                        p.Post(new GCHitEssence(p.Player.PlayerId, player.PlayerId, (uint)Commands.ESSENCE_PICK_UP, X, Y, Z, unk03, unk07));
                 }
                 else if (Cmd == (uint)Commands.ESSENCE_DROP)
                 {
-                    roomSession.EssencePosition = new Spawn() { X = X, Y = Y, Z = X };
+                    roomSession.EssencePosition = new Spawn() { X = X, Y = Y, Z = Z };
                     var players = roomSession.GetPlayingPlayers();
                     foreach (var p in players) 
-                        session.Post(new GCHitEssence(session.Player.PlayerId, player.PlayerId, (uint)Commands.ESSENCE_DROP, X, Y, Z, unk03, unk07));
+                        p.Post(new GCHitEssence(p.Player.PlayerId, player.PlayerId, (uint)Commands.ESSENCE_DROP, X, Y, Z, unk03, unk07));
                 }
             }
             else
@@ -102,11 +102,7 @@ namespace Qserver.GameServer.Qpang
                     roomSession.EssenceHolder = null;
                     var players = roomSession.GetPlayingPlayers();
                     foreach (var p in players) 
-                        session.Post(new GCHitEssence(session.Player.PlayerId, player.PlayerId, (uint)Commands.ESSENCE_THROW, X, Y, Z, unk03, unk07));
-                }
-                else if(Cmd == (uint)Commands.ESSENCE_PICK_UP)
-                {
-                    // pickup?
+                        p.Post(new GCHitEssence(p.Player.PlayerId, player.PlayerId, (uint)Commands.ESSENCE_THROW, X, Y, Z, unk03, unk07));
                 }
             }
         }

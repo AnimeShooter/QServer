@@ -77,7 +77,6 @@ namespace Qserver.GameServer.Qpang
                 killer.AddStreak();
             }
 
-            
             target.ResetStreak();
             target.EffectManager.Clear(); 
             target.StartPrespawn();

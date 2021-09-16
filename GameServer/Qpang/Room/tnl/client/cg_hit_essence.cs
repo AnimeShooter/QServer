@@ -75,7 +75,7 @@ namespace Qserver.GameServer.Qpang
 
             var roomSession = session.RoomSession;
             var essenceHolder = roomSession.EssenceHolder;
-            if(essenceHolder == null)
+            if(essenceHolder == null) // TODO: use serverside XYZ?
             {
                 if(Cmd == (uint)Commands.ESSENCE_PICK_UP)
                 {
@@ -99,10 +99,11 @@ namespace Qserver.GameServer.Qpang
             {
                 if (Cmd == (uint)Commands.ESSENCE_THROW && player == essenceHolder.Player)
                 {
-                    roomSession.EssenceHolder = null;
-                    var players = roomSession.GetPlayingPlayers();
-                    foreach (var p in players) 
-                        p.Post(new GCHitEssence(p.Player.PlayerId, player.PlayerId, (uint)Commands.ESSENCE_THROW, X, Y, Z, unk03, unk07));
+                    player.Broadcast("Sorry, throwing essence is not yet possible... Suicide is the easy way out.");
+                    //roomSession.EssenceHolder = null;
+                    //var players = roomSession.GetPlayingPlayers();
+                    //foreach (var p in players) 
+                    //    p.Post(new GCHitEssence(p.Player.PlayerId, player.PlayerId, (uint)Commands.ESSENCE_THROW, X, Y, Z, unk03, unk07));
                 }
             }
         }

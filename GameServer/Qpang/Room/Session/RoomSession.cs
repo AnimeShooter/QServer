@@ -36,6 +36,7 @@ namespace Qserver.GameServer.Qpang
         private List<RoomSessionPlayer> _leavers;
 
         private RoomSessionPlayer _essenceHolder;
+        private RoomSessionPlayer _publicEnemy;
         private Spawn _essencePosition = new Spawn() { X = 0, Y = 0, Z = 0 };
 
         private RoomSessionPlayer _blueVIP;
@@ -118,6 +119,20 @@ namespace Qserver.GameServer.Qpang
                 }   
                 else
                     this._essenceDropTime = Util.Util.Timestamp();
+            }
+        }
+
+        public RoomSessionPlayer PublicEnemy
+        {
+            get { return this._publicEnemy; }
+            set 
+            { 
+                this._publicEnemy = value;
+                if(value != null)
+                {
+                    value.SetHealth(1900, false);
+                    RelayPlaying<GCGameState>(value.Player.PlayerId, (uint)CGGameState.State.PREY_TRANFORM, (uint)1900, (uint)0);
+                }
             }
         }
 

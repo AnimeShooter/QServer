@@ -111,7 +111,7 @@ namespace Qserver.GameServer.Qpang
         }
         public bool Invincible
         {
-            get { return _isInvincible; }
+            get { return this._isInvincible; }
         }
         public ushort Health
         {
@@ -216,7 +216,7 @@ namespace Qserver.GameServer.Qpang
             this._eventItemPickUps = 0;
 
             this._effectManager = new PlayerEffectManager();
-            this._weaponManager = new PlayerWeaponManager();  // TODO
+            this._weaponManager = new PlayerWeaponManager();
             this._skillManager = new PlayerSkillManager(); // TODO
             this._entityManager = new PlayerEntityManager();
 

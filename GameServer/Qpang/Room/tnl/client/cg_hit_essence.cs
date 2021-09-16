@@ -26,9 +26,9 @@ namespace Qserver.GameServer.Qpang
 
         public enum Commands : uint
         {
-            ESSENCE_THROW =  1,
-            ESSENCE_PICK_UP =  2,
-            ESSENCE_DROP =  3,
+            ESSENCE_THROW = 1,
+            ESSENCE_PICK_UP = 2,
+            ESSENCE_DROP = 3,
         }
 
         public uint PlayerId;
@@ -102,8 +102,9 @@ namespace Qserver.GameServer.Qpang
                     player.Broadcast("Sorry, throwing essence is not yet possible... Suicide is the easy way out.");
                     //roomSession.EssenceHolder = null;
                     //var players = roomSession.GetPlayingPlayers();
-                    //foreach (var p in players) 
-                    //    p.Post(new GCHitEssence(p.Player.PlayerId, player.PlayerId, (uint)Commands.ESSENCE_THROW, X, Y, Z, unk03, unk07));
+                    //foreach (var p in players)
+                    //    p.Post(new GCHitEssence(p.Player.PlayerId, player.PlayerId, (uint)Commands.ESSENCE_DROP, X, Y, Z, unk03, unk07)); // TODO temp fix?
+                    //    //p.Post(new GCHitEssence(p.Player.PlayerId, player.PlayerId, (uint)Commands.ESSENCE_THROW, X, Y, Z, unk03, unk07));
                 }
             }
         }

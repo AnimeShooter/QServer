@@ -48,6 +48,12 @@ namespace Qserver.GameServer.Qpang
 			KILLFEED_ADD_HEAD = 28,
 			START_RESPAWN_TIMER = 29,
 
+			PREY_COUNT_START = 31,
+			PREY_SELECT = 33,
+			PREY_SELECT_RSP = 34,
+
+			PREY_TRANFORM = 36, // aka broadcast
+			PREY_TRANFORM_READY = 37,
 			/*
              * 3  - Game Loading
              * 9  - ServerGame::broadcastGCGameState
@@ -60,9 +66,11 @@ namespace Qserver.GameServer.Qpang
              * 29 - START_RESPAWN_TIMER
              * 35 - ServerGame::recv_PublicEnmeyPossible
              * 32 - ?
-             * 37 - transform end?
+             * 36 - PREY_TRANFORM
+             * 37 - PREY_TRANFORM_READY
              * default: error?
              */
+
 		};
 
 		public uint PlayerId;
@@ -122,6 +130,10 @@ namespace Qserver.GameServer.Qpang
 					if (roomSessionGwp != null)
 						roomSessionGwp.AddPlayer(conn, roomPlayer.Team);
 					break;
+				// TODO: 35 (after 33?)
+				case (State)35:
+				case State.PREY_TRANFORM_READY:
+					// TODO
 				default:
 					break;
             }

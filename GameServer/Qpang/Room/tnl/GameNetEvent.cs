@@ -18,6 +18,7 @@ namespace Qserver.GameServer.Qpang
         public GameNetEvent(GameNetId gameNetId, GuaranteeType guaranteeType, EventDirection eventDirection) : base(guaranteeType, eventDirection)
         {
             Id = gameNetId;
+            Console.WriteLine($"{gameNetId.ToString()}");
         }
 
         public override void NotifyPosted(EventConnection e) { }

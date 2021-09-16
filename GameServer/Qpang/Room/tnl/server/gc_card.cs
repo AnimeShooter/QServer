@@ -81,7 +81,7 @@ namespace Qserver.GameServer.Qpang
                 // TODO: write 0x20 bytes?
             }
 
-            Console.WriteLine($"GCCard c:{cmd}, t:{targetUid}, {itemId}, {seqId} ");
+            //Console.WriteLine($"GCCard c:{cmd}, t:{targetUid}, {itemId}, {seqId} ");
         }
         public override void Unpack(EventConnection ps, BitStream bitStream) { }
         public override void Process(EventConnection ps) { }

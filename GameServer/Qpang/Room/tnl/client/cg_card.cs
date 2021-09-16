@@ -107,7 +107,7 @@ namespace Qserver.GameServer.Qpang
              * Assasin, targget self, type 9, id i:1258356765, seqId:1
              */
 
-            Console.WriteLine($"ActionType: {Cmd}, t:{TargetUid} ct:{CardType}, i:{ItemId}, s:{SeqId}");
+           // Console.WriteLine($"ActionType: {Cmd}, t:{TargetUid} ct:{CardType}, i:{ItemId}, s:{SeqId}");
 
             // check CMD?
             //Game.Instance.SkillManager.GetSkill()

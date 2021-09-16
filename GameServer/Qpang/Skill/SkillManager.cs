@@ -63,6 +63,7 @@ namespace Qserver.GameServer.Qpang
 
             this._skillsByMode.Add((byte)GameMode.Mode.PTE, this._skills);
             this._skillsByMode.Add((byte)GameMode.Mode.VIP, this._skills);
+            this._skillsByMode.Add((byte)GameMode.Mode.PREY, this._skills);
 
         }
 

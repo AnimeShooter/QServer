@@ -95,6 +95,30 @@ namespace Qserver.GameServer.Qpang
             }
         }
 
+        public void InitPrey()
+        {
+            //this._weapons[0] = 0; // throw
+            //this._weapons[1] = 0; // sniper
+            this._selectedWeaponIndex = 2; // gun
+            //this._weapons[3] = 0; // melee
+
+            Weapon weapon = new Weapon()
+            {
+                ItemId = 1095368720,
+                ClipCount = 2,
+                ClipSize = 50
+            };
+
+            if (!this._defaultAmmo.ContainsKey(weapon.ItemId))
+                this._defaultAmmo.Add(weapon.ItemId, new ushort[2]
+                {
+                        (ushort)(weapon.ClipCount),
+                        (ushort)(weapon.ClipSize)
+                });
+
+            this._weapons[this._selectedWeaponIndex] = weapon;
+        }
+
         public void Reset()
         {
             if (this._player == null)

@@ -40,6 +40,18 @@ namespace Qserver.GameServer.Qpang
             base.Tick(roomSession);
         }
 
+        public override void OnPlayerSync(RoomSessionPlayer session)
+        {
+            var roomSession = session.RoomSession;
+            if (roomSession != null && roomSession.PublicEnemy != null)
+            {
+                session.Post(new GCGameState(session.Player.PlayerId, (uint)CGGameState.State.PREY_COUNT_START, roomSession.PublicEnemy.Health));
+                session.Post(new GCGameState(roomSession.PublicEnemy.Player.PlayerId, (uint)CGGameState.State.PREY_TRANFORM, roomSession.PublicEnemy.Health));
+                //session.Post(new GCGameState(roomSession.PublicEnemy.Player.PlayerId, (uint)CGGameState.State.PREY_TRANFORM_READY, roomSession.PublicEnemy.Health));
+                session.Post(new GCGameState(roomSession.PublicEnemy.Player.PlayerId, (uint)CGGameState.State.PREY_SELECT, roomSession.PublicEnemy.Health));
+            }
+        }
+
         public override void OnPlayerKill(RoomSessionPlayer killer, RoomSessionPlayer target, Weapon weapon, byte hitLocation)
         {
             // TODO: check if target was Prey and start new counter

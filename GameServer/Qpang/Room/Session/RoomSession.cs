@@ -130,8 +130,10 @@ namespace Qserver.GameServer.Qpang
                 this._publicEnemy = value;
                 if(value != null)
                 {
-                    value.SetHealth(1900, false);
-                    RelayPlaying<GCGameState>(value.Player.PlayerId, (uint)CGGameState.State.PREY_TRANFORM, (uint)1900, (uint)0);
+                    uint hp = (uint)(500 + (this._players.Count * 85));
+                    value.SetHealth((ushort)hp, false);
+                    value.WeaponManager.InitPrey();
+                    RelayPlaying<GCGameState>(value.Player.PlayerId, (uint)CGGameState.State.PREY_TRANFORM, hp, (uint)0);
                 }
             }
         }

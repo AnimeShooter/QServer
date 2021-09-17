@@ -101,8 +101,8 @@ namespace Qserver.GameServer.Qpang
                 bitStream.Write((ushort)player.Score);
                 bitStream.Write(player.Team);
 
-                WriteWString(bitStream, actPlayer.Name, 16); // TODO: test
-                bitStream.Write((uint)3);
+                WriteWString(bitStream, actPlayer.Name, 16);
+                bitStream.Write((uint)player.PreyScore); // Prey score?
 
                 playerIndex++;
                 if (playerIndex >= 16)

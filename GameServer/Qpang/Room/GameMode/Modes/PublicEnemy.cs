@@ -31,9 +31,12 @@ namespace Qserver.GameServer.Qpang
         {
             if(roomSession.PublicEnemy == null)
             {
+                // Master always starts as public enemy
                 var players = roomSession.GetPlayers();
                 if (players.Count > 0)
-                    roomSession.PublicEnemy = players[0];
+                    foreach (var p in players)
+                        if (p.Player.PlayerId == roomSession.Room.MasterId)
+                            roomSession.PublicEnemy = p;
             }
                 
 
@@ -60,14 +63,14 @@ namespace Qserver.GameServer.Qpang
                 return;
 
             if (roomSession.PublicEnemy != target)
-                killer.Kills++;
+                killer.Score++;
             else if (roomSession.PublicEnemy == target)
             {
-                killer.Score++;
+                killer.Kills++;
                 roomSession.PublicEnemy = killer;
             }
 
-            killer.Kills--; // rebase?
+            killer.Kills--; // pre-undo base kill gain
 
             // TODO2: keep track of kills
             base.OnPlayerKill(killer, target, weapon, hitLocation);

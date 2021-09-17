@@ -49,6 +49,7 @@ namespace Qserver.GameServer.Qpang
         private ushort _kills;
         private ushort _deaths;
         private ushort _score;
+        //private ushort _preyScore;
         private uint _highestMultiKill;
         private uint _eventItemPickUps;
 
@@ -94,6 +95,11 @@ namespace Qserver.GameServer.Qpang
         {
             get { return this._score; }
             set { this._score = value; }
+        }
+        public ushort PreyScore
+        {
+            get { return (ushort)(this._score + (this._kills * 5)); }
+            // set { this._score = value; }
         }
         public uint PlayTime
         {

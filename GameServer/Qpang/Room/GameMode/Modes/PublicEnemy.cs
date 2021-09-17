@@ -36,8 +36,8 @@ namespace Qserver.GameServer.Qpang
             uint currTime = Util.Util.Timestamp();
             if (roomSession.PublicEnemeyReset == 0)
             {
-                roomSession.PublicEnemeyReset = currTime;
                 roomSession.PublicEnemy = null;
+                roomSession.PublicEnemeyReset = currTime;
             }
             else if(roomSession.PublicEnemeyReset + 5 <= currTime && roomSession.PublicEnemy == null)
             {

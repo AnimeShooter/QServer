@@ -162,7 +162,8 @@ namespace Qserver.GameServer.Qpang
 
             var roomSession = srcPlayer.RoomSession;
             var teamMode = roomSession.GameMode.IsTeamMode();
-            var sameTeam = teamMode && srcPlayer.Team == dstPlayer.Team;
+            var sameTeam = teamMode && srcPlayer.Team == dstPlayer.Team
+                || roomSession.Room.Mode == GameMode.Mode.PREY && srcPlayer != roomSession.PublicEnemy && dstPlayer != roomSession.PublicEnemy;
             var weapon = Game.Instance.WeaponManager.Get(WeaponId);
 
             if (weapon.WeaponType != Qpang.WeaponType.BOMB && srcPlayer.Death)

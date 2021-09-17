@@ -130,13 +130,15 @@ namespace Qserver.GameServer.Qpang
             set 
             { 
                 this._publicEnemy = value;
-                if(value != null)
+                if (value != null)
                 {
                     uint hp = (uint)(500 + (this._players.Count * 85));
                     value.SetHealth((ushort)hp, false);
                     value.WeaponManager.InitPrey();
                     RelayPlaying<GCGameState>(value.Player.PlayerId, (uint)CGGameState.State.PREY_TRANFORM, hp, (uint)0);
                 }
+                else
+                    this._publicEnemyReset = 0;
             }
         }
         public uint PublicEnemeyReset
@@ -288,7 +290,8 @@ namespace Qserver.GameServer.Qpang
 
                 if(player == this._publicEnemy)
                 {
-                    this._publicEnemy = null; // rm
+                    this.PublicEnemy = null; // rm
+                    this._nextPublicEnemy = null; // rm
                 }
 
                 if (player == this._blueVIP)

@@ -56,7 +56,8 @@ namespace Qserver.GameServer.Qpang
             var roomSession = killer.RoomSession;
             bool TeamMode = roomSession.GameMode.IsTeamMode();
             bool Suicided = killer == target;
-            bool SameTeam = killer.Team == target.Team;
+            bool SameTeam = killer.Team == target.Team 
+                || roomSession.Room.Mode == Mode.PREY && killer != roomSession.PublicEnemy && target != roomSession.PublicEnemy;
 
             if(Suicided)
                 killer.AddDeath();

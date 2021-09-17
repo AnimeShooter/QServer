@@ -37,6 +37,8 @@ namespace Qserver.GameServer.Qpang
 
         private RoomSessionPlayer _essenceHolder;
         private RoomSessionPlayer _publicEnemy;
+        private RoomSessionPlayer _nextPublicEnemy;
+        private uint _publicEnemyReset;
         private Spawn _essencePosition = new Spawn() { X = 0, Y = 0, Z = 0 };
 
         private RoomSessionPlayer _blueVIP;
@@ -137,6 +139,30 @@ namespace Qserver.GameServer.Qpang
                 }
             }
         }
+        public uint PublicEnemeyReset
+        {
+            get { return this._publicEnemyReset; }
+            set { this._publicEnemyReset = value; }
+        }
+
+        public RoomSessionPlayer NextPublicEnemy
+        {
+            get { return this._nextPublicEnemy; }
+            set 
+            {
+                this._publicEnemyReset = 0;
+                this._nextPublicEnemy = value; 
+                if(value != null)
+                {
+                    var players = this.GetPlayingPlayers();
+                    foreach (var p in players)
+                    {
+                        p.Post(new GCGameState(p.Player.PlayerId, (uint)CGGameState.State.PREY_COUNT_START));
+                        p.Post(new GCGameState(p.Player.PlayerId, (uint)32, 5000));
+                    } 
+                }
+            }
+        }
 
         public Spawn EssencePosition
         {
@@ -163,6 +189,7 @@ namespace Qserver.GameServer.Qpang
             this._yellowVIP = null;
             this._nexYellowVIP = null;
             this._yellowVIPSetTime = uint.MaxValue;
+            this._publicEnemyReset = 0;
 
             this._leavers = new List<RoomSessionPlayer>();
             this._players = new Dictionary<uint, RoomSessionPlayer>();
@@ -256,7 +283,12 @@ namespace Qserver.GameServer.Qpang
                     var pos = player.Position;
                     foreach (var p in this._players)
                         if(!p.Value.IsBot)
-                        p.Value.Post(new GCHitEssence(p.Value.Player.PlayerId, p.Value.Player.PlayerId, 3, pos.X, pos.Y, pos.Z, 0, 6));
+                            p.Value.Post(new GCHitEssence(p.Value.Player.PlayerId, p.Value.Player.PlayerId, 3, pos.X, pos.Y, pos.Z, 0, 6));
+                }
+
+                if(player == this._publicEnemy)
+                {
+                    this._publicEnemy = null; // rm
                 }
 
                 if (player == this._blueVIP)
@@ -669,6 +701,28 @@ namespace Qserver.GameServer.Qpang
                 return 0;
 
             return Util.Util.Timestamp() - this._blueVIPSetTime;
+        }
+
+        public RoomSessionPlayer FindNextPublicEnemy()
+        {
+            Random rnd = new Random();
+            var players = GetPlayingPlayers();
+            int[] rng = new int[players.Count];
+
+            for(int i = 0; i < players.Count; i++)
+            {
+                rng[i] = rnd.Next(0, 100);
+                for (int j = 0; j < players[i].Kills; i++)
+                    rng[i] += rnd.Next(1, 5); // add 1~5% chance per kill
+            }
+
+            int highest = 0;
+            RoomSessionPlayer enemy = null;
+            for (int i = 0; i < players.Count; i++)
+                if (rng[i] > highest)
+                    enemy = players[i];
+
+            return enemy;
         }
 
         public void FindNextYellowVip()

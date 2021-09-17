@@ -7,6 +7,7 @@ namespace Qserver.GameServer.Qpang
     public class PlayerWeaponManager
     {
         private Weapon[] _weapons;
+        private Weapon? _oldGun;
         private byte _selectedWeaponIndex;
         private Dictionary<uint, ushort[]> _defaultAmmo;
         private RoomSessionPlayer _player;
@@ -102,6 +103,10 @@ namespace Qserver.GameServer.Qpang
             this._selectedWeaponIndex = 2; // gun
             //this._weapons[3] = 0; // melee
 
+            // save last gun
+            if (!this._oldGun.HasValue)
+                this._oldGun = this._weapons[this._selectedWeaponIndex];
+
             Weapon weapon = new Weapon()
             {
                 ItemId = 1095368720,
@@ -123,6 +128,9 @@ namespace Qserver.GameServer.Qpang
         {
             if (this._player == null)
                 return;
+
+            if(this._oldGun.HasValue)
+                this._weapons[2] = this._oldGun.Value;
 
             lock(this._player.Lock)
             {

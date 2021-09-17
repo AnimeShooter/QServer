@@ -52,7 +52,7 @@ namespace Qserver.GameServer.Qpang
                         Log.Message(LogType.ERROR, ex.ToString());
                     }
                 }
-                Thread.Sleep(5); // dont fry the CPU
+                Thread.Sleep(1); // dont fry the CPU
             }
         }
         public void Tick()

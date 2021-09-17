@@ -20,25 +20,36 @@ namespace Qserver.GameServer.Qpang
 
         public override void OnStart(RoomSession roomSession)
         {
-            //var players = roomSession.GetPlayers();
-            //if(players.Count > 0)
-            //    players.
+            // Master always starts as public enemy NOTE: this does not work?
+            var players = roomSession.GetPlayers();
+            foreach (var p in players)
+                if (p.Player.PlayerId == roomSession.Room.MasterId)
+                    roomSession.NextPublicEnemy = p;
+
+            roomSession.PublicEnemeyReset = Util.Util.Timestamp() + 10; // now + wait/respawn time
 
             base.OnStart(roomSession);
         }
 
         public override void Tick(RoomSession roomSession)
         {
-            if(roomSession.PublicEnemy == null)
+            uint currTime = Util.Util.Timestamp();
+            if (roomSession.PublicEnemeyReset == 0)
             {
-                // Master always starts as public enemy
-                var players = roomSession.GetPlayers();
-                if (players.Count > 0)
-                    foreach (var p in players)
-                        if (p.Player.PlayerId == roomSession.Room.MasterId)
-                            roomSession.PublicEnemy = p;
+                roomSession.PublicEnemeyReset = currTime;
+                roomSession.PublicEnemy = null;
             }
-                
+            else if(roomSession.PublicEnemeyReset + 5 <= currTime && roomSession.PublicEnemy == null)
+            {
+                RoomSessionPlayer newEnemy = null;
+                if (roomSession.NextPublicEnemy != null)
+                    newEnemy = roomSession.NextPublicEnemy;
+                else
+                    newEnemy = roomSession.FindNextPublicEnemy();
+
+                newEnemy.WeaponManager.Reset(); // fix for respawn
+                roomSession.PublicEnemy = newEnemy;
+            }
 
             base.Tick(roomSession);
         }
@@ -48,7 +59,9 @@ namespace Qserver.GameServer.Qpang
             var roomSession = session.RoomSession;
             if (roomSession != null && roomSession.PublicEnemy != null)
             {
-                session.Post(new GCGameState(session.Player.PlayerId, (uint)CGGameState.State.PREY_COUNT_START, roomSession.PublicEnemy.Health));
+                //if (roomSession.PublicEnemy.Player.PlayerId != session.Player.PlayerId)
+                //    session.Post(new GCGameState(session.Player.PlayerId, (uint)CGGameState.State.PREY_COUNT_START, 0));
+
                 session.Post(new GCGameState(roomSession.PublicEnemy.Player.PlayerId, (uint)CGGameState.State.PREY_TRANFORM, roomSession.PublicEnemy.Health));
                 //session.Post(new GCGameState(roomSession.PublicEnemy.Player.PlayerId, (uint)CGGameState.State.PREY_TRANFORM_READY, roomSession.PublicEnemy.Health));
                 session.Post(new GCGameState(roomSession.PublicEnemy.Player.PlayerId, (uint)CGGameState.State.PREY_SELECT, roomSession.PublicEnemy.Health));
@@ -67,7 +80,7 @@ namespace Qserver.GameServer.Qpang
             else if (roomSession.PublicEnemy == target)
             {
                 killer.Kills++;
-                roomSession.PublicEnemy = killer;
+                roomSession.NextPublicEnemy = killer; // TODO: randomize?
             }
 
             killer.Kills--; // pre-undo base kill gain

@@ -307,6 +307,7 @@ namespace Qserver.GameServer.Qpang
                     player.Post(new GCGameState(id, 15));
                 }
 
+                player.Playing = false; // TODO: left?
                 this._players.Remove(id);
             }
 
@@ -722,7 +723,7 @@ namespace Qserver.GameServer.Qpang
             int highest = 0;
             RoomSessionPlayer enemy = null;
             for (int i = 0; i < players.Count; i++)
-                if (rng[i] > highest)
+                if (rng[i] > highest && players[i].Playing) // prey, either current or left?
                     enemy = players[i];
 
             return enemy;

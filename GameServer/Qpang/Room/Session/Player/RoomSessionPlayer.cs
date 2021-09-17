@@ -134,6 +134,7 @@ namespace Qserver.GameServer.Qpang
         public bool Playing
         {
             get { return this._isPlaying; }
+            set { this._isPlaying = value; }
         }
         public bool Respawning
         {

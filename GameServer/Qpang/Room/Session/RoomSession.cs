@@ -834,6 +834,7 @@ namespace Qserver.GameServer.Qpang
             if (currTime <= this._startTime)
                 return 0;
 
+            //return (this._endTime - this._startTime) * 1000; // ms??
             return (currTime - this._startTime) * 1000; // ms??
         }
 

@@ -61,7 +61,26 @@ namespace Qserver.GameServer.Qpang
 
                 var players = roomSession.GetPlayingPlayers();
                 if(players != null) // ??
-                    session.Post(new GCScore(players.OrderBy(x => x.Kills).ToList(), session.RoomSession, 1));
+                {
+                    List<RoomSessionPlayer> scoreList = null;
+                    switch(session.RoomSession.Room.Mode)
+                    {
+                        case GameMode.Mode.PREY:
+                            scoreList = players.OrderByDescending(x => x.PreyScore).ToList();
+                            break;
+                        case GameMode.Mode.VIP:
+                        case GameMode.Mode.PTE:
+                            scoreList = players.OrderByDescending(x => x.Score).ToList();
+                            break;
+                        default:
+                            scoreList = players.OrderByDescending(x => x.Kills).ToList();
+                            break;
+
+                    }
+                    session.Post(new GCScore(scoreList, session.RoomSession, 1));
+
+                }
+                    
             }
             else if(Cmd == (uint)Commands.GAME)
             {

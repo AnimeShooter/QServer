@@ -531,8 +531,8 @@ namespace TNL.Entities
             var prevLastSequence = LastSeqRecvd;
             LastSeqRecvd = sequenceNumber;
 
-            //if (packetType == NetPacketType.PingPacket) // || (sequenceNumber - LastRecvAckAck > (MaxPacketWindowSize >> 1)))
-            if (packetType == NetPacketType.PingPacket || (sequenceNumber - LastRecvAckAck > (MaxPacketWindowSize >> 1)))
+            if (packetType == NetPacketType.PingPacket) // || (sequenceNumber - LastRecvAckAck > (MaxPacketWindowSize >> 1)))
+            //if (packetType == NetPacketType.PingPacket || (sequenceNumber - LastRecvAckAck > (MaxPacketWindowSize >> 1)))
                 SendAckPacket();
 
             return prevLastSequence != sequenceNumber && packetType == NetPacketType.DataPacket;

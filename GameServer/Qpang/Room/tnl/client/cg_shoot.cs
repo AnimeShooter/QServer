@@ -78,10 +78,21 @@ namespace Qserver.GameServer.Qpang
             if (session.Death) // || !weaponManager.CanShoot)
                 return;
 
-            if (session.LastShot.AddMilliseconds(125) < DateTime.UtcNow)
+            if (session.LastShot.AddMilliseconds(125) > DateTime.UtcNow)
+            {
+                session.IllegalShotsFired++;
+                if(session.ShotsFired > 13 && session.IllegalShotsFired / (float)session.ShotsFired > 0.15f)
+                {
+                    var allPlayers = Game.Instance.PlayersList();
+                    foreach (var p in allPlayers)
+                        if(p.Online)
+                            p.Broadcast($"Player {session.Player.Name} has been removed for cheating!"); // public shaming!
+                    session.RoomSession.RemovePlayer(session.Player.PlayerId); // be gone!
+                }
                 return;
-
-            session.LastShot = DateTime.UtcNow; //NOTE: Fuck you, Jarrett
+            }
+            session.ShotsFired++;
+            session.LastShot = DateTime.UtcNow; // NOTE: Fuck you, Jarrett
 
             var activeSkill = roomPlayer.RoomSessionPlayer.SkillManager.ActiveSkillCard;
             if (activeSkill != null)

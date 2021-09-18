@@ -72,7 +72,10 @@ namespace Qserver.GameServer.Qpang
         private float _startY;
         private float _startZ;
 
-        public DateTime LastShot = DateTime.MinValue;
+        private uint _shotsFired;
+        private uint _illegalShotsFired;
+
+        private DateTime _lastShot;
 
         public object Lock
         {
@@ -158,6 +161,21 @@ namespace Qserver.GameServer.Qpang
         public ushort Character
         {
             get { return this._character; }
+        }
+        public uint ShotsFired
+        {
+            get { return this._shotsFired; }
+            set { this._shotsFired = value; }
+        }
+        public uint IllegalShotsFired
+        {
+            get { return this._illegalShotsFired; }
+            set { this._illegalShotsFired = value; }
+        }
+        public DateTime LastShot
+        {
+            get { return this._lastShot; }
+            set { this._lastShot = value; }
         }
         public Player Player
         {

@@ -24,6 +24,9 @@ namespace Qserver.GameServer.Qpang
         private uint _headshotDeaths;
         private uint _teamKills;
         private uint _teamDeaths;
+        private uint _preyKills;
+        private uint _preyPlayerKills;
+        private uint _preyDeaths;
         private uint _eventItemPickUps;
         private bool _isBot;
 
@@ -107,6 +110,19 @@ namespace Qserver.GameServer.Qpang
         {
             get { return this._teamDeaths; }
         }
+        public uint PreyKills
+        {
+            get { return this._preyKills; }
+        }
+        public uint PreyPlayerKills
+        {
+            get { return this._preyPlayerKills; }
+        }
+        public uint PreyDeaths
+        {
+            get { return this._preyDeaths; }
+        }
+
         public StatsManager(Player player, bool bot = false)
         {
             this._player = player;
@@ -135,6 +151,9 @@ namespace Qserver.GameServer.Qpang
             this._teamKills = stats.team_kills;
             this._teamDeaths = stats.team_death;
             this._eventItemPickUps = stats.event_item_pickups;
+            this._preyKills = stats.prey_kills;
+            this._preyPlayerKills = stats.prey_player_kills;
+            this._preyDeaths = stats.prey_deaths;
         }
 
         public void Save()
@@ -148,11 +167,21 @@ namespace Qserver.GameServer.Qpang
             Game.Instance.PlayersRepository.UpdatePlayerStats(this._player).GetAwaiter().GetResult();
         }
 
-        public void Apply(RoomSessionPlayer player)
+        public void Apply(RoomSessionPlayer player, bool preyMode = false)
         {
-            AddKills(player.Kills);
-            AddDeaths(player.Deaths);
-            AddPlaytime(player.PlayTime); // TODO: give me value
+            if(preyMode)
+            {
+                AddPreyKill(player.Kills); // preys killed
+                AddPreyPlayerKill(player.Score); // players killed in prey
+                AddPreyDeath(player.Deaths);
+            }
+            else
+            {
+                AddKills(player.Kills);
+                AddDeaths(player.Deaths);
+            }
+            
+            AddPlaytime(player.PlayTime);
             this._eventItemPickUps += player.EventItemPickUps;
 
             Save();
@@ -179,6 +208,9 @@ namespace Qserver.GameServer.Qpang
             this._bombKills = 0;
             this._headshotKills = 0;
             this._headshotDeaths = 0;
+            this._preyKills = 0;
+            this._preyPlayerKills = 0;
+            this._preyDeaths = 0;
 
             Save();
         }
@@ -211,6 +243,18 @@ namespace Qserver.GameServer.Qpang
         public void AddMissionDraw()
         {
             this._missionDrew++;
+        }
+        public void AddPreyKill(uint count)
+        {
+            this._preyKills += count;
+        }
+        public void AddPreyPlayerKill(uint count)
+        {
+            this._preyPlayerKills += count;
+        }
+        public void AddPreyDeath(uint count)
+        {
+            this._preyDeaths += count;
         }
         public void ClearWL()
         {

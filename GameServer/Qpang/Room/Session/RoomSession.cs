@@ -443,6 +443,7 @@ namespace Qserver.GameServer.Qpang
                 var players = GetPlayers();
                 var totalWinners = players.Count % 2 == 0 ? players.Count / 2 : (players.Count - 1) / 2;
 
+
                 // TODO: sort players and pick the first totalWinners with highest score?
 
                 for (int i = 0; i < totalWinners % players.Count; i++)

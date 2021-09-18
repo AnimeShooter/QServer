@@ -47,7 +47,9 @@ namespace Qserver.Database.Repositories
             public uint team_kills;
             public uint team_death;
             public uint event_item_pickups;
-
+            public uint prey_kills;
+            public uint prey_player_kills;
+            public uint prey_deaths;
         }
 
         public PlayersRepository(IMySqlObjectFactory sqlObjectFactory)
@@ -91,7 +93,7 @@ namespace Qserver.Database.Repositories
         {
             Task<DBPlayerStats> stats = null;
             await _sqlObjectFactory.GetConnection().UsingAsync(connection =>
-                stats = connection.QuerySingleAsync<DBPlayerStats>("SELECT kills, deaths, n_won, n_lost, n_drew, m_won, m_lost, m_drew, playtime, slacker_points, melee_kills, gun_kills, launcher_kills, bomb_kills, headshot_kills, headshot_deaths, team_kills, team_deaths, event_item_pickups FROM player_stats WHERE player_id = @Id", new { Id = playerId }));
+                stats = connection.QuerySingleAsync<DBPlayerStats>("SELECT kills, deaths, n_won, n_lost, n_drew, m_won, m_lost, m_drew, playtime, slacker_points, melee_kills, gun_kills, launcher_kills, bomb_kills, headshot_kills, headshot_deaths, team_kills, team_deaths, event_item_pickups, prey_kills, prey_player_kills, prey_deaths FROM player_stats WHERE player_id = @Id", new { Id = playerId }));
             return stats.Result;
         }
 

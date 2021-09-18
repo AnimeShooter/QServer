@@ -388,7 +388,7 @@ namespace TNL.Entities
                 if (ConnectionParameters.DebugObjectSizes)
                     Console.WriteLine("Assert({0:X8} == {1:X8}) || unpack did not match pack for event of class {2}.", endingPosition, stream.GetBitPosition(), evt.GetClassName());
 
-                if (ungaranteedPhase)
+                if (ungaranteedPhase || 1==1) // NOTE: always true, shitty bugfix!
                 {
                     ProcessEvent(evt);
 
@@ -409,18 +409,10 @@ namespace TNL.Entities
                     NextEvent = null
                 };
 
-                int count = 0; // NOTE: tak last packet?
-                waitInsert = null; // NOTE: removing last packet, this is a shitty fix!!!!
                 while (waitInsert != null && waitInsert.SeqCount < seq)
                 {
                     waitInsertPrev = waitInsert;
                     waitInsert = waitInsert.NextEvent;
-                    count++;
-                    if(count == 30)
-                    {
-                        Console.WriteLine($"EventConn waitInsert TIMEOUT! {seq}/{waitInsert.SeqCount}");
-                        break;
-                    }
                 }
 
                 note.NextEvent = waitInsert;

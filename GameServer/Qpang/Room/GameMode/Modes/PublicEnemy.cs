@@ -80,7 +80,8 @@ namespace Qserver.GameServer.Qpang
             else if (roomSession.PublicEnemy == target)
             {
                 killer.Kills++;
-                roomSession.NextPublicEnemy = killer; // TODO: randomize?
+                //roomSession.NextPublicEnemy = killer; // TODO: randomize?
+                roomSession.NextPublicEnemy = roomSession.FindNextPublicEnemy();
             }
 
             killer.Kills--; // pre-undo base kill gain

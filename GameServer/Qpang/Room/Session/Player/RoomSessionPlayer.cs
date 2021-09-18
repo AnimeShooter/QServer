@@ -298,7 +298,7 @@ namespace Qserver.GameServer.Qpang
             var player = this._conn.Player;
 
             player.EquipmentManager.FinishRound(this);
-            player.StatsManager.Apply(this);
+            player.StatsManager.Apply(this, this._roomSession.Room.Mode == GameMode.Mode.PREY);
 
             Game.Instance.LevelManager.OnPlayerFinish(this);
             Game.Instance.AchievementManager.OnPlayerFinish(this);

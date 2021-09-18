@@ -562,6 +562,9 @@ namespace Qserver.GameServer.Qpang
         }
         public void SetMode(GameMode.Mode mode)
         {
+            if (this._isPlaying)
+                return;
+
             this._mode = mode;
             this._modeManager = Game.Instance.RoomManager.GameModeManager.Get(mode);
             this._modeManager.OnApply(this);
@@ -578,6 +581,9 @@ namespace Qserver.GameServer.Qpang
         }
         public void SetMap(byte map)
         {
+            if (this._isPlaying)
+                return;
+
             if (map > 12)
                 return;
 
@@ -586,21 +592,33 @@ namespace Qserver.GameServer.Qpang
         }
         public void SetMaxPlayers(byte maxPlayers)
         {
+            if (this._isPlaying)
+                return;
+
             this._maxPlayers = maxPlayers;
             Update((uint)CGRoom.Commands.PLAYERS_ROOM, maxPlayers);
         }
         public void SetScorePoints(uint points)
         {
+            if (this._isPlaying)
+                return;
+
             this._scorePoints = points;
             Update((uint)CGRoom.Commands.SET_POINTS, points);
         }
         public void SetScoreTime(uint time)
         {
+            if (this._isPlaying)
+                return;
+
             this._scoreTime = time;
             Update((uint)CGRoom.Commands.SET_TIME, time);
         }
         public void SetPassword(string password)
         {
+            if (this._isPlaying)
+                return;
+
             if (password.Length > 4)
                 password = password.Substring(0, 4);
 
@@ -609,16 +627,25 @@ namespace Qserver.GameServer.Qpang
         }
         public void SetLevelLimited(bool levelLimited)
         {
+            if (this._isPlaying)
+                return;
+
             //this._isLevelLimited = levelLimited;
             //Update((uint)CGRoom.Commands.LEVEL_ROOM, levelLimited ? (uint)1 : (uint)0);
         }
         public void SetTeamSorting(bool teamSorting)
         {
+            if (this._isPlaying)
+                return;
+
             //this._isTeamSorting = teamSorting;
             //Update((uint)CGRoom.Commands.TEAM_ROOM, teamSorting ? (uint)1 : (uint)0);
         }
         public void SetSkillsEnabled(bool skillEnabled)
         {
+            if (this._isPlaying)
+                return;
+
             this._isSkillsEnabled = skillEnabled;
 
             UnreadyAll(true);
@@ -626,6 +653,9 @@ namespace Qserver.GameServer.Qpang
         }
         public void SetMeleeOnly(bool meleeOnly)
         {
+            if (this._isPlaying)
+                return;
+
             this._isMeleeOnly = meleeOnly;
             if (this._isMeleeOnly)
                 this._isSkillsEnabled = false;

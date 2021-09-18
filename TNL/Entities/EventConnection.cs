@@ -409,7 +409,8 @@ namespace TNL.Entities
                     NextEvent = null
                 };
 
-                int count = 0;
+                int count = 0; // NOTE: tak last packet?
+                waitInsert = null; // NOTE: removing last packet, this is a shitty fix!!!!
                 while (waitInsert != null && waitInsert.SeqCount < seq)
                 {
                     waitInsertPrev = waitInsert;
@@ -418,7 +419,7 @@ namespace TNL.Entities
                     if(count == 30)
                     {
                         Console.WriteLine($"EventConn waitInsert TIMEOUT! {seq}/{waitInsert.SeqCount}");
-                        seq--;
+                        break;
                     }
                 }
 

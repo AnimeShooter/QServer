@@ -738,7 +738,7 @@ namespace Qserver.GameServer.Qpang
             int highest = 0;
             RoomSessionPlayer enemy = null;
             for (int i = 0; i < players.Count; i++)
-                if (rng[i] > highest && players[i].Playing) // prey, either current or left?
+                if (rng[i] > highest && players[i].Playing && !players[i].Death) // prey, either current or left?
                     enemy = players[i];
 
             return enemy;

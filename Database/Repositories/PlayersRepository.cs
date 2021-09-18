@@ -101,7 +101,8 @@ namespace Qserver.Database.Repositories
         {
             await _sqlObjectFactory.GetConnection().UsingAsync(connection =>
                 connection.QueryAsync("UPDATE player_stats SET kills = @Kills, deaths = @Deaths, n_won = @Nwon, n_lost = @Nlost, n_drew = @Ndrew, m_won = @Mwon, m_lost = @Mlost, m_drew = @Mdrew, playtime = @Playtime, slacker_points = @SlackerPoints, melee_kills = @MeleeKills, " +
-                "gun_kills = @GunKills, launcher_kills = @LauncherKills, bomb_kills = @BombKills, headshot_kills = @HeadshotKills, headshot_deaths = @HeadshotDeaths, team_kills = @TeamKills, team_deaths = @TeamDeaths, event_item_pickups = @EventItemPickups WHERE player_id = @Id",
+                "gun_kills = @GunKills, launcher_kills = @LauncherKills, bomb_kills = @BombKills, headshot_kills = @HeadshotKills, headshot_deaths = @HeadshotDeaths, team_kills = @TeamKills, team_deaths = @TeamDeaths, event_item_pickups = @EventItemPickups, " +
+                "prey_kills = @PreyKills, prey_player_kills = @PreyPlayerKills, prey_deaths = @PreyDeaths WHERE player_id = @Id",
                 new
                 {
                     Kills = player.StatsManager.Kills,
@@ -123,6 +124,9 @@ namespace Qserver.Database.Repositories
                     TeamKills = player.StatsManager.TeamKills,
                     TeamDeaths = player.StatsManager.TeamDeaths,
                     EventItemPickups = 0,
+                    PreyKills = player.StatsManager.PreyKills,
+                    PreyPlayerKills = player.StatsManager.PreyPlayerKills,
+                    PreyDeaths = player.StatsManager.PreyDeaths,
                     Id = player.PlayerId
                 }));
         }

@@ -418,7 +418,7 @@ namespace TNL.Entities
                     if(count == 30)
                     {
                         Console.WriteLine($"EventConn waitInsert TIMEOUT! {seq}/{waitInsert.SeqCount}");
-                        seq++;
+                        seq--;
                     }
                 }
 

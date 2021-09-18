@@ -509,8 +509,21 @@ namespace Qserver.GameServer.Qpang
             }
 
             var playingPlayers = GetPlayingPlayers();
+            List<RoomSessionPlayer> sortedPlatingPlayers = null;
+            switch (this._room.Mode)
+            {
+                case GameMode.Mode.PREY:
+                    sortedPlatingPlayers = players.OrderByDescending(x => x.PreyScore).ToList();
+                    break;
+                case GameMode.Mode.VIP:
+                case GameMode.Mode.PTE:
+                    sortedPlatingPlayers = players.OrderByDescending(x => x.Score).ToList();
+                    break;
+                default:
+                    sortedPlatingPlayers = players.OrderByDescending(x => x.Kills).ToList();
+                    break;
+            }
 
-            var sortedPlatingPlayers = playingPlayers.OrderBy(x => x.Kills).ToList();
             foreach(var player in players)
             {
                 var p = player.Player;

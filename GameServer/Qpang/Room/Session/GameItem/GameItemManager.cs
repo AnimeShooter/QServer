@@ -272,10 +272,19 @@ namespace Qserver.GameServer.Qpang
                 }
             }
 
+            // check if prey
+            bool isPrey = player.RoomSession.Room.Mode == GameMode.Mode.PREY && player.RoomSession.PublicEnemy == player;
+
+            // check whitelisted object
             if (item.ItemId == (uint)Item.RED_MEDKIT || item.ItemId == (uint)Item.GREEN_MEDKIT || item.ItemId == (uint)Item.AMMO_CLIP
                 || item.ItemId == (uint)Item.SKILL_CARD)
             {
-                var identifier = MappedItems[(Item)item.ItemId].OnPickUp(player);
+
+                // NOTE: Only allow Prey to loot loot ammo, all other loot will remove
+                uint identifier = 0;
+                if (!isPrey || isPrey && item.ItemId == (uint)Item.AMMO_CLIP)
+                    identifier = MappedItems[(Item)item.ItemId].OnPickUp(player);
+
                 this._roomSession.RelayPlaying<GCGameItem>((byte)1, player.Player.PlayerId, item.ItemId, item.SpawnId, identifier);
 
                 this._items[spawnId] = new GameItemSpawn()

@@ -12,6 +12,10 @@ namespace Qserver.GameServer.Qpang
         private Dictionary<uint, ushort[]> _defaultAmmo;
         private RoomSessionPlayer _player;
 
+        private DateTime _lastShot;
+        private uint _shotsFired;
+        private uint _illegalShotsFired;
+
         public bool CanReload
         {
             get { return SelectedWeapon.ClipCount > 0; }
@@ -21,8 +25,49 @@ namespace Qserver.GameServer.Qpang
         {
             get 
             { 
-                if (HoldsMelee) return true;
-                return SelectedWeapon.ClipSize > 0;
+                if (HoldsMelee) 
+                    return true; // idk
+
+                if (SelectedWeapon.ClipSize == 0)
+                    return false;
+
+                ushort delay = 500;
+                switch (this._selectedWeaponIndex)
+                {
+                    case 0: // throw?
+                        delay = 500;
+                        break;
+                    case 1: // snipe
+                        delay = 900; // 1400ms client delay?
+                        break;
+                    case 2: // gun
+                        delay = this._player.RoomSession.PublicEnemy == this._player ? (ushort)102 : (ushort)45;
+                        break;
+                    case 3: // melee
+                        delay = 400;
+                        break;
+                    default:
+                        delay = 100; // idk
+                        break;
+                }
+
+                if (this._lastShot.AddMilliseconds(delay) > DateTime.UtcNow)
+                {
+                    this._illegalShotsFired++;
+                    if (this._shotsFired > 13 && this._illegalShotsFired / (float)this._shotsFired > 0.15f)
+                    {
+                        var allPlayers = Game.Instance.PlayersList();
+                        foreach (var p in allPlayers)
+                            if (p.Online)
+                                p.Broadcast($"Player {this._player.Player.Name} has been removed for cheating!"); // public shaming!
+                        this._player.RoomSession.RemovePlayer(this._player.Player.PlayerId); // be gone!
+                    }
+                    return false;
+                }
+                this._shotsFired++;
+                this._lastShot = DateTime.UtcNow; // NOTE: Fuck you, Jarrett
+
+                return true;
             }
         }
 
@@ -40,6 +85,7 @@ namespace Qserver.GameServer.Qpang
         {
             get { return this._weapons[this._selectedWeaponIndex]; }
         }
+
 
         public uint[] WeaponIds
         {

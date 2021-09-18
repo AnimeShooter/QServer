@@ -495,6 +495,7 @@ namespace Qserver.GameServer.Qpang
                         p.Player.StatsManager.AddMissionLoss();
                     else
                         p.Player.StatsManager.AddNormalLoss();
+                    p.Player.StatsManager.AddSlackerPoint(); // Boo!
                     p.Stop();
                 }
             }
@@ -730,7 +731,7 @@ namespace Qserver.GameServer.Qpang
             for(int i = 0; i < players.Count; i++)
             {
                 rng[i] = rnd.Next(0, 100);
-                for (int j = 0; j < players[i].Kills; i++)
+                for (int j = 0; j < players[i].Kills; j++)
                     rng[i] += rnd.Next(1, 5); // add 1~5% chance per kill
             }
 

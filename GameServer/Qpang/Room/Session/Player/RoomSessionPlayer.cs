@@ -72,6 +72,8 @@ namespace Qserver.GameServer.Qpang
         private float _startY;
         private float _startZ;
 
+        public DateTime LastShot = DateTime.MinValue;
+
         public object Lock
         {
             get { return this._playerLock; }

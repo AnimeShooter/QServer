@@ -330,6 +330,8 @@ namespace Qserver.GameServer.Qpang
                         if (!(p.Value.Ready || p.Value.IsBot || p.Key == this._masterPlayerId))
                             allReady = false;
 
+                allReady = !(this._modeManager.IsMissionMode() && this._players.Count < 4); // invalid if not 4 in mission
+
                 // kick master for AFK
                 if (!allReady)
                     this._lastMasterAction = currTick;
@@ -358,11 +360,11 @@ namespace Qserver.GameServer.Qpang
                                 break;
                         }
 
-                    //if (!message.Equals(string.Empty))
-                    //    lock (this._players)
-                    //        foreach (var p in this._players)
-                    //            if (!p.Value.IsBot)
-                    //                p.Value.Player.Broadcast(message);
+                    if (!message.Equals(string.Empty))
+                        lock (this._players)
+                            foreach (var p in this._players)
+                                if (!p.Value.IsBot)
+                                    p.Value.Player.Broadcast(message);
                 }
             }
             
@@ -390,7 +392,7 @@ namespace Qserver.GameServer.Qpang
                             }
 
             this._roomSession = new RoomSession(this, this._modeManager);
-            this._roomSession.Initialize(); // TODO
+            this._roomSession.Initialize();
 
             this._isPlaying = true;
             this._state = 64;

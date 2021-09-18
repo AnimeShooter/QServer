@@ -78,6 +78,11 @@ namespace Qserver.GameServer.Qpang
             if (session.Death) // || !weaponManager.CanShoot)
                 return;
 
+            if (session.LastShot.AddMilliseconds(125) < DateTime.UtcNow)
+                return;
+
+            session.LastShot = DateTime.UtcNow; //NOTE: Fuck you, Jarrett
+
             var activeSkill = roomPlayer.RoomSessionPlayer.SkillManager.ActiveSkillCard;
             if (activeSkill != null)
             {

@@ -95,7 +95,7 @@ namespace Qserver.GameServer.Qpang
                 bitStream.Write(player.ExpRate);
 
                 WriteWString(bitStream, player.Player.Name, 16);
-                bitStream.Write((uint)0); // Unk19
+                bitStream.Write((uint)player.PreyScore); // Unk19
 
                 playerIndex++;
                 if (playerIndex >= 16)

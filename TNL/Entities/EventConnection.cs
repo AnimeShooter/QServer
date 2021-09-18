@@ -409,10 +409,17 @@ namespace TNL.Entities
                     NextEvent = null
                 };
 
+                int count = 0;
                 while (waitInsert != null && waitInsert.SeqCount < seq)
                 {
                     waitInsertPrev = waitInsert;
                     waitInsert = waitInsert.NextEvent;
+                    count++;
+                    if(count == 30)
+                    {
+                        Console.WriteLine($"EventConn waitInsert TIMEOUT! {seq}/{waitInsert.SeqCount}");
+                        seq++;
+                    }
                 }
 
                 note.NextEvent = waitInsert;

@@ -25,7 +25,8 @@ namespace Qserver.GameServer.Qpang
             { GameMode.Mode.PTE, new ProtectTheEssence() },
             { GameMode.Mode.VIP, new VIP() },
 
-            { GameMode.Mode.PRACTICE, new Practice() }, // Practice
+            { GameMode.Mode.PRACTICE, new GunGame() }, // Practice
+            //{ GameMode.Mode.PRACTICE, new Practice() }, // Practice
             { GameMode.Mode.PREY, new PublicEnemy() }, // Public Enemy
             { GameMode.Mode.PVE, new PvE() }, // PvE (STO)
         };

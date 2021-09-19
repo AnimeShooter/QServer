@@ -25,26 +25,20 @@ namespace Qserver.GameServer.Qpang
         {
             get 
             { 
-                if (HoldsMelee) 
-                    return true; // idk
-
-                if (SelectedWeapon.ClipSize == 0)
-                    return false;
-
                 ushort delay = 500;
                 switch (this._selectedWeaponIndex)
                 {
                     case 0: // throw?
-                        delay = 500;
+                        delay = 920;
                         break;
                     case 1: // snipe
-                        delay = 900; // 1400ms client delay?
+                        delay = 1240; // 1400ms client delay?
                         break;
                     case 2: // gun
-                        delay = this._player.RoomSession.PublicEnemy == this._player ? (ushort)102 : (ushort)45;
+                        delay = this._player.RoomSession.PublicEnemy == this._player ? (ushort)102 : (ushort)0;
                         break;
                     case 3: // melee
-                        delay = 400;
+                        delay = 400; // doesnt shoot?
                         break;
                     default:
                         delay = 100; // idk
@@ -56,17 +50,28 @@ namespace Qserver.GameServer.Qpang
                     this._illegalShotsFired++;
                     if (this._shotsFired > 13 && this._illegalShotsFired / (float)this._shotsFired > 0.15f)
                     {
+                        this._player.Post(new GCGameState(this._player.Player.PlayerId, 22)); // hack detect
                         var allPlayers = Game.Instance.PlayersList();
                         foreach (var p in allPlayers)
                             if (p.Online)
                                 p.Broadcast($"Player {this._player.Player.Name} has been removed for cheating!"); // public shaming!
                         this._player.RoomSession.RemovePlayer(this._player.Player.PlayerId); // be gone!
+                        this._player.Post(new GCGameState(this._player.Player.PlayerId, 22)); // hack detect
                     }
                     return false;
                 }
                 this._shotsFired++;
                 this._lastShot = DateTime.UtcNow; // NOTE: Fuck you, Jarrett
 
+                // allow melee
+                if (HoldsMelee)
+                    return true;
+
+                // blacklist empty
+                if (SelectedWeapon.ClipSize == 0)
+                    return false;
+
+                // otherwise okay
                 return true;
             }
         }
@@ -140,6 +145,11 @@ namespace Qserver.GameServer.Qpang
                     hasPreSelectedWeapons = true;
                 }
             }
+        }
+
+        public void Replace(Weapon weapon)
+        {
+            this._weapons[(int)weapon.WeaponType] = weapon;
         }
 
         public void InitPrey()

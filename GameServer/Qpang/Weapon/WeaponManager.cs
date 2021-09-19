@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Qserver.GameServer.Qpang;
 using Qserver.Util;
@@ -62,6 +63,18 @@ namespace Qserver.GameServer.Qpang
 					return this._weapons[weaponId];
 				return new Weapon();
             }
+        }
+
+		public Weapon GetRandomWeapon(WeaponType? type = null)
+        {
+			Weapon result;
+			Random rnd = new Random();
+
+			do
+				result = this._weapons.Values.ElementAt(rnd.Next(0, this._weapons.Count));
+			while (type.HasValue && type.Value == result.WeaponType);
+
+			return result;
         }
 
         public WeaponType GetWeaponType(uint id)

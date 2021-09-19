@@ -27,8 +27,10 @@ namespace Qserver.GameServer.Qpang
         public enum Commands : uint
         {
             SWAP = 0,
+            TAKE_COMMON = 1,
+            DROP_COMMON = 2,
             RELOAD = 3,
-            ENABLE_SHOOTING = 5
+            ENABLE_SHOOTING = 5 // default?
         }
 
         public uint PlayerId;

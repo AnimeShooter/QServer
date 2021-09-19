@@ -63,7 +63,15 @@ namespace Qserver.GameServer.Qpang
             TRAP_SHIP_PROPELLER = 7
         };
 
-        
+        public enum Cmd : byte
+        {
+            BREAK = 6,
+            NPC_HIT = 7,
+            NPC_ATTACK = 8,
+            MOVE_HACK = 9,
+            MOVE_GAP = 10,
+            PLAYER_HIT = 11 // default
+        }
 
         public uint SrcPlayerId; // 
         public uint DstPlayerId; // 

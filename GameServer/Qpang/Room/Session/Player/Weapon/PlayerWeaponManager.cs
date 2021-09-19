@@ -102,6 +102,38 @@ namespace Qserver.GameServer.Qpang
 
                 return wepIds;
             }
+            set
+            {
+                var equipmentManager = this._player.Player.EquipmentManager;
+                var hasPreSelectedWeapons = false;
+                var isMeleeOnly = this._player.RoomSession.Room.MeleeOnly;
+
+                for (int i = 0; i < value.Length; i++)
+                {
+                    var weapon = Game.Instance.WeaponManager.Get(value[i]);
+
+                    if (isMeleeOnly)
+                    {
+                        if (i == 3)
+                            this._weapons[3] = weapon;
+                    }
+                    else
+                        this._weapons[i] = weapon;
+
+                    if (!this._defaultAmmo.ContainsKey(weapon.ItemId))
+                        this._defaultAmmo.Add(weapon.ItemId, new ushort[2]
+                        {
+                        (ushort)(weapon.ClipCount + equipmentManager.GetExtraAmmoForWeaponIndex((byte)i)),
+                        (ushort)(weapon.ClipSize)
+                        });
+
+                    if (this._weapons[i].ItemId != 0 && !hasPreSelectedWeapons)
+                    {
+                        this._selectedWeaponIndex = (byte)i;
+                        hasPreSelectedWeapons = true;
+                    }
+                }
+            }
         }
 
         public PlayerWeaponManager()
@@ -222,9 +254,9 @@ namespace Qserver.GameServer.Qpang
 
         public bool HasWeapon(uint weaponId)
         {
-            foreach (var weapon in this._weapons)
-                if (weapon.ItemId == weaponId)
-                    return true;
+            //foreach (var weapon in this._weapons)
+            //    if (weapon.ItemId == weaponId)
+            //        return true;
 
             return true;
         }

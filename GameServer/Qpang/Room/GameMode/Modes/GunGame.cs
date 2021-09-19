@@ -25,7 +25,7 @@ namespace Qserver.GameServer.Qpang
         public override void OnStart(RoomSession roomSession)
         {
             // randomize weapons
-            this._weapons = new Weapon[roomSession.Room.ScorePoints];
+            this._weapons = new Weapon[4];
             for(int i = 0; i < this._weapons.Length-1; i++)
                 this._weapons[i] = Game.Instance.WeaponManager.GetRandomWeapon();
 
@@ -47,8 +47,7 @@ namespace Qserver.GameServer.Qpang
                 {
                     bool matchPoint = killer.Score == killer.RoomSession.Room.ScorePoints - 1; // last point, melee only
 
-                    killer.WeaponManager.Replace(this._weapons[killer.Score]);
-                    killer.Post(new GCJoin(killer));
+                    //killer.WeaponManager
                 }
                 
             }

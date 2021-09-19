@@ -230,7 +230,7 @@ namespace Qserver.GameServer.Qpang
             this._equips[character] = equip;
         }
 
-        public void SetWeapons(ushort character, ulong[] weapons)
+        public void SetWeapons(ushort character, ulong[] weapons, bool mustHave = true)
         {
             var characterId = CharacterIndexToId(character);
             if (this._player == null)
@@ -238,16 +238,17 @@ namespace Qserver.GameServer.Qpang
 
             lock (this._lock)
             {
-                foreach (var weapon in weapons)
-                {
-                    if (weapon == 0)
-                        continue;
+                if(mustHave)
+                    foreach (var weapon in weapons)
+                    {
+                        if (weapon == 0)
+                            continue;
 
-                    if (!Game.Instance.WeaponManager.CanEquip(this._player.InventoryManager.Get(weapon).ItemId, characterId))
-                        return;
-                    if (!this._player.InventoryManager.HasCard(weapon) || this._player.InventoryManager.IsExpired(weapon))
-                        return;
-                }
+                        if (!Game.Instance.WeaponManager.CanEquip(this._player.InventoryManager.Get(weapon).ItemId, characterId))
+                            return;
+                        if (!this._player.InventoryManager.HasCard(weapon) || this._player.InventoryManager.IsExpired(weapon))
+                            return;
+                    }
 
                 this._equips[characterId][9] = weapons[0];
                 this._equips[characterId][10] = weapons[1];

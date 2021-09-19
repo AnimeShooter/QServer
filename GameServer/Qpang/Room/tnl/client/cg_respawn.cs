@@ -26,8 +26,11 @@ namespace Qserver.GameServer.Qpang
 
         public enum Commands : uint
         {
-            ME = 2,
-            OTHER = 4
+            UNK1 = 1, // GetSpawnPos + BroadcastSpawnPos
+            ME = 2, //  ServerGame::broadcastPotalPos Portal*?
+            UNK3 = 3,
+            OTHER = 4,
+            DEFAULT = 5, // similar to OTHER?
         }
 
         public uint unk01;

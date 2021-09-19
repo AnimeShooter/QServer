@@ -27,7 +27,8 @@ namespace Qserver.GameServer.Qpang
         public enum Commands : byte
         {
             CHARACTER = 1,
-            TEAM = 2
+            TEAM = 2,
+            UNK = 3
         }
 
         public uint PlayerId;

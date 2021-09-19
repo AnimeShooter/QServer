@@ -377,6 +377,20 @@ namespace Qserver.GameServer.Qpang
             if (this._isPlaying)
                 return;
 
+            // test test
+            //this._players[this._masterPlayerId].Player.InventoryManager.AddCard(new InventoryCard()
+            //{
+            //    Id = 0xff00001,
+            //    IsActive = true,
+            //    IsOpened = true,
+            //    ItemId = Game.Instance.WeaponManager.GetRandomWeapon(WeaponType.MELEE).ItemId,
+            //    Period = 999, // hide?
+            //    PeriodeType = 3,
+            //    Type = 87,
+            //    PlayerOwnedId = this._players[this._masterPlayerId].Player.PlayerId,
+            //    IsGiftable = false
+            //});
+
             bool pve = this._mode == GameMode.Mode.PVE;
             //pve = false;
 
@@ -403,7 +417,7 @@ namespace Qserver.GameServer.Qpang
                 {
                     if (p.Value.Ready || this._masterPlayerId == p.Key)
                     {
-                        if(p.Value.IsBot)
+                        if (p.Value.IsBot)
                         {
                             this._roomSession.AddPlayer(p.Value.Conn, p.Value.Team);
                         }

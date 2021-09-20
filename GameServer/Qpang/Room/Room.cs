@@ -304,7 +304,7 @@ namespace Qserver.GameServer.Qpang
                     new System.Threading.Thread(new System.Threading.ParameterizedThreadStart(DelayDC)).Start(player);
                     void DelayDC(object o)
                     {
-                        System.Threading.Thread.Sleep(750);
+                        System.Threading.Thread.Sleep(950);
                         ((RoomPlayer)o).Conn.Disconnect("Exited Gameroom");
                     }
                 }

@@ -239,15 +239,15 @@ namespace Qserver.GameServer.Qpang
             {
                 // NOTE: throws exception?
 
-                PostNetEvent(new GCStart(room, this._player.PlayerId));
-                //PostNetEvent(new GCPvEStart(room, this._player.PlayerId));
+                //PostNetEvent(new GCStart(room, this._player.PlayerId));
+                PostNetEvent(new GCPvEStart(room, this._player.PlayerId));
 
                 //PostNetEvent(new GCPvENewRound()); // broadcast when round completed
 
                 // swap us
 
-                //PostNetEvent(new GCPvEUserInit(roomPlayer));
-                PostNetEvent(new GCJoin(roomPlayer));
+                PostNetEvent(new GCPvEUserInit(roomPlayer));
+                //PostNetEvent(new GCJoin(roomPlayer));
 
                 PostNetEvent(new GCGameState(this._player.PlayerId, 12));
 

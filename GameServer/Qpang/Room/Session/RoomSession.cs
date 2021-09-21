@@ -134,7 +134,7 @@ namespace Qserver.GameServer.Qpang
                 {
                     uint hp = (uint)(500 + (this._players.Count * 85));
                     value.SetHealth((ushort)hp, false);
-                    value.WeaponManager.InitPrey();
+                    value.WeaponManager.SetWeapon(1095368720, 2); // ChainLight2
                     RelayPlaying<GCGameState>(value.Player.PlayerId, (uint)CGGameState.State.PREY_TRANFORM, hp, (uint)0);
                 }
                 else
@@ -932,7 +932,7 @@ namespace Qserver.GameServer.Qpang
 
             lock (this._lockPlayers)
                 foreach (var p in this._players)
-                    if (p.Value.Playing && !p.Value.IsBot) // NOTE: dont relay bots?
+                    if (p.Value.Playing && !p.Value.IsBot) 
                         p.Value.Post((GameNetEvent)ctor.Invoke(args));
         }
 

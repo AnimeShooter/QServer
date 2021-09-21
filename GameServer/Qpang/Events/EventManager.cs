@@ -31,6 +31,7 @@ namespace Qserver.GameServer.Qpang
             if (_lastTick + 30 > currTime)
                 return; // only check every 30 sec
 
+
         }
     }
 }

@@ -47,8 +47,11 @@ namespace Qserver.GameServer.Qpang
                 else
                     newEnemy = roomSession.FindNextPublicEnemy();
 
-                newEnemy.WeaponManager.Reset(); // fix for respawn
-                roomSession.PublicEnemy = newEnemy;
+                if(newEnemy != null)
+                {
+                    newEnemy.WeaponManager.Reset(); // fix for respawn
+                    roomSession.PublicEnemy = newEnemy;
+                }
             }
 
             base.Tick(roomSession);

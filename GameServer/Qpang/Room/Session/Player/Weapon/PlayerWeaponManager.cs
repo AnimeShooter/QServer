@@ -8,6 +8,7 @@ namespace Qserver.GameServer.Qpang
     {
         private Weapon[] _weapons;
         private Weapon? _oldGun;
+        private byte _oldSlot = 0xFF;
         private byte _selectedWeaponIndex;
         private Dictionary<uint, ushort[]> _defaultAmmo;
         private RoomSessionPlayer _player;
@@ -184,32 +185,27 @@ namespace Qserver.GameServer.Qpang
             this._weapons[(int)weapon.WeaponType] = weapon;
         }
 
-        public void InitPrey()
+        public void SetWeapon(uint weaponId, byte slot)
         {
-            //this._weapons[0] = 0; // throw
-            //this._weapons[1] = 0; // sniper
-            this._selectedWeaponIndex = 2; // gun
-            //this._weapons[3] = 0; // melee
+            this._selectedWeaponIndex = slot; 
 
             // save last gun
             if (!this._oldGun.HasValue)
-                this._oldGun = this._weapons[this._selectedWeaponIndex];
-
-            Weapon weapon = new Weapon()
             {
-                ItemId = 1095368720,
-                ClipCount = 2,
-                ClipSize = 50
-            };
+                this._oldSlot = slot;
+                this._oldGun = this._weapons[slot];
+            }
+                
+            Weapon weapon = Game.Instance.WeaponManager.Get(weaponId); // 1095368720
 
             if (!this._defaultAmmo.ContainsKey(weapon.ItemId))
                 this._defaultAmmo.Add(weapon.ItemId, new ushort[2]
                 {
-                        (ushort)(weapon.ClipCount),
-                        (ushort)(weapon.ClipSize)
+                    weapon.ClipCount,
+                    weapon.ClipSize
                 });
 
-            this._weapons[this._selectedWeaponIndex] = weapon;
+            this._weapons[slot] = weapon;
         }
 
         public void Reset()

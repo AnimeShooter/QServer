@@ -19,6 +19,7 @@ namespace Qserver.GameServer.Qpang
             {"item", new ItemCommand() },
             {"trigger", new TriggerCommand() },
             {"test", new TestCommand() },
+            {"test2", new Test2Command() },
             {"state", new StateCommand() }
         };
 

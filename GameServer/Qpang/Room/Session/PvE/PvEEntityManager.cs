@@ -96,7 +96,12 @@ namespace Qserver.GameServer.Qpang
             {
                 Clear();
 
-                PvEObject essence = new PvEObject((uint)6, GetAvailableId(), new Position());
+                PvEObject essence = new PvEObject((uint)6, GetAvailableId(), new Position()
+                {
+                    X = 0f,
+                    Y = 0.25f,
+                    Z = 0f,
+                });
                 this._entities.Add(essence.Uid, essence);
             }
             else

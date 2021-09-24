@@ -26,6 +26,8 @@ namespace Qserver.GameServer.Qpang
         private uint _essenceDropTime;
         private bool _isEssenceReset;
 
+        private byte _round = 1;
+
         private GameMode _gameMode;
         private GameItemManager _itemManager;
         private RoomSkillManager _skillManager;
@@ -469,7 +471,8 @@ namespace Qserver.GameServer.Qpang
 
         public void CompletePvERound()
         {
-            //this._nextRound = Util.Util.Timestamp() + 15;
+            this._round++;
+            this._PvEEntityManager.SetupStage(this._round);
             RelayPlaying<GCPvERoundEnd>();
         }
 
@@ -526,7 +529,7 @@ namespace Qserver.GameServer.Qpang
                     break;
             }
 
-            foreach(var player in players)
+            foreach (var player in players)
             {
                 var p = player.Player;
 

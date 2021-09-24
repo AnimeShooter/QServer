@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Qserver.GameServer.Qpang
 {
-    public class TestCommand : ChatCommand
+    public class Test3Command : ChatCommand
     {
-        public TestCommand() : base(3)
+        public Test3Command() : base(3)
         {
 
         }
@@ -25,24 +25,8 @@ namespace Qserver.GameServer.Qpang
             if (args.Count > 1)
                 uint.TryParse(args[1], out test1);
 
-            if (args.Count > 2)
-                uint.TryParse(args[2], out test2);
-
-            if (args.Count > 2)
-                uint.TryParse(args[2], out test3);
-
-            //switch(test)
-            //{
-            //    case 1:
-            //     player.RoomPlayer.Room.RoomSession.RelayPlaying<GCPvEDestroyObject>(type);
-            //        break;
-            //    case 2:
-            //        player.RoomPlayer.Room.RoomSession.RelayPlaying<GCPvEDoor>(type, true);
-            //        break;
-            //    case 3:
-            //        player.RoomPlayer.Room.RoomSession.RelayPlaying<GCPvEDoor>(type, true);
-            //        break;
-            //}
+            ushort[] testa = new ushort[0];
+            ushort[] testb = new ushort[0];
 
             //player.RoomPlayer.RoomSessionPlayer.WeaponManager.Replace(Game.Instance.WeaponManager.GetRandomWeapon());
             //player.RoomPlayer.RoomSessionPlayer.Post(new GCGameState(player.RoomPlayer.RoomSessionPlayer, 15)); // leave game
@@ -50,7 +34,7 @@ namespace Qserver.GameServer.Qpang
             //player.RoomPlayer.RoomSessionPlayer.Post(new GCJoin(player.RoomPlayer.RoomSessionPlayer)); // join game
             //player.RoomPlayer.RoomSessionPlayer.Post(new GCGameState(player.RoomPlayer.RoomSessionPlayer, 12)); // game state
 
-            player.RoomPlayer.RoomSessionPlayer.Post(new GCPvEMoveNpc(test1, (ushort)test2, (ushort)test3)); // weapon
+            player.RoomPlayer.RoomSessionPlayer.Post(new GCPvEMoveNodesNpc(test1, testa, testb)); // weapon
         }
     }
 }

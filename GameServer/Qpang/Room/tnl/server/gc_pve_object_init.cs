@@ -24,18 +24,18 @@ namespace Qserver.GameServer.Qpang
             ImplementNetEvent(out _dynClassRep, "GCPvEObjectInit", NetClassMask.NetClassGroupGameMask, 0);
         }
 
-        public uint Unk1; // 88 Uid?
-        public uint Unk2; // 92 ObjectId?
+        public uint ObjectId; // 88 Uid?
+        public uint Uid; // 92 ObjectId?
         public float X; // x? 96
         public float Y; // y? 100
         public float Z; // z? 104
-        public ushort Unk6; // 108 State?
+        public ushort Unk6; // 108 State/parts?
 
         public GCPvEObjectInit() : base(GameNetId.GC_PVE_OBJECT_INIT, GuaranteeType.Guaranteed, EventDirection.DirAny) { }
         public GCPvEObjectInit(uint objId, uint uid, Position spawn, ushort unk6) : base(GameNetId.GC_PVE_OBJECT_INIT, GuaranteeType.Guaranteed, EventDirection.DirAny) 
         {
-            Unk1 = objId;
-            Unk2 = uid;
+            ObjectId = objId;
+            Uid = uid;
             X = spawn.X;
             Y = spawn.Y;
             Z = spawn.Z;
@@ -44,8 +44,8 @@ namespace Qserver.GameServer.Qpang
 
         public override void Pack(EventConnection ps, BitStream bitStream) 
         {
-            bitStream.Write(Unk1);
-            bitStream.Write(Unk2);
+            bitStream.Write(ObjectId);
+            bitStream.Write(Uid);
             bitStream.Write(X);
             bitStream.Write(Y);
             bitStream.Write(Z);
@@ -53,8 +53,8 @@ namespace Qserver.GameServer.Qpang
         }
         public override  void Unpack(EventConnection ps, BitStream bitStream)
         {
-            bitStream.Read(out Unk1);
-            bitStream.Read(out Unk2);
+            bitStream.Read(out ObjectId);
+            bitStream.Read(out Uid);
             bitStream.Read(out X);
             bitStream.Read(out Y);
             bitStream.Read(out Z);

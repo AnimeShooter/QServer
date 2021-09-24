@@ -44,9 +44,9 @@ namespace Qserver.GameServer.Qpang
                 return;
 
             // TODO: ask for a respawn?
-            //player.RoomPlayer.RoomSessionPlayer.Respawn();
+            player.RoomPlayer.RoomSessionPlayer.Respawn();
 
-            player.RoomPlayer.Room.RoomSession.CompletePvERound();
+            // player.RoomPlayer.Room.RoomSession.CompletePvERound();
         }
     }
 }

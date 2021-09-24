@@ -18,7 +18,7 @@ namespace Qserver.GameServer.Qpang
             if (player == null || player.RoomPlayer == null)
                 return;
 
-            player.RoomPlayer.RoomSessionPlayer.Post(new GCPvERoundEnd());
+            player.RoomPlayer.RoomSessionPlayer.RoomSession.CompletePvERound();
         }
     }
 }

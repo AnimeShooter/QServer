@@ -24,9 +24,16 @@ namespace Qserver.GameServer.Qpang
             ImplementNetEvent(out _dynClassRep, "GCPvEMoveNpc", NetClassMask.NetClassGroupGameMask, 0);
         }
 
-        public uint Unk1; // 88
-        public ushort Unk2; // 92
+        public uint Unk1; // 88 Uid?
+        public ushort Unk2; // 92 Node/State?
         public ushort Unk3; // 94
+
+        public GCPvEMoveNpc(uint unk1, ushort unk2, ushort unk3) : base(GameNetId.GC_PVE_MOVE_NPC, GuaranteeType.Guaranteed, EventDirection.DirAny) 
+        {
+            Unk1 = unk1;
+            Unk2 = unk2;
+            Unk3 = unk3;
+        }
 
         public GCPvEMoveNpc() : base(GameNetId.GC_PVE_MOVE_NPC, GuaranteeType.Guaranteed, EventDirection.DirAny) { }
 

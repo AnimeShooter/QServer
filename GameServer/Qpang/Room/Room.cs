@@ -392,7 +392,7 @@ namespace Qserver.GameServer.Qpang
             //});
 
             bool pve = this._mode == GameMode.Mode.PVE;
-            //pve = false;
+            pve = false;
 
             // check if everyone is ready
             if(pve)

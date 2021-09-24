@@ -45,6 +45,7 @@ namespace Qserver.GameServer.Qpang
 
         public override void OnPlayerSync(RoomSessionPlayer session)
         {
+            session.RoomSession.PvEEntityManager.SyncPlayer(session);
             base.OnPlayerSync(session);
         }
 
@@ -54,11 +55,6 @@ namespace Qserver.GameServer.Qpang
             // Reset timers? (Stage 2 goes by time)
 
             base.Tick(roomSession);
-        }
-
-        private void NextRound(RoomSession roomSession, byte round)
-        {
-            roomSession.PvEEntityManager.SetupStage(round); 
         }
     }
 }

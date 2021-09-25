@@ -152,7 +152,7 @@ namespace Qserver.Database.Repositories
             Task<uint> playerid = null;
             await _sqlObjectFactory.GetConnection().UsingAsync(connection =>
                 playerid = connection.QuerySingleAsync<uint>("INSERT INTO players (user_id, name, default_character, rank, prestige, level, don, cash, coins, experience, is_muted) VALUES (@Userid, @Name, @DefaultCharacter, @Rank, @Prestige, @Level, @Don, @Cash, @Coins, @Experience, @IsMuted);  SELECT LAST_INSERT_ID()",
-                new { Userid = userid, Name = name, DefaultCharacter = 333, Rank = 1, Prestige = 1, Level = 1, Don = don, Cash = cash, Coins = 0, Experience = 0, IsMuted = 0 }));
+                new { Userid = userid, Name = name, DefaultCharacter = 333, Rank = 1, Prestige = 0, Level = 1, Don = don, Cash = cash, Coins = 0, Experience = 0, IsMuted = 0 }));
             return playerid.Result;
         }
 

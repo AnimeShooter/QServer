@@ -36,7 +36,7 @@ namespace Qserver.GameServer.Qpang
                         delay = 1240; // 1400ms client delay?
                         break;
                     case 2: // gun
-                        delay = this._player.RoomSession.PublicEnemy == this._player ? (ushort)102 : (ushort)0;
+                        delay = this._player.RoomSession.PublicEnemy == this._player ? (ushort)98 : (ushort)0;
                         break;
                     case 3: // melee
                         delay = 400; // doesnt shoot?

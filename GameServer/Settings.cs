@@ -12,7 +12,7 @@ namespace Qserver.GameServer
         public static uint SERVER_IP = BitConverter.ToUInt32(IPAddress.Parse("127.0.0.1").GetAddressBytes(), 0); // "127.0.0.1";
         public static uint ROOM_SERVER_IP = SERVER_IP;
 #else
-        //public static uint SERVER_IP = BitConverter.ToUInt32(IPAddress.Parse(Util.Util.GetLocalIPAddress().ToString()).GetAddressBytes(), 0);
+        public static uint ROOM_SERVER_IP = BitConverter.ToUInt32(IPAddress.Parse(Util.Util.GetLocalIPAddress().ToString()).GetAddressBytes(), 0);
         public static uint SERVER_IP = ROOM_SERVER_IP;
 #endif
 

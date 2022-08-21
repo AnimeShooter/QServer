@@ -28,11 +28,11 @@ _*Work in progress_
 ## 📐 Setup
 Learning about private servers is best done with hands-on stuff, therefore I think it's important for anyone to quickly set up a server. The server was made with open-source in mind as _(almost)_ every technology used is open-source/freely available.
 
-Requirements:
+### Requirements:
  - `.net 5.0`
  - `MySql`
 
-Setup:
+### Setup:
 1. Create a MySql database
 2. Run all `sql_dump` exports in your new database
 3. `git clone https://github.com/AnimeShooter/QServer.git`
@@ -41,7 +41,7 @@ Setup:
 6. `mv connstring_example.txt connstring.txt`
 7. `dotnet run -c Release`
 
-Server Args:
+### Server Args:
 - `--NoAuth` Disable Auth Server _(port 8003, initial `IP=` connection)_
 - `--NoLobby` Disable Lobby Server _(port 8005, lobby/walking area before entering room)_
 - `--NoSquare` Disable Square Server _(port 8012, channel after auth)_
@@ -55,7 +55,7 @@ First, you need to install the original game installed from the AnimeShooter mir
 
 To do so, you will need to use the [patched mini launcher](https://github.com/AnimeShooter/QPangMiniLauncher) to start the game.
 
-Instructions:
+### Instructions:
 1. Download & install the [official game installer](https://animeshooter.com/download/QPangSetup.exe)
 2. Go to the installation folder, default path is `C:\Program Files (x86)\Realfogs\QPang`
 3. Open `QPangID.ini` and change line 2 to `IP=localhost`
@@ -67,6 +67,9 @@ Instructions:
 Enjoy, to restart the game you will only have to launch the `QPangBin.exe` with the required command line _(or use the `start.bat`)_.
 
 Note: You might want to set `IP=AnimeShooter.com` to connect to our remote servers instead ;D!
+
+### Commmunity
+Find yourself all alone in a game room? ~~No problem, type `!start` in chat to start the game~~ _(bots are enabled by default)_. Or you may join the [AnimeShooter Discord](https://discord.gg/sUbpE5Qm3n) to find a real oponent.
 
 # 🙈 Credits
 

@@ -38,6 +38,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="connstring.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Webserver\HTTP\Public\img\cards\skills\0001.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

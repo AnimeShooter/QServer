@@ -37,12 +37,9 @@ Setup:
 2. Run all `sql_dump` exports in your new database
 3. `git clone https://github.com/AnimeShooter/QServer.git`
 4. `cd QServer`
-5. `vim Database/DatabaseManager.cs` *(change `connstring` on line 10)*
-6. `dotnet run -c Release`
-
-NOTE: step 3 should be done inside a config file, but can't be arsed.
-
-TODO: move `connstring` to config
+5. `vim connstring_example.txt` *(write MySql credentials here)*
+6. `mv connstring_example.txt connstring.txt`
+7. `dotnet run -c Release`
 
 Server Args:
 - `--NoAuth` Disable Auth Server _(port 8003, initial `IP=` connection)_

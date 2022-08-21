@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Text;
 using MySql.Data;
+using System.IO;
 
 namespace Qserver.Database
 {
     public class DatabaseManager
     {
-        public static MySqlObjectFactory MySqlFactory = new MySqlObjectFactory("Server=ferib.be;Database=feribra182_QPang;User=feribra182_QPang;Password=Av1a9bBh!22$#1");
+        public static MySqlObjectFactory MySqlFactory = new MySqlObjectFactory(File.ReadAllText("connstring.txt"));
         public DatabaseManager()
         {
 

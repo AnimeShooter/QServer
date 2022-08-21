@@ -24,20 +24,20 @@ namespace Qserver.GameServer.Qpang
             ImplementNetEvent(out _dynClassRep, "GCPvEDestroyParts", NetClassMask.NetClassGroupGameMask, 0);
         }
 
-        public uint Unk1; // 88 Uid?
-        public uint Unk2; // 92 Part?
+        public uint NpcUid; // 88 Uid?
+        public uint BodyPartUid; // 92 Part?
 
         public GCPvEDestroyParts() : base(GameNetId.GC_PVE_DESTROY_PARTS, GuaranteeType.Guaranteed, EventDirection.DirAny) { }
 
         public override void Pack(EventConnection ps, BitStream bitStream)
         {
-            bitStream.Write(Unk1);
-            bitStream.Write(Unk2);
+            bitStream.Write(NpcUid);
+            bitStream.Write(BodyPartUid);
         }
         public override void Unpack(EventConnection ps, BitStream bitStream)
         {
-            bitStream.Read(out Unk1);
-            bitStream.Read(out Unk2);
+            bitStream.Read(out NpcUid);
+            bitStream.Read(out BodyPartUid);
         }
         public override void Process(EventConnection ps)
         {

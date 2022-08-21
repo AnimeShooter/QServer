@@ -62,8 +62,7 @@ namespace Qserver.GameServer
                 return;
             }
 
-            // settings
-            
+            // settings  
             bool startAuthServer = true;
             bool startSquareServer = true;
             bool startLobbyServer = true;

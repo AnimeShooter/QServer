@@ -41,7 +41,7 @@ namespace Qserver.GameServer.Qpang
         public ushort GainDon;
         public byte Counter;
         public List<uint> GainAchievements = new List<uint>();
-        public byte BonusCount;
+        public byte BonusCount = 0;
         public List<uint> BonusList = new List<uint>();
 
 
@@ -82,9 +82,10 @@ namespace Qserver.GameServer.Qpang
             foreach (var achi in GainAchievements)
                 bitStream.Write((ushort)achi);
 
-            bitStream.Write((byte)0);
+            bitStream.Write((byte)BonusCount);
 
-            for(int i = 0; i < BonusCount; i++) // ???
+            // TODO: write BonusInfo
+            for (int i = 0; i < BonusCount; i++) // ???
             {
                 bitStream.Write((ushort)1);
                 bitStream.Write((float)1234);

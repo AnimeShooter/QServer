@@ -237,20 +237,15 @@ namespace Qserver.GameServer.Qpang
         {
             if(pve)
             {
-                // NOTE: throws exception?
-
-                //PostNetEvent(new GCStart(room, this._player.PlayerId));
                 PostNetEvent(new GCPvEStart(room, this._player.PlayerId));
-
-                //PostNetEvent(new GCPvENewRound()); // broadcast when round completed
-
-                // swap us
-
                 PostNetEvent(new GCPvEUserInit(roomPlayer));
-                //PostNetEvent(new GCJoin(roomPlayer));
-
                 PostNetEvent(new GCGameState(this._player.PlayerId, 12));
 
+                //PostNetEvent(new GCJoin(roomPlayer));
+                //PostNetEvent(new GCPvENewRound()); // broadcast when round completed
+
+
+                //PostNetEvent(new GCPvENewRound());
 
                 //PostNetEvent(new GCPvEUserInit(roomPlayer));
 
@@ -266,7 +261,7 @@ namespace Qserver.GameServer.Qpang
                 //PostNetEvent(new GCPvEUserInit(roomPlayer));
 
                 ////PostNetEvent(new GCGameState(this._player.PlayerId, 12)); // 6 is set for some reason (27 also used)
-            }      
+            }
             else
             {
                 PostNetEvent(new GCStart(room, this._player.PlayerId));

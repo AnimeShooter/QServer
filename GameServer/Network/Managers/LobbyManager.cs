@@ -476,7 +476,7 @@ namespace Qserver.GameServer.Network.Managers
         #endregion
 
         #region Trade
-        public PacketWriter TradeResponse(uint playerId) // 876
+        public PacketWriter TradeResponse(uint playerId) // 876 // request success
         {
             PacketWriter pw = new PacketWriter(Opcode.LOBBY_TRADE_RSP); // ok
             pw.WriteUInt32(playerId); // unk 1
@@ -490,9 +490,12 @@ namespace Qserver.GameServer.Network.Managers
             pw.WriteUInt32(0); // unk1 (error msg?)
             return pw;
         }
-        public PacketWriter Send_878(uint token) // unk
+        public PacketWriter Send_878(uint token) // send deliver trade request
         {
             PacketWriter pw = new PacketWriter((Opcode)878);
+            
+            // dword token
+            // dword senderPlayerId
 
             pw.WriteUInt32(token);
             pw.WriteUInt32(token);
@@ -522,22 +525,23 @@ namespace Qserver.GameServer.Network.Managers
             pw.WriteUInt32(0); // unk1 (error msg?)
             return pw;
         }
-        public PacketWriter Send_882(uint unk1, byte cmd) // 
+        public PacketWriter Send_882(uint unk1, byte cmd) // SendReceiveTradeRequestResponse
         {
             PacketWriter pw = new PacketWriter((Opcode)882);
             pw.WriteUInt32(unk1); // possibel playerId?>
-            pw.WriteUInt8(cmd); // cmd??
+            pw.WriteUInt8(cmd); // cmd?? (has accepted?)
             return pw;
         }
         public PacketWriter TradeAccepted(uint token) // 883 - TradeAccepted
         {
             PacketWriter pw = new PacketWriter((Opcode)883);
             pw.WriteUInt32(token); // Possible token?
+            //pw.WriteUInt8(0); // has accepted trade?
             return pw;
         }
         public PacketWriter Send_885(uint token, byte cmd) // Trade User Action Response
         {
-            PacketWriter pw = new PacketWriter((Opcode)885);
+            PacketWriter pw = new PacketWriter((Opcode)885); // cancle self?
             pw.WriteUInt32(token); // possibel playerId?>
             pw.WriteUInt8(cmd); // cmd??
             return pw;

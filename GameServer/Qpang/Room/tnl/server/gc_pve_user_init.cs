@@ -24,7 +24,7 @@ namespace Qserver.GameServer.Qpang
             ImplementNetEvent(out _dynClassRep, "GCPvEUserInit", NetClassMask.NetClassGroupGameMask, 0);
         }
 
-        public uint State; // 88
+        public uint State; // 88 (0x20, 0x40, 0x80 TODO find flag usage?)
         public uint PlayerId; // 92
         public ushort CharacterId; // 130
         public uint SelectedWeapon; // 168
@@ -35,9 +35,9 @@ namespace Qserver.GameServer.Qpang
 
         public string Nickname; // 252
 
-        public byte Unk6; // 240 unk 10, unk11
-        public uint Unk7; // 244; actionId, level, 
-        public ushort Unk8; // 248; key, hp, refers
+        public byte PlayerRank; // 240 unk 10, unk11// aka prestiege
+        public uint Coins; // 244; actionId, level, 
+        public ushort DoubleCoins; // 248; key, hp, refers
 
         public GCPvEUserInit() : base(GameNetId.GC_PVE_USER_INIT, GuaranteeType.Guaranteed, EventDirection.DirAny) { }
 
@@ -54,10 +54,11 @@ namespace Qserver.GameServer.Qpang
             WeaponCount = (ushort)player.EquipmentManager.GetWeaponsByCharacter(CharacterId).Length;
             Weapons = player.EquipmentManager.GetWeaponItemIdsByCharacter(CharacterId);
             Armor = player.EquipmentManager.GetArmorItemIdsByCharacter(CharacterId);
-            //PlayerRank = spectatorMode ? (byte)3 : player.Rank;
+            PlayerRank = spectatorMode ? (byte)3 : player.Rank;
+            Coins = player.Coins;
+
             //Refers = player.Prestige;
-            Unk7 = player.Level;
-            Unk8 = (ushort)(player.EquipmentManager.GetBaseHealth() + player.EquipmentManager.GetBonusHealth());
+            //DoubleCoins = (ushort)(player.EquipmentManager.GetBaseHealth() + player.EquipmentManager.GetBonusHealth());
             //Experience = player.Experience;
         }
 
@@ -74,15 +75,14 @@ namespace Qserver.GameServer.Qpang
             WeaponCount = (ushort)player.EquipmentManager.GetWeaponsByCharacter(CharacterId).Length; // always 4?
             Weapons = player.EquipmentManager.GetWeaponItemIdsByCharacter(CharacterId);
             Armor = player.EquipmentManager.GetArmorItemIdsByCharacter(CharacterId);
-            //PlayerRank = spectatorMode ? (byte)3 : player.Rank;
+            PlayerRank = spectatorMode ? (byte)3 : player.Rank;
             //Refers = player.Prestige;
-            Unk7 = player.Level;
-            Unk8 = (ushort)(player.EquipmentManager.GetBaseHealth() + player.EquipmentManager.GetBonusHealth());
+            //DoubleCoins = (ushort)(player.EquipmentManager.GetBaseHealth() + player.EquipmentManager.GetBonusHealth());
             //Experience = player.Experience;
 
-            Unk6 = 0; // 0
-            Unk7 = 0; // actionId?
-            Unk8 = 5; // Refers?
+            Coins = player.Coins;
+
+            DoubleCoins = 0; // Refers? (!= 0 == double)
 
             // rank, exp, key?
         }
@@ -104,9 +104,9 @@ namespace Qserver.GameServer.Qpang
 
             WriteWString(bitStream, Nickname, 16);
 
-            bitStream.Write(Unk6);
-            bitStream.Write(Unk7);
-            bitStream.Write(Unk8);
+            bitStream.Write(PlayerRank);
+            bitStream.Write(Coins);
+            bitStream.Write(DoubleCoins);
 
         }
         public override void Unpack(EventConnection ps, BitStream bitStream) { }

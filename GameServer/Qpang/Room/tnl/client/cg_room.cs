@@ -136,7 +136,8 @@ namespace Qserver.GameServer.Qpang
                 bool validMode = Mode == (uint)GameMode.Mode.DM ||
                                  Mode == (uint)GameMode.Mode.TDM ||
                                  Mode == (uint)GameMode.Mode.PTE ||
-                                 Mode == (uint)GameMode.Mode.VIP;
+                                 Mode == (uint)GameMode.Mode.VIP ||
+                                 Mode == (uint)GameMode.Mode.PVE;
 
                 if ((!validMode || Map > 12) && player.Rank < 2) // NOTE: GMs are and helpers are allowed for BETA access
                 {

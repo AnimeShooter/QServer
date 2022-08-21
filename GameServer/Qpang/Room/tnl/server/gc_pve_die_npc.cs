@@ -25,21 +25,21 @@ namespace Qserver.GameServer.Qpang
         }
 
         // NOTE: this is final boss kill?
-        public uint Uid; // 88
+        public uint NpcUid; // 88
 
         public GCPvEDieNpc() : base(GameNetId.GC_PVE_DIE_NPC, GuaranteeType.Guaranteed, EventDirection.DirAny) { }
         public GCPvEDieNpc(uint uid) : base(GameNetId.GC_PVE_DIE_NPC, GuaranteeType.Guaranteed, EventDirection.DirAny)
         {
-            Uid = uid;
+            NpcUid = uid;
         }
 
         public override void Pack(EventConnection ps, BitStream bitStream) 
         {
-            bitStream.Write(Uid);
+            bitStream.Write(NpcUid);
         }
         public override void Unpack(EventConnection ps, BitStream bitStream) 
         {
-            bitStream.Read(out Uid);
+            bitStream.Read(out NpcUid);
         }
         public override void Process(EventConnection ps) { }
     }

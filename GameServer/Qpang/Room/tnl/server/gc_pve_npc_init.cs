@@ -24,14 +24,14 @@ namespace Qserver.GameServer.Qpang
             ImplementNetEvent(out _dynClassRep, "GCPvENpcInit", NetClassMask.NetClassGroupGameMask, 0);
         }
 
-        public uint Id; // 88
+        public uint Id; // 88 type/id
         public uint Uid; // 92
         public float X; // 96
         public float Y; // 100
         public float Z; // 104
-        public ushort Unk6; // 108 // Type?
-        public byte Unk7; // byte? 110 
-        public uint Unk8; // 112
+        public ushort Unk6; // 108 // rotation
+        public byte EndBoss; // 110 // Explodes on death if true 
+        public uint Health; // 112
 
         public GCPvENpcInit() : base(GameNetId.GC_PVE_NPC_INIT, GuaranteeType.Guaranteed, EventDirection.DirAny) { }
         public GCPvENpcInit(uint id, uint uid, ushort type, byte subType, Position spawn) : base(GameNetId.GC_PVE_NPC_INIT, GuaranteeType.Guaranteed, EventDirection.DirAny)
@@ -70,7 +70,7 @@ namespace Qserver.GameServer.Qpang
             Y = spawn.Y;
             Z = spawn.Z;
             Unk6 = type; // unk
-            Unk7 = subType;  // unk
+            EndBoss = subType;  // unk
         }
 
         public override void Pack(EventConnection ps, BitStream bitStream) 
@@ -81,8 +81,8 @@ namespace Qserver.GameServer.Qpang
             bitStream.Write(Y);
             bitStream.Write(Z);
             bitStream.Write(Unk6);
-            bitStream.Write(Unk7);
-            bitStream.Write(Unk8);
+            bitStream.Write(EndBoss);
+            bitStream.Write(Health);
         }
         public override void Unpack(EventConnection ps, BitStream bitStream) 
         {
@@ -92,8 +92,8 @@ namespace Qserver.GameServer.Qpang
             bitStream.Read(out Y);
             bitStream.Read(out Z);
             bitStream.Read(out Unk6);
-            bitStream.Read(out Unk7);
-            bitStream.Read(out Unk8);
+            bitStream.Read(out EndBoss);
+            bitStream.Read(out Health);
         }
         public override void Process(EventConnection ps) { }
     }

@@ -25,40 +25,41 @@ namespace Qserver.GameServer.Qpang
         }
 
         public uint TriggerId; // 88
-        public uint Uid; // 92
-        public float X; // 96
-        public float Y; // 100
-        public float Z; // 104
-        public byte Unk6; // 108
+        public float minBoundX; // 92
+        public float minBoundY; // 96
+        public float maxBoundX; // 100
+        public float maxBoundY; // 104
+        public byte cmd = 1; // 108 - 1: create area
 
         public GCPvEAreaTriggerInit() : base(GameNetId.GC_PVE_AREA_TRIGGER_INIT, GuaranteeType.Guaranteed, EventDirection.DirAny) { }
-        public GCPvEAreaTriggerInit(uint id, uint uid, Position spawn, byte unk6) : base(GameNetId.GC_PVE_AREA_TRIGGER_INIT, GuaranteeType.Guaranteed, EventDirection.DirAny) 
+        public GCPvEAreaTriggerInit(uint id, float uid, /* TODO boudry*/ Position spawn, byte unk6) : base(GameNetId.GC_PVE_AREA_TRIGGER_INIT, GuaranteeType.Guaranteed, EventDirection.DirAny) 
         {
             TriggerId = id;
-            Uid = uid;
-            X = spawn.X;
-            Y = spawn.Y;
-            Z = spawn.Z;
-            Unk6 = unk6;
+            minBoundX = uid;
+            minBoundY = 0.0f;
+            minBoundX = 0.0f;
+            maxBoundX = 0.0f;
+            maxBoundY = 0.0f;
+            cmd = unk6;
         }
 
         public override void Pack(EventConnection ps, BitStream bitStream)
         {
             bitStream.Write(TriggerId);
-            bitStream.Write(Uid);
-            bitStream.Write(X);
-            bitStream.Write(Y);
-            bitStream.Write(Z);
-            bitStream.Write(Unk6);
+            bitStream.Write(minBoundX);
+            bitStream.Write(minBoundY);
+            bitStream.Write(maxBoundX);
+            bitStream.Write(maxBoundY);
+            bitStream.Write(cmd);
         }
         public override void Unpack(EventConnection ps, BitStream bitStream)
         {
             bitStream.Read(out TriggerId);
-            bitStream.Read(out Uid);
-            bitStream.Read(out X);
-            bitStream.Read(out Y);
-            bitStream.Read(out Z);
-            bitStream.Read(out Unk6);
+            bitStream.Read(out minBoundX);
+            bitStream.Read(out minBoundY);
+            bitStream.Read(out maxBoundX);
+            bitStream.Read(out maxBoundY);
+            bitStream.Read(out cmd);
         }
         public override void Process(EventConnection ps)
         {

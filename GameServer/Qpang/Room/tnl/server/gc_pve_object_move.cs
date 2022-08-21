@@ -24,29 +24,32 @@ namespace Qserver.GameServer.Qpang
             ImplementNetEvent(out _dynClassRep, "GCPvEObjectMove", NetClassMask.NetClassGroupGameMask, 0);
         }
 
-        public uint ObjectId; // 88 // possible vice versa?
+        //public uint ObjectId; // 88 // possible vice versa?
         public uint Uid; // 92
         public float X; // 96
         public float Y; // 100
         public float Z; // 104
+        public uint Duration; // ms
 
         public GCPvEObjectMove() : base(GameNetId.GC_PVE_OBJECT_MOVE, GuaranteeType.Guaranteed, EventDirection.DirAny) { }
 
         public override void Pack(EventConnection ps, BitStream bitStream) 
         {
-            bitStream.Write(ObjectId);
+            //bitStream.Write(ObjectId);
             bitStream.Write(Uid);
             bitStream.Write(X);
             bitStream.Write(Y);
             bitStream.Write(Z);
+            bitStream.Write(Duration);
         }
         public override void Unpack(EventConnection ps, BitStream bitStream)
         {
-            bitStream.Read(out ObjectId);
+            //bitStream.Read(out ObjectId);
             bitStream.Read(out Uid);
             bitStream.Read(out X);
             bitStream.Read(out Y);
             bitStream.Read(out Z);
+            bitStream.Read(out Duration);
         }
         public override void Process(EventConnection ps) { }
     }

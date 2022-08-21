@@ -1,12 +1,10 @@
-﻿using System;
+﻿using Qserver.GameServer.Network.Managers;
+using Qserver.GameServer.Network.Packets;
+using Qserver.GameServer.Qpang;
+using Qserver.Util;
+using System;
 using System.Collections.Generic;
 using System.Text;
-using Qserver.Util;
-using Qserver.GameServer.Qpang;
-using Qserver.GameServer.Network;
-using Qserver.GameServer.Network.Managers;
-using Qserver.GameServer.Network.Packets;
-using System.Threading;
 
 namespace Qserver.GameServer.Network.Handlers
 {
@@ -22,7 +20,7 @@ namespace Qserver.GameServer.Network.Handlers
         {
             uint channelId = packet.ReadUInt32();
             Channel channel = Game.Instance.ChannelManager.GetChannel(channelId);
-            if(manager.Player.LoginTime > DateTime.UtcNow.AddSeconds(5) && manager.Player.TestRealm != (channel.TestMode == 1)) // 255 is default non set
+            if (manager.Player.LoginTime > DateTime.UtcNow.AddSeconds(5) && manager.Player.TestRealm != (channel.TestMode == 1)) // 255 is default non set
             {
                 manager.Player.Close(); // Not allowed to switch server
                 return;
@@ -43,7 +41,7 @@ namespace Qserver.GameServer.Network.Handlers
             ushort characterIndex = packet.ReadUInt16();
             ulong[] armor = new ulong[9];
 
-            for(int i = 0; i < armor.Length; i++)
+            for (int i = 0; i < armor.Length; i++)
                 armor[i] = packet.ReadUInt64();
 
             manager.Player.EquipmentManager.SetArmor(characterIndex, armor);
@@ -53,7 +51,7 @@ namespace Qserver.GameServer.Network.Handlers
             ushort characterIndex = packet.ReadUInt16();
             ulong[] weapons = new ulong[4];
 
-            for(int i = 0; i < weapons.Length; i++)
+            for (int i = 0; i < weapons.Length; i++)
             {
                 weapons[i] = packet.ReadUInt64();
                 packet.ReadUInt64(); // unk
@@ -72,7 +70,7 @@ namespace Qserver.GameServer.Network.Handlers
                 cards.Add(card);
             }
 
-            foreach(var c in cards)
+            foreach (var c in cards)
             {
                 Console.WriteLine("------: " + BitConverter.ToUInt32(c, 0x00).ToString("X8"));
                 Console.WriteLine("  1   : " + BitConverter.ToUInt32(c, 0x04).ToString("X8"));
@@ -101,7 +99,7 @@ namespace Qserver.GameServer.Network.Handlers
             var playerId = packet.ReadUInt32();
             var player = manager.Player;
             var target = Game.Instance.GetPlayer(playerId);
-            if(target != null)
+            if (target != null)
             {
                 player.FriendManager.AcceptIncoming(target);
                 target.FriendManager.OnOutgoingAccepted(player);
@@ -112,7 +110,7 @@ namespace Qserver.GameServer.Network.Handlers
             var playerId = packet.ReadUInt32();
             var player = manager.Player;
             var target = Game.Instance.GetPlayer(playerId);
-            if(target != null)
+            if (target != null)
             {
                 player.FriendManager.RemoveOutgoing(playerId);
                 target.FriendManager.RemoveIncoming(player.PlayerId);
@@ -127,7 +125,7 @@ namespace Qserver.GameServer.Network.Handlers
             var playerId = packet.ReadUInt32();
             var player = manager.Player;
             var target = Game.Instance.GetPlayer(playerId);
-            if(target != null)
+            if (target != null)
             {
                 player.FriendManager.RemoveIncoming(playerId);
                 target.FriendManager.RemoveOutgoing(player.PlayerId);
@@ -141,7 +139,7 @@ namespace Qserver.GameServer.Network.Handlers
             var friendId = packet.ReadUInt32();
             var player = manager.Player;
             var friend = Game.Instance.GetPlayer(friendId);
-            if(friend != null)
+            if (friend != null)
             {
                 player.FriendManager.Remove(friend.PlayerId);
                 friend.FriendManager.OnRemove(player.PlayerId);
@@ -231,7 +229,7 @@ namespace Qserver.GameServer.Network.Handlers
 
             // update trade manager
             bool status = Game.Instance.TradeManager.OnTradeRequest(player, target.PlayerId);
-            if(!status)
+            if (!status)
             {
                 // Let player know request failed
                 manager.Send(LobbyManager.Instance.Send_877()); // ?
@@ -258,7 +256,7 @@ namespace Qserver.GameServer.Network.Handlers
 
             // let player know its in queue
             //manager.Send(LobbyManager.Instance.TradeResponse(0x09950995));
-            
+
             // TODO
             // send request to target
             //target.SendLobby(LobbyManager.Instance.Send_880());
@@ -269,7 +267,7 @@ namespace Qserver.GameServer.Network.Handlers
 
             // NOTE: send this to player when trade request is rejected
             //target.SendLobby(LobbyManager.Instance.Send_882(playerId, 2)); // mixed results?
-            
+
             //// testing:
             //target.SendLobby(LobbyManager.Instance.Send_885(0x09950995, 0));
 
@@ -309,7 +307,7 @@ namespace Qserver.GameServer.Network.Handlers
 
             if (cmd == 50) // player cancle
             {
-                
+
                 Game.Instance.TradeManager.OnCancel(player);
                 //target.SendLobby(LobbyManager.Instance.Send_877());
 
@@ -319,12 +317,12 @@ namespace Qserver.GameServer.Network.Handlers
                 // NOTE: not needed, is done trough by response
                 // let target know player canceled  
                 //target.SendLobby(LobbyManager.Instance.TradeCanceledByPlayer());
-            }     
+            }
             else if (cmd == 51) // player accept pending 1
             {
                 Game.Instance.TradeManager.OnTradePropose(player);
             }
-            else if(cmd == 52) // player accepts complete
+            else if (cmd == 52) // player accepts complete
             {
                 Game.Instance.TradeManager.OnProposalAccept(player);
 
@@ -342,7 +340,7 @@ namespace Qserver.GameServer.Network.Handlers
 
                 //// NOTE: temp block trade completion ;P (uncomment above TODO to fix)
                 //cmd = 50;
-                }
+            }
             else
             {
                 // error unk cmd
@@ -409,7 +407,7 @@ namespace Qserver.GameServer.Network.Handlers
 
             // Lookup cardId and overwrite client card info with server card info
             card = player.InventoryManager.Get(card.Id);
-            if(card.Id == 0)
+            if (card.Id == 0)
             {
                 // not found serverside
                 manager.Send(LobbyManager.Instance.Send_890());
@@ -640,7 +638,7 @@ namespace Qserver.GameServer.Network.Handlers
 
             uint coinsRequired = 0;
 
-            switch(times)
+            switch (times)
             {
                 case 1:
                     coinsRequired = 200;
@@ -648,7 +646,8 @@ namespace Qserver.GameServer.Network.Handlers
                 case 3:
                     coinsRequired = 500;
                     break;
-                case 7: coinsRequired = 1200;
+                case 7:
+                    coinsRequired = 1200;
                     break;
                 default:
                     return;
@@ -663,10 +662,10 @@ namespace Qserver.GameServer.Network.Handlers
 
             List<InventoryCard> cards = new List<InventoryCard>();
 
-            for(int i = 0; i < times; i++)
+            for (int i = 0; i < times; i++)
             {
                 bool essence = false;
-                switch(times)
+                switch (times)
                 {
                     case 1:
                         essence = rnd.Next(0, 100) <= 40; // 40% chance;
@@ -679,7 +678,7 @@ namespace Qserver.GameServer.Network.Handlers
                         break;
                 }
                 InventoryCard loot;
-                if(essence)
+                if (essence)
                 {
                     // Green, set
                     // yellow, major cloth
@@ -687,9 +686,9 @@ namespace Qserver.GameServer.Network.Handlers
 
                     uint essenceId = 1174405154; // green - 20%
 
-                    if(rnd.Next(0,100) <= 45) 
+                    if (rnd.Next(0, 100) <= 45)
                         essenceId = 1174405153; // blue - 45%
-                    else if(rnd.Next(0, 100) >= 30) 
+                    else if (rnd.Next(0, 100) >= 30)
                         essenceId = 1174405154; // yellow - 45% (= 2 yellow, 2 blue)
 
                     loot = new InventoryCard()
@@ -720,6 +719,12 @@ namespace Qserver.GameServer.Network.Handlers
         }
         public static void HandleRedeemCode(PacketReader packet, ConnServer manager)
         {
+            //DEFAULT = 0,
+            //NUMBER_HAS_ALREADY_BEEN_REGISTERED = 370,
+            //ALREADY_RECEIVED_DAILY_EVENT_ITEM = 374,
+            //PERIOD_OF_PINCODE_HAS_EXPIRED = 375,
+            //INVENTORY_IS_FULL = 840,
+
             byte[] key = packet.ReadBytes(14);
             packet.ReadBytes(15);  // unk
 
@@ -730,7 +735,7 @@ namespace Qserver.GameServer.Network.Handlers
                 manager.Send(LobbyManager.Instance.CouponInvalid());
             else
                 manager.Send(LobbyManager.Instance.CouponSuccess(manager.Player.Don, manager.Player.Cash));
-        } 
+        }
         public static void Handle_721(PacketReader packet, ConnServer manager)
         {
             byte[] data = packet.ReadBytes(0x66);
@@ -769,7 +774,7 @@ namespace Qserver.GameServer.Network.Handlers
             //var playerId = packet.ReadUInt32();
             //var targetPlayer = Game.Instance.GetPlayer(playerId);
             //if (targetPlayer == null)
-                return;
+            return;
 
             //manager.Send(LobbyManager.Instance.PlayerInfoInspector(targetPlayer));
         }

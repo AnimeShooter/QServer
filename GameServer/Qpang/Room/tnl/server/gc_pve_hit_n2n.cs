@@ -34,6 +34,7 @@ namespace Qserver.GameServer.Qpang
         public uint Unk8; // 116
         public byte Unk9; // 120
         public byte Unk10; // 121
+        //public word Unk11; //
         
         public GCPvEHitN2N() : base(GameNetId.GC_PVE_HIT_N2N, GuaranteeType.Guaranteed, EventDirection.DirAny) { }
 

@@ -25,7 +25,7 @@ namespace Qserver.GameServer.Qpang
         }
 
         public uint PlayerId; // 96
-        public uint Unk01 = 5; // 92 - 2, 3, 5, 6
+        public uint Unk01 = 2; // 92 - 2, 3, 5, 6 (has to be 2?)
         public uint Unk02; // 100
         public ushort Map; // 104
         public ushort Mode; // 106

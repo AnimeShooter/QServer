@@ -38,7 +38,7 @@ namespace Qserver.GameServer.Qpang
         public uint Unk12; // 132
         public uint Unk13; // 136
         public uint Unk14; // 140
-        public byte Unk15; // 144
+        public byte Succesfull = 1; // 144
         public ushort Unk16; // 146
         public ushort Unk17; // 148
         
@@ -65,7 +65,7 @@ namespace Qserver.GameServer.Qpang
             bitStream.Write(Unk12);
             bitStream.Write(Unk13);
             bitStream.Write(Unk14);
-            bitStream.Write(Unk15);
+            bitStream.Write(Succesfull);
             bitStream.Write(Unk16);
             bitStream.Write(Unk17);
         }
@@ -85,7 +85,7 @@ namespace Qserver.GameServer.Qpang
             bitStream.Read(out Unk12);
             bitStream.Read(out Unk13);
             bitStream.Read(out Unk14);
-            bitStream.Read(out Unk15);
+            bitStream.Read(out Succesfull);
             bitStream.Read(out Unk16);
             bitStream.Read(out Unk17);
         }

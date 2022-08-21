@@ -24,29 +24,32 @@ namespace Qserver.GameServer.Qpang
             ImplementNetEvent(out _dynClassRep, "GCPvEShootN2P", NetClassMask.NetClassGroupGameMask, 0);
         }
 
-        public uint Unk1; // 88
-        public uint Unk2; // 92
-        public uint Unk3; // 96
-        public uint Unk4; // 100
-        public uint Unk5; // 104
+        public uint NpcUid; // 88
+        public uint WeaponBodyPartId; // 92
+        public uint TargetX; // 96 // idk?
+        public uint TargetY; // 100
+        public uint TargetZ; // 104
+        public long unk6; // 112 wepid?
 
         public GCPvEShootN2P() : base(GameNetId.GC_PVE_SHOOT_N2P, GuaranteeType.Guaranteed, EventDirection.DirAny) { }
 
         public override void Pack(EventConnection ps, BitStream bitStream)
         {
-            bitStream.Write(Unk1);
-            bitStream.Write(Unk2);
-            bitStream.Write(Unk3);
-            bitStream.Write(Unk4);
-            bitStream.Write(Unk5);
+            bitStream.Write(NpcUid);
+            bitStream.Write(WeaponBodyPartId);
+            bitStream.Write(TargetX);
+            bitStream.Write(TargetY);
+            bitStream.Write(TargetZ);
+            bitStream.Write(unk6);
         }
         public override void Unpack(EventConnection ps, BitStream bitStream)
         {
-            bitStream.Read(out Unk1);
-            bitStream.Read(out Unk2);
-            bitStream.Read(out Unk3);
-            bitStream.Read(out Unk4);
-            bitStream.Read(out Unk5);
+            bitStream.Read(out NpcUid);
+            bitStream.Read(out WeaponBodyPartId);
+            bitStream.Read(out TargetX);
+            bitStream.Read(out TargetY);
+            bitStream.Read(out TargetZ);
+            bitStream.Read(out unk6);
         }
         public override void Process(EventConnection ps) { }
     }

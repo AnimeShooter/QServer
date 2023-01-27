@@ -39,7 +39,9 @@ namespace Qserver.GameServer.Qpang
             bitStream.Read(out SourcePlayerId);
             bitStream.Read(out TargetPlayerId);
             bitStream.Read(out unk03);
-            bitStream.Read(unk04);
+             //bitStream.Read(unk04);
+            var msgBuff = new ByteBuffer(unk03);
+            bitStream.Read(msgBuff);
         }
         public override void Process(EventConnection ps) { }
     }

@@ -4,3 +4,5 @@ obj/*
 connstring.txt
 *.txt
 !connstring_example.txt
+.vscode/launch.json
+.vscode/tasks.json

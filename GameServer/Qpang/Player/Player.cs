@@ -214,7 +214,7 @@ namespace Qserver.GameServer.Qpang
 
             this._name = playerData.name;
             this._level = playerData.level;
-            this._rank = playerData.rank;
+            this._rank = playerData.player_rank;
             this._prestige = playerData.prestige;
             this._character = playerData.default_character;
             this._userId = playerData.user_id;

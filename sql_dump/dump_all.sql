@@ -3325,7 +3325,7 @@ CREATE TABLE `players` (
   `user_id` bigint(20) UNSIGNED NOT NULL,
   `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `default_character` int(11) NOT NULL DEFAULT 333,
-  `rank` tinyint(4) NOT NULL DEFAULT 1,
+  `player_rank` tinyint(4) NOT NULL DEFAULT 1,
   `prestige` tinyint(4) NOT NULL DEFAULT 0,
   `level` tinyint(4) NOT NULL DEFAULT 1,
   `don` int(11) NOT NULL DEFAULT 0,
@@ -3341,7 +3341,7 @@ CREATE TABLE `players` (
 -- Gegevens worden geëxporteerd voor tabel `players`
 --
 
-INSERT INTO `players` (`id`, `user_id`, `name`, `default_character`, `rank`, `prestige`, `level`, `don`, `cash`, `coins`, `experience`, `is_muted`, `created_at`, `updated_at`) VALUES
+INSERT INTO `players` (`id`, `user_id`, `name`, `default_character`, `player_rank`, `prestige`, `level`, `don`, `cash`, `coins`, `experience`, `is_muted`, `created_at`, `updated_at`) VALUES
 (2, 2, 'Ferib', 579, 3, 0, 29, 10711732, 2095775, 11, 695005, 0, NULL, NULL);
 
 -- --------------------------------------------------------

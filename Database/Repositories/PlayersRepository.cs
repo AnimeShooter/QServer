@@ -15,7 +15,7 @@ namespace Qserver.Database.Repositories
             public uint user_id;
             public string name;
             public ushort default_character;
-            public byte rank;
+            public byte player_rank;
             public byte prestige;
             public byte level;
             public uint don;
@@ -63,7 +63,7 @@ namespace Qserver.Database.Repositories
         {
             Task<IEnumerable<DBPlayer>> items = null;
             await _sqlObjectFactory.GetConnection().UsingAsync(connection =>
-                items = connection.QueryAsync<DBPlayer>("SELECT id, user_id, name, default_character, rank, prestige, level, don, cash, coins, experience, is_muted FROM players WHERE id = @Id", new { Id = id }));
+                items = connection.QueryAsync<DBPlayer>("SELECT id, user_id, name, default_character, prestige, level, don, cash, coins, experience, is_muted, player_rank FROM players WHERE id = @Id", new { Id = id }));
             return items.Result.FirstOrDefault();
         }
 
@@ -151,8 +151,8 @@ namespace Qserver.Database.Repositories
         {
             Task<uint> playerid = null;
             await _sqlObjectFactory.GetConnection().UsingAsync(connection =>
-                playerid = connection.QuerySingleAsync<uint>("INSERT INTO players (user_id, name, default_character, rank, prestige, level, don, cash, coins, experience, is_muted) VALUES (@Userid, @Name, @DefaultCharacter, @Rank, @Prestige, @Level, @Don, @Cash, @Coins, @Experience, @IsMuted);  SELECT LAST_INSERT_ID()",
-                new { Userid = userid, Name = name, DefaultCharacter = 333, Rank = 1, Prestige = 0, Level = 1, Don = don, Cash = cash, Coins = 0, Experience = 0, IsMuted = 0 }));
+                playerid = connection.QuerySingleAsync<uint>("INSERT INTO players (user_id, name, default_character, player_rank, prestige, level, don, cash, coins, experience, is_muted) VALUES (@Userid, @Name, @DefaultCharacter, @player_rank, @Prestige, @Level, @Don, @Cash, @Coins, @Experience, @IsMuted);  SELECT LAST_INSERT_ID()",
+                new { Userid = userid, Name = name, DefaultCharacter = 333, player_rank = 1, Prestige = 0, Level = 1, Don = don, Cash = cash, Coins = 0, Experience = 0, IsMuted = 0 }));
             return playerid.Result;
         }
 

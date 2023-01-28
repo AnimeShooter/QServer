@@ -37,8 +37,8 @@ Learning about private servers is best done with hands-on stuff, therefore I thi
 2. Run all `sql_dump` exports in your new database
 3. `git clone https://github.com/AnimeShooter/QServer.git`
 4. `cd QServer`
-5. `vim connstring_example.txt` *(write MySql credentials here)*
-6. `mv connstring_example.txt connstring.txt`
+5. `cp connstring_example.txt connstring.txt`
+6. `vim connstring.txt` *(write MySql credentials here)*
 7. `dotnet run -c Release`
 
 ### Server Args:
@@ -63,13 +63,14 @@ To do so, you will need to use the [patched mini launcher](https://github.com/An
 5. Move the `QPangPatcher.exe` into the `QPang` folder
 6. Drag & drop `QPangBin.exe` onto `QpangPatcher.exe`
 7. Launch `QPangBin.exe -fullscreen:0 -width:800 -height:600 -forcevsync:0 -locale:English` _(or write that into `start.bat` for ease of use)_
+8. Login with username `ferib` and password `admin`
 
 Enjoy, to restart the game you will only have to launch the `QPangBin.exe` with the required command line _(or use the `start.bat`)_.
 
 Note: You might want to set `IP=AnimeShooter.com` to connect to our remote servers instead ;D!
 
 ### Commmunity
-Find yourself all alone in a game room? ~~No problem, type `!start` in chat to start the game~~ _(bots are enabled by default)_. Or you may join the [AnimeShooter Discord](https://discord.gg/sUbpE5Qm3n) to find a real oponent.
+Find yourself all alone in a game room? ~~No problem, type `!start` in chat to start the game and `!dummy 1` to spawn dummy bots~~ _(bots are enabled by default)_. Or you may join the [Project AnimeShooter Discord](https://discord.gg/sUbpE5Qm3n) to find a real oponent.
 
 # 🙈 Credits
 

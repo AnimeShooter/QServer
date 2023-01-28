@@ -151,7 +151,7 @@ namespace TNL.Entities
 
         protected override void PacketReceived(PacketNotify note)
         {
-            base.PacketReceived(note);
+             base.PacketReceived(note);
 
             if (note is not EventPacketNotify notify)
                 throw new ArgumentException("Note must be EventPacketNotify", nameof(note));

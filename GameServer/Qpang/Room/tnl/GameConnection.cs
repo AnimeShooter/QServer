@@ -288,7 +288,7 @@ namespace Qserver.GameServer.Qpang
 
         public void AddSession(RoomSessionPlayer session)
         {
-            PostNetEvent(new GCArrangedAccept(this._player.PlayerId, session.Player.PlayerId));
+            PostNetEvent(new GCArrangedAccept(this._player.PlayerId, session.Player.PlayerId, ""));
             PostNetEvent(new GCJoin(session, this._player.RoomPlayer.Spectating));
             PostNetEvent(new GCRespawn(session.Player.PlayerId, session.Character, 1));
         }

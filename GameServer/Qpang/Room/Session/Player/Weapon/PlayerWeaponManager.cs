@@ -46,21 +46,21 @@ namespace Qserver.GameServer.Qpang
                         break;
                 }
 
-                if (this._lastShot.AddMilliseconds(delay) > DateTime.UtcNow)
-                {
-                    this._illegalShotsFired++;
-                    if (this._shotsFired > 13 && this._illegalShotsFired / (float)this._shotsFired > 0.15f)
-                    {
-                        this._player.Post(new GCGameState(this._player.Player.PlayerId, 22)); // hack detect
-                        var allPlayers = Game.Instance.PlayersList();
-                        foreach (var p in allPlayers)
-                            if (p.Online)
-                                p.Broadcast($"Player {this._player.Player.Name} has been removed for cheating!"); // public shaming!
-                        this._player.RoomSession.RemovePlayer(this._player.Player.PlayerId); // be gone!
-                        this._player.Post(new GCGameState(this._player.Player.PlayerId, 22)); // hack detect
-                    }
-                    return false;
-                }
+                //if (this._lastShot.AddMilliseconds(delay) > DateTime.UtcNow)
+                //{
+                //    this._illegalShotsFired++;
+                //    if (this._shotsFired > 13 && this._illegalShotsFired / (float)this._shotsFired > 0.15f)
+                //    {
+                //        this._player.Post(new GCGameState(this._player.Player.PlayerId, 22)); // hack detect
+                //        var allPlayers = Game.Instance.PlayersList();
+                //        foreach (var p in allPlayers)
+                //            if (p.Online)
+                //                p.Broadcast($"Player {this._player.Player.Name} has been removed for cheating!"); // public shaming!
+                //        this._player.RoomSession.RemovePlayer(this._player.Player.PlayerId); // be gone!
+                //        this._player.Post(new GCGameState(this._player.Player.PlayerId, 22)); // hack detect
+                //    }
+                //    return false;
+                //}
                 this._shotsFired++;
                 this._lastShot = DateTime.UtcNow; // NOTE: Fuck you, Jarrett
 

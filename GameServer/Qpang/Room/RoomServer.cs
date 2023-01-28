@@ -47,7 +47,8 @@ namespace Qserver.GameServer.Qpang
                         this._gameNetInterface.ProcessConnections(); // sending packets
                         this._gameNetInterface.CheckIncomingPackets(); // receiving packets
                         Tick(); // update room server
-                    }catch(Exception ex)
+                    }
+                    catch (Exception ex)
                     {
                         Log.Message(LogType.ERROR, ex.ToString());
                     }

@@ -112,6 +112,8 @@ namespace Qserver.GameServer
                     Log.Message(LogType.NORMAL, $"SquareServer  listening on {Settings.SERVER_IP}:{Settings.SERVER_PORT_SQUARE}");
 
                 new Thread(new ThreadStart(game.Tick)).Start();
+
+                // this is the UDP server
                 new Thread(new ThreadStart(game.RoomServer.Run)).Start();
                 Log.Message(LogType.NORMAL, $"RoomServer    listening on {Settings.SERVER_IP}:{Settings.SERVER_PORT_ROOM}");
             }

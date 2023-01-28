@@ -430,6 +430,13 @@ namespace Qserver.GameServer.Network.Managers
         #endregion
 
         #region Gameroom
+        //
+        //721 - SendGameRoomInvite
+        //32 host
+        //16 port
+        //16 mode
+        //char[30] roomTitle
+        
         public PacketWriter RoomList(List<Room> rooms)
         {
             PacketWriter pw = new PacketWriter((Opcode)759);
@@ -466,11 +473,39 @@ namespace Qserver.GameServer.Network.Managers
         }
         public PacketWriter UpdateGameSettings(uint host, ushort port, bool isEnabled)
         {
-            PacketWriter pw = new PacketWriter((Opcode)770);
+            PacketWriter pw = new PacketWriter((Opcode)770); // ????
             pw.WriteUInt8(isEnabled ? (byte)1 : (byte)0);
             pw.WriteUInt32(host);
             pw.WriteUInt16(port);
-            pw.WriteBytes(new byte[42]);
+            var d = new byte[42];
+            //{
+            //    0,0,0,0,
+            //    0,0,0,0,
+            //    0,0,0,0,
+            //    0,0,0,0,
+            //    0,0,0,0,
+            //    0,0,0,0,
+            //    0,0,0,0,
+            //    0,0,0,0,
+            //    0,0,0,0,
+            //    0,0,0,0,
+            //    0,0,
+
+            //};
+            pw.WriteBytes(d);
+            //pw.WriteBytes(new byte[42]
+            //{
+            //    0xFF,0xFF,0xFF,0xFF,0xFF,
+            //    0xFF,0xFF,0xFF,0xFF,0xFF,
+            //    0xFF,0xFF,0xFF,0xFF,0xFF,
+            //    0xFF,0xFF,0xFF,0xFF,0xFF,
+            //    0xFF,0xFF,0xFF,0xFF,0xFF,
+            //    0xFF,0xFF,0xFF,0xFF,0xFF,
+            //    0xFF,0xFF,0xFF,0xFF,0xFF,
+            //    0xFF,0xFF,0xFF,0xFF,0xFF,
+            //    0xFF,0xFF
+            //}
+            //);
             return pw;
         }
         #endregion

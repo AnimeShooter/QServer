@@ -169,7 +169,11 @@ namespace Qserver.GameServer.Network.Handlers
             if (state == 7)
                 player.SquarePlayer.SetState(7);
             else if (state == 5)
+            {
+                // player X joined toom X
                 player.SquarePlayer.SetState(5, roomId);
+            }
+                
         }
 
     }

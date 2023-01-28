@@ -98,7 +98,6 @@ namespace Qserver.GameServer.Qpang
 
             ByteBuffer titleBuffer = new ByteBuffer(22); // 256
             bitStream.Read(titleBuffer);
-            Title = ByteBufferToString(titleBuffer);
 
             bitStream.Read(out TimeAmount);
             PointsAmount = TimeAmount;
@@ -154,7 +153,8 @@ namespace Qserver.GameServer.Qpang
 
                 var newroom = Game.Instance.RoomManager.Create(Title, (byte)Map, (GameMode.Mode)Mode, Settings.ROOM_SERVER_IP, (ushort)Settings.SERVER_PORT_ROOM);
                 //var newroom = Game.Instance.RoomManager.Create(Title, (byte)Map, (GameMode.Mode)Mode, conn.Ip, conn.Port); // P2P ?
-                //Util.Log.Message(Util.LogType.MISC, "New room host at: " + ip.ToString("X8") + ":" + conn.Port);
+                //var newroom = Game.Instance.RoomManager.Create(Title, (byte)Map, (GameMode.Mode)Mode, conn.Ip, (ushort)Settings.SERVER_PORT_ROOM); // P2P ?
+                //Util.Log.Message(Util.LogType.MISC, "New room host at: " + conn.Ip.ToString("X8") + ":" + conn.Port);
                 
                 newroom.EventRoom = Cmd == (uint)Commands.CREATE_EVENT_ROOM;
                 newroom.AddPlayer(conn);

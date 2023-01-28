@@ -30,8 +30,17 @@ namespace Qserver.GameServer.Qpang
         public uint TargetUid; // 92
 
         public CGArrangedComplete() : base(GameNetId.CG_ARRANGED_COMPLETE, GuaranteeType.Guaranteed, EventDirection.DirClientToServer) { }
+        public CGArrangedComplete(uint playerUid, uint targetUid) : base(GameNetId.CG_ARRANGED_COMPLETE, GuaranteeType.Guaranteed, EventDirection.DirClientToServer) 
+        {
+            PlayerUid = playerUid;
+            TargetUid = targetUid;
+        }
 
-        public override void Pack(EventConnection ps, BitStream bitStream) { }
+        public override void Pack(EventConnection ps, BitStream bitStream)
+        {
+            bitStream.Write(PlayerUid);
+            bitStream.Write(TargetUid);
+        }
         public override void Unpack(EventConnection ps, BitStream bitStream)
         {
             bitStream.Read(out PlayerUid);

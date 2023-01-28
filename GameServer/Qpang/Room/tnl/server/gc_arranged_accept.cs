@@ -25,7 +25,7 @@ namespace Qserver.GameServer.Qpang
         }
 
         //public const string Key = "123456";
-        public const string Key = "123456781234567892345672345672345672345672345678";
+        public string Key = "12345678901234";
 
         public uint SenderId;
         public uint TargetId;
@@ -36,6 +36,13 @@ namespace Qserver.GameServer.Qpang
         {
             SenderId = senderId;
             TargetId = targetId;
+        }
+
+        public GCArrangedAccept(uint senderId, uint targetId, string key) : base(GameNetId.GC_ARRANGED_ACCEPT, GuaranteeType.Guaranteed, EventDirection.DirAny)
+        {
+            SenderId = senderId;
+            TargetId = targetId;
+            Key = key;
         }
 
 

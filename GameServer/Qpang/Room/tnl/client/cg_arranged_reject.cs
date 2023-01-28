@@ -25,7 +25,7 @@ namespace Qserver.GameServer.Qpang
         }
         public CGArrangedReject() : base(GameNetId.CG_ARRANGED_REJECT, GuaranteeType.GuaranteedOrdered, EventDirection.DirClientToServer)
         {
-            unk04 = new ByteBuffer();
+            unk04 = new ByteBuffer(0);
         }
 
         public uint SourcePlayerId;
@@ -39,7 +39,10 @@ namespace Qserver.GameServer.Qpang
             bitStream.Read(out SourcePlayerId);
             bitStream.Read(out TargetPlayerId);
             bitStream.Read(out unk03);
-            bitStream.Read(unk04);
+            //bitStream.Read(unk04);
+            var msgBuff = new ByteBuffer(unk03);
+            bitStream.Read(msgBuff);
+
         }
         public override void Process(EventConnection ps) { }
     }

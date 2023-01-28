@@ -28,7 +28,7 @@ namespace Qserver.GameServer.Qpang
         {
             SWAP = 0,
             TAKE_COMMON = 1,
-            DROP_COMMON = 2,
+            DROP_COMMON = 2, // drop?
             RELOAD = 3,
             ENABLE_SHOOTING = 5 // default?
         }

@@ -8,6 +8,7 @@ namespace Qserver.Database
 {
     public class DatabaseManager
     {
+
         public static MySqlObjectFactory MySqlFactory = new MySqlObjectFactory(File.ReadAllText("connstring.txt"));
         public DatabaseManager()
         {

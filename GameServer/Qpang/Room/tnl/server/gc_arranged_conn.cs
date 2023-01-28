@@ -26,51 +26,84 @@ namespace Qserver.GameServer.Qpang
 
         public GameConnection Connection;
 
-        public uint Unk1; // 88
-        public uint Unk2; // 92
-        public uint Unk3; // 96
+        // <GameConnection::onM2cClientRequestedArrangedConnection>[connId: 2][uid:0] Accepting (4->7)
+        public uint AcceptFrom = 1; // 88
+        public uint AcceptTo = 1; // 92
+        public uint Unk3 = 5; // 96
         public uint Count = 0; // 100
 
-        // loop
-        public uint[] Unk5; // 108 + 8 * v7
-        public uint[] Unk6; // 108 + 8 * v7 + 4
+        // 1 1 0
+        /*
+            DebugString: "<GameConnection::onM2cClientRequestedArrangedConnection>[connId: 2][uid:0] Accepting (1->1)"
+            DebugString: "(2)-------------------------"
+            DebugString: "(2)->connectArranged(1->1), false"
+            DebugString: "(2)-------------------------"
+            DebugString: "Game::addToPeerList / uid : 1 / P2P��\xBC\xD3 \xB4\xEB\xBB\xF3\xC0ڿ\xA1 \xC3߰\xA1"
+            DebugString: "RTT : 501,409973"
+            ...
+            DebugString: "(2)-------------------------"
+            DebugString: "<2> P2PConnection::onConnectTerminated (1->1) Timeout-Punch(0)"
+            DebugString: "(2)-------------------------"
+        */
+        /*
+            DebugString: "(2)-------------------------"
+            DebugString: "<2> P2PConnection::onConnectTerminated (1->1) Timeout-Punch(0)"
+            DebugString: "(2)-------------------------"
+        */
 
-        public string UnkString;
+        // loop
+        public uint[] PossIP; // 108 + 8 * v7
+        public ushort[] PossPort; // 108 + 8 * v7 + 4
+
+        public string UnkString = "";
 
         /*
          * GC_ArrangedConn is sent to everyone in the list?
          * 
          */
-
         public GCArrangedConn() : base(GameNetId.GC_ARRANGED_CONN, GuaranteeType.GuaranteedOrdered, EventDirection.DirAny) { }
+        public GCArrangedConn(string key = "") : base(GameNetId.GC_ARRANGED_CONN, GuaranteeType.GuaranteedOrdered, EventDirection.DirAny) 
+        {
+            UnkString = key;
+        }
+
+        public GCArrangedConn(string key, uint ip, ushort port) : base(GameNetId.GC_ARRANGED_CONN, GuaranteeType.GuaranteedOrdered, EventDirection.DirAny)
+        {
+            UnkString = key;
+            PossIP = new uint[1] { ip };
+            PossPort = new ushort[1] { port };
+        }
 
         public override void Pack(EventConnection ps, BitStream bitStream) 
         {
-            bitStream.Write(Unk1);
-            bitStream.Write(Unk2);
+            // Note this is arrangement? we need 2 players on this?
+            bitStream.Write(AcceptFrom);
+            bitStream.Write(AcceptTo);
             bitStream.Write(Unk3);
-            bitStream.Write(Count);
-            for(int i = 0; i < Count; i++)
+            bitStream.Write(PossIP.Length);
+            for(int i = 0; i < PossIP.Length; i++)
             {
-                bitStream.Write(Unk5[i]); // possible PlayerUid
-                bitStream.Write(Unk6[i]); // possible TargetUid
+                bitStream.Write(PossIP[i]); // possible DWORD IP
+                bitStream.Write(PossPort[i]); // possible PORT
             }
-            WriteWString(bitStream, GCArrangedAccept.Key, (uint)GCArrangedAccept.Key.Length); // possible name?
+
+            // 112 bits? - 14 bytes 
+            WriteWString(bitStream, UnkString, (uint)UnkString.Length); // possible name?
         }
         public override void Unpack(EventConnection ps, BitStream bitStream)
         {
-            bitStream.Read(out Unk1);
-            bitStream.Read(out Unk2);
+            bitStream.Read(out AcceptFrom);
+            bitStream.Read(out AcceptTo);
             bitStream.Read(out Unk3);
             bitStream.Read(out Count);
-            Unk5 = new uint[Count];
-            Unk6 = new uint[Count];
+            PossIP = new uint[Count];
+            PossPort = new ushort[Count];
             for (int i = 0; i < Count; i++)
             {
-                bitStream.Read(out Unk5[i]);
-                bitStream.Read(out Unk6[i]);
+                bitStream.Read(out PossIP[i]);
+                bitStream.Read(out PossPort[i]);
             }
-            WriteWString(bitStream, GCArrangedAccept.Key, (uint)GCArrangedAccept.Key.Length); // possible name?
+            WriteWString(bitStream, UnkString, (uint)UnkString.Length); // possible name?
         }
         public override void Process(EventConnection ps) { }
     }

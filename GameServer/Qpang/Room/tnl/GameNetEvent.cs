@@ -18,7 +18,9 @@ namespace Qserver.GameServer.Qpang
         public GameNetEvent(GameNetId gameNetId, GuaranteeType guaranteeType, EventDirection eventDirection) : base(guaranteeType, eventDirection)
         {
             Id = gameNetId;
-            //Console.WriteLine($"{gameNetId.ToString()}");
+#if DEBUG
+            Console.WriteLine($"{gameNetId.ToString()}");
+#endif
         }
 
         public override void NotifyPosted(EventConnection e) { }
@@ -52,7 +54,7 @@ namespace Qserver.GameServer.Qpang
             //}
 
             // NOTE: proper support?
-            for (int i = 0; i < str.Length; i++)
+            for (int i = 0; i < str.Length; i++) // TODO: maxLen?
             {
                 byte[] wchar = BitConverter.GetBytes(str[i]);
                 strBuffer[i * 2] = wchar[0];

@@ -209,6 +209,7 @@ namespace Qserver.GameServer.Network.Handlers
         {
             var rooms = Game.Instance.RoomManager.List();
             manager.Send(LobbyManager.Instance.RoomList(rooms));
+            //manager.Send(LobbyManager.Instance.UpdateGameSettings(Settings.ROOM_SERVER_IP, (ushort)Settings.SERVER_PORT_ROOM, true));
             manager.Send(LobbyManager.Instance.UpdateGameSettings(Settings.ROOM_SERVER_IP, (ushort)Settings.SERVER_PORT_ROOM, true));
         }
         #endregion

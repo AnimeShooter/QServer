@@ -34,8 +34,7 @@ namespace Qserver.Database.Repositories
 		{
 			Task<IEnumerable<DBFriend>> friends = null;
 			await _sqlObjectFactory.GetConnection().UsingAsync(connection =>
-				friends = connection.QueryAsync<DBFriend>("SELECT friends.id, friends.player_from, friends.player_to, friends.status, players.name, players.level, players.rank FROM friends JOIN players ON players.id = friends.player_to WHERE friends.player_from = @Id", new { Id = playerId }));
-			return friends.Result.ToList();
+friends = connection.QueryAsync<DBFriend>("SELECT friends.id, friends.player_from, friends.player_to, friends.status, players.name, players.level, players.player_rank FROM friends JOIN players ON players.id = friends.player_to WHERE friends.player_from = @Id", new { Id = playerId }));			return friends.Result.ToList();
 		}
 
 		public async Task AddFriend(uint playerFrom, uint playerTo, byte status)

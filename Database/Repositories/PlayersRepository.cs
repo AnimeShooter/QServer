@@ -63,7 +63,7 @@ namespace Qserver.Database.Repositories
         {
             Task<IEnumerable<DBPlayer>> items = null;
             await _sqlObjectFactory.GetConnection().UsingAsync(connection =>
-                items = connection.QueryAsync<DBPlayer>("SELECT id, user_id, name, default_character, rank, prestige, level, don, cash, coins, experience, is_muted FROM players WHERE id = @Id", new { Id = id }));
+                items = connection.QueryAsync<DBPlayer>("SELECT id, user_id, `name`, default_character, `rank`, prestige, `level`, don, cash, coins, experience, is_muted FROM players WHERE id = @Id", new { Id = id }));
             return items.Result.FirstOrDefault();
         }
 

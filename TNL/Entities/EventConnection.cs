@@ -360,8 +360,9 @@ namespace TNL.Entities
                     endingPosition = stream.ReadInt(BitStreamPosBitSize);
 
                 var classId = stream.ReadInt((byte) EventClassBitSize);
+#if DEBUG
                 Console.WriteLine($"TNL Hit: {classId.ToString()}");
-
+#endif
                 if (classId >= EventClassCount)
                 {
                     SetLastError("Invalid packet.");

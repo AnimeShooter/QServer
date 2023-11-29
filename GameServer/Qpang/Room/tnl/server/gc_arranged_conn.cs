@@ -29,7 +29,7 @@ namespace Qserver.GameServer.Qpang
         // <GameConnection::onM2cClientRequestedArrangedConnection>[connId: 2][uid:0] Accepting (4->7)
         public uint AcceptFrom = 1; // 88
         public uint AcceptTo = 1; // 92
-        public uint Unk3 = 5; // 96
+        public uint Unk3 = 1; // 5; // 96
         public uint Count = 0; // 100
 
         // 1 1 0
@@ -52,10 +52,10 @@ namespace Qserver.GameServer.Qpang
         */
 
         // loop
-        public uint[] PossIP; // 108 + 8 * v7
-        public ushort[] PossPort; // 108 + 8 * v7 + 4
+        public uint[] PossIP; // 108 + 8 * i
+        public ushort[] PossPort; // 108 + 8 * i + 4
 
-        public string UnkString = "";
+        public string Key = "12345678901234";
 
         /*
          * GC_ArrangedConn is sent to everyone in the list?
@@ -64,14 +64,28 @@ namespace Qserver.GameServer.Qpang
         public GCArrangedConn() : base(GameNetId.GC_ARRANGED_CONN, GuaranteeType.GuaranteedOrdered, EventDirection.DirAny) { }
         public GCArrangedConn(string key = "") : base(GameNetId.GC_ARRANGED_CONN, GuaranteeType.GuaranteedOrdered, EventDirection.DirAny) 
         {
-            UnkString = key;
+            Key = key;
         }
 
         public GCArrangedConn(string key, uint ip, ushort port) : base(GameNetId.GC_ARRANGED_CONN, GuaranteeType.GuaranteedOrdered, EventDirection.DirAny)
         {
-            UnkString = key;
+            Key = key;
             PossIP = new uint[1] { ip };
             PossPort = new ushort[1] { port };
+        }
+        public GCArrangedConn(string key, uint[] ips, ushort[] ports) : base(GameNetId.GC_ARRANGED_CONN, GuaranteeType.GuaranteedOrdered, EventDirection.DirAny)
+        {
+            Key = key;
+            PossIP = ips;
+            PossPort = ports;
+        }
+        public GCArrangedConn(uint from, uint to, string key, uint[] ips, ushort[] ports) : base(GameNetId.GC_ARRANGED_CONN, GuaranteeType.GuaranteedOrdered, EventDirection.DirAny)
+        {
+            AcceptFrom = from;
+            AcceptTo = to;
+            Key = key;
+            PossIP = ips;
+            PossPort = ports;
         }
 
         public override void Pack(EventConnection ps, BitStream bitStream) 
@@ -88,7 +102,7 @@ namespace Qserver.GameServer.Qpang
             }
 
             // 112 bits? - 14 bytes 
-            WriteWString(bitStream, UnkString, (uint)UnkString.Length); // possible name?
+            WriteWString(bitStream, Key, (uint)Key.Length); // possible name?
         }
         public override void Unpack(EventConnection ps, BitStream bitStream)
         {
@@ -103,7 +117,7 @@ namespace Qserver.GameServer.Qpang
                 bitStream.Read(out PossIP[i]);
                 bitStream.Read(out PossPort[i]);
             }
-            WriteWString(bitStream, UnkString, (uint)UnkString.Length); // possible name?
+            WriteWString(bitStream, Key, (uint)Key.Length); // possible name?
         }
         public override void Process(EventConnection ps) { }
     }

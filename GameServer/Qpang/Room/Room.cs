@@ -241,37 +241,42 @@ namespace Qserver.GameServer.Qpang
 
             conn.EnterRoom(this);
 
-            // NOTE: add bots TESTING as finding players for this game is nearly impossible
-            if (this._players.Count == 1 && this._mode != GameMode.Mode.PVE)
+            void LoadLobbyBots()
             {
-                Random rnd = new Random();
-                int max = rnd.Next(3, 8);
-
-                CGReady ready = new CGReady() { Cmd = 1 };
-
-                for (int i = 0; i < max; i++)
+                // NOTE: add bots TESTING as finding players for this game is nearly impossible
+                if (this._players.Count == 1 && this._mode != GameMode.Mode.PVE)
                 {
-                    var botConn = new GameConnection();
-                    string possibleName = Util.Util.QFigtherRandomName();
-                    while (true)
-                    {
-                        bool isOkay = true;
-                        foreach (var p in this._players)
-                            if (p.Value.Player.Name == possibleName)
-                            {
-                                isOkay = false;
-                                break;
-                            }
+                    Random rnd = new Random();
+                    int max = rnd.Next(3, 8);
 
-                        if (isOkay)
-                            break;
-                        possibleName = Util.Util.QFigtherRandomName();
+                    CGReady ready = new CGReady() { Cmd = 1 };
+
+                    for (int i = 0; i < max; i++)
+                    {
+                        var botConn = new GameConnection();
+                        string possibleName = Util.Util.QFigtherRandomName();
+                        while (true)
+                        {
+                            bool isOkay = true;
+                            foreach (var p in this._players)
+                                if (p.Value.Player.Name == possibleName)
+                                {
+                                    isOkay = false;
+                                    break;
+                                }
+
+                            if (isOkay)
+                                break;
+                            possibleName = Util.Util.QFigtherRandomName();
+                        }
+                        botConn.Player = new Player(possibleName);
+                        AddPlayer(botConn);
+                        ready.Handle(botConn, botConn.Player);
                     }
-                    botConn.Player = new Player(possibleName);
-                    AddPlayer(botConn);
-                    ready.Handle(botConn, botConn.Player);
                 }
             }
+
+            //LoadLobbyBots();
 
             SyncPlayers(roomPlayer);
         }
@@ -413,6 +418,8 @@ namespace Qserver.GameServer.Qpang
 
             lock (this._lock)
             {
+                //Console.WriteLine("fid me?");
+                //this._players.Reverse();
                 foreach (var p in this._players)
                 {
                     if (p.Value.Ready || this._masterPlayerId == p.Key)

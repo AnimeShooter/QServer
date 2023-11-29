@@ -43,6 +43,8 @@ namespace Qserver.GameServer.Qpang
             var msgBuff = new ByteBuffer(unk03);
             bitStream.Read(msgBuff);
 
+            Console.WriteLine($"PlayerId {SourcePlayerId} is rejecting {TargetPlayerId}");
+
         }
         public override void Process(EventConnection ps) { }
     }

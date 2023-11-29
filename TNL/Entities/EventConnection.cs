@@ -360,6 +360,131 @@ namespace TNL.Entities
                     endingPosition = stream.ReadInt(BitStreamPosBitSize);
 
                 var classId = stream.ReadInt((byte) EventClassBitSize);
+                Console.WriteLine($"TNL Hit: {classId.ToString()}");
+
+                if (classId >= EventClassCount)
+                {
+                    SetLastError("Invalid packet.");
+                    return;
+                }
+
+                var evt = (NetEvent) Create((uint) GetNetClassGroup(), (uint) NetClassType.NetClassTypeEvent, (int) classId);
+                if (evt == null)
+                {
+                    SetLastError("Invalid packet.");
+                    return;
+                }
+
+                if (evt.GetEventDirection() == EventDirection.DirUnset ||
+                    (evt.GetEventDirection() == EventDirection.DirServerToClient && IsConnectionToClient()) ||
+                    (evt.GetEventDirection() == EventDirection.DirClientToServer && IsConnectionToServer()))
+                {
+                    SetLastError("Invalid packet.");
+                    return;
+                }
+
+                evt.Unpack(this, stream);
+                if (ErrorBuffer[0] != 0)
+                    return;
+
+                if (ConnectionParameters.DebugObjectSizes)
+                    Console.WriteLine("Assert({0:X8} == {1:X8}) || unpack did not match pack for event of class {2}.", endingPosition, stream.GetBitPosition(), evt.GetClassName());
+
+                if (ungaranteedPhase || 1==1) // NOTE: always true, shitty bugfix!
+                {
+                    ProcessEvent(evt);
+
+                    if (ErrorBuffer[0] != 0)
+                        return;
+
+                    continue;
+                }
+
+                seq |= (_nextRecvEventSeq & ~0x7F);
+                if (seq < _nextRecvEventSeq)
+                    seq += 128;
+
+                var note = new EventNote
+                {
+                    Event = evt,
+                    SeqCount = seq,
+                    NextEvent = null
+                };
+
+                while (waitInsert != null && waitInsert.SeqCount < seq)
+                {
+                    waitInsertPrev = waitInsert;
+                    waitInsert = waitInsert.NextEvent;
+                }
+
+                note.NextEvent = waitInsert;
+
+                if (waitInsertPrev == null)
+                    _waitSeqEvents = note;
+                else
+                    waitInsertPrev.NextEvent = note;
+
+                waitInsertPrev = note;
+                waitInsert = note.NextEvent;
+            }
+
+            while (_waitSeqEvents != null && _waitSeqEvents.SeqCount == _nextRecvEventSeq)
+            {
+                ++_nextRecvEventSeq;
+
+                var temp = _waitSeqEvents;
+                _waitSeqEvents = temp.NextEvent;
+
+                ProcessEvent(temp.Event);
+
+                if (ErrorBuffer[0] != 0)
+                    return;
+            }
+        }
+        protected  void ReadPacket_ORG(BitStream stream)
+        {
+            base.ReadPacket(stream);
+
+            if (ConnectionParameters.DebugObjectSizes)
+                Console.WriteLine("{0:X8} == {1:X8}", stream.ReadInt(32), DebugCheckSum);
+
+            var prevSeq = -2;
+            var waitInsert = _waitSeqEvents;
+            var waitInsertPrev = _waitSeqEvents;
+            var ungaranteedPhase = true;
+
+            while (true)
+            {
+                var bit = stream.ReadFlag();
+                if (ungaranteedPhase && !bit)
+                {
+                    ungaranteedPhase = false;
+                    bit = stream.ReadFlag();
+                }
+
+                if (!ungaranteedPhase && !bit)
+                    break;
+
+                var seq = -1;
+
+                if (!ungaranteedPhase)
+                {
+                    if (stream.ReadFlag())
+                        seq = (prevSeq + 1) & 0x7F;
+                    else
+                        seq = (int) stream.ReadInt(7);
+
+                    prevSeq = seq;
+                }
+
+                var endingPosition = 0U;
+                if (ConnectionParameters.DebugObjectSizes)
+                    endingPosition = stream.ReadInt(BitStreamPosBitSize);
+
+                var classId = stream.ReadInt((byte) EventClassBitSize);
+#if DEBUG
+                Console.WriteLine($"TNL Hit: {classId.ToString()}");
+#endif
                 if (classId >= EventClassCount)
                 {
                     SetLastError("Invalid packet.");

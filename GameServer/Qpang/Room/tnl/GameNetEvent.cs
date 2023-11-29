@@ -19,7 +19,7 @@ namespace Qserver.GameServer.Qpang
         {
             Id = gameNetId;
 #if DEBUG
-            Console.WriteLine($"{gameNetId.ToString()}");
+            Console.WriteLine($"[{DateTime.Now.ToString("HH:mm:ss.ffff")}] {gameNetId.ToString()}");
 #endif
         }
 

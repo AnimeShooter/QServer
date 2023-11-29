@@ -29,18 +29,18 @@ namespace Qserver.GameServer.Network.Handlers
             int version = packet.ReadInt32();
 
             var user = Game.Instance.UsersRepository.GetUserCredentials(wUsername).Result;
-            if(user.password == null)
+            if (user.password == null)
             {
                 Log.Message(LogType.ERROR, $"Failed login attempt for {wUsername}, (invalid username)");
                 manager.Send(AuthManager.Instance.InvalidUsername());
                 return;
             }
-            if (!BCrypt.Net.BCrypt.Verify(wPassword, user.password))
-            {
-                Log.Message(LogType.ERROR, $"Failed login attempt for {wUsername}, (invalid password)");
-                manager.Send(AuthManager.Instance.InvalidPassword());
-                return;
-            }
+            //if (!BCrypt.Net.BCrypt.Verify(wPassword, user.password))
+            //{
+            //    Log.Message(LogType.ERROR, $"Failed login attempt for {wUsername}, (invalid password)");
+            //    manager.Send(AuthManager.Instance.InvalidPassword());
+            //    return;
+            //}
 
             string uuid = Util.Util.GenerateUUID();
             Game.Instance.UsersRepository.UpdateUUID(wUsername, uuid).GetAwaiter();

@@ -24,6 +24,12 @@ namespace Qserver.GameServer.Qpang
 
         private uint PlayerId; // 92
         private uint Cmd; // 96
+        // 1 setMap
+        // 2 setJoinPlayerNum
+        // 3 changeGameMode
+        // 4 setGoalPoint & time?
+        // 5 setPassword
+        // 0x15 setRound
 
         // union
         public uint Value;

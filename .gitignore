@@ -4,3 +4,4 @@ obj/*
 connstring.txt
 *.txt
 !connstring_example.txt
+notes/*

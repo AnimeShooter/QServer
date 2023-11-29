@@ -25,10 +25,14 @@ namespace Qserver.GameServer.Qpang
         }
 
         //public const string Key = "123456";
-        public string Key = "12345678901234";
-
         public uint SenderId;
         public uint TargetId;
+        
+        public uint Unk3 = 1; // 5; // 96
+        public uint Count = 0; // 100
+        public uint[] PossIP; // 108 + 8 * i
+        public ushort[] PossPort; // 108 + 8 * i + 4
+        public string Key = "12345678901234";
 
         public GCArrangedAccept() : base(GameNetId.GC_ARRANGED_ACCEPT, GuaranteeType.Guaranteed, EventDirection.DirAny) { }
 
@@ -45,18 +49,42 @@ namespace Qserver.GameServer.Qpang
             Key = key;
         }
 
+        public GCArrangedAccept(uint senderId, uint targetId, string key, uint ip, ushort port) : base(GameNetId.GC_ARRANGED_ACCEPT, GuaranteeType.Guaranteed, EventDirection.DirAny)
+        {
+            SenderId = senderId;
+            TargetId = targetId;
+            Key = key;
+            PossIP = new uint[1] { ip };
+            PossPort = new ushort[1] { port };
+        }
+
 
         public override void Pack(EventConnection ps, BitStream bitStream)
         {
             bitStream.Write(SenderId);
             bitStream.Write(TargetId);
-            bitStream.Write(1);
-            bitStream.Write(1);
-            bitStream.Write((uint)222);
-            bitStream.Write((ushort)TargetId);
+            bitStream.Write(0xfff);
 
-            WriteWString(bitStream, Key, (uint)Key.Length);
-            //bitStream.WriteString(key, (byte)key.Length);
+            if(PossIP == null)
+            {
+                bitStream.Write(1);
+                bitStream.Write((uint)222);
+                bitStream.Write((ushort)TargetId);
+                WriteWString(bitStream, Key, (uint)Key.Length);
+            }
+            else
+            {
+                bitStream.Write(PossIP.Length); //bitStream.Write(1);
+                //bitStream.Write((uint)222);
+                //bitStream.Write((ushort)TargetId);
+
+                for (int i = 0; i < PossIP.Length; i++)
+                {
+                    bitStream.Write(PossIP[i]); // possible DWORD IP
+                    bitStream.Write(PossPort[i]); // possible PORT
+                }
+                WriteWString(bitStream, Key, (uint)Key.Length);
+            }
         }
 
         public override void Unpack(EventConnection ps, BitStream bitStream) { }

@@ -152,12 +152,15 @@ namespace Qserver.GameServer.Qpang
                 }
 
                 var newroom = Game.Instance.RoomManager.Create(Title, (byte)Map, (GameMode.Mode)Mode, Settings.ROOM_SERVER_IP, (ushort)Settings.SERVER_PORT_ROOM);
-                //var newroom = Game.Instance.RoomManager.Create(Title, (byte)Map, (GameMode.Mode)Mode, conn.Ip, conn.Port); // P2P ?
+                //var newroom = Game.Instance.RoomManager.Create(Title, (byte)Map, (GameMode.Mode)Mode, Settings.ROOM_SERVER_IP, 62422); // P2P ? 62422
+                //var newroom = Game.Instance.RoomManager.Create(Title, (byte)Map, (GameMode.Mode)Mode, conn.Ip, conn.Port); // P2P ? 62422
                 //var newroom = Game.Instance.RoomManager.Create(Title, (byte)Map, (GameMode.Mode)Mode, conn.Ip, (ushort)Settings.SERVER_PORT_ROOM); // P2P ?
-                //Util.Log.Message(Util.LogType.MISC, "New room host at: " + conn.Ip.ToString("X8") + ":" + conn.Port);
-                
+                Util.Log.Message(Util.LogType.MISC, "New room host at: " + conn.Ip.ToString("X8") + ":" + conn.Port);
+
                 newroom.EventRoom = Cmd == (uint)Commands.CREATE_EVENT_ROOM;
                 newroom.AddPlayer(conn);
+
+                //conn.PostNetEvent(new GCArrangedConn("", conn.Ip, conn.Port));
             }
             else if (Cmd == (uint)Commands.JOIN_ROOM)
             {

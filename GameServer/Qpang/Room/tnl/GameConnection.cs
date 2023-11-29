@@ -288,7 +288,45 @@ namespace Qserver.GameServer.Qpang
 
         public void AddSession(RoomSessionPlayer session)
         {
-            PostNetEvent(new GCArrangedAccept(this._player.PlayerId, session.Player.PlayerId, ""));
+            uint mid = session.RoomSession.Room.MasterId;
+            // self?
+            //session.Player.RoomPlayer.Conn.Ip
+
+            List<uint> ips = new List<uint>();
+            List<ushort> ports = new List<ushort>();
+
+            uint hostIP = 0;
+            ushort hostPort = 0;
+            foreach(var p in session.RoomSession._players)
+            {
+                if(p.Key == mid)
+                {
+                    hostIP = p.Value.Player.RoomPlayer.Conn.Ip;
+                    hostPort = p.Value.Player.RoomPlayer.Conn.Port;
+                }
+                // block self?
+                if (p.Key == session.Player.PlayerId)
+                    continue;
+
+                ips.Add(p.Value.Player.RoomPlayer.Conn.Ip);
+                ports.Add(p.Value.Player.RoomPlayer.Conn.Port);
+            }
+
+            //// host not arrange?
+            //if(session.Player.PlayerId != mid)
+            //{
+            //    PostNetEvent(new GCArrangedConn(
+            //        0x44, //session.Player.PlayerId, 
+            //        0x55, //mid,
+            //        "12345678901234",
+            //        ips.ToArray(),
+            //        ports.ToArray()));
+            //}
+
+            //PostNetEvent(new GCArrangedAccept(this._player.PlayerId, session.Player.PlayerId, "12345678901234"));
+            PostNetEvent(new GCArrangedAccept(this._player.PlayerId, session.Player.PlayerId,
+               "12345678901234560000123456", this._ip, this._port));
+
             PostNetEvent(new GCJoin(session, this._player.RoomPlayer.Spectating));
             PostNetEvent(new GCRespawn(session.Player.PlayerId, session.Character, 1));
         }

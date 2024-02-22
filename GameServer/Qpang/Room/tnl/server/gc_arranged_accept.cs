@@ -63,7 +63,7 @@ namespace Qserver.GameServer.Qpang
         {
             bitStream.Write(SenderId);
             bitStream.Write(TargetId);
-            bitStream.Write(0xfff);
+            bitStream.Write(5);
 
             if(PossIP == null)
             {
@@ -85,6 +85,8 @@ namespace Qserver.GameServer.Qpang
                 }
                 WriteWString(bitStream, Key, (uint)Key.Length);
             }
+
+            Console.WriteLine($"Send ARRANGE ACCEPT from {SenderId} to {TargetId} (key: {Key})");
         }
 
         public override void Unpack(EventConnection ps, BitStream bitStream) { }

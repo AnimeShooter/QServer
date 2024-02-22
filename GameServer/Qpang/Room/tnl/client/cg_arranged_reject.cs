@@ -38,12 +38,18 @@ namespace Qserver.GameServer.Qpang
         {
             bitStream.Read(out SourcePlayerId);
             bitStream.Read(out TargetPlayerId);
-            bitStream.Read(out unk03);
-            //bitStream.Read(unk04);
-            var msgBuff = new ByteBuffer(unk03);
-            bitStream.Read(msgBuff);
 
-            Console.WriteLine($"PlayerId {SourcePlayerId} is rejecting {TargetPlayerId}");
+            // read strubg?
+
+            bitStream.Read(out unk03);
+            ////bitStream.Read(unk04);
+            //var msgBuff = new ByteBuffer(unk03);
+            //bitStream.Read(msgBuff);
+            //string key = System.Text.Encoding.ASCII.GetString(msgBuff.GetBuffer());
+
+            bitStream.ReadString(out string key);
+
+            Console.WriteLine($"PlayerId {SourcePlayerId} is rejecting {TargetPlayerId} {key} {key.Length}");
 
         }
         public override void Process(EventConnection ps) { }

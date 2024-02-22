@@ -323,12 +323,26 @@ namespace Qserver.GameServer.Qpang
             //        ports.ToArray()));
             //}
 
-            //PostNetEvent(new GCArrangedAccept(this._player.PlayerId, session.Player.PlayerId, "12345678901234"));
-            PostNetEvent(new GCArrangedAccept(this._player.PlayerId, session.Player.PlayerId,
-               "12345678901234560000123456", this._ip, this._port));
+            bool p2p = false;
+            if (p2p)
+            {
+                var hp = this._player.RoomPlayer.Room.GetPlayer(this._player.RoomPlayer.Room.Host);
 
-            PostNetEvent(new GCJoin(session, this._player.RoomPlayer.Spectating));
-            PostNetEvent(new GCRespawn(session.Player.PlayerId, session.Character, 1));
+
+                PostNetEvent(new GCArrangedAccept(this._player.PlayerId, session.Player.PlayerId,
+                   "12345678901234560000123456", hp.Conn.Ip, hp.Conn.Port));
+                   //"12345678901234567890123")); //, hostIP, hostPort);
+            }
+            else
+            {
+                //PostNetEvent(new GCArrangedAccept(this._player.PlayerId, session.Player.PlayerId, "12345678901234"));
+                PostNetEvent(new GCArrangedAccept(this._player.PlayerId, session.Player.PlayerId,
+                   //"12345678901234560000123456", this._ip, this._port));
+                   "12345678901234567890123")); //, hostIP, hostPort);
+
+                PostNetEvent(new GCJoin(session, this._player.RoomPlayer.Spectating));
+                PostNetEvent(new GCRespawn(session.Player.PlayerId, session.Character, 1));
+            }
         }
 
         public void SpawnEssence(Spawn spawn)

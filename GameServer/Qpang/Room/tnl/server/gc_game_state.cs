@@ -35,6 +35,17 @@ namespace Qserver.GameServer.Qpang
 
         public uint Uid;
         public byte Cmd;
+        
+        /*
+            ClientGame::PossHandleTNL - 660540
+
+        - 4, GameClient:movePeerListToRelayList
+        - 11 update tick?
+        - 15 disconnect P2P if accepted from player?
+        - 1 disconnect P2P & clear relay list?
+        
+        */
+
         public uint Data;
         public uint DataUid;
         public ushort GainExp;

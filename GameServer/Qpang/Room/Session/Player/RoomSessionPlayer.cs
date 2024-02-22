@@ -288,7 +288,21 @@ namespace Qserver.GameServer.Qpang
             this._roomSession.RelayExcept<GCGameState>(this._conn.Player.PlayerId, this._conn.Player.PlayerId, (uint)3, (uint)0, (uint)0);
             this._conn.PostNetEvent(new GCGameState(this._conn.Player.PlayerId, (uint)4));
 
-            this._roomSession.SyncPlayer(this);
+            bool p2p = true;
+
+            if(p2p)
+            {
+                // for the sake of testing, lets arrange connection with itself?
+                this._roomSession.Relay<GCArrangedConn>(
+                    //this._conn.Player.PlayerId, // senderId
+                    //this._conn.Player.PlayerId, // targetId
+                    "1234567890123456", // key?
+                    this._conn.Ip, // host ip? (self)
+                    this._conn.Port // host port? (self)
+                );
+            }
+            else
+                this._roomSession.SyncPlayer(this);
         }
 
         public void Stop()

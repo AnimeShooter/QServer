@@ -31,6 +31,7 @@ namespace Qserver.GameServer.Qpang
         public uint AcceptTo = 1; // 92
         public uint Unk3 = 1; // 5; // 96
         public uint Count = 0; // 100
+        //public uint LastMsTick = 0; // 104
 
         // 1 1 0
         /*
@@ -94,6 +95,7 @@ namespace Qserver.GameServer.Qpang
             bitStream.Write(AcceptFrom);
             bitStream.Write(AcceptTo);
             bitStream.Write(Unk3);
+            //bitStream.Write(LastMsTick);
             bitStream.Write(PossIP.Length);
             for(int i = 0; i < PossIP.Length; i++)
             {
@@ -109,6 +111,7 @@ namespace Qserver.GameServer.Qpang
             bitStream.Read(out AcceptFrom);
             bitStream.Read(out AcceptTo);
             bitStream.Read(out Unk3);
+            //bitStream.Read(out LastMsTick);
             bitStream.Read(out Count);
             PossIP = new uint[Count];
             PossPort = new ushort[Count];

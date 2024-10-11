@@ -23,8 +23,7 @@ namespace Qserver.Util
                 }
                 else if (i is sbyte)
                 {
-                    byte[] tmp = BitConverter.GetBytes(Convert.ToSByte(i));
-                    Buffer.BlockCopy(tmp, 0, result, pos, tmp.Length);
+                    result[pos] = (byte)Convert.ToSByte(i); //BitConverter.GetBytes(Convert.ToSByte(i));
                     pos++;
                 }
                 else if (i is ushort)
